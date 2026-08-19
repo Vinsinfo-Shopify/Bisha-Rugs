@@ -44,7 +44,7 @@
                   {%- if block.settings.title != blank or block.settings.content != blank or shop.features.follow_on_shop? and block.settings.enable_follow_on_shop -%}
                     <div class="v-stack gap-4 sm:gap-5">
                       {%- if block.settings.title != blank -%}
-                        <p class="h6">{{ block.settings.title }}</p>
+                        <p class="h6 {% if forloop.first %} footer__store-name{% endif %}">{{ block.settings.title }}</p>
                       {%- endif -%}
 
                       {%- if block.settings.content != blank -%}
@@ -59,6 +59,63 @@
                         </div>
                       {%- endif -%}
                     </div>
+                  {%- endif -%}
+                  {%- when 'contact_us' -%}
+                  {%- if block.settings.heading != blank or block.settings.address != blank or block.settings.phone != blank or block.settings.email != blank -%}
+                    {%- capture contact_content -%}
+                      <ul class="v-stack gap-3 unstyled-list footer-contact-list{% if block.settings.highlight_border %} footer-contact-list--accent{% endif %}" role="list" style="--footer-contact-width: {{ block.settings.desktop_width }}%;">
+                        {%- if block.settings.address != blank -%}
+                          <li class="h-stack gap-2 items-start">
+                            {%- if block.settings.address_icon != blank -%}
+                              {{- block.settings.address_icon | image_url: width: 24 | image_tag: class: 'contact-icon', loading: 'lazy', alt: 'Address' -}}
+                            {%- else -%}
+                              <svg class="contact-icon" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+                              </svg>
+                            {%- endif -%}
+                            <span class="text-subdued">{{ block.settings.address | newline_to_br }}</span>
+                          </li>
+                        {%- endif -%}
+
+                        {%- if block.settings.phone != blank -%}
+                          <li class="h-stack gap-2 items-center">
+                            {%- if block.settings.phone_icon != blank -%}
+                              {{- block.settings.phone_icon | image_url: width: 24 | image_tag: class: 'contact-icon', loading: 'lazy', alt: 'Phone' -}}
+                            {%- else -%}
+                              <svg class="contact-icon" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.57.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.57 1 1 0 01-.25 1.01l-2.2 2.21z"/>
+                              </svg>
+                            {%- endif -%}
+                            <a href="tel:{{ block.settings.phone | remove: ' ' }}" class="link-faded">{{ block.settings.phone }}</a>
+                          </li>
+                        {%- endif -%}
+
+                        {%- if block.settings.email != blank -%}
+                          <li class="h-stack gap-2 items-center">
+                            {%- if block.settings.email_icon != blank -%}
+                              {{- block.settings.email_icon | image_url: width: 24 | image_tag: class: 'contact-icon', loading: 'lazy', alt: 'Email' -}}
+                            {%- else -%}
+                              <svg class="contact-icon" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1zm16 2.35l-8 5.99-8-5.99V6l8 6 8-6z"/>
+                              </svg>
+                            {%- endif -%}
+                            <a href="mailto:{{ block.settings.email }}" class="link-faded">{{ block.settings.email }}</a>
+                          </li>
+                        {%- endif -%}
+                      </ul>
+                    {%- endcapture -%}
+
+                    <div class="v-stack gap-4 sm:gap-5 {% if block.settings.collapsible %}sm-max:hidden{% endif %}">
+                      {%- if block.settings.heading != blank -%}
+                        <p class="h6 footer_menu_heading">{{ block.settings.heading }}</p>
+                      {%- endif -%}
+
+                      {{- contact_content -}}
+                    </div>
+
+                    {%- if block.settings.collapsible -%}
+                      {%- render 'accordion', title: block.settings.heading, content: contact_content, class: 'sm:hidden' -%}
+                    {%- endif -%}
                   {%- endif -%}
 
                 {%- when 'links' -%}
@@ -79,7 +136,7 @@
 
                     <div class="v-stack gap-4 sm:gap-5 {% if block.settings.collapse_on_mobile %}sm-max:hidden{% endif %}">
                       {%- if block.settings.show_menu_title != blank -%}
-                        <p class="h6">{{ menu_title }}</p>
+                        <p class="h6 footer_menu_heading">{{ menu_title }}</p>
                       {%- endif -%}
 
                       {{- menu_content -}}
@@ -136,12 +193,20 @@
 
                 if block.type == 'links' and block.settings.collapse_on_mobile
                   assign collapse_block = true
+                elsif block.type == 'contact_us' and block.settings.collapsible
+                  assign collapse_block = true
                 endif
               -%}
 
               {%- capture current_block -%}
                 <div class="footer__block footer__block--{{ block.type | remove_first: '@' }}" {{ block.shopify_attributes }}>
                   {{- block_content -}}
+                  {%- if forloop.last and section.settings.show_social_media -%}
+                    <div class="v-stack gap-4 sm:gap-5 footer__follow-us desktop">
+                      <p class="h6 footer_menu_heading">Follow Us</p>
+                      {%- render 'social-media', layout: 'list' -%}
+                    </div>
+                  {%- endif -%}
                 </div>
               {%- endcapture -%}
 
@@ -173,17 +238,21 @@
         FOOTER SOCIAL MEDIA
         ------------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
-
-      {%- if section.settings.show_social_media -%}
-        {%- render 'social-media', layout: 'list' -%}
-      {%- endif -%}
+                  {%- if section.settings.show_social_media -%}
+                    <div class="footer__social-media_wrapper">
+                      <div class="v-stack gap-4 sm:gap-5 footer__follow-us mobile">
+                        <p class="h6 footer_menu_heading">Follow Us</p>
+                        {%- render 'social-media', layout: 'list' -%}
+                      </div>
+                    </div>  
+                  {%- endif -%}     
 
       {%- comment -%}
         ------------------------------------------------------------------------------------------------------------------
         FOOTER ASIDE (COPYRIGHT + LOCALIZATION SELECTORS + PAYMENT METHODS)
         ------------------------------------------------------------------------------------------------------------------
       {%- endcomment -%}
-
+      <div class="footer__divider"></div>
       <div class="footer__aside">
         {%- if section.settings.show_country_selector and localization.available_countries.size > 1 -%}
           {%- assign show_country_selector = true -%}
@@ -211,7 +280,7 @@
         {%- endif -%}
 
         <p class="heading text-subdued text-xxs">
-          © {{ 'now' | date: '%Y' }} - {{ shop.name }}
+          © {{ 'now' | date: '%Y' }} - {{ shop.name }} -{{"All Rights Reserved"}}
           {%- if section.settings.show_powered_by_shopify -%}{{ powered_by_link }}{%- endif -%}
         </p>
 
@@ -232,7 +301,7 @@
   "name": "t:sections.footer.name",
   "class": "shopify-section--footer",
   "tag": "footer",
-  "max_blocks": 6,
+  "max_blocks": 7,
   "settings": [
     {
       "type": "color_scheme",
@@ -422,7 +491,87 @@
           "label": "t:global.colors.button_text"
         }
       ]
+    },
+     {
+  "type": "contact_us",
+  "name": "Contact Us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Contact Us",
+      "label": "Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "collapsible",
+      "visible_if": "{{ block.settings.heading != blank }}",
+      "default": true,
+      "label": "Collapsible row on mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "highlight_border",
+      "default": true,
+      "label": "Show left accent border",
+      "info": "Adds a yellow left border matching Support / Warranty blocks."
+    },
+    {
+    "type": "range",
+    "id": "desktop_width",
+    "min": 10,        
+    "max": 100,
+    "step": 1,
+    "unit": "%",
+    "default": 20,
+    "label": "Desktop width"
+    },
+    {
+      "type": "header",
+      "content": "Address"
+    },
+    {
+      "type": "image_picker",
+      "id": "address_icon",
+      "label": "Address Icon"
+    },
+    {
+      "type": "textarea",
+      "id": "address",
+      "label": "Address"
+    },
+
+    {
+      "type": "header",
+      "content": "Phone"
+    },
+    {
+      "type": "image_picker",
+      "id": "phone_icon",
+      "label": "Phone Icon"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone number"
+    },
+
+    {
+      "type": "header",
+      "content": "Email"
+    },
+    {
+      "type": "image_picker",
+      "id": "email_icon",
+      "label": "Email Icon"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email address"
     }
+  ]
+     }
   ]
 }
 {% endschema %}
