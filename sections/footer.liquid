@@ -114,7 +114,7 @@
                     </div>
 
                     {%- if block.settings.collapsible -%}
-                      {%- render 'accordion', title: block.settings.heading, content: contact_content, class: 'sm:hidden' -%}
+                      {%- render 'accordion', title: block.settings.heading, content: contact_content, class: 'sm:hidden' open: true -%}
                     {%- endif -%}
                   {%- endif -%}
 

@@ -8409,6 +8409,10 @@ ul {
       margin-block-start: 30px ;
 
   }
+  .footer{
+    padding-bottom:20px;
+  }
+
 
 @media screen and (max-width: 700px){
   .footer__follow-us.mobile{
@@ -8423,4 +8427,34 @@ ul {
   .footer__social-media_wrapper .social-media--list{
     gap: 10px;
   }
+  .footer__accordion-group {
+    display: grid;
+  }
+  .footer__block--contact_us {
+    order: -1;
+  }
+  .footer__block--contact_us .accordion {
+    border-bottom: 0;
+  }
+  .footer .text-with-icon {
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: normal;
+    font-weight: 400;
+    color:#EEC274;
+  }
+  .footer__block-list{
+    gap: 0px;
+  }
+  .footer__store-name{
+    display: flex;
+    justify-content: center;
+  }
+}
+.footer__divider {
+  height: 1px;
+  background-color: #FFFFFF; /* match your theme's divider/border token */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(49% - 50vw);
 }
