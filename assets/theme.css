@@ -6062,7 +6062,7 @@ shopify-account::part(signed-out-avatar) {
 
 .multi-column__item {
   align-content: start;
-  gap: 2rem;
+  gap: 16px;
   display: grid;
 }
 
@@ -6130,11 +6130,7 @@ shopify-account::part(signed-out-avatar) {
   }
 }
 
-@media screen and (min-width: 700px) {
-  .newsletter .form {
-    width: 35rem;
-  }
-}
+
 
 @media screen and (min-width: 700px) {
   .newsletter-popup {
@@ -8367,4 +8363,10 @@ ul {
   -webkit-box-orient: vertical;
   display: -webkit-box;
   overflow: hidden;
+}
+
+@media screen and (max-width: 700px) {
+  .multi-column__item {
+    gap: 12px;
+  }
 }

@@ -66,6 +66,41 @@
         --multiple-media-with-text-grid: {% if section.settings.media_position_desktop == 'before_text' %}"media-wrapper content-wrapper" / minmax(0, 1fr) minmax(0, 375px){% else %}"content-wrapper media-wrapper" / minmax(0, 375px) minmax(0, 1fr){% endif %};
       }
     }
+
+    /* --- Icon with text list (NEW) --- */
+    /* Mobile: stacked, one item per row */
+    #shopify-section-{{ section.id }} .icon-with-text-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      list-style: none;
+      padding: 0;
+    }
+
+    #shopify-section-{{ section.id }} .icon-with-text-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    #shopify-section-{{ section.id }} .icon-with-text-item img,
+    #shopify-section-{{ section.id }} .icon-with-text-item svg {
+      width: 1.2em;
+      height: 1.2em;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+
+    /* Desktop: items sit side by side */
+    @media screen and (min-width: 700px) {
+      #shopify-section-{{ section.id }} .icon-with-text-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        column-gap: 1.5rem;
+        row-gap: 0.5rem;
+      }
+    }
   </style>
 
   {%- comment -%}
@@ -76,6 +111,12 @@
 
   {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 
+  {%- comment -%} NEW: split blocks into media blocks vs icon/text blocks so the media loop below never treats an icon block as a missing image {%- endcomment -%}
+  {%- assign media_blocks = section.blocks | where: "type", "image" -%}
+  {%- assign video_blocks = section.blocks | where: "type", "video" -%}
+  {%- assign media_blocks = media_blocks | concat: video_blocks -%}
+  {%- assign icon_text_blocks = section.blocks | where: "type", "icon_with_text" -%}
+
   <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
     <div class="container container--md">
       <multiple-media-with-text
@@ -85,7 +126,7 @@
         class="multiple-media-with-text {% if use_overlap_layout %}multiple-media-with-text--overlap{% endif %} {% if section.settings.media_position_desktop == 'after_text' %}multiple-media-with-text--reverse{% endif %}"
       >
         <div class="multiple-media-with-text__media-wrapper">
-          {%- for block in section.blocks -%}
+          {%- for block in media_blocks -%}
             <div
               {{ block.shopify_attributes }}
               class="align-self-{{ section.settings.media_alignment }}"
@@ -137,6 +178,24 @@
 
             {{- section.settings.content -}}
 
+            {%- comment -%} NEW: icon + text list, rendered after the body copy {%- endcomment -%}
+            {%- if icon_text_blocks.size > 0 -%}
+              <ul class="icon-with-text-list">
+                {%- for block in icon_text_blocks -%}
+                  <li class="icon-with-text-item" {{ block.shopify_attributes }}>
+                    {%- if block.settings.icon != blank -%}
+                      {{-
+                        block.settings.icon
+                        | image_url: width: 64
+                        | image_tag: loading: 'lazy', widths: '32,48,64'
+                      -}}
+                    {%- endif -%}
+                    <span>{{ block.settings.text }}</span>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
             {%- if section.settings.button_1_text != blank or section.settings.button_2_text != blank -%}
               <div class="button-group">
                 {%- if section.settings.button_1_text != blank -%}
@@ -160,7 +219,7 @@
   "name": "t:sections.multiple_media_with_text.name",
   "class": "shopify-section--multiple-media-with-text",
   "tag": "section",
-  "max_blocks": 2,
+  "max_blocks": 8,
   "disabled_on": {
     "groups": ["header", "custom.overlay"]
   },
@@ -428,6 +487,7 @@
     {
       "type": "image",
       "name": "t:sections.multiple_media_with_text.blocks.image.name",
+      "limit": 2,
       "settings": [
         {
           "type": "image_picker",
@@ -450,6 +510,7 @@
     {
       "type": "video",
       "name": "t:sections.multiple_media_with_text.blocks.video.name",
+      "limit": 2,
       "settings": [
         {
           "type": "video",
@@ -465,6 +526,25 @@
           "unit": "deg",
           "label": "t:sections.multiple_media_with_text.blocks.image.rotation",
           "default": 0
+        }
+      ]
+    },
+    {
+      "type": "icon_with_text",
+      "name": "Icon with text",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon",
+          "info": "Recommended: small square image/svg, e.g. 64x64px"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Feature text"
         }
       ]
     }
