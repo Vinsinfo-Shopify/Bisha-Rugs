@@ -27,9 +27,35 @@
 
     @media screen and (min-width: 999px) {
       #shopify-section-{{ section.id }} {
+        display: none;
         --announcement-bar-font-size: {{ section.settings.desktop_font_size | divided_by: 16.0 }}rem;
       }
+      .ann-side--desktop { display: none; }
     }
+    /* CSS for Left & right announcement bar items */
+    #shopify-section-{{ section.id }} .announcement-bar,
+    #shopify-section-{{ section.id }} .announcement-bar__inner,
+    #shopify-section-{{ section.id }} announcement-bar {
+      position: relative;
+    }
+
+    #shopify-section-{{ section.id }} .ann-side {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: inherit;
+      text-decoration: none;
+      white-space: nowrap;
+      font-size: var(--announcement-bar-font-size);
+      z-index: 1;
+    }
+
+    #shopify-section-{{ section.id }} .ann-side--left  { left: 20px; }
+    #shopify-section-{{ section.id }} .ann-side--right { right: 20px; }
+
   </style>
 
   <height-observer variable="announcement-bar">
@@ -98,7 +124,7 @@
       ]
     }
   ],
-  "settings": [
+    "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
@@ -144,6 +170,57 @@
       "unit": "px",
       "label": "t:sections.announcement_bar.mobile_text_size",
       "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Left item — Virtual Appointment"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_left_item",
+      "label": "Show left item",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "left_text",
+      "label": "Left text",
+      "default": "Virtual Appointment"
+    },
+    {
+      "type": "url",
+      "id": "left_link",
+      "label": "Left link (optional)"
+    },
+    {
+      "type": "header",
+      "content": "Right item — Phone"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Show phone number",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone number",
+      "default": "+1 (415) 980-7774"
+    },
+    {
+      "type": "checkbox",
+      "id": "phone_clickable",
+      "label": "Tap to call",
+      "info": "On mobile, tapping starts a call.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_sides_mobile",
+      "label": "Hide left & right items on mobile",
+      "info": "Recommended — prevents overlap with the rotating text on small screens.",
+      "default": true
     }
   ],
   "presets": [
