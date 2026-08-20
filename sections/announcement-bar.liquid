@@ -27,10 +27,11 @@
 
     @media screen and (min-width: 999px) {
       #shopify-section-{{ section.id }} {
-        display: none;
         --announcement-bar-font-size: {{ section.settings.desktop_font_size | divided_by: 16.0 }}rem;
       }
-      .ann-side--desktop { display: none; }
+    }
+    @media screen and (max-width: 998px) {
+      #shopify-section-{{ section.id }} .ann-side--desktop { display: none; }
     }
     /* CSS for Left & right announcement bar items */
     #shopify-section-{{ section.id }} .announcement-bar,
