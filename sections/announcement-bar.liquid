@@ -61,6 +61,13 @@
 
   <height-observer variable="announcement-bar">
     <div class="announcement-bar color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+      {%- if section.settings.show_left_item and section.settings.left_text != blank -%}
+        {%- if section.settings.left_link != blank -%}
+          <a href="{{ section.settings.left_link }}" class="ann-side ann-side--left{% if section.settings.hide_sides_mobile %} ann-side--desktop{% endif %}">{{ section.settings.left_text }}</a>
+        {%- else -%}
+          <span class="ann-side ann-side--left{% if section.settings.hide_sides_mobile %} ann-side--desktop{% endif %}">{{ section.settings.left_text }}</span>
+        {%- endif -%}
+      {%- endif -%}
       {%- assign carousel_id = 'carousel-' | append: section.id -%}
 
       {%- if section.blocks.size > 1 -%}
@@ -92,6 +99,14 @@
             {%- render 'icon' with 'arrow-right', width: 12, direction_aware: true -%}
           </button>
         </carousel-next-button>
+      {%- endif -%}
+      {%- if section.settings.show_phone and section.settings.phone_number != blank -%}
+        {%- if section.settings.phone_clickable -%}
+          {%- assign tel = section.settings.phone_number | remove: ' ' | remove: '(' | remove: ')' | remove: '-' -%}
+          <a href="tel:{{ tel }}" class="ann-side ann-side--right{% if section.settings.hide_sides_mobile %} ann-side--desktop{% endif %}">{{ section.settings.phone_number }}</a>
+        {%- else -%}
+          <span class="ann-side ann-side--right{% if section.settings.hide_sides_mobile %} ann-side--desktop{% endif %}">{{ section.settings.phone_number }}</span>
+        {%- endif -%}
       {%- endif -%}
     </div>
   </height-observer>
