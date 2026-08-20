@@ -8400,7 +8400,7 @@ ul {
   padding-right: 100px;
 }
 .footer__inner{
-  gap: 10px;
+  gap: 13px;
 }
 .footer__follow-us.mobile{
   display:none;
@@ -8423,6 +8423,7 @@ ul {
   }
   .footer__social-media_wrapper{
     justify-content: start;
+    margin-top: 7px;
   }
   .footer__social-media_wrapper .social-media--list{
     gap: 10px;
@@ -8450,10 +8451,16 @@ ul {
     display: flex;
     justify-content: center;
   }
+  .footer__divider{
+    margin-top: 11px;
+  }
+  .footer{
+    padding-bottom: 15px;
+  }
 }
 .footer__divider {
   height: 1px;
-  background-color: #FFFFFF; /* match your theme's divider/border token */
+  background-color: #FFFFFF;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(49% - 50vw);
