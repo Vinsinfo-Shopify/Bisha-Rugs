@@ -13,6 +13,7 @@
   "sections": {
     "countdown-timer": {
       "type": "countdown-condensed",
+      "disabled": true,
       "settings": {
         "color_scheme": "schema-3",
         "content": "super Sale Up to 40% off",
@@ -35,6 +36,8 @@
         "logo_max_width": 130,
         "logo_mobile_max_width": 80,
         "menu": "main-menu",
+        "sidebar_menu": "",
+        "customer_account_menu": "customer-account-main-menu",
         "menu_open_trigger": "hover",
         "menu_text_font": "heading",
         "enable_search": true,
@@ -50,10 +53,63 @@
         "show_locale_selector": false,
         "transparent_header_text_color": "#ffffff"
       }
+    },
+    "announcement_bar_bfKe8V": {
+      "type": "announcement-bar",
+      "blocks": {
+        "message_EUBwnB": {
+          "type": "message",
+          "settings": {
+            "text": "Flat 5% OFF if you order over $800"
+          }
+        },
+        "message_QEkER8": {
+          "type": "message",
+          "settings": {
+            "text": "30-days hassle-free returns"
+          }
+        },
+        "message_zWqyJP": {
+          "type": "message",
+          "settings": {
+            "text": "Worldwide insured shipping on all orders"
+          }
+        },
+        "message_3BgJ94": {
+          "type": "message",
+          "settings": {
+            "text": "Benefits for interior designers & architects. Apply Now →"
+          }
+        },
+        "message_LPpXbH": {
+          "type": "message",
+          "settings": {
+            "text": "Free shipping to United States"
+          }
+        }
+      },
+      "block_order": [
+        "message_EUBwnB",
+        "message_QEkER8",
+        "message_zWqyJP",
+        "message_3BgJ94",
+        "message_LPpXbH"
+      ],
+      "custom_css": [],
+      "name": "t:sections.announcement_bar.name",
+      "settings": {
+        "color_scheme": "",
+        "enable_sticky": false,
+        "autoplay": true,
+        "cycle_speed": 5,
+        "desktop_font_size": 11,
+        "mobile_font_size": 10
+      }
     }
   },
   "order": [
     "countdown-timer",
-    "header"
+    "header",
+    "announcement_bar_bfKe8V"
   ]
 }
