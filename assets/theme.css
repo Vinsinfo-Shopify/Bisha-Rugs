@@ -4906,11 +4906,14 @@ product-rerender {
   justify-content: center;
   max-width: 30rem;
 }
+.footer__aside .heading.text-subdued {
+  font-size: 14px;
+}
 
 @media screen and (min-width: 700px) {
   .footer__block-list {
     justify-content: var(--footer-content-justify-items);
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 3rem;
     display: flex;
   }
@@ -4927,7 +4930,6 @@ product-rerender {
   }
 
   .footer__block--text {
-    flex-basis: 14rem;
     max-width: 24rem;
   }
 
@@ -7421,6 +7423,7 @@ shopify-account::part(signed-out-avatar) {
 
 .text-subdued {
   color: rgb(var(--text-color));
+  font-size: 14px;
 }
 
 .text-on-sale {

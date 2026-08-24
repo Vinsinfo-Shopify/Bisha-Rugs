@@ -85,7 +85,7 @@
           "type": "links",
           "settings": {
             "menu": "shop-all",
-            "collapse_on_mobile": false,
+            "collapse_on_mobile": true,
             "show_menu_title": true,
             "menu_title": ""
           }
@@ -94,7 +94,7 @@
           "type": "links",
           "settings": {
             "menu": "rug-resources",
-            "collapse_on_mobile": false,
+            "collapse_on_mobile": true,
             "show_menu_title": true,
             "menu_title": "Rug Resources"
           }
@@ -103,7 +103,7 @@
           "type": "links",
           "settings": {
             "menu": "know-us-better",
-            "collapse_on_mobile": false,
+            "collapse_on_mobile": true,
             "show_menu_title": true,
             "menu_title": ""
           }
@@ -112,7 +112,7 @@
           "type": "links",
           "settings": {
             "menu": "help",
-            "collapse_on_mobile": false,
+            "collapse_on_mobile": true,
             "show_menu_title": true,
             "menu_title": ""
           }
@@ -125,7 +125,7 @@
             "highlight_border": true,
             "desktop_width": 20,
             "address_icon": "shopify://shop_images/boxicons_location.png",
-            "address": "30 North Gould Street, Sheridan, Wyoming",
+            "address": "30 North Gould Street,Sheridan, Wyoming",
             "phone_icon": "shopify://shop_images/Vector_4.png",
             "phone": "+1 (415) 980-7774",
             "email_icon": "shopify://shop_images/Vector_3.png",
