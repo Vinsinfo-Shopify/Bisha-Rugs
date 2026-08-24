@@ -30,6 +30,25 @@
         --announcement-bar-font-size: {{ section.settings.desktop_font_size | divided_by: 16.0 }}rem;
       }
     }
+
+    @media screen and (max-width: 1200px) {
+      #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 25rem;}
+    }
+
+    @media screen and (max-width: 991px) {
+      #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 21rem;}
+    }
+
+    @media screen and (max-width: 768px) {
+      .ann-side--desktop {
+        display: none !important;
+      }
+      #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 35rem;}
+      #shopify-section-{{ section.id }} .announcement-bar {
+        padding-inline-start: var(--container-gutter) !important;
+        padding-inline-end: var(--container-gutter) !important;
+      }
+    }
     /* CSS for Left & right announcement bar items */
     #shopify-section-{{ section.id }} .announcement-bar,
     #shopify-section-{{ section.id }} .announcement-bar__inner,
@@ -51,17 +70,38 @@
       z-index: 1;
     }
 
-    #shopify-section-{{ section.id }} .ann-side--left  { left: 20px; }
-    #shopify-section-{{ section.id }} .ann-side--right { right: 20px; }
-
-    @media screen and (max-width: 998px) {
-      #shopify-section-{{ section.id }} .ann-side--desktop { display: none; }
+    #shopify-section-{{ section.id }} .announcement-bar__message,
+    #shopify-section-{{ section.id }} [class*="announcement"] .message, #shopify-section-{{ section.id }} .announcement-bar__carousel .heading {
+      text-transform: capitalize !important;
     }
+
+    #shopify-section-{{ section.id }} .ann-side--left  { left: var(--container-gutter, 20px); }
+    #shopify-section-{{ section.id }} .ann-side--right { right: var(--container-gutter, 20px); }
+
+    #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 25rem;}
 
   </style>
 
   <height-observer variable="announcement-bar">
     <div class="announcement-bar color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+      {%- if section.settings.show_left_item and section.settings.left_text != blank -%}
+        {%- if section.settings.left_link != blank -%}
+          <a href="{{ section.settings.left_link }}" class="ann-side ann-side--left{% if section.settings.hide_sides_mobile %} ann-side--desktop{% endif %}">
+            {%- if section.settings.left_icon_img -%}
+              <img class="ann-icon" src="{{ section.settings.left_icon_img | image_url: width: 64 }}" alt="{{ section.settings.left_text | escape }}" width="{{ section.settings.icon_size }}" height="{{ section.settings.icon_size }}" loading="lazy">
+            {%- endif -%}
+            {{- section.settings.left_text -}}
+          </a>
+        {%- else -%}
+          <span class="ann-side ann-side--left{% if section.settings.hide_sides_mobile %} ann-side--desktop{% endif %}">
+            {%- if section.settings.left_icon_img -%}
+              <img class="ann-icon" src="{{ section.settings.left_icon_img | image_url: width: 64 }}" alt="{{ section.settings.left_text | escape }}" width="{{ section.settings.icon_size }}" height="{{ section.settings.icon_size }}" loading="lazy">
+            {%- endif -%}
+            {{- section.settings.left_text -}}
+          </span>
+        {%- endif -%}
+      {%- endif -%}
+
       {%- assign carousel_id = 'carousel-' | append: section.id -%}
 
       {%- if section.blocks.size > 1 -%}
@@ -82,7 +122,9 @@
         class="announcement-bar__carousel"
       >
         {%- for block in section.blocks -%}
-          <p class="prose heading {% if forloop.first %}is-selected{% endif %}" {{ block.shopify_attributes }}>{{- block.settings.text -}}</p>
+          <p class="prose heading {% if forloop.first %}is-selected{% endif %}" {{ block.shopify_attributes }}>
+            {{- block.settings.text -}}
+          </p>
         {%- endfor -%}
       </announcement-bar-carousel>
 
@@ -94,11 +136,32 @@
           </button>
         </carousel-next-button>
       {%- endif -%}
+      {%- if section.settings.show_phone and section.settings.phone_number != blank -%}
+        {%- if section.settings.phone_clickable -%}
+          {%- assign tel = section.settings.phone_number | remove: ' ' | remove: '(' | remove: ')' | remove: '-' -%}
+          <a href="tel:{{ tel }}" class="ann-side ann-side--right{% if section.settings.hide_sides_mobile %} ann-side--desktop{% endif %}">
+            {%- if section.settings.right_icon_img -%}
+              <img class="ann-icon" src="{{ section.settings.right_icon_img | image_url: width: 64 }}" alt="{{ section.settings.phone_number | escape }}" width="{{ section.settings.icon_size }}" height="{{ section.settings.icon_size }}" loading="lazy">
+            {%- endif -%}
+            {{- section.settings.phone_number -}}
+          </a>
+        {%- else -%}
+          <span class="ann-side ann-side--right{% if section.settings.hide_sides_mobile %} ann-side--desktop{% endif %}">
+            {%- if section.settings.right_icon_img -%}
+              <img class="ann-icon" src="{{ section.settings.right_icon_img | image_url: width: 64 }}" alt="{{ section.settings.phone_number | escape }}" width="{{ section.settings.icon_size }}" height="{{ section.settings.icon_size }}" loading="lazy">
+            {%- endif -%}
+            {{- section.settings.phone_number -}}
+          </span>
+        {%- endif -%}
+      {%- endif -%}
     </div>
   </height-observer>
 
   <script>
-    document.documentElement.style.setProperty('--announcement-bar-height', `${document.getElementById('shopify-section-{{ section.id }}').clientHeight.toFixed(2)}px`);
+    document.documentElement.style.setProperty(
+      '--announcement-bar-height',
+      `${document.getElementById('shopify-section-{{ section.id }}').clientHeight.toFixed(2)}px`
+    );
   </script>
 {%- endif -%}
 
@@ -126,7 +189,7 @@
       ]
     }
   ],
-    "settings": [
+  "settings": [
     {
       "type": "color_scheme",
       "id": "color_scheme",
@@ -184,6 +247,11 @@
       "default": true
     },
     {
+      "type": "image_picker",
+      "id": "left_icon_img",
+      "label": "Left icon"
+    },
+    {
       "type": "text",
       "id": "left_text",
       "label": "Left text",
@@ -203,6 +271,11 @@
       "id": "show_phone",
       "label": "Show phone number",
       "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "right_icon_img",
+      "label": "Right icon"
     },
     {
       "type": "text",
