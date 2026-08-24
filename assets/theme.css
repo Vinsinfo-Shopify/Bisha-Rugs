@@ -2897,20 +2897,10 @@ tr[onclick]:hover {
   display: flex;
 }
 
-.social-media--list .social-media__item {
-  opacity: .65;
-  transition: opacity .2s, color .2s;
-}
-
 .social-media--list svg {
   width: var(--social-media-icon-size, 1.25rem);
 }
 
-@media screen and (pointer: fine) {
-  .social-media--list .social-media__item:hover {
-    opacity: 1;
-  }
-}
 
 .social-media--block {
   grid-template-columns: repeat(auto-fit, minmax(0, .33fr));

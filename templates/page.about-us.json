@@ -22,7 +22,7 @@
           "type": "heading",
           "settings": {
             "text": "Timeless Heritage, Woven for Modern Homes.",
-            "heading_tag": "h3"
+            "heading_tag": "h1"
           }
         }
       },
@@ -43,6 +43,69 @@
         "desktop_text_position": "sm:place-self-center sm:text-center",
         "overlay_color": "#000000",
         "overlay_opacity": 30
+      }
+    },
+    "multiple_media_with_text_XfTHc6": {
+      "type": "multiple-media-with-text",
+      "blocks": {
+        "icon_with_text_deWT3Y": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/cff864219a3a7f086c67a50e5e7dd58c66657ffe.png",
+            "text": "Hand Crafted in India"
+          }
+        },
+        "icon_with_text_wPXTad": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group.png",
+            "text": "Generational Master Artisans"
+          }
+        },
+        "video_xdLXiM": {
+          "type": "video",
+          "disabled": true,
+          "settings": {
+            "video": "shopify://files/videos/Celestial Midnight Garden – Karakul Handmade Rug ✨🌙Artistic • Textured • Ethereal Craftsmanship.mp4",
+            "rotation": 0
+          }
+        },
+        "image_bRmN9j": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/who_we_are_img.png",
+            "rotation": 0
+          }
+        }
+      },
+      "block_order": [
+        "icon_with_text_deWT3Y",
+        "icon_with_text_wPXTad",
+        "video_xdLXiM",
+        "image_bRmN9j"
+      ],
+      "name": "t:sections.multiple_media_with_text.presets.multiple_media_with_text.name",
+      "settings": {
+        "color_scheme": "",
+        "reveal_on_scroll": false,
+        "separate_section_with_border": false,
+        "media_position_desktop": "after_text",
+        "media_position_mobile": "after_text",
+        "media_layout": "separated",
+        "media_alignment": "center",
+        "media_alignment_offset": 0,
+        "media_mobile_alignment_offset": 0,
+        "text_alignment": "center",
+        "subheading": "Who We Are",
+        "title": "More Than a Rug. A Legacy Woven by Hands",
+        "heading_style": "h5",
+        "content": "<p>Bisha Rugs was founded with a simple belief: exceptional craftsmanship deserves to be preserved. We work directly with generational artisans across India's rug-weaving communities to create handmade rugs that honor centuries of tradition while finding a place in modern homes. <br/><br/>Hand Crafted in India            Generational Master Artisans</p>",
+        "button_1_text": "",
+        "button_1_link": "",
+        "button_1_style": "link",
+        "button_2_text": "",
+        "button_2_link": "",
+        "button_2_style": "solid"
       }
     },
     "multiple_media_with_text_HFK9yi": {
@@ -86,69 +149,6 @@
         "button_1_text": "",
         "button_1_link": "",
         "button_1_style": "solid",
-        "button_2_text": "",
-        "button_2_link": "",
-        "button_2_style": "solid"
-      }
-    },
-    "multiple_media_with_text_XfTHc6": {
-      "type": "multiple-media-with-text",
-      "blocks": {
-        "icon_with_text_deWT3Y": {
-          "type": "icon_with_text",
-          "settings": {
-            "icon": "",
-            "text": "Hand Crafted in India"
-          }
-        },
-        "icon_with_text_wPXTad": {
-          "type": "icon_with_text",
-          "settings": {
-            "icon": "",
-            "text": "Generational Master Artisans"
-          }
-        },
-        "video_xdLXiM": {
-          "type": "video",
-          "disabled": true,
-          "settings": {
-            "video": "shopify://files/videos/Celestial Midnight Garden – Karakul Handmade Rug ✨🌙Artistic • Textured • Ethereal Craftsmanship.mp4",
-            "rotation": 0
-          }
-        },
-        "image_bRmN9j": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/who_we_are_img.png",
-            "rotation": 0
-          }
-        }
-      },
-      "block_order": [
-        "icon_with_text_deWT3Y",
-        "icon_with_text_wPXTad",
-        "video_xdLXiM",
-        "image_bRmN9j"
-      ],
-      "name": "t:sections.multiple_media_with_text.presets.multiple_media_with_text.name",
-      "settings": {
-        "color_scheme": "",
-        "reveal_on_scroll": true,
-        "separate_section_with_border": false,
-        "media_position_desktop": "after_text",
-        "media_position_mobile": "after_text",
-        "media_layout": "separated",
-        "media_alignment": "center",
-        "media_alignment_offset": 0,
-        "media_mobile_alignment_offset": 0,
-        "text_alignment": "center",
-        "subheading": "Who We Are",
-        "title": "More Than a Rug. A Legacy Woven by Hands",
-        "heading_style": "h5",
-        "content": "<p>Bisha Rugs was founded with a simple belief: exceptional craftsmanship deserves to be preserved. We work directly with generational artisans across India's rug-weaving communities to create handmade rugs that honor centuries of tradition while finding a place in modern homes. <br/><br/>Hand Crafted in India            Generational Master Artisans</p>",
-        "button_1_text": "",
-        "button_1_link": "",
-        "button_1_style": "link",
         "button_2_text": "",
         "button_2_link": "",
         "button_2_style": "solid"
@@ -423,8 +423,8 @@
   },
   "order": [
     "image_with_text_overlay_QwXF4E",
-    "multiple_media_with_text_HFK9yi",
     "multiple_media_with_text_XfTHc6",
+    "multiple_media_with_text_HFK9yi",
     "blog_posts_cAgmeV",
     "multi_column_WmHANY",
     "image_with_text_iwjUp9",
