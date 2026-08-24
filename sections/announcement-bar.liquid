@@ -30,10 +30,20 @@
         --announcement-bar-font-size: {{ section.settings.desktop_font_size | divided_by: 16.0 }}rem;
       }
     }
-    @media screen and (max-width: 749px) {
+
+    @media screen and (max-width: 1200px) {
+      #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 25rem;}
+    }
+
+    @media screen and (max-width: 991px) {
+      #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 21rem;}
+    }
+
+    @media screen and (max-width: 768px) {
       .ann-side--desktop {
         display: none !important;
       }
+      #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 35rem;}
       #shopify-section-{{ section.id }} .announcement-bar {
         padding-inline-start: var(--container-gutter) !important;
         padding-inline-end: var(--container-gutter) !important;
@@ -61,12 +71,14 @@
     }
 
     #shopify-section-{{ section.id }} .announcement-bar__message,
-    #shopify-section-{{ section.id }} [class*="announcement"] .message {
+    #shopify-section-{{ section.id }} [class*="announcement"] .message, .#shopify-section-{{ section.id }} announcement-bar__carousel .heading {
       text-transform: capitalize;
     }
 
     #shopify-section-{{ section.id }} .ann-side--left  { left: var(--container-gutter, 20px); }
     #shopify-section-{{ section.id }} .ann-side--right { right: var(--container-gutter, 20px); }
+
+    #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 25rem;}
 
   </style>
 
