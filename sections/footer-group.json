@@ -14,16 +14,6 @@
     "text-with-icons": {
       "type": "text-with-icons",
       "blocks": {
-        "item_ernGCG": {
-          "type": "item",
-          "settings": {
-            "icon": "picto-award-gift",
-            "icon_width": 24,
-            "mobile_icon_width": 24,
-            "title": "Heading",
-            "content": "<p>Short content about your store</p>"
-          }
-        },
         "icon-1": {
           "type": "item",
           "settings": {
@@ -66,7 +56,6 @@
         }
       },
       "block_order": [
-        "item_ernGCG",
         "icon-1",
         "icon-2",
         "icon-3",
@@ -84,83 +73,83 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "text_DfhKdd": {
+        "text_z77pQj": {
           "type": "text",
           "settings": {
-            "title": "<strong>Bisha Rugs</strong>",
+            "title": "BISHA RUGS",
             "content": "",
             "enable_follow_on_shop": true
           }
         },
-        "links_T7Ugmx": {
+        "links_jCCMqU": {
           "type": "links",
           "settings": {
             "menu": "shop-all",
-            "collapse_on_mobile": true,
+            "collapse_on_mobile": false,
             "show_menu_title": true,
             "menu_title": ""
           }
         },
-        "links_wPi7DB": {
+        "links_aRa6NT": {
           "type": "links",
           "settings": {
             "menu": "rug-resources",
-            "collapse_on_mobile": true,
+            "collapse_on_mobile": false,
             "show_menu_title": true,
-            "menu_title": "Rug Resource"
+            "menu_title": "Rug Resources"
           }
         },
-        "links_4zP9UQ": {
+        "links": {
           "type": "links",
           "settings": {
             "menu": "know-us-better",
-            "collapse_on_mobile": true,
+            "collapse_on_mobile": false,
             "show_menu_title": true,
             "menu_title": ""
           }
         },
-        "links_8QHxpA": {
+        "links_Peqb4H": {
           "type": "links",
           "settings": {
             "menu": "help",
-            "collapse_on_mobile": true,
+            "collapse_on_mobile": false,
             "show_menu_title": true,
             "menu_title": ""
           }
         },
-        "contact_us_gWUmpy": {
+        "contact_us_d8kb98": {
           "type": "contact_us",
           "settings": {
             "heading": "Contact Us",
             "collapsible": true,
             "highlight_border": true,
             "desktop_width": 20,
-            "address_icon": "shopify://shop_images/boxicons_location.svg",
+            "address_icon": "shopify://shop_images/boxicons_location.png",
             "address": "30 North Gould Street, Sheridan, Wyoming",
-            "phone_icon": "shopify://shop_images/proicons_call.svg",
+            "phone_icon": "shopify://shop_images/Vector_4.png",
             "phone": "+1 (415) 980-7774",
-            "email_icon": "shopify://shop_images/material-symbols_mail-outline.svg",
+            "email_icon": "shopify://shop_images/Vector_3.png",
             "email": "love@bisharugs.com"
           }
         }
       },
       "block_order": [
-        "text_DfhKdd",
-        "links_T7Ugmx",
-        "links_wPi7DB",
-        "links_4zP9UQ",
-        "links_8QHxpA",
-        "contact_us_gWUmpy"
+        "text_z77pQj",
+        "links_jCCMqU",
+        "links_aRa6NT",
+        "links",
+        "links_Peqb4H",
+        "contact_us_d8kb98"
       ],
       "settings": {
-        "color_scheme": "scheme-3",
+        "color_scheme": "scheme-2",
         "separate_section_with_border": false,
         "show_social_media": true,
         "show_payment_icons": false,
         "show_powered_by_shopify": false,
         "show_country_selector": false,
-        "show_country_name": true,
-        "show_country_flag": true,
+        "show_country_name": false,
+        "show_country_flag": false,
         "show_locale_selector": false
       }
     }
