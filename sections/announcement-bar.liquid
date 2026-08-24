@@ -17,7 +17,7 @@
 
       .shopify-section--header ~ #shopify-section-{{ section.id }} {
         top: calc(var(--header-is-sticky, 0) * var(--header-height, 0px));
-        z-index: 4; 
+        z-index: 4; /* We have to lower the z-index in case the announcement bar is displayed after the header */
       }
     {%- endif -%}
 
@@ -35,29 +35,11 @@
         display: none !important;
       }
     }
-
     /* CSS for Left & right announcement bar items */
     #shopify-section-{{ section.id }} .announcement-bar,
     #shopify-section-{{ section.id }} .announcement-bar__inner,
     #shopify-section-{{ section.id }} announcement-bar {
       position: relative;
-    }
-
-    #shopify-section-{{ section.id }} .announcement-bar__inner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-inline: var(--container-gutter, 20px);
-    }
-
-    #shopify-section-{{ section.id }} .announcement-bar__carousel {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      min-height: 1.5em; /* prevents height collapse when slides are stacked absolute */
-      text-align: center;
     }
 
     #shopify-section-{{ section.id }} .ann-side {
@@ -74,16 +56,13 @@
       z-index: 1;
     }
 
-    #shopify-section-{{ section.id }} .ann-side--left  { left: var(--container-gutter, 20px); }
-    #shopify-section-{{ section.id }} .ann-side--right { right: var(--container-gutter, 20px); }
-
-    #shopify-section-{{ section.id }} .announcement-bar__carousel .heading {
-      margin: 0;
-      width: 100%;
-      text-align: center;
+    #shopify-section-{{ section.id }} .announcement-bar__message,
+    #shopify-section-{{ section.id }} [class*="announcement"] .message {
       text-transform: capitalize;
     }
 
+    #shopify-section-{{ section.id }} .ann-side--left  { left: var(--container-gutter, 20px); }
+    #shopify-section-{{ section.id }} .ann-side--right { right: var(--container-gutter, 20px); }
   </style>
 
   <height-observer variable="announcement-bar">
