@@ -51,11 +51,13 @@
     }
 
     #shopify-section-{{ section.id }} .announcement-bar__carousel {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex: 0 1 auto;
-      max-width: 100%;
+      width: 100%;
+      min-height: 1.5em; /* prevents height collapse when slides are stacked absolute */
+      text-align: center;
     }
 
     #shopify-section-{{ section.id }} .ann-side {
@@ -76,8 +78,12 @@
     #shopify-section-{{ section.id }} .ann-side--right { right: var(--container-gutter, 20px); }
 
     #shopify-section-{{ section.id }} .announcement-bar__carousel .heading {
-      text-transform: capitalize !important;
+      margin: 0;
+      width: 100%;
+      text-align: center;
+      text-transform: capitalize;
     }
+
   </style>
 
   <height-observer variable="announcement-bar">
