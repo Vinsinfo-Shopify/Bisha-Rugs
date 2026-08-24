@@ -103,7 +103,16 @@
         "autoplay": true,
         "cycle_speed": 5,
         "desktop_font_size": 11,
-        "mobile_font_size": 10
+        "mobile_font_size": 10,
+        "show_left_item": true,
+        "left_icon_img": "shopify://shop_images/hugeicons_chat-user.png",
+        "left_text": "Virtual Appointment",
+        "left_link": "",
+        "show_phone": true,
+        "right_icon_img": "shopify://shop_images/ph_phone-call.png",
+        "phone_number": "+1 (415) 980-7774",
+        "phone_clickable": true,
+        "hide_sides_mobile": true
       }
     }
   },
