@@ -34,6 +34,10 @@
       .ann-side--desktop {
         display: none !important;
       }
+      #shopify-section-{{ section.id }} .announcement-bar {
+        padding-inline-start: var(--container-gutter) !important;
+        padding-inline-end: var(--container-gutter) !important;
+      }
     }
     /* CSS for Left & right announcement bar items */
     #shopify-section-{{ section.id }} .announcement-bar,
@@ -64,10 +68,6 @@
     #shopify-section-{{ section.id }} .ann-side--left  { left: var(--container-gutter, 20px); }
     #shopify-section-{{ section.id }} .ann-side--right { right: var(--container-gutter, 20px); }
 
-    #shopify-section-{{ section.id }} .announcement-bar {
-      padding-inline-start: var(--container-gutter) !important;
-      padding-inline-end: var(--container-gutter) !important;
-    }
   </style>
 
   <height-observer variable="announcement-bar">
