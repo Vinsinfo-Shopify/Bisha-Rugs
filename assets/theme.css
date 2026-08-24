@@ -325,6 +325,9 @@ height-observer {
     --blog-post-list-card-width: 40vw;
     grid: auto / auto-flow var(--blog-post-list-card-width);
   }
+  .footer__block-list{
+    flex-wrap: wrap !important;
+  }
 }
 
 @media screen and (max-width: 699px) {
@@ -2759,7 +2762,7 @@ model-media model-viewer, model-media .shopify-model-viewer-ui {
 }
 
 .link-faded {
-  color: rgb(var(--text-color) / .65);
+  color: rgb(var(--text-color));
   transition: color .2s ease-in-out;
 }
 
@@ -4907,14 +4910,11 @@ product-rerender {
 @media screen and (min-width: 700px) {
   .footer__block-list {
     justify-content: var(--footer-content-justify-items);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 3rem;
     display: flex;
   }
 
-  .footer__block {
-    flex: auto;
-  }
 
   .footer__block--links, .footer__block--image {
     flex-grow: 0;
@@ -4939,7 +4939,7 @@ product-rerender {
 @media screen and (min-width: 1000px) {
   .footer__aside {
     grid-auto-flow: column;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   .footer__aside .payment-methods {
@@ -7420,7 +7420,7 @@ shopify-account::part(signed-out-avatar) {
 }
 
 .text-subdued {
-  color: rgb(var(--text-color) / .65);
+  color: rgb(var(--text-color));
 }
 
 .text-on-sale {
@@ -8367,4 +8367,101 @@ ul {
   -webkit-box-orient: vertical;
   display: -webkit-box;
   overflow: hidden;
+}
+.footer__store-name {
+  font-size: 24px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.footer__follow-us {
+  gap: 14px;
+}
+
+.footer__block-list .link-faded{
+  font-size: 14px;
+  line-height: 28px;
+  font-weight: 400;
+}
+.footer_menu_heading{
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 26px;
+  color: #EEC274;
+  text-transform: capitalize;
+  letter-spacing: normal;
+}
+.footer__block-list .social-media--list{
+  gap: 10px;
+}
+.footer__social-media_wrapper{
+  display: flex;
+  justify-content: end;
+  padding-right: 100px;
+}
+.footer__inner{
+  gap: 13px;
+}
+.footer__follow-us.mobile{
+  display:none;
+}
+  .footer__follow-us.desktop{
+      margin-block-start: 30px ;
+
+  }
+  .footer{
+    padding-bottom:20px;
+  }
+
+
+@media screen and (max-width: 700px){
+  .footer__follow-us.mobile{
+    display:flex;
+  }
+  .footer__follow-us.desktop{
+    display:none;
+  }
+  .footer__social-media_wrapper{
+    justify-content: start;
+    margin-top: 7px;
+  }
+  .footer__social-media_wrapper .social-media--list{
+    gap: 10px;
+  }
+  .footer__accordion-group {
+    display: grid;
+  }
+  .footer__block--contact_us {
+    order: -1;
+  }
+  .footer__block--contact_us .accordion {
+    border-bottom: 0;
+  }
+  .footer .text-with-icon {
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: normal;
+    font-weight: 400;
+    color:#EEC274;
+  }
+  .footer__block-list{
+    gap: 0px;
+  }
+  .footer__store-name{
+    display: flex;
+    justify-content: center;
+  }
+  .footer__divider{
+    margin-top: 11px;
+  }
+  .footer{
+    padding-bottom: 15px;
+  }
+}
+.footer__divider {
+  height: 1px;
+  background-color: #FFFFFF;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(49% - 50vw);
 }

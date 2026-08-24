@@ -17,25 +17,41 @@
         "icon-1": {
           "type": "item",
           "settings": {
-            "title": "Free delivery worldwide"
+            "icon": "picto-award-gift",
+            "icon_width": 24,
+            "mobile_icon_width": 24,
+            "title": "Free delivery worldwide",
+            "content": "<p>Short content about your store</p>"
           }
         },
         "icon-2": {
           "type": "item",
           "settings": {
-            "title": "Satisfied or refunded"
+            "icon": "picto-award-gift",
+            "icon_width": 24,
+            "mobile_icon_width": 24,
+            "title": "Satisfied or refunded",
+            "content": "<p>Short content about your store</p>"
           }
         },
         "icon-3": {
           "type": "item",
           "settings": {
-            "title": "Top-notch support"
+            "icon": "picto-award-gift",
+            "icon_width": 24,
+            "mobile_icon_width": 24,
+            "title": "Top-notch support",
+            "content": "<p>Short content about your store</p>"
           }
         },
         "icon-4": {
           "type": "item",
           "settings": {
-            "title": "Secure payments"
+            "icon": "picto-award-gift",
+            "icon_width": 24,
+            "mobile_icon_width": 24,
+            "title": "Secure payments",
+            "content": "<p>Short content about your store</p>"
           }
         }
       },
@@ -45,36 +61,97 @@
         "icon-3",
         "icon-4"
       ],
-      "settings": {}
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "stack_on_mobile": false,
+        "icon_color": "",
+        "text_color": "",
+        "text_alignment": "center"
+      }
     },
     "footer": {
       "type": "footer",
       "blocks": {
-        "newsletter": {
-          "type": "newsletter",
-          "settings": {}
+        "text_z77pQj": {
+          "type": "text",
+          "settings": {
+            "title": "BISHA RUGS",
+            "content": "",
+            "enable_follow_on_shop": true
+          }
+        },
+        "links_jCCMqU": {
+          "type": "links",
+          "settings": {
+            "menu": "shop-all",
+            "collapse_on_mobile": false,
+            "show_menu_title": true,
+            "menu_title": ""
+          }
+        },
+        "links_aRa6NT": {
+          "type": "links",
+          "settings": {
+            "menu": "rug-resources",
+            "collapse_on_mobile": false,
+            "show_menu_title": true,
+            "menu_title": "Rug Resources"
+          }
         },
         "links": {
           "type": "links",
           "settings": {
-            "menu": "footer",
-            "show_menu_title": true
+            "menu": "know-us-better",
+            "collapse_on_mobile": false,
+            "show_menu_title": true,
+            "menu_title": ""
           }
         },
-        "text": {
-          "type": "text",
+        "links_Peqb4H": {
+          "type": "links",
           "settings": {
-            "title": "About",
-            "content": "<p>Use this text area to tell your customers about your brand and vision. You can change it in the theme editor.</p>"
+            "menu": "help",
+            "collapse_on_mobile": false,
+            "show_menu_title": true,
+            "menu_title": ""
+          }
+        },
+        "contact_us_d8kb98": {
+          "type": "contact_us",
+          "settings": {
+            "heading": "Contact Us",
+            "collapsible": true,
+            "highlight_border": true,
+            "desktop_width": 20,
+            "address_icon": "shopify://shop_images/boxicons_location.png",
+            "address": "30 North Gould Street, Sheridan, Wyoming",
+            "phone_icon": "shopify://shop_images/Vector_4.png",
+            "phone": "+1 (415) 980-7774",
+            "email_icon": "shopify://shop_images/Vector_3.png",
+            "email": "love@bisharugs.com"
           }
         }
       },
       "block_order": [
-        "newsletter",
+        "text_z77pQj",
+        "links_jCCMqU",
+        "links_aRa6NT",
         "links",
-        "text"
+        "links_Peqb4H",
+        "contact_us_d8kb98"
       ],
-      "settings": {}
+      "settings": {
+        "color_scheme": "scheme-2",
+        "separate_section_with_border": false,
+        "show_social_media": true,
+        "show_payment_icons": false,
+        "show_powered_by_shopify": false,
+        "show_country_selector": false,
+        "show_country_name": false,
+        "show_country_flag": false,
+        "show_locale_selector": false
+      }
     }
   },
   "order": [
