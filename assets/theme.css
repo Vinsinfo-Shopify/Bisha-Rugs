@@ -4908,6 +4908,10 @@ product-rerender {
 }
 .footer__aside .heading.text-subdued {
   font-size: 14px;
+  text-transform: capitalize;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: normal;
 }
 
 @media screen and (min-width: 700px) {
