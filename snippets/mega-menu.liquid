@@ -5,6 +5,12 @@
 {%- enddoc -%}
 
 <div class="mega-menu {% if block.settings.images_position == 'left' %}mega-menu--reverse{% endif %}" {{ block.shopify_attributes }}>
+  <strong>METAOBJECT TEST:</strong><br>
+  {%- for c in shop.metaobjects.color.values -%}
+    {{ c.label }} = {{ c.swatch }}<br>
+  {%- else -%}
+    NOTHING FOUND — shop.metaobjects.color.values is empty
+  {%- endfor -%}
   {%- if link.levels > 0 -%}
     <ul class="mega-menu__linklist unstyled-list">
       {%- for sub_link in link.links -%}
