@@ -124,11 +124,11 @@
             "collapsible": true,
             "highlight_border": true,
             "desktop_width": 20,
-            "address_icon": "shopify://shop_images/boxicons_location.png",
+            "address_icon": "shopify://shop_images/boxicons_location_1.png",
             "address": "30 North Gould Street,Sheridan, Wyoming",
-            "phone_icon": "shopify://shop_images/Vector_4.png",
+            "phone_icon": "shopify://shop_images/proicons_call.png",
             "phone": "+1 (415) 980-7774",
-            "email_icon": "shopify://shop_images/Vector_3.png",
+            "email_icon": "shopify://shop_images/material-symbols_mail-outline.png",
             "email": "love@bisharugs.com"
           }
         }
