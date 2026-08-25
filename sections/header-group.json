@@ -93,7 +93,7 @@
           "settings": {
             "menu_item": "Shop All",
             "images_position": "right",
-            "image_1": "shopify://shop_images/Oushak_Rugs.png",
+            "image_1": "shopify://shop_images/Oushak_Rugs_Updated.png",
             "image_1_heading": "Oushak Rugs",
             "image_1_text": "122 items",
             "image_1_link": "shopify://collections/oushak-rugs",
@@ -107,7 +107,7 @@
         "mega_menu_tA3dFe"
       ],
       "settings": {
-        "color_scheme": "schema-2",
+        "color_scheme": "scheme-6",
         "enable_sticky": true,
         "hide_on_scroll": false,
         "show_separation_border": true,
@@ -121,7 +121,7 @@
         "menu_open_trigger": "hover",
         "menu_text_font": "heading",
         "enable_search": true,
-        "sidebar_color_scheme": "schema-2",
+        "sidebar_color_scheme": "scheme-6",
         "sidebar_text_font": "heading",
         "sidebar_show_dividers": false,
         "sidebar_open_second_level_menus": false,

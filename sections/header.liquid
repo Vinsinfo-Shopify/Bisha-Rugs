@@ -387,8 +387,36 @@
   }
   .mega-menu__promo-card:hover .mega-menu__promo-arrow { transform: translateX(3px); }
 
-  /* Underline the current page in the menu (like "Oushak Rugs" in the design) */
   .mega-menu a[aria-current="page"] { text-decoration: underline; text-underline-offset: 3px; }
+
+  .header__primary-nav a,
+  .header__primary-nav summary {
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: capitalize; 
+  }
+
+  .header-sidebar__linklist-button,
+  .header-sidebar__back-button {
+    font-size: 16px;
+    font-weight: 600;          
+    line-height: 1.4;          
+    letter-spacing: 0;
+    text-transform: none;      
+  }
+
+  .header-sidebar__nested-linklist a {
+    font-size: 16px;
+    font-weight: 400;          
+    text-transform: none;
+  }
+
+  .header-sidebar__linklist-button[href*="/sale" i],
+  .header-sidebar a[href*="/sale" i] {
+    color: #c0392b;
+  }
+
 {% endstyle %}
 
 {% schema %}
