@@ -115,7 +115,7 @@
         "logo": "shopify://shop_images/image_3702.png",
         "logo_max_width": 130,
         "logo_mobile_max_width": 80,
-        "menu": "main-menu",
+        "menu": "prestige-main-menu",
         "sidebar_menu": "",
         "customer_account_menu": "customer-account-main-menu",
         "menu_open_trigger": "hover",
