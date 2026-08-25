@@ -87,16 +87,35 @@
     },
     "header": {
       "type": "header",
+      "blocks": {
+        "mega_menu_tA3dFe": {
+          "type": "mega_menu",
+          "settings": {
+            "menu_item": "Shop All",
+            "images_position": "right",
+            "image_1": "shopify://shop_images/Oushak_Rugs.png",
+            "image_1_heading": "Oushak Rugs",
+            "image_1_text": "122 items",
+            "image_1_link": "shopify://collections/oushak-rugs",
+            "image_2_heading": "",
+            "image_2_text": "",
+            "image_2_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_tA3dFe"
+      ],
       "settings": {
         "color_scheme": "schema-2",
         "enable_sticky": true,
         "hide_on_scroll": false,
         "show_separation_border": true,
         "reduce_padding": false,
-        "logo": "{{shop.brand.logo}}",
+        "logo": "shopify://shop_images/image_3702.png",
         "logo_max_width": 130,
         "logo_mobile_max_width": 80,
-        "menu": "main-menu",
+        "menu": "prestige-main-menu",
         "sidebar_menu": "",
         "customer_account_menu": "customer-account-main-menu",
         "menu_open_trigger": "hover",
@@ -106,7 +125,7 @@
         "sidebar_text_font": "heading",
         "sidebar_show_dividers": false,
         "sidebar_open_second_level_menus": false,
-        "layout": "logo_center_navigation_inline",
+        "layout": "logo_left_navigation_inline",
         "show_icons": true,
         "show_country_selector": true,
         "show_country_name": false,
