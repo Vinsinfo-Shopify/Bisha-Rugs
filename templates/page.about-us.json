@@ -45,6 +45,70 @@
         "overlay_opacity": 30
       }
     },
+    "image_with_text_DpGFn4": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_LWizpy": {
+          "type": "subheading",
+          "settings": {
+            "text": "Who We Are"
+          }
+        },
+        "heading_7ATwmp": {
+          "type": "heading",
+          "settings": {
+            "text": "More Than a Rug. A Legacy Woven by Hands",
+            "heading_tag": "h3"
+          }
+        },
+        "richtext_wqkkh8": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Bisha Rugs was founded with a simple belief: exceptional craftsmanship deserves to be preserved. </p><p>We work directly with <strong>generational artisans across India's rug-weaving communities</strong> to create handmade rugs that honor centuries of tradition while finding a place in modern homes. </p>"
+          }
+        },
+        "icon_with_text_VkQfgf": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/cff864219a3a7f086c67a50e5e7dd58c66657ffe.png",
+            "text": "Hand Crafted in India"
+          }
+        },
+        "icon_with_text_xk6GN9": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group.png",
+            "text": "Generational Master Artisans"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_LWizpy",
+        "heading_7ATwmp",
+        "richtext_wqkkh8",
+        "icon_with_text_VkQfgf",
+        "icon_with_text_xk6GN9"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": false,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 50,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "image": "shopify://shop_images/e613975cecffa062b79ca0e7e1e4ed5ab2fdc53e.png",
+        "media_position_mobile": "after_text",
+        "reveal_on_scroll": true,
+        "image_position": "end",
+        "content_width": "lg",
+        "remove_vertical_spacing": true
+      }
+    },
     "multiple_media_with_text_XfTHc6": {
       "type": "multiple-media-with-text",
       "blocks": {
@@ -84,11 +148,20 @@
         "video_xdLXiM",
         "image_bRmN9j"
       ],
+      "disabled": true,
       "name": "t:sections.multiple_media_with_text.presets.multiple_media_with_text.name",
       "settings": {
         "color_scheme": "",
         "reveal_on_scroll": false,
         "separate_section_with_border": false,
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
         "media_position_desktop": "after_text",
         "media_position_mobile": "after_text",
         "media_layout": "separated",
@@ -134,18 +207,81 @@
       "settings": {
         "color_scheme": "scheme-1",
         "reveal_on_scroll": true,
-        "separate_section_with_border": true,
+        "separate_section_with_border": false,
+        "padding_top": 0,
+        "padding_bottom": 60,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
         "media_position_desktop": "before_text",
         "media_position_mobile": "after_text",
         "media_layout": "overlap",
         "media_alignment": "end",
-        "media_alignment_offset": 0,
-        "media_mobile_alignment_offset": 0,
+        "media_alignment_offset": 60,
+        "media_mobile_alignment_offset": 40,
         "text_alignment": "center",
         "subheading": "Our Philosophy",
         "title": "Honouring the Hands Behind Every Rug",
         "heading_style": "h5",
         "content": "<p>Behind every Bisha rug is an artisan whose knowledge has been passed down through generations. </p><p>We believe <strong>true luxury isn't defined by machines or mass production, it's found in the patience, precision, and human hands</strong> that bring every rug to life. </p><p>By working directly with artisans,<strong> we help preserve traditional craftsmanship while supporting the communities </strong>that keep it alive.<br/><br/></p>",
+        "button_1_text": "",
+        "button_1_link": "",
+        "button_1_style": "solid",
+        "button_2_text": "",
+        "button_2_link": "",
+        "button_2_style": "solid"
+      }
+    },
+    "multiple_media_with_text_9FLULx": {
+      "type": "multiple-media-with-text",
+      "blocks": {
+        "image_6ERwhG": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Oushak_Rugs.png",
+            "rotation": 0
+          }
+        },
+        "image_BtVP8L": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Oushak_Rugs_Updated.png",
+            "rotation": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_6ERwhG",
+        "image_BtVP8L"
+      ],
+      "disabled": true,
+      "name": "t:sections.multiple_media_with_text.presets.multiple_media_with_text.name",
+      "settings": {
+        "color_scheme": "",
+        "reveal_on_scroll": true,
+        "separate_section_with_border": true,
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "media_position_desktop": "before_text",
+        "media_position_mobile": "before_text",
+        "media_layout": "overlap",
+        "media_alignment": "end",
+        "media_alignment_offset": 94,
+        "media_mobile_alignment_offset": 0,
+        "text_alignment": "center",
+        "subheading": "About",
+        "title": "Showcase your product",
+        "heading_style": "h3",
+        "content": "<p>Write some content about your products, collections or brand. Use image or video to create an impactful layout.</p>",
         "button_1_text": "",
         "button_1_link": "",
         "button_1_style": "solid",
@@ -278,10 +414,19 @@
       "settings": {
         "color_scheme": "",
         "separate_section_with_border": true,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 50,
+        "padding_bottom_mobile": 50,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
         "image": "shopify://shop_images/Handcraft_img.png",
+        "media_position_mobile": "before_text",
         "reveal_on_scroll": true,
         "image_position": "end",
-        "content_width": "sm",
+        "content_width": "lg",
         "remove_vertical_spacing": true
       }
     },
@@ -383,7 +528,7 @@
         "richtext_7xBL3G": {
           "type": "richtext",
           "settings": {
-            "content": "<p>“Bisha Rugs was created to celebrate India's extraordinary weaving heritage and the people who preserve it every day. Our mission is simple: to bring authentic handcrafted rugs to homes around the world while ensuring the artisans behind every piece receive the recognition their craftsmanship deserves.”<br/><br/><br/><strong>- Founder’s Name </strong><br/>Founder, Bisha Rugs</p>"
+            "content": "<p>“Bisha Rugs was created to celebrate India's extraordinary weaving heritage and the people who preserve it every day. Our mission is simple: to bring authentic handcrafted rugs to homes around the world while ensuring the artisans behind every piece receive the recognition their craftsmanship deserves.”<br/><br/><strong>- Founder’s Name </strong><br/>Founder, Bisha Rugs</p>"
           }
         }
       },
@@ -396,11 +541,20 @@
       "settings": {
         "color_scheme": "scheme-1",
         "separate_section_with_border": true,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 50,
+        "padding_bottom_mobile": 50,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
         "image": "shopify://shop_images/Founder_img.png",
+        "media_position_mobile": "before_text",
         "reveal_on_scroll": true,
         "image_position": "start",
-        "content_width": "sm",
-        "remove_vertical_spacing": false
+        "content_width": "lg",
+        "remove_vertical_spacing": true
       }
     },
     "newsletter_4deFem": {
@@ -423,8 +577,10 @@
   },
   "order": [
     "image_with_text_overlay_QwXF4E",
+    "image_with_text_DpGFn4",
     "multiple_media_with_text_XfTHc6",
     "multiple_media_with_text_HFK9yi",
+    "multiple_media_with_text_9FLULx",
     "blog_posts_cAgmeV",
     "multi_column_WmHANY",
     "image_with_text_iwjUp9",

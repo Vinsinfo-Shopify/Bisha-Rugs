@@ -1574,6 +1574,12 @@ shopify-accelerated-checkout, shopify-accelerated-checkout-cart {
   padding-block-start: calc(var(--section-vertical-spacing-override, var(--section-vertical-spacing)) + var(--section-vertical-spacing-block-start-compensation, 0px));
   padding-block-end: var(--section-vertical-spacing-override, var(--section-vertical-spacing));
 }
+.section-custom-padding {
+  padding-top: var(--section-padding-top, 0px);
+  padding-bottom: var(--section-padding-bottom, 0px);
+  padding-left: var(--section-padding-left, 0px);
+  padding-right: var(--section-padding-right, 0px);
+}
 
 .shopify-section:has(.section-spacing) {
   scroll-padding-block-start: calc(var(--announcement-bar-is-sticky, 0) * var(--announcement-bar-height, 0px) + var(--header-is-sticky, 0) * var(--header-height, 0px));
@@ -5796,6 +5802,7 @@ shopify-account::part(signed-out-avatar) {
 .image-with-text {
   display: grid;
   overflow: hidden;
+  gap: 20px;
 }
 
 .image-with-text > .prose {
@@ -5815,6 +5822,7 @@ shopify-account::part(signed-out-avatar) {
 @media screen and (max-width: 699px) {
   .image-with-text > .prose {
     margin-inline: auto;
+    text-align: start;
   }
 }
 
@@ -5845,7 +5853,7 @@ shopify-account::part(signed-out-avatar) {
 
 @media screen and (min-width: 1000px) {
   .image-with-text {
-    --image-with-text-gap: 6rem;
+    --image-with-text-gap: 2rem;
   }
 }
 
@@ -8462,4 +8470,27 @@ ul {
   .multi-column__item {
     gap: 12px;
   }
+}
+
+#shopify-section-template--21285299847254__image_with_text_iwjUp9 .image-with-text > .prose{
+    padding-inline-end: 59px;
+    padding-inline-start: 0px;
+}
+#shopify-section-template--21285299847254__image_with_text_t3BMwC .image-with-text > .prose{
+    padding-inline-end: 0px;
+    padding-inline-start: 2px;
+}
+#shopify-section-template--21285299847254__image_with_text_DpGFn4 .image-with-text > .prose{
+    padding-inline-end: 0px;
+    padding-inline-start: 2px;
+}
+
+#shopify-section-template--21285299847254__multiple_media_with_text_HFK9yi .multiple-media-with-text{
+  gap: 60px;
+}
+#shopify-section-template--21285299847254__multiple_media_with_text_HFK9yi .container--md{
+  margin: 0px;
+}
+.icon-with-text-item > span{
+  margin: 0px !important;
 }
