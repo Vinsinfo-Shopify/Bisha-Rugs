@@ -91,11 +91,11 @@
         "mega_menu_tA3dFe": {
           "type": "mega_menu",
           "settings": {
-            "menu_item": "",
+            "menu_item": "Shop All",
             "images_position": "right",
-            "image_1_heading": "",
-            "image_1_text": "",
-            "image_1_link": "",
+            "image_1_heading": "Oushak Rugs",
+            "image_1_text": "122 items",
+            "image_1_link": "shopify://collections/oushak-rugs",
             "image_2_heading": "",
             "image_2_text": "",
             "image_2_link": ""
