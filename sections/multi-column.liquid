@@ -1,7 +1,7 @@
 {%- if section.blocks.size > 0 -%}
   <style>
     #shopify-section-{{ section.id }} {
-      --multi-column-gap: {% if section.settings.spacing == 'xs' %}1.5rem{% elsif section.settings.spacing == 'sm' %}2.5rem{% elsif section.settings.spacing == 'md' %}3.125rem{% else %}4.375rem{% endif %};
+      --multi-column-gap: {% if section.settings.spacing == 'xs' %}9px{% elsif section.settings.spacing == 'sm' %}18px{% elsif section.settings.spacing == 'md' %}32px{% else %}48rem{% endif %};
       /* Mobile-first: default to a 2-column grid (matches Figma mobile layout) */
       --multi-column-columns-per-row: 2;
       --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
@@ -86,7 +86,7 @@
 
   {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 
-  <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+<div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_class }}">
     <div class="container">
       <div class="section-stack">
         {%- render 'section-header',
@@ -154,11 +154,11 @@
               {%- if block.settings.title != blank or block.settings.content != blank or block.settings.link_text != blank -%}
                 <div class="prose text-{{ section.settings.text_alignment }}">
                   {%- if block.settings.title != blank -%}
-                    <p class="{{ block.settings.heading_tag }}">{{ block.settings.title }}</p>
+                    <p class="{{ block.settings.heading_tag }} multi-column-card_heading">{{ block.settings.title }}</p>
                   {%- endif -%}
-
+                  <div class="multi-column-card_content">
                   {{- block.settings.content -}}
-
+                  </div>
                   {%- if block.settings.link_text != blank -%}
                     <a href="{{ block.settings.link_url }}" class="link">{{ block.settings.link_text | escape }}</a>
                   {%- endif -%}
@@ -186,6 +186,11 @@
       "id": "color_scheme",
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class"
     },
     {
       "type": "checkbox",

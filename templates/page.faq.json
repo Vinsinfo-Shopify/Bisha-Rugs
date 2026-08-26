@@ -15,7 +15,9 @@
         "category": {
           "type": "category",
           "settings": {
-            "title": "Order"
+            "title": "Frequently Asked Questions",
+            "icon": "none",
+            "icon_width": 16
           }
         },
         "question-1": {
@@ -46,10 +48,31 @@
         "question-2",
         "question-3"
       ],
-      "settings": {}
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "show_categories": true,
+        "subheading": "",
+        "title": "Help Center",
+        "heading_style": "h2",
+        "content": "<p>Please use the below form. You can also call customer service on +1 (973) 435-3638.<br/><br/></p>"
+      }
+    },
+    "contact_3eNxEV": {
+      "type": "contact",
+      "name": "t:sections.contact.presets.contact_form.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "subheading": "",
+        "title": "Contact",
+        "heading_style": "h2",
+        "content": ""
+      }
     }
   },
   "order": [
-    "faq"
+    "faq",
+    "contact_3eNxEV"
   ]
 }

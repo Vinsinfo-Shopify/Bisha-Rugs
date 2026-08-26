@@ -147,7 +147,7 @@
   {%- assign media_blocks = media_blocks | concat: video_blocks -%}
   {%- assign icon_text_blocks = section.blocks | where: "type", "icon_with_text" -%}
 
-<div class="section-spacing section-custom-padding color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+<div class="section-spacing section-custom-padding color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_class }}">
     <div class="container container--md">
       <multiple-media-with-text
         {% if section.settings.reveal_on_scroll %}
@@ -199,15 +199,15 @@
         <div class="multiple-media-with-text__content-wrapper align-self-{{ section.settings.text_alignment }}">
           <div class="prose">
             {%- if section.settings.subheading != blank -%}
-              <p class="h6">{{ section.settings.subheading }}</p>
+              <p class="h6 multiple-media-with-text_subheading">{{ section.settings.subheading }}</p>
             {%- endif -%}
 
             {%- if section.settings.title != blank -%}
-              <p class="{{ section.settings.heading_style }}">{{ section.settings.title }}</p>
+              <p class="{{ section.settings.heading_style }} multiple-media-with-text_heading">{{ section.settings.title }}</p>
             {%- endif -%}
-
+            <div class="multiple-media-with-text_content">
             {{- section.settings.content -}}
-
+            </div>
             {%- comment -%} NEW: icon + text list, rendered after the body copy {%- endcomment -%}
             {%- if icon_text_blocks.size > 0 -%}
               <ul class="icon-with-text-list">
@@ -259,6 +259,11 @@
       "id": "color_scheme",
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class"
     },
     {
       "type": "checkbox",

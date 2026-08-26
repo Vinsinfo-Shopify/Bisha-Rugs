@@ -101,7 +101,7 @@
 
   {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 
-  <div class="{% unless section.settings.remove_vertical_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+<div class="{% unless section.settings.remove_vertical_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_class }}">
   <div class="image-with-text-container section-custom-padding">
     <image-with-text class="image-with-text {% if section.settings.image_position == 'end' %}image-with-text--reverse{% endif %}">
       {%- if section.settings.image != blank -%}
@@ -135,17 +135,17 @@
           {%- case block.type -%}
             {%- when 'subheading' -%}
               {%- if block.settings.text != blank -%}
-                <p class="h6" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+                <p class="h6 image_with_text_subheading" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
               {%- endif -%}
 
             {%- when 'heading' -%}
               {%- if block.settings.text != blank -%}
-                <p class="{{ block.settings.heading_tag }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+                <p class="{{ block.settings.heading_tag }} image_with_text_heading" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
               {%- endif -%}
 
             {%- when 'richtext' -%}
               {%- if block.settings.content != blank -%}
-                <div {{ block.shopify_attributes }}>
+                <div class="image_with_text_content" {{ block.shopify_attributes }}>
                   {{- block.settings.content -}}
                 </div>
               {%- endif -%}
@@ -250,6 +250,12 @@
       "id": "color_scheme",
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
+    },
+      {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class",
+      "info": "Add a class name (no dots/spaces) to target this section with custom CSS."
     },
     {
       "type": "checkbox",

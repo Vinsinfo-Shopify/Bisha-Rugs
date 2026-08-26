@@ -30,6 +30,7 @@
     display: grid;
     grid: var(--newsletter-media-grid);
     min-height: 100%;
+    margin-bottom: 60px;
   }
 
   #shopify-section-{{ section.id }} .newsletter-with-media__media-wrapper {
@@ -55,7 +56,7 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    padding: 3rem 2rem;
+    padding: 61px 71px 99px 42px;
   }
 
   #shopify-section-{{ section.id }} .newsletter-with-media__content-wrapper > * {
@@ -87,6 +88,9 @@
   #shopify-section-{{ section.id }} .newsletter-with-media__content-wrapper{
     padding: 20px 12px;
   }
+  #shopify-section-{{ section.id }} .newsletter-with-media {
+    margin-bottom: 50px;
+  }
   }
 </style>
 
@@ -108,7 +112,7 @@
 
   {%- assign newsletter_form_id = 'newsletter-form-' | append: section.id -%}
 
-  {%- form 'customer', id: newsletter_form_id, class: 'form justify-self-start' -%}
+  {%- form 'customer', id: newsletter_form_id, class: 'form' -%}
     {%- if form.posted_successfully? -%}
       {%- assign success_message = 'general.newsletter.subscribed_successfully' | t -%}
       {%- render 'banner', content: success_message, status: 'success', text_alignment: 'left' -%}
