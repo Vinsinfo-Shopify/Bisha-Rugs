@@ -4933,7 +4933,7 @@ product-rerender {
 }
 .footer__aside .heading.text-subdued {
   font-size: 14px;
-  text-transform: capitalize;
+  text-transform: none;
   font-weight: 400;
   line-height: 18px;
   letter-spacing: normal;
@@ -7453,6 +7453,8 @@ shopify-account::part(signed-out-avatar) {
 .text-subdued {
   color: rgb(var(--text-color));
   font-size: 14px;
+  line-height: 19.6px;
+  font-weight: 400;
 }
 
 .text-on-sale {
@@ -8412,7 +8414,7 @@ ul {
 
 .footer__block-list .link-faded{
   font-size: 14px;
-  line-height: 28px;
+  line-height: 19.6px;
   font-weight: 400;
 }
 .footer_menu_heading{
@@ -8489,14 +8491,52 @@ ul {
   .footer{
     padding-bottom: 15px;
   }
+  .footer__block.footer__block--image{
+    display: flex;
+    justify-content: center;
+  }
 }
 .footer__divider {
-  height: 1px;
+  height: 0.3px;
   background-color: #FFFFFF;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(49% - 50vw);
 }
+.accordion__toggle-icon {
+  display: grid;
+}
+
+.accordion__toggle-icon > img {
+  grid-area: 1 / 1;
+}
+
+.accordion__toggle-icon--open {
+  display: none;
+}
+
+.group[aria-expanded="true"] .accordion__toggle-icon--closed {
+  display: none;
+}
+
+.group[aria-expanded="true"] .accordion__toggle-icon--open {
+  display: block;
+}
+
+
+@media screen and (min-width: 1000px){
+.footer__block.footer__block--contact_us{
+  max-width: 200px;
+  width: 100%;
+}
+.contact_us_list{
+  align-items: self-start;
+}
+}
+.footer__block.footer__block--image{
+  padding-top: 4px;
+}
+
 
 
 .image-with-text__features {

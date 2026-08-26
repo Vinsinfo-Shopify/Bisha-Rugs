@@ -6,6 +6,8 @@
   @param {string} content - the hidden content inside the accordion
   @param {string} [icon] - icon name outputted before the title
   @param {string} [custom_icon] - an optional custom icon file outputted before the title
+  @param {string} [custom_icon_closed] - custom PNG shown when accordion is closed
+  @param {string} [custom_icon_open] - custom PNG shown when accordion is open
   @param {boolean} [open] - if set to true the accordion is open by default
   @param {boolean} [prose_content] - if set to true, the content is considered as prose and the associated class is added
   @param {boolean} [show_title_as_text] - if set to true the title is shown as text instead of using heading style
@@ -42,7 +44,12 @@
           <span>{{ title }}</span>
         {%- endif -%}
 
-        {%- if show_arrow -%}
+        {%- if custom_icon_closed != blank and custom_icon_open != blank -%}
+          <span class="accordion__toggle-icon">
+            {{- custom_icon_closed | image_url: width: 32 | image_tag: class: 'accordion__toggle-icon--closed', width: 12, height: 12, loading: 'lazy' -}}
+            {{- custom_icon_open | image_url: width: 32 | image_tag: class: 'accordion__toggle-icon--open', width: 12, height: 12, loading: 'lazy' -}}
+          </span>
+        {%- elsif show_arrow -%}
           {%- render 'icon' with 'chevron-down', class: 'group-expanded:rotate' -%}
         {%- else -%}
           <span class="animated-plus group-expanded:rotate" aria-hidden="true"></span>
