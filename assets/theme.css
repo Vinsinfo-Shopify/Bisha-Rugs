@@ -8457,6 +8457,10 @@ ul {
   .footer{
     padding-bottom: 15px;
   }
+  .footer__block.footer__block--image{
+    display: flex;
+    justify-content: center;
+  }
 }
 .footer__divider {
   height: 0.3px;
