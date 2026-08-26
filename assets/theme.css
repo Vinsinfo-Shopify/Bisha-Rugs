@@ -8594,3 +8594,12 @@ ul {
     white-space: nowrap;
   }
 }
+.faq_section .section-stack{
+  gap: 0;
+}
+.faq_section_header{
+  margin-bottom: 60px;
+}
+.faq_section .button--outline{
+  color: #FFFFFF;
+}
