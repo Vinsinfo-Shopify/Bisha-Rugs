@@ -9,8 +9,9 @@
  */
 {
   "sections": {
-      "collection_breadcrumb": {
-      "type": "collection-breadcrumb"
+    "collection_breadcrumb": {
+      "type": "collection-breadcrumb",
+      "settings": {}
     },
     "collection-banner": {
       "type": "collection-banner",
