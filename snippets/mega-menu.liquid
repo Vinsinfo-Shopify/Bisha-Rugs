@@ -1,5 +1,7 @@
 {%- doc -%}
   Render the mega-menu with support for a colour-swatch column and a promo card.
+  Swatch colours are read from the client-managed "Color" metaobject
+  (shop.metaobjects.color) by matching the link title to the metaobject label.
   @param {object} link
   @param {object} block
 {%- enddoc -%}
@@ -25,28 +27,21 @@
                   {%- assign swatch = '' -%}
                   {%- assign is_shop_all = false -%}
                   {%- if color_key contains 'shop all' -%}{%- assign is_shop_all = true -%}{%- endif -%}
-                  {%- case color_key -%}
-                    {%- when 'brown' -%}{%- assign swatch = '#6d4a3f' -%}
-                    {%- when 'white' -%}{%- assign swatch = '#ffffff' -%}
-                    {%- when 'grey', 'gray' -%}{%- assign swatch = '#b7b7b7' -%}
-                    {%- when 'beige' -%}{%- assign swatch = '#d9cdb0' -%}
-                    {%- when 'yellow' -%}{%- assign swatch = '#e9d18a' -%}
-                    {%- when 'green' -%}{%- assign swatch = '#9aab77' -%}
-                    {%- when 'pink' -%}{%- assign swatch = '#e6a0ad' -%}
-                    {%- when 'baby blue' -%}{%- assign swatch = '#bcd6ec' -%}
-                    {%- when 'blue' -%}{%- assign swatch = '#5a8fc2' -%}
-                    {%- when 'teal' -%}{%- assign swatch = '#3f8b8b' -%}
-                    {%- when 'indigo' -%}{%- assign swatch = '#173a5e' -%}
-                    {%- when 'orange' -%}{%- assign swatch = '#d96a3f' -%}
-                    {%- when 'red' -%}{%- assign swatch = '#c0413f' -%}
-                    {%- when 'maroon' -%}{%- assign swatch = '#5e2b2b' -%}
-                    {%- when 'mustard' -%}{%- assign swatch = '#c8901a' -%}
-                    {%- when 'dust' -%}{%- assign swatch = '#a08d7d' -%}
-                  {%- endcase -%}
+
+                  {%- comment -%} Look up the swatch hex from the client-managed Color metaobject {%- endcomment -%}
+                  {%- unless is_shop_all -%}
+                    {%- for c in shop.metaobjects.color.values -%}
+                      {%- assign c_label = c.label | downcase | strip -%}
+                      {%- if c_label == color_key -%}
+                        {%- assign swatch = c.swatch -%}
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- endunless -%}
 
                   <li class="{% if is_shop_all %}mega-menu__swatch-item--full{% endif %}">
                     <a href="{{ sub_sub_link.url }}" class="link-faded mega-menu__swatch-link" {% if sub_sub_link.current %}aria-current="page"{% endif %}>
-                      {%- if swatch != '' -%}
+                      {%- if swatch != '' and swatch != blank -%}
                         <span class="mega-menu__swatch" style="--swatch: {{ swatch }};"></span>
                       {%- endif -%}
                       {{- sub_sub_link.title -}}
