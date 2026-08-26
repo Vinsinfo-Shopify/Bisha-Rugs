@@ -7,6 +7,12 @@
       --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
       --multi-column-grid: auto / repeat(var(--multi-column-columns-per-row), var(--multi-column-column-width));
       --multi-column-content-alignment: safe {{ section.settings.content_alignment }};
+
+      /* Mobile section padding (theme setting driven) */
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      padding-left: {{ section.settings.padding_left_mobile }}px;
+      padding-right: {{ section.settings.padding_right_mobile }}px;
     }
 
     /* Optional: force a single column on mobile only when the merchant explicitly enables it */
@@ -18,12 +24,17 @@
       }
     }
 
-    /* Desktop: use the merchant-configured columns-per-row */
+    /* Desktop: use the merchant-configured columns-per-row and padding */
     @media screen and (min-width: 999px) {
       #shopify-section-{{ section.id }} {
-        --multi-column-gap: {% if section.settings.spacing == 'xs' %}1.875rem{% elsif section.settings.spacing == 'sm' %}3.125rem{% elsif section.settings.spacing == 'md' %}4.375rem{% else %}5.625rem{% endif %};
+        --multi-column-gap: {% if section.settings.spacing == 'xs' %}1rem{% elsif section.settings.spacing == 'sm' %}2rem{% elsif section.settings.spacing == 'md' %}3rem{% else %}4rem{% endif %};
         --multi-column-columns-per-row: {{ section.settings.columns_per_row }};
         --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
+
+        padding-top: {{ section.settings.padding_top_desktop }}px;
+        padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+        padding-left: {{ section.settings.padding_left_desktop }}px;
+        padding-right: {{ section.settings.padding_right_desktop }}px;
       }
     }
 
@@ -270,6 +281,98 @@
       "type": "richtext",
       "id": "content",
       "label": "t:global.text.content"
+    },
+    {
+      "type": "header",
+      "content": "t:global.padding.section_padding_heading"
+    },
+    {
+      "type": "header",
+      "content": "t:global.padding.mobile_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_left",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_right",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:global.padding.desktop_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_left",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_right",
+      "default": 0
     }
   ],
   "blocks": [

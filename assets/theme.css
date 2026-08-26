@@ -5802,7 +5802,9 @@ shopify-account::part(signed-out-avatar) {
 .image-with-text {
   display: grid;
   overflow: hidden;
-  gap: 20px;
+  gap: 22px;
+  font-weight: 500;
+  line-height: 25.2px;
 }
 
 .image-with-text > .prose {
@@ -6112,7 +6114,7 @@ shopify-account::part(signed-out-avatar) {
 
 @media screen and (min-width: 1150px) {
   .multiple-media-with-text {
-    --multiple-media-with-text-gap: 2rem 7.5rem;
+    --multiple-media-with-text-gap: 32px 60px;
   }
 }
 
@@ -8470,7 +8472,43 @@ ul {
   .multi-column__item {
     gap: 12px;
   }
+    #shopify-section-template--21294425899094__multi_column_epnX6Q .section-spacing{
+      padding-top: 26px;
+      padding-bottom: 26px;
+    }
+    #shopify-section-template--21294425899094__multi_column_epnX6Q .container{
+      margin-left: 12px;
+      margin-right: 12px;
+    }
+    #shopify-section-template--21294425899094__multi_column_WmHANY .section-spacing{
+        padding-top: 31 px;
+        padding-bottom: 31px;
+    }
+    #shopify-section-template--21294425899094__multi_column_WmHANY .container{
+        margin-left: 12px;
+        margin-right: 12px;
+    }
 }
+
+@media screen and (min-width: 700px) {
+  #shopify-section-template--21294425899094__multi_column_epnX6Q .section-spacing{
+    padding-top: 47px;
+    padding-bottom: 46px;
+  }
+  #shopify-section-template--21294425899094__multi_column_epnX6Q .container{
+    margin-left: 70px;
+    margin-right: 70px;
+  }
+  #shopify-section-template--21294425899094__multi_column_WmHANY .section-spacing{
+    padding-top: 47px;
+    padding-bottom: 46px;
+  }
+  #shopify-section-template--21294425899094__multi_column_WmHANY .container{
+    margin-left: 70px;
+    margin-right: 70px;
+  }
+}
+
 
 #shopify-section-template--21285299847254__image_with_text_iwjUp9 .image-with-text > .prose{
     padding-inline-end: 59px;
@@ -8494,3 +8532,15 @@ ul {
 .icon-with-text-item > span{
   margin: 0px !important;
 }
+#shopify-section-template--21294425899094__image_with_text_DpGFn4 .image-with-text > .prose{
+  padding-right: 19px;
+  padding-left: 0px;
+}
+.shopify-section.shopify-section--multiple-media-with-text .container--md{
+  margin: 0;
+}
+
+#shopify-section-template--21294425899094__newsletter_4deFem .newsletter-with-media{
+  margin-bottom: 60px;
+}
+

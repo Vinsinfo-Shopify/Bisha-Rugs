@@ -58,7 +58,7 @@
           "type": "heading",
           "settings": {
             "text": "More Than a Rug. A Legacy Woven by Hands",
-            "heading_tag": "h3"
+            "heading_tag": "h2"
           }
         },
         "richtext_wqkkh8": {
@@ -225,7 +225,7 @@
         "text_alignment": "center",
         "subheading": "Our Philosophy",
         "title": "Honouring the Hands Behind Every Rug",
-        "heading_style": "h5",
+        "heading_style": "h2",
         "content": "<p>Behind every Bisha rug is an artisan whose knowledge has been passed down through generations. </p><p>We believe <strong>true luxury isn't defined by machines or mass production, it's found in the patience, precision, and human hands</strong> that bring every rug to life. </p><p>By working directly with artisans,<strong> we help preserve traditional craftsmanship while supporting the communities </strong>that keep it alive.<br/><br/></p>",
         "button_1_text": "",
         "button_1_link": "",
@@ -368,7 +368,7 @@
       ],
       "name": "t:sections.multi_column.presets.multi_column.name",
       "settings": {
-        "color_scheme": "scheme-2",
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
         "separate_section_with_border": false,
         "columns_per_row": 4,
         "stack_on_mobile": true,
@@ -379,7 +379,15 @@
         "subheading": "Why Choose Bisha",
         "title": "Crafted with Purpose",
         "heading_style": "h3",
-        "content": ""
+        "content": "",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
       }
     },
     "image_with_text_iwjUp9": {
@@ -495,7 +503,7 @@
       ],
       "name": "t:sections.multi_column.presets.multi_column.name",
       "settings": {
-        "color_scheme": "scheme-2",
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
         "separate_section_with_border": false,
         "columns_per_row": 4,
         "stack_on_mobile": true,
@@ -506,7 +514,15 @@
         "subheading": "Our Impact",
         "title": "Every Bisha Rug Tells a Bigger Story",
         "heading_style": "h3",
-        "content": ""
+        "content": "",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
       }
     },
     "image_with_text_t3BMwC": {
@@ -561,7 +577,7 @@
       "type": "newsletter",
       "name": "t:sections.newsletter.presets.newsletter.name",
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-8eec0b30-7dd6-40f7-bdf8-3f2aa3b45117",
         "separate_section_with_border": false,
         "image_1": "shopify://shop_images/newsletter_img1.png",
         "image_2": "shopify://shop_images/newsletter_img2.png",

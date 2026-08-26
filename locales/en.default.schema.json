@@ -53,6 +53,15 @@
       "original_video_ratio": "Original video ratio",
       "none": "None"
     },
+    "padding":{
+      "section_padding_heading":"Section Padding Heading",
+      "mobile_padding_heading" :"Mobile Padding Heading",
+      "desktop_padding_heading": "Desktop Padding Heading",
+      "padding_top":"Padding Top",
+      "padding_bottom": "Padding Bottom",
+      "padding_left" : "Padding Left",
+      "padding_right": "Padding Right"
+    },
     "text": {
       "subheading": "Subheading",
       "heading": "Heading",
