@@ -105,6 +105,31 @@
               {%- endif -%}
           {%- endcase -%}
         {%- endfor -%}
+        {%- comment -%} Shipping / Returns feature row {%- endcomment -%}
+        {%- if section.settings.show_features -%}
+          <div class="image-with-text__features">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'feature' and block.settings.text != blank -%}
+                <div
+                  class="image-with-text__feature"
+                  {{ block.shopify_attributes }}
+                >
+                  <span class="image-with-text__feature-icon" aria-hidden="true">
+                    {%- case block.settings.icon -%}
+                      {%- when 'shipping' -%}
+                        {% render 'truck-icon' %}
+                      {%- when 'returns' -%}
+                        {% render 'easy-return' %}
+                    {%- endcase -%}
+                  </span>
+                  <span class="image-with-text__feature-text">
+                    {{ block.settings.text | escape }}
+                  </span>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
       </div>
     </image-with-text>
   </div>
@@ -190,7 +215,13 @@
       "id": "remove_vertical_spacing",
       "label": "t:global.spacing.remove_vertical_spacing",
       "default": true
-    }
+    },
+    {
+      "type": "checkbox",
+      "id": "show_features",
+      "label": "Show shipping & returns",
+      "default": true
+    },
   ],
   "blocks": [
     {
@@ -341,6 +372,34 @@
           "type": "color",
           "id": "text_color",
           "label": "t:global.text.text"
+        }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "shipping",
+              "label": "Shipping"
+            },
+            {
+              "value": "returns",
+              "label": "Returns"
+            }
+          ],
+          "default": "shipping"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free Insured Shipping"
         }
       ]
     }
