@@ -4,25 +4,6 @@
   {%- assign show_image = true -%}
 {%- endif -%}
 
-{%- capture collection_breadcrumb -%}
-  {%- if section.settings.show_breadcrumb -%}
-    <nav class="breadcrumb breadcrumb--floating" aria-label="{{ 'general.breadcrumb.label' | t | escape }}">
-      <ol class="breadcrumb__list unstyled-list">
-        <li class="breadcrumb__list-item">
-          <a href="{{ routes.root_url }}" class="smallcaps {% unless show_image %}link-faded{% endunless %}">{{ 'general.breadcrumb.home' | t }}</a>
-        </li>
-
-        <li class="breadcrumb__list-item">
-          <a href="{{ routes.all_products_collection_url }}" class="smallcaps {% unless show_image %}link-faded{% endunless %}">{{ 'general.breadcrumb.shop' | t }}</a>
-        </li>
-
-        <li class="breadcrumb__list-item">
-          <a href="{{ collection.url }}" aria-current="page" class="smallcaps {% unless show_image %}link-faded{% endunless %}">{{ collection.title }}</a>
-        </li>
-      </ol>
-    </nav>
-  {%- endif -%}
-{%- endcapture -%}
 
 {%- capture collection_content -%}
   {%- if section.settings.show_collection_title -%}
@@ -55,9 +36,6 @@
       allow-transparent-header
     {% endif %}
   >
-    {%- unless section.settings.allow_transparent_header -%}
-      {{- collection_breadcrumb -}}
-    {%- endunless -%}
 
     <div class="content-over-media content-over-media--{{ section.settings.image_size }}">
       {%- capture picture_content -%}

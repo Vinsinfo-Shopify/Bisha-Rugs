@@ -1,0 +1,32 @@
+<nav class="collection-breadcrumb" aria-label="{{ 'general.breadcrumb.label' | t | escape }}">
+  <div class="collection-breadcrumb__inner">
+    <ol class="breadcrumb__list unstyled-list">
+      <li class="breadcrumb__list-item">
+        <a href="{{ routes.root_url }}" class="smallcaps">
+          {{ 'general.breadcrumb.home' | t }}
+        </a>
+      </li>
+
+      <li class="breadcrumb__list-item">
+        {% render 'arrow-icon' %}
+        <a href="{{ routes.all_products_collection_url }}" class="smallcaps">
+          {{ 'general.breadcrumb.shop' | t }}
+        </a>
+      </li>
+
+      <li class="breadcrumb__list-item">
+        {% render 'arrow-icon' %}
+        <a href="{{ collection.url }}" aria-current="page" class="smallcaps">
+          {{ collection.title }}
+        </a>
+      </li>
+    </ol>
+  </div>
+</nav>
+
+{% schema %}
+{
+  "name": "Collection Breadcrumb",
+  "settings": []
+}
+{% endschema %}
