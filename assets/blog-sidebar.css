@@ -1,0 +1,92 @@
+.blog-sidebar {
+  max-width: 100%;
+}
+
+.blog-sidebar__recent-post-image {
+  width: 80px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.blog-sidebar__recent-post-image img {
+  aspect-ratio: 1 / 1;
+}
+
+.blog-tag a {
+  border-radius: var(--btn-radius, 4px);
+  padding: 8px 20px;
+  text-decoration: none;
+  display: inline-block;
+  line-height: normal;
+  border: 1px solid rgb(var(--border-color));
+  transition: var(--transition, all 0.2s ease-in-out);
+}
+
+.blog-tag a::first-letter {
+  text-transform: uppercase;
+}
+
+.blog-tag a:hover,
+.blog-tag.active a {
+  background-color: rgb(var(--button-background));
+  color: rgb(var(--button-text-color));
+  border-color: rgb(var(--button-background));
+}
+
+/* Sidebar layout for the main blog page */
+.blog-with-sidebar {
+  display: grid;
+  gap: 40px;
+}
+
+@media screen and (min-width: 1000px) {
+  .blog-with-sidebar {
+    grid-template-columns: var(--blog-sidebar-width, 280px) minmax(0, 1fr);
+    align-items: start;
+    gap: 60px;
+  }
+
+  .blog-with-sidebar--right {
+    grid-template-columns: minmax(0, 1fr) var(--blog-sidebar-width, 280px);
+  }
+
+  .blog-with-sidebar--right .blog-sidebar {
+    order: 2;
+  }
+
+  .blog-sidebar {
+    position: sticky;
+    top: calc(var(--sticky-area-height, 0px) + 20px);
+  }
+}
+
+/* Configurable items-per-row / list layout, layered on Prestige's existing grid vars */
+@media screen and (min-width: 1000px) {
+  .blog-post-list[style*="--items-per-row-desktop"] {
+    --blog-post-list-items-per-row: var(--items-per-row-desktop, 3);
+  }
+}
+
+.blog-post-list--layout-list {
+  --blog-post-list-items-per-row: 1 !important;
+}
+
+.blog-post-list--layout-list .blog-post-card {
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  align-items: center;
+  gap: 24px 32px;
+}
+
+@media screen and (max-width: 699px) {
+  .blog-post-list--layout-list .blog-post-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.blog-post-list__promo {
+  grid-column: 1 / -1;
+}
+
+.blog-post-list__promo img {
+  width: 100%;
+}
