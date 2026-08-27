@@ -39,6 +39,22 @@
       --multiple-media-with-text-media-grid-auto-rows: {{- grid_auto_rows -}};
       --multiple-media-with-text-media-grid-auto-columns: {{- grid_auto_columns -}};
     }
+  @media screen and (min-width: 700px) {
+  #shopify-section-{{ section.id }} {
+    --multiple-media-with-text-grid: 
+      {% if section.settings.media_position_desktop == 'before_text' %}
+        "media-wrapper content-wrapper" / 659fr 581fr
+      {% else %}
+        "content-wrapper media-wrapper" / 581fr 659fr
+      {% endif %};
+  }
+}
+    #shopify-section-{{ section.id }} {
+      --section-padding-top: {{ section.settings.padding_top }}px;
+      --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+      --section-padding-left: {{ section.settings.padding_left }}px;
+      --section-padding-right: {{ section.settings.padding_right }}px;
+    }
 
     @media screen and (min-width: 700px) {
       #shopify-section-{{ section.id }} {
@@ -61,9 +77,58 @@
       }
     }
 
-    @media screen and (min-width: 1000px) {
+    /* --- Icon with text list (NEW) --- */
+    /* Mobile: stacked, one item per row */
+    #shopify-section-{{ section.id }} .icon-with-text-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      list-style: none;
+      padding: 0;
+    }
+
+    #shopify-section-{{ section.id }} .icon-with-text-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    #shopify-section-{{ section.id }} .icon-with-text-item img,
+    #shopify-section-{{ section.id }} .icon-with-text-item svg {
+      width: 1.2em;
+      height: 1.2em;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+
+    /* Desktop: items sit side by side */
+    @media screen and (min-width: 700px) {
+      #shopify-section-{{ section.id }} .icon-with-text-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        column-gap: 1.5rem;
+        row-gap: 0.5rem;
+      }
+    }
+    @media screen and (max-width: 1000px) {
       #shopify-section-{{ section.id }} {
-        --multiple-media-with-text-grid: {% if section.settings.media_position_desktop == 'before_text' %}"media-wrapper content-wrapper" / minmax(0, 1fr) minmax(0, 375px){% else %}"content-wrapper media-wrapper" / minmax(0, 375px) minmax(0, 1fr){% endif %};
+        --section-padding-left: 36px;
+        --section-padding-right: 36px;
+      }
+    }
+    @media screen and (max-width: 768px) {
+      #shopify-section-{{ section.id }} {
+        --section-padding-left: 24px;
+        --section-padding-right: 24px;
+      }
+    }
+    @media screen and (max-width: 500px) {
+      #shopify-section-{{ section.id }} {
+        --section-padding-top: {{ section.settings.padding_top_mobile | default: section.settings.padding_top }}px;
+        --section-padding-bottom: {{ section.settings.padding_bottom_mobile | default: section.settings.padding_bottom }}px;
+        --section-padding-left: {{ section.settings.padding_left_mobile | default: 12 }}px;
+        --section-padding-right: {{ section.settings.padding_right_mobile | default: 12 }}px;
       }
     }
   </style>
@@ -76,7 +141,13 @@
 
   {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 
-  <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+  {%- comment -%} NEW: split blocks into media blocks vs icon/text blocks so the media loop below never treats an icon block as a missing image {%- endcomment -%}
+  {%- assign media_blocks = section.blocks | where: "type", "image" -%}
+  {%- assign video_blocks = section.blocks | where: "type", "video" -%}
+  {%- assign media_blocks = media_blocks | concat: video_blocks -%}
+  {%- assign icon_text_blocks = section.blocks | where: "type", "icon_with_text" -%}
+
+<div class="section-spacing section-custom-padding color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_class }}">
     <div class="container container--md">
       <multiple-media-with-text
         {% if section.settings.reveal_on_scroll %}
@@ -85,7 +156,7 @@
         class="multiple-media-with-text {% if use_overlap_layout %}multiple-media-with-text--overlap{% endif %} {% if section.settings.media_position_desktop == 'after_text' %}multiple-media-with-text--reverse{% endif %}"
       >
         <div class="multiple-media-with-text__media-wrapper">
-          {%- for block in section.blocks -%}
+          {%- for block in media_blocks -%}
             <div
               {{ block.shopify_attributes }}
               class="align-self-{{ section.settings.media_alignment }}"
@@ -128,14 +199,32 @@
         <div class="multiple-media-with-text__content-wrapper align-self-{{ section.settings.text_alignment }}">
           <div class="prose">
             {%- if section.settings.subheading != blank -%}
-              <p class="h6">{{ section.settings.subheading }}</p>
+              <p class="h6 multiple-media-with-text_subheading">{{ section.settings.subheading }}</p>
             {%- endif -%}
 
             {%- if section.settings.title != blank -%}
-              <p class="{{ section.settings.heading_style }}">{{ section.settings.title }}</p>
+              <p class="{{ section.settings.heading_style }} multiple-media-with-text_heading">{{ section.settings.title }}</p>
             {%- endif -%}
-
+            <div class="multiple-media-with-text_content">
             {{- section.settings.content -}}
+            </div>
+            {%- comment -%} NEW: icon + text list, rendered after the body copy {%- endcomment -%}
+            {%- if icon_text_blocks.size > 0 -%}
+              <ul class="icon-with-text-list">
+                {%- for block in icon_text_blocks -%}
+                  <li class="icon-with-text-item" {{ block.shopify_attributes }}>
+                    {%- if block.settings.icon != blank -%}
+                      {{-
+                        block.settings.icon
+                        | image_url: width: 64
+                        | image_tag: loading: 'lazy', widths: '32,48,64'
+                      -}}
+                    {%- endif -%}
+                    <span>{{ block.settings.text }}</span>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
 
             {%- if section.settings.button_1_text != blank or section.settings.button_2_text != blank -%}
               <div class="button-group">
@@ -160,7 +249,7 @@
   "name": "t:sections.multiple_media_with_text.name",
   "class": "shopify-section--multiple-media-with-text",
   "tag": "section",
-  "max_blocks": 2,
+  "max_blocks": 8,
   "disabled_on": {
     "groups": ["header", "custom.overlay"]
   },
@@ -170,6 +259,11 @@
       "id": "color_scheme",
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class"
     },
     {
       "type": "checkbox",
@@ -182,6 +276,94 @@
       "id": "separate_section_with_border",
       "label": "t:global.section.separate_section_with_border",
       "default": true
+    },
+        {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding left",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding right",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top (below 500px)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom (below 500px)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding left (below 500px)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding right (below 500px)",
+      "default": 12
     },
     {
       "type": "header",
@@ -428,6 +610,7 @@
     {
       "type": "image",
       "name": "t:sections.multiple_media_with_text.blocks.image.name",
+      "limit": 2,
       "settings": [
         {
           "type": "image_picker",
@@ -450,6 +633,7 @@
     {
       "type": "video",
       "name": "t:sections.multiple_media_with_text.blocks.video.name",
+      "limit": 2,
       "settings": [
         {
           "type": "video",
@@ -465,6 +649,25 @@
           "unit": "deg",
           "label": "t:sections.multiple_media_with_text.blocks.image.rotation",
           "default": 0
+        }
+      ]
+    },
+    {
+      "type": "icon_with_text",
+      "name": "Icon with text",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon",
+          "info": "Recommended: small square image/svg, e.g. 64x64px"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Feature text"
         }
       ]
     }

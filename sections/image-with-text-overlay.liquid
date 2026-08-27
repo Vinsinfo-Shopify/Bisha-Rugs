@@ -50,23 +50,23 @@
       {%- endif -%}
 
       {%- if section.blocks.size > 0 -%}
-        <div class="content {{ section.settings.mobile_text_position }} {{ section.settings.desktop_text_position }}">
+        <div class="content {{ section.settings.mobile_text_position }} {{ section.settings.desktop_text_position }} image_with_text_overlay_wrapper">
           <div class="prose">
             {%- for block in section.blocks -%}
               {%- case block.type -%}
                 {%- when 'subheading' -%}
                   {%- if block.settings.text != blank -%}
-                    <p class="h6" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+                    <p class="h6 image_with_text_overlay_subheading" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
                   {%- endif -%}
 
                 {%- when 'heading' -%}
                   {%- if block.settings.text != blank -%}
-                    <p class="{{ block.settings.heading_tag }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+                    <p class="{{ block.settings.heading_tag }} image_with_text_overlay_heading" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
                   {%- endif -%}
 
                 {%- when 'richtext' -%}
                   {%- if block.settings.content != blank -%}
-                    <div {{ block.shopify_attributes }}>
+                    <div class="image_with_text_overlay_content" {{ block.shopify_attributes }} >
                       {{- block.settings.content -}}
                     </div>
                   {%- endif -%}

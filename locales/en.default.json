@@ -50,7 +50,7 @@
       "title": "Reviews"
     },
     "newsletter": {
-      "email": "E-mail",
+      "email": "Enter your email",
       "subscribe": "Subscribe",
       "notify_me": "Notify me",
       "subscribed_successfully": "You have been subscribed to our newsletter."

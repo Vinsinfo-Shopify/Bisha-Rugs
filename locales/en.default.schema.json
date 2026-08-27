@@ -53,6 +53,15 @@
       "original_video_ratio": "Original video ratio",
       "none": "None"
     },
+    "padding":{
+      "section_padding_heading":"Section Padding Heading",
+      "mobile_padding_heading" :"Mobile Padding Heading",
+      "desktop_padding_heading": "Desktop Padding Heading",
+      "padding_top":"Padding Top",
+      "padding_bottom": "Padding Bottom",
+      "padding_left" : "Padding Left",
+      "padding_right": "Padding Right"
+    },
     "text": {
       "subheading": "Subheading",
       "heading": "Heading",
@@ -1508,6 +1517,15 @@
       "instructions": "Customers who subscribe will have their email address added to the \"accepts marketing\" [customer list](/admin/customers?query=&accepts_marketing=1).",
       "image_size_recommendation": "2000 x 1000px .jpg recommended",
       "mobile_image_size_recommendation": "1100 x 1500px .jpg recommended. Default to desktop image.",
+      "image_1": "Image 1",
+      "image_2": "Image 2",
+      "image_category": "Image",
+      "image_position_mobile": "Image position (mobile)",
+      "disclaimer": "Disclaimer",
+      "image_position_mobile_options": {
+        "before_text": "Before text",
+        "after_text": "After text"
+      },
       "presets": {
         "newsletter": {
           "name": "Newsletter"
