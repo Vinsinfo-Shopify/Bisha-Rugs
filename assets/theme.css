@@ -8255,7 +8255,6 @@ shopify-account::part(signed-out-avatar) {
 }
 
 .heading, .h1, .h2, .h3, .h4, .h5, .h6, .prose :where(h1, h2, h3, h4, h5, h6) {
-  font-family: var(--heading-font-family);
   font-weight: var(--heading-font-weight);
   font-style: var(--heading-font-style);
   letter-spacing: var(--heading-letter-spacing);
@@ -8429,6 +8428,7 @@ ul {
   color: #EEC274;
   text-transform: capitalize;
   letter-spacing: normal;
+  font-family: 'Forum';
 }
 .footer__block-list .social-media--list{
   gap: 10px;
@@ -8580,6 +8580,8 @@ ul {
   font-size: 24px;
   line-height: 120%;
   margin-top: 4px;
+  font-weight: 400;
+  text-transform: capitalize;
 }
 
 .why_choose_bisha .section_header_subheading,
@@ -8594,9 +8596,6 @@ ul {
   gap: 24px;
 }
 
-.section_header_content {
-  margin: 0 !important;
-}
 
 .why_choose_bisha.section-spacing {
   padding-top: 47px;
@@ -8630,6 +8629,7 @@ ul {
   line-height: 120%;
   font-weight: 400;
   margin-top: 4px;
+  text-transform: capitalize;
 }
 
 .prose .image_with_text_content,
@@ -8656,6 +8656,7 @@ ul {
   font-size: 50px;
   line-height: 120%;
   font-weight: 400;
+  text-transform: capitalize;
 }
 
 .image_with_text_overlay_subheading {
@@ -8682,9 +8683,7 @@ ul {
 }
 
 .form-row > button {
-  font-size: 18px;
-  line-height: 140%;
-  font-weight: 700;
+
 }
 
 .newsletter-disclaimer.text-caption {
@@ -8707,10 +8706,11 @@ ul {
   font-size: 24px;
   line-height: 120%;
   font-weight: 400;
+  text-transform: capitalize;
 }
 
-.newsletter-with-media .section_header_content {
-  margin: 0;
+.newsletter-with-media .prose .section_header_content{
+  margin-top: 12px;
 }
 
 .shopify-section--newsletter .form-row .form-control {
@@ -8723,6 +8723,9 @@ ul {
   padding: 16px 47px 14px 47.72px;
   letter-spacing: 0;
   text-transform: uppercase;
+  font-size: 18px;
+  line-height: 140%;
+  font-weight: 700;
 }
 
 .icon-with-text-item > span {
@@ -8730,6 +8733,12 @@ ul {
 }
 
 .shopify-section.shopify-section--multiple-media-with-text .container--md {
+  margin: 0;
+}
+.why_choose_bisha .prose .section_header_content{
+  margin: 0;
+}
+.our_impact .prose .section_header_content{
   margin: 0;
 }
 
@@ -8780,12 +8789,14 @@ ul {
   .image_with_text_heading,
   .multiple-media-with-text_heading {
     font-size: 24px;
+    font-family: 'Forum';
   }
 
-  .image_with_text_content,
-  .multiple-media-with-text_content,
-  .icon-with-text-list {
+.prose .image_with_text_content,
+.prose .multiple-media-with-text_content,
+.icon-with-text-list {
     font-size: 14px;
+    margin-top: 14px;
   }
 
   .who_we_are .image-with-text > .prose,
@@ -8831,7 +8842,7 @@ ul {
     font-weight: 400;
   }
 
-  .newsletter-with-media .section_header_content {
+  .newsletter-with-media .prose .section_header_content {
     margin-top: 8px;
   }
 
@@ -8851,8 +8862,9 @@ ul {
     width: fit-content;
     flex-grow: 0;
     padding: 9px 36.29px 9px 39px;
-    margin-top: 2px;
+    margin-top: 12px;
     letter-spacing: 0;
+    font-size: 16px;
   }
 
   .image_with_text_overlay_content h2 {
@@ -8861,6 +8873,7 @@ ul {
 
   .image_with_text_overlay_subheading {
     font-size: 12px;
+    padding-bottom: 2px;
   }
 
   .image-with-text__features {
@@ -8877,5 +8890,8 @@ ul {
     align-items: center;
     gap: 5px;
     white-space: nowrap;
+  }
+  .newsletter-with-media .form-row{
+    display: block;
   }
 }
