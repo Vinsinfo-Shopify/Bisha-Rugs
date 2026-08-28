@@ -1,0 +1,61 @@
+{%- doc -%}
+  Renders a breadcrumb trail based on the current template.
+{%- enddoc -%}
+
+{%- liquid
+  assign t = template | split: '.' | first
+-%}
+
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <a href="{{ routes.root_url }}">{{- 'general.breadcrumb.home' | t -}}</a>
+
+  {%- case t -%}
+    {%- when 'page' -%}
+      <span class="breadcrumb-separator">&middot;</span>
+      <span class="breadcrumb-current" aria-current="page">{{ page.title }}</span>
+
+    {%- when 'product' -%}
+      {%- if collection.url -%}
+        <span class="breadcrumb-separator">&middot;</span>
+        <a href="{{ collection.url }}">{{ collection.title }}</a>
+      {%- endif -%}
+      <span class="breadcrumb-separator">&middot;</span>
+      <span class="breadcrumb-current" aria-current="page">{{ product.title }}</span>
+
+    {%- when 'collection' -%}
+      {%- if current_tags -%}
+        <span class="breadcrumb-separator">&middot;</span>
+        <a href="{{ collection.url }}">{{ collection.title }}</a>
+        <span class="breadcrumb-separator">&middot;</span>
+        <span class="breadcrumb-current" aria-current="page">{{ current_tags | join: ' + ' }}</span>
+      {%- else -%}
+        <span class="breadcrumb-separator">&middot;</span>
+        <span class="breadcrumb-current" aria-current="page">{{ collection.title }}</span>
+      {%- endif -%}
+
+    {%- when 'blog' -%}
+      {%- if current_tags -%}
+        <span class="breadcrumb-separator">&middot;</span>
+        <a href="{{ blog.url }}">{{ blog.title }}</a>
+        <span class="breadcrumb-separator">&middot;</span>
+        <span class="breadcrumb-current" aria-current="page">{{ current_tags | join: ' + ' }}</span>
+      {%- else -%}
+        <span class="breadcrumb-separator">&middot;</span>
+        <span class="breadcrumb-current" aria-current="page">{{ blog.title }}</span>
+      {%- endif -%}
+
+    {%- when 'article' -%}
+      <span class="breadcrumb-separator">&middot;</span>
+      <a href="{{ blog.url }}">{{ blog.title }}</a>
+      <span class="breadcrumb-separator">&middot;</span>
+      <span class="breadcrumb-current" aria-current="page">{{ article.title }}</span>
+
+    {%- when 'cart' -%}
+      <span class="breadcrumb-separator">&middot;</span>
+      <span class="breadcrumb-current" aria-current="page">{{ 'cart.general.title' | t }}</span>
+
+    {%- else -%}
+      <span class="breadcrumb-separator">&middot;</span>
+      <span class="breadcrumb-current" aria-current="page">{{ page_title }}</span>
+  {%- endcase -%}
+</nav>
