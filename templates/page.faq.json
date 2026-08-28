@@ -143,7 +143,7 @@
         "question_WUQBXw"
       ],
       "settings": {
-        "color_scheme": "scheme-7f89c092-6266-42c4-80f7-b277ee9182e5",
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
         "separate_section_with_border": true,
         "show_categories": false,
         "custom_class": "faq_section",
@@ -159,15 +159,14 @@
         "sidebar_heading": "Contact Us",
         "sidebar_text": "<p>If you have an issue or question that requires immediate assistance, you can mail us on love@example.com</p><p>We will reply as soon as possible with solution.</p>",
         "sidebar_button_1_label": "Contact Us",
-        "sidebar_button_1_link": "",
+        "sidebar_button_1_link": "shopify://pages/contact",
         "sidebar_button_2_label": "About Us",
-        "sidebar_button_2_link": "",
+        "sidebar_button_2_link": "shopify://pages/about-us",
         "sidebar_custom_class": ""
       }
     }
   },
   "order": [
-    "faq",
-    "contact_3eNxEV"
+    "faq"
   ]
 }

@@ -115,11 +115,22 @@
       },
       "scheme-257fc222-3048-499d-91ad-4c0f672389c7": {
         "settings": {
-          "background": "#B35642",
+          "background": "#b35642",
           "background_gradient": "",
-          "text_color": "#FFFFFF",
+          "text_color": "#ffffff",
           "primary_button_background": "#2b2724",
           "primary_button_text_color": "#f3eee4",
+          "circle_button_background": "#f3eee4",
+          "circle_button_icon": "#2b2724"
+        }
+      },
+      "scheme-4c11c2e1-14d6-4fc0-af50-467273763670": {
+        "settings": {
+          "background": "#F3EEE4",
+          "background_gradient": "",
+          "text_color": "#000000",
+          "primary_button_background": "#B35642",
+          "primary_button_text_color": "#FFFFFF",
           "circle_button_background": "#f3eee4",
           "circle_button_icon": "#2b2724"
         }

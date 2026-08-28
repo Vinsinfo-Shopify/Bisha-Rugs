@@ -8,19 +8,16 @@
     column-gap: 8px;
     margin-block-end: 20px;
   }
-
   #shopify-section-{{ section.id }} .faq-breadcrumb .breadcrumb__list-item {
     align-items: center;
     column-gap: 8px;
     display: flex;
   }
-
   #shopify-section-{{ section.id }} .faq-breadcrumb a {
     color: rgb(var(--text-color));
     text-decoration: underline;
     text-underline-offset: 2px;
   }
-
   #shopify-section-{{ section.id }} .faq-breadcrumb .breadcrumb__list-item:last-child span {
     color: rgb(var(--text-color) / .55);
   }
@@ -30,25 +27,55 @@
     grid-template-columns: minmax(0, 1fr);
     row-gap: 40px;
   }
-
   #shopify-section-{{ section.id }} .faq-layout--with-sidebar .section-header {
     text-align: start;
     justify-items: start;
   }
-
   #shopify-section-{{ section.id }} .faq-layout--with-sidebar .section-header > * {
     margin-inline: 0;
   }
 
   #shopify-section-{{ section.id }} .faq-sidebar {
-    background: #6E2A2B;
+    background: #F5F5F5;
     border-radius: 9px;
     padding: 40px 30px;
     align-self: start;
-    color: #FFFFFF;
+    color: #1A1A1A;
   }
-    #shopify-section-{{ section.id }} .faq-sidebar_header {
+  #shopify-section-{{ section.id }} .faq-sidebar_header {
     font-family: 'Forum';
+    color: #1A1A1A;
+  }
+
+  /* Pill-shaped buttons, matching reference */
+  #shopify-section-{{ section.id }} .faq-sidebar-btn1,
+  #shopify-section-{{ section.id }} .faq-sidebar-btn2 {
+    border-radius: 999px;
+    transition: background-color .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out;
+  }
+
+  /* Outline "Contact Us" button — black border/text normally,
+     hover uses the section's scheme button color as background */
+  #shopify-section-{{ section.id }} .faq-sidebar-btn1 {
+    background-color: transparent;
+    color: #000000;
+    border-color: #000000;
+  }
+  #shopify-section-{{ section.id }} .faq-sidebar-btn1:hover {
+    background-color: rgb(var(--button-background));
+    color: rgb(var(--button-text-color));
+    border-color: rgb(var(--button-background));
+  }
+
+  /* Solid "About Us" button — black bg / white text normally,
+     hover flips to white bg / black text */
+  #shopify-section-{{ section.id }} .faq-sidebar-btn2 {
+    background-color: #000000;
+    color: #FFFFFF;
+    border-color: #000000;
+  }
+  #shopify-section-{{ section.id }} .faq-sidebar-btn2:hover {
+    color: #ffffff;
   }
 
   @media screen and (min-width: 1000px) {
@@ -104,7 +131,7 @@
                       {% if section.settings.sidebar_button_1_link != blank %}
                         href="{{ section.settings.sidebar_button_1_link }}"
                       {% endif %}
-                      class="button button--outline w-full"
+                      class="button button--outline w-full faq-sidebar-btn1"
                     >
                       {{ section.settings.sidebar_button_1_label }}
                     </a>
@@ -115,7 +142,7 @@
                       {% if section.settings.sidebar_button_2_link != blank %}
                         href="{{ section.settings.sidebar_button_2_link }}"
                       {% endif %}
-                      class="button w-full"
+                      class="button w-full faq-sidebar-btn2"
                     >
                       {{ section.settings.sidebar_button_2_label }}
                     </a>
