@@ -83,7 +83,7 @@
         "image_banner_UYQdxt"
       ],
       "settings": {
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-0c971901-5864-4821-a584-d3088e15ad26",
         "show_blog_title": false,
         "subheading": "",
         "heading": "",
@@ -101,7 +101,7 @@
         "load_more_button_text": "Load more",
         "promotion_link": "",
         "promotion_position": 3,
-        "feature_first_blog_post": true,
+        "feature_first_blog_post": false,
         "featured_blog_post_color_scheme": "",
         "show_category": true,
         "show_date": true,

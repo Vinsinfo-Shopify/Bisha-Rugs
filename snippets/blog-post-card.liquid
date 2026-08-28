@@ -86,11 +86,9 @@
         <span class="text-subdued">{{ 'blog.general.post_by' | t: default: 'Post by:' }}</span>
         <span class="blog-post-card__author">{{ article.author }}</span>
         {%- if show_date -%}
-          <span class="separator-dot"></span>
           <span class="text-subdued">{{ article.published_at | time_tag: format: 'abbreviated_date' }}</span>
         {%- endif -%}
         {%- if show_comment_count and blog.comments_enabled? -%}
-          <span class="separator-dot"></span>
           <span class="text-subdued">{{ article.comments_count }} {{ 'blog.general.comments' | t: count: article.comments_count }}</span>
         {%- endif -%}
       </div>
