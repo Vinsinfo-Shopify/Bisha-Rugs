@@ -65,7 +65,7 @@
           "type": "question",
           "settings": {
             "question": "Are size variations normal for handmade rugs?",
-            "answer": "<p>Yes. Because Oushak rugs are woven by hand,<strong>small variations in size (typically within 3–5%)</strong>may occur. This is a natural result of traditional weaving techniques and is considered a hallmark of authentic craftsmanship.</p>",
+            "answer": "<p>Yes. Because Oushak rugs are woven by hand, <strong>small variations in size (typically within 3–5%) </strong>may occur. This is a natural result of traditional weaving techniques and is considered a hallmark of authentic craftsmanship.</p>",
             "custom_class": ""
           }
         },
@@ -157,7 +157,7 @@
         "content": "<p>Please use the below form. You can also call customer service on +1 (973) 435-3638.</p>",
         "show_sidebar": true,
         "sidebar_heading": "Contact Us",
-        "sidebar_text": "<p>If you have an issue or question that requires immediate assistance, you can mail us on love@example.com</p><p>We will reply as soon as possible with solution.</p>",
+        "sidebar_text": "<p>If you have an issue or question that requires immediate assistance, you can mail us on Love@bisharugs.com<br/></p><p>We will reply as soon as possible with solution.</p>",
         "sidebar_button_1_label": "Contact Us",
         "sidebar_button_1_link": "shopify://pages/contact",
         "sidebar_button_2_label": "About Us",
