@@ -40,7 +40,7 @@
 }
 
 @media screen and (max-width: 999px) {
-  .blog-with-sidebar > .v-stack {
+  .blog-with-sidebar > div {
     order: 1;
   }
 
@@ -56,11 +56,23 @@
     gap: 60px;
   }
 
+  .blog-with-sidebar > .blog-sidebar {
+    order: 1;
+  }
+
+  .blog-with-sidebar > div {
+    order: 2;
+  }
+
   .blog-with-sidebar--right {
     grid-template-columns: minmax(0, 1fr) var(--blog-sidebar-width, 280px);
   }
 
-  .blog-with-sidebar--right .blog-sidebar {
+  .blog-with-sidebar--right > div {
+    order: 1;
+  }
+
+  .blog-with-sidebar--right > .blog-sidebar {
     order: 2;
   }
 
