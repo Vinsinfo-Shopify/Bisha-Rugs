@@ -15,30 +15,114 @@
         "category": {
           "type": "category",
           "settings": {
-            "title": "Frequently Asked Questions",
+            "title": "<strong>Frequently Asked Questions</strong>",
             "icon": "none",
-            "icon_width": 16
+            "icon_width": 16,
+            "custom_class": ""
           }
         },
         "question-1": {
           "type": "question",
           "settings": {
-            "question": "Do you ship overseas?",
-            "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>"
+            "question": "What makes an Oushak rug special?",
+            "answer": "<p>Oushak rugs are among the most celebrated traditional rugs in the world, known for their <strong>soft color palettes, large-scale motifs, and refined elegance</strong>. Originating from centuries-old weaving traditions, they are valued for their ability to bring warmth, sophistication, and timeless character to a space.</p><p>At Bisha Rugs, each Oushak is <strong>handwoven by skilled artisans</strong>, ensuring every piece carries its own individuality and craftsmanship.</p>",
+            "custom_class": ""
           }
         },
         "question-2": {
           "type": "question",
           "settings": {
-            "question": "How long will it take to get my orders?",
-            "answer": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>"
+            "question": "Why invest in a handmade Oushak rug?",
+            "answer": "<p>Unlike mass-produced rugs, a handwoven Oushak is crafted slowly and intentionally. The result is a piece that brings warmth, artistry, and lasting value to your home.</p><p>It is not simply a decorative object — it is a piece of living craftsmanship designed to be enjoyed for generations.</p>",
+            "custom_class": ""
           }
         },
         "question-3": {
           "type": "question",
           "settings": {
-            "question": "Any question?",
-            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>"
+            "question": "Are Bisha Oushak rugs handmade?",
+            "answer": "<p>Yes. Every Bisha rug is <strong>completely handwoven on a traditional loom</strong>.</p><p>Each knot is tied individually by artisans who have inherited their craft through generations. Because of this process, no two rugs are ever exactly the same.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_9cje4Y": {
+          "type": "question",
+          "settings": {
+            "question": "What materials are used in your rugs?",
+            "answer": "<p>Our Oushak rugs are made using <strong>premium natural wool</strong>, selected for its durability, softness, and ability to hold color beautifully over time.</p><p>Natural fibers allow the rug to age gracefully while maintaining its structure and comfort underfoot.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_8XRiXE": {
+          "type": "question",
+          "settings": {
+            "question": "Will my rug look exactly like the photos?",
+            "answer": "<p>Our photos represent the rug as accurately as possible. However, because each rug is handmade and natural fibers interact uniquely with dyes and lighting, <strong>slight variations in tone, texture, and pattern may occur</strong>.</p><p>These subtle differences are part of the charm and authenticity of handcrafted rugs.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_fYAYhi": {
+          "type": "question",
+          "settings": {
+            "question": "Are size variations normal for handmade rugs?",
+            "answer": "<p>Yes. Because Oushak rugs are woven by hand,<strong>small variations in size (typically within 3–5%)</strong>may occur. This is a natural result of traditional weaving techniques and is considered a hallmark of authentic craftsmanship.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_pNbxze": {
+          "type": "question",
+          "settings": {
+            "question": "How long does it take to receive my rug?",
+            "answer": "<p>For <strong>in-stock rugs</strong>, orders are typically processed within <strong>2–5 business days</strong> before shipping.<br/></p><p>For <strong>custom or made-to-order rugs</strong>, weaving timelines vary (normally 4 to 6 weeks) depending on size and complexity. We provide an estimated timeline before production begins.<br/></p><p>Once shipped, delivery within the United States typically takes <strong>5–7 business days</strong>.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_zpD7ew": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer custom Oushak rugs?",
+            "answer": "<p>Yes. We offer <strong>custom sizes and design adjustments</strong> for clients seeking a rug tailored to their space.</p><p>Because custom rugs are woven specifically for you, they require a production period and are <strong>final sale once weaving begins</strong>.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_XfGjFX": {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Yes, we ship worldwide.</p><p>International orders may be subject to <strong>customs duties, taxes, or import fees</strong> determined by your country’s regulations. These charges are the responsibility of the customer unless otherwise stated.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_7hec4Q": {
+          "type": "question",
+          "settings": {
+            "question": "What if my rug arrives damaged?",
+            "answer": "<p>In the rare event that a rug arrives damaged during transit, please contact us within <strong>48 hours of delivery</strong> and provide photographs of the rug and packaging.</p><p>We will work quickly to resolve the issue with a replacement or appropriate solution.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_A7xkqk": {
+          "type": "question",
+          "settings": {
+            "question": "Can I return my rug?",
+            "answer": "<p>Returns are accepted for <strong>standard (non-custom) rugs</strong> within <strong>7 days of delivery</strong>, provided the rug is unused and returned in original condition.</p><p>Custom or made-to-order rugs are not eligible for return.<br/></p><p>Please contact us before sending any item back so we can guide you through the return process.<br/>Note: Our business model are made to order and custom rugs.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_e6yErT": {
+          "type": "question",
+          "settings": {
+            "question": "How should I care for my Oushak rug?",
+            "answer": "<p>To maintain the beauty of your rug:</p><p></p><ul><li>Vacuum gently without a rotating brush<br/></li><li>Rotate the rug periodically for even wear<br/></li><li>Blot spills immediately with a clean cloth<br/></li><li>Professional rug cleaning is recommended for deep cleaning<br/></li></ul><p>With proper care, a handwoven Oushak can last for decades.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_WUQBXw": {
+          "type": "question",
+          "settings": {
+            "question": "How can I contact Bisha Rugs?",
+            "answer": "<p>We are always happy to assist with questions about sizing, design, or custom orders.</p><p><strong>Email:</strong> Love@bisharugs.com</p><p><strong>Website:</strong> https://bisharugs.com</p>",
+            "custom_class": ""
           }
         }
       },
@@ -46,33 +130,43 @@
         "category",
         "question-1",
         "question-2",
-        "question-3"
+        "question-3",
+        "question_9cje4Y",
+        "question_8XRiXE",
+        "question_fYAYhi",
+        "question_pNbxze",
+        "question_zpD7ew",
+        "question_XfGjFX",
+        "question_7hec4Q",
+        "question_A7xkqk",
+        "question_e6yErT",
+        "question_WUQBXw"
       ],
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
         "separate_section_with_border": true,
-        "show_categories": true,
+        "show_categories": false,
+        "custom_class": "faq_section",
+        "faq_custom_class": "",
+        "show_breadcrumb": true,
+        "breadcrumb_home_label": "Home",
+        "breadcrumb_current_label": "FAQs",
         "subheading": "",
         "title": "Help Center",
         "heading_style": "h2",
-        "content": "<p>Please use the below form. You can also call customer service on +1 (973) 435-3638.<br/><br/></p>"
-      }
-    },
-    "contact_3eNxEV": {
-      "type": "contact",
-      "name": "t:sections.contact.presets.contact_form.name",
-      "settings": {
-        "color_scheme": "",
-        "separate_section_with_border": true,
-        "subheading": "",
-        "title": "Contact",
-        "heading_style": "h2",
-        "content": ""
+        "content": "<p>Please use the below form. You can also call customer service on +1 (973) 435-3638.</p>",
+        "show_sidebar": true,
+        "sidebar_heading": "Contact Us",
+        "sidebar_text": "<p>If you have an issue or question that requires immediate assistance, you can mail us on love@example.com</p><p>We will reply as soon as possible with solution.</p>",
+        "sidebar_button_1_label": "Contact Us",
+        "sidebar_button_1_link": "shopify://pages/contact",
+        "sidebar_button_2_label": "About Us",
+        "sidebar_button_2_link": "shopify://pages/about-us",
+        "sidebar_custom_class": ""
       }
     }
   },
   "order": [
-    "faq",
-    "contact_3eNxEV"
+    "faq"
   ]
 }

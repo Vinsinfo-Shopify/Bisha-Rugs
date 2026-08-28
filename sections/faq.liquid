@@ -1,63 +1,207 @@
 {%- if section.blocks.size > 0 -%}
   {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 
-  <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+  <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_class }}">
+<style>
+  #shopify-section-{{ section.id }} .faq-breadcrumb {
+    justify-content: center;
+    column-gap: 8px;
+    margin-block-end: 20px;
+  }
+  #shopify-section-{{ section.id }} .faq-breadcrumb .breadcrumb__list-item {
+    align-items: center;
+    column-gap: 8px;
+    display: flex;
+  }
+  #shopify-section-{{ section.id }} .faq-breadcrumb a {
+    color: rgb(var(--text-color));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  #shopify-section-{{ section.id }} .faq-breadcrumb .breadcrumb__list-item:last-child span {
+    color: rgb(var(--text-color) / .55);
+  }
+
+  #shopify-section-{{ section.id }} .faq-layout--with-sidebar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 40px;
+  }
+  #shopify-section-{{ section.id }} .faq-layout--with-sidebar .section-header {
+    text-align: start;
+    justify-items: start;
+  }
+  #shopify-section-{{ section.id }} .faq-layout--with-sidebar .section-header > * {
+    margin-inline: 0;
+  }
+
+  #shopify-section-{{ section.id }} .faq-sidebar {
+    background: #F5F5F5;
+    border-radius: 9px;
+    padding: 40px 30px;
+    align-self: start;
+    color: #1A1A1A;
+  }
+  #shopify-section-{{ section.id }} .faq-sidebar_header {
+    font-family: 'Forum';
+    color: #1A1A1A;
+  }
+
+  /* Pill-shaped buttons, matching reference */
+  #shopify-section-{{ section.id }} .faq-sidebar-btn1,
+  #shopify-section-{{ section.id }} .faq-sidebar-btn2 {
+    border-radius: 999px;
+    transition: background-color .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out;
+  }
+
+  /* Outline "Contact Us" button — black border/text normally,
+     hover uses the section's scheme button color as background */
+  #shopify-section-{{ section.id }} .faq-sidebar-btn1 {
+    background-color: transparent;
+    color: #000000;
+    border-color: #000000;
+  }
+  #shopify-section-{{ section.id }} .faq-sidebar-btn1:hover {
+    background-color: rgb(var(--button-background));
+    color: rgb(var(--button-text-color));
+    border-color: rgb(var(--button-background));
+  }
+
+  /* Solid "About Us" button — black bg / white text normally,
+     hover flips to white bg / black text */
+  #shopify-section-{{ section.id }} .faq-sidebar-btn2 {
+    background-color: #000000;
+    color: #FFFFFF;
+    border-color: #000000;
+  }
+  #shopify-section-{{ section.id }} .faq-sidebar-btn2:hover {
+    color: #ffffff;
+  }
+
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .faq-layout--with-sidebar {
+      grid-template-columns: 26.625rem minmax(0, 1fr);
+      column-gap: 60px;
+      row-gap: 0;
+      align-items: start;
+    }
+  }
+</style>
+
     <div class="container container--md">
       <div class="section-stack">
-        {%- render 'section-header',
-          subheading: section.settings.subheading,
-          heading: section.settings.title,
-          heading_style: section.settings.heading_style,
-          content: section.settings.content
-        -%}
+        {%- if section.settings.show_breadcrumb -%}
+          <nav class="faq-breadcrumb breadcrumb__list text-sm" aria-label="breadcrumb">
+            <span class="breadcrumb__list-item">
+              <a href="{{ routes.root_url }}">{{ section.settings.breadcrumb_home_label }}</a>
+              <span aria-hidden="true">/</span>
+            </span>
+            <span class="breadcrumb__list-item">
+              <span>{{ section.settings.breadcrumb_current_label }}</span>
+            </span>
+          </nav>
+        {%- endif -%}
 
-        <div class="faq">
-          {%- assign categories_blocks = section.blocks | where: 'type', 'category' -%}
+        <div class="faq_section_header">
+          {%- render 'section-header',
+            subheading: section.settings.subheading,
+            heading: section.settings.title,
+            heading_style: section.settings.heading_style,
+            content: section.settings.content
+          -%}
+        </div>
 
-          {%- if section.settings.show_categories and categories_blocks.size > 0 -%}
-            <faq-toc class="faq__toc hidden md:grid">
-              {%- for block in categories_blocks -%}
-                <a class="faq__toc-item {% if forloop.first %}is-active{% endif %}" href="#block-{{ block.id }}">{{ block.settings.title }}</a>
-              {%- endfor -%}
-            </faq-toc>
+        <div class="faq-layout {% if section.settings.show_sidebar %}faq-layout--with-sidebar{% endif %}">
+          {%- if section.settings.show_sidebar -%}
+            <div class="faq-sidebar v-stack gap-6 {{ section.settings.sidebar_custom_class }}">
+              {%- if section.settings.sidebar_heading != blank -%}
+                <p class="h4 faq-sidebar_header">{{ section.settings.sidebar_heading }}</p>
+              {%- endif -%}
+
+              {%- if section.settings.sidebar_text != blank -%}
+                <div class="prose">
+                  {{ section.settings.sidebar_text }}
+                </div>
+              {%- endif -%}
+
+              {%- if section.settings.sidebar_button_1_label != blank or section.settings.sidebar_button_2_label != blank -%}
+                <div class="v-stack gap-3">
+                  {%- if section.settings.sidebar_button_1_label != blank -%}
+                    <a
+                      {% if section.settings.sidebar_button_1_link != blank %}
+                        href="{{ section.settings.sidebar_button_1_link }}"
+                      {% endif %}
+                      class="button button--outline w-full faq-sidebar-btn1"
+                    >
+                      {{ section.settings.sidebar_button_1_label }}
+                    </a>
+                  {%- endif -%}
+
+                  {%- if section.settings.sidebar_button_2_label != blank -%}
+                    <a
+                      {% if section.settings.sidebar_button_2_link != blank %}
+                        href="{{ section.settings.sidebar_button_2_link }}"
+                      {% endif %}
+                      class="button w-full faq-sidebar-btn2"
+                    >
+                      {{ section.settings.sidebar_button_2_label }}
+                    </a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
           {%- endif -%}
 
-          <div class="faq__content">
-            {%- for block in section.blocks -%}
-              {%- case block.type -%}
-                {%- when 'category' -%}
-                  {%- if block.settings.title != blank -%}
-                    <p id="block-{{ block.id }}" class="faq__category h4" {{ block.shopify_attributes }}>
-                      {%- if block.settings.custom_icon != blank -%}
-                        {%- capture sizes -%}{{ block.settings.icon_width }}px{%- endcapture -%}
-                        {%- capture widths -%}{{ block.settings.icon_width }}, {{ block.settings.icon_width | times: 2 | at_most: block.settings.custom_icon.width }}{%- endcapture -%}
-                        {%- capture style -%}--image-max-width: {{ block.settings.icon_width }}px{%- endcapture -%}
+          <div class="faq-main section-stack {{ section.settings.faq_custom_class }}">
+            <div class="faq">
+              {%- assign categories_blocks = section.blocks | where: 'type', 'category' -%}
 
-                        {{-
-                          block.settings.custom_icon
-                          | image_url: width: block.settings.custom_icon.width
-                          | image_tag: sizes: sizes, widths: widths, class: 'constrained-image', style: style
-                        -}}
-                      {%- elsif block.settings.icon != 'none' -%}
-                        {%- render 'icon' with block.settings.icon, width: block.settings.icon_width -%}
+              {%- if section.settings.show_categories and categories_blocks.size > 0 -%}
+                <faq-toc class="faq__toc hidden md:grid">
+                  {%- for block in categories_blocks -%}
+                    <a class="faq__toc-item {% if forloop.first %}is-active{% endif %}" href="#block-{{ block.id }}">{{ block.settings.title }}</a>
+                  {%- endfor -%}
+                </faq-toc>
+              {%- endif -%}
+
+              <div class="faq__content">
+                {%- for block in section.blocks -%}
+                  {%- case block.type -%}
+                    {%- when 'category' -%}
+                      {%- if block.settings.title != blank -%}
+                        <p id="block-{{ block.id }}" class="faq__category h4 {{ block.settings.custom_class }}" {{ block.shopify_attributes }}>
+                          {%- if block.settings.custom_icon != blank -%}
+                            {%- capture sizes -%}{{ block.settings.icon_width }}px{%- endcapture -%}
+                            {%- capture widths -%}{{ block.settings.icon_width }}, {{ block.settings.icon_width | times: 2 | at_most: block.settings.custom_icon.width }}{%- endcapture -%}
+                            {%- capture style -%}--image-max-width: {{ block.settings.icon_width }}px{%- endcapture -%}
+
+                            {{-
+                              block.settings.custom_icon
+                              | image_url: width: block.settings.custom_icon.width
+                              | image_tag: sizes: sizes, widths: widths, class: 'constrained-image', style: style
+                            -}}
+                          {%- elsif block.settings.icon != 'none' -%}
+                            {%- render 'icon' with block.settings.icon, width: block.settings.icon_width -%}
+                          {%- endif -%}
+
+                          {{- block.settings.title -}}
+                        </p>
                       {%- endif -%}
 
-                      {{- block.settings.title -}}
-                    </p>
-                  {%- endif -%}
+                    {%- when 'question' -%}
+                      {%- if block.settings.question != blank and block.settings.answer != blank -%}
+                        {%- capture answer -%}
+                          <div class="prose">
+                            {{- block.settings.answer -}}
+                          </div>
+                        {%- endcapture -%}
 
-                {%- when 'question' -%}
-                  {%- if block.settings.question != blank and block.settings.answer != blank -%}
-                    {%- capture answer -%}
-                      <div class="prose">
-                        {{- block.settings.answer -}}
-                      </div>
-                    {%- endcapture -%}
-
-                    {%- render 'accordion', title: block.settings.question, content: answer, show_title_as_text: true, block: block -%}
-                  {%- endif -%}
-              {%- endcase -%}
-            {%- endfor -%}
+                        {%- render 'accordion', title: block.settings.question, content: answer, show_title_as_text: true, block: block, class: block.settings.custom_class -%}
+                      {%- endif -%}
+                  {%- endcase -%}
+                {%- endfor -%}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -116,6 +260,44 @@
     },
     {
       "type": "header",
+      "content": "Custom CSS"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Section custom class(es)",
+      "info": "Space-separated class names added to the section's outer wrapper, for targeting with custom CSS."
+    },
+    {
+      "type": "text",
+      "id": "faq_custom_class",
+      "label": "FAQ list custom class(es)",
+      "info": "Space-separated class names added to the FAQ list/accordion wrapper only."
+    },
+    {
+      "type": "header",
+      "content": "Breadcrumb"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "label": "Show breadcrumb",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_home_label",
+      "label": "Home label",
+      "default": "Home"
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_current_label",
+      "label": "Current page label",
+      "default": "FAQs"
+    },
+    {
+      "type": "header",
       "content": "t:global.section.header_category"
     },
     {
@@ -166,6 +348,57 @@
       "type": "richtext",
       "id": "content",
       "label": "t:global.text.content"
+    },
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sidebar",
+      "label": "Show contact sidebar",
+      "info": "Displays a contact card next to the FAQ list, and left-aligns the heading, similar to a help center layout.",
+      "default": false
+    },
+    {
+      "type": "inline_richtext",
+      "id": "sidebar_heading",
+      "label": "Sidebar heading",
+      "default": "Contact Us"
+    },
+    {
+      "type": "richtext",
+      "id": "sidebar_text",
+      "label": "Sidebar text",
+      "default": "<p>If you have an issue or question that requires immediate assistance, you can mail us on love@example.com</p><p>We will reply as soon as possible with solution.</p>"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_button_1_label",
+      "label": "First button label",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "sidebar_button_1_link",
+      "label": "First button link"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_button_2_label",
+      "label": "Second button label",
+      "default": "About Us"
+    },
+    {
+      "type": "url",
+      "id": "sidebar_button_2_link",
+      "label": "Second button link"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_custom_class",
+      "label": "Sidebar custom class(es)",
+      "info": "Space-separated class names added to the sidebar card only."
     }
   ],
   "blocks": [
@@ -486,6 +719,12 @@
           "unit": "px",
           "label": "t:global.icons.icon_width",
           "default": 16
+        },
+        {
+          "type": "text",
+          "id": "custom_class",
+          "label": "Custom class(es)",
+          "info": "Space-separated class names added to this category row only."
         }
       ]
     },
@@ -504,6 +743,12 @@
           "id": "answer",
           "label": "t:sections.faq.blocks.question.answer",
           "default": "<p>Write a clear and concise answer to guide your customers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "custom_class",
+          "label": "Custom class(es)",
+          "info": "Space-separated class names added to this question's accordion item only (requires the accordion snippet to accept a 'class' parameter)."
         }
       ]
     }

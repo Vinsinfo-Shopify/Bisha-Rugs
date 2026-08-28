@@ -31,9 +31,6 @@
       {%- endif -%}
 
       <div class="{% if section.settings.enable_sidebar %}blog-with-sidebar{% if section.settings.sidebar_position == 'right' %} blog-with-sidebar--right{% endif %}{% endif %}" style="--blog-sidebar-width: 17.5rem;">
-        {%- if section.settings.enable_sidebar -%}
-          {%- render 'blog-sidebar', blog: blog, section: section -%}
-        {%- endif -%}
 
         <div class="v-stack gap-8 sm:gap-12">
           {%- paginate blog.articles by section.settings.posts_per_page -%}
@@ -124,6 +121,11 @@
             {%- endif -%}
           {%- endpaginate -%}
         </div>
+
+        {%- if section.settings.enable_sidebar -%}
+          {%- render 'blog-sidebar', blog: blog, section: section -%}
+        {%- endif -%}
+        
       </div>
     </div>
   </div>

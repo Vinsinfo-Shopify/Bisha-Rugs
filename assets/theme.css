@@ -8895,6 +8895,24 @@ ul {
     display: block;
   }
 }
+.faq_section .section-stack{
+  gap: 0;
+}
+.faq_section_header{
+  margin-bottom: 60px;
+}
+.faq_section .button--outline{
+  color: #FFFFFF;
+}
+.faq_section .section-stack{
+  gap: 0;
+}
+.faq_section_header{
+  margin-bottom: 60px;
+}
+.faq_section .button--outline{
+  color: #FFFFFF;
+}
 .blog-card-img {
   border-radius: 9px;
   position: relative;
@@ -9085,7 +9103,12 @@ ul {
   max-width: 480px;
   margin-inline: auto;
 }
-
+.faq-sidebar-btn1{
+--hover-gradient: linear-gradient(rgb(var(--button-background)), rgb(var(--button-background)));
+}
+.faq-sidebar-btn2{
+--hover-gradient: linear-gradient(rgb(var(--button-background)), rgb(var(--button-background)));
+}
 @media screen and (max-width: 699px) {
   .page-heading__title {
     font-size: 28px;
