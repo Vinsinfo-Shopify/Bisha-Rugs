@@ -92,7 +92,7 @@
         "show_rss_feed": false,
         "show_tags": false,
         "posts_per_page": 10,
-        "enable_sidebar": true,
+        "enable_sidebar": false,
         "sidebar_position": "left",
         "layout": "grid",
         "items_per_row": 3,
