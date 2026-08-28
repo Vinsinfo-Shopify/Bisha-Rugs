@@ -1,0 +1,94 @@
+{%- doc -%}
+  Renders the blog sidebar (categories, tags, recent posts, image banner).
+  Migrated from Milano's blog-sidebar snippet, adapted to Prestige's markup/CSS conventions.
+
+  @param {object} blog - the current blog
+  @param {object} section - the section whose blocks describe the sidebar widgets
+{%- enddoc -%}
+
+{{ 'blog-sidebar.css' | asset_url | stylesheet_tag }}
+
+<aside class="blog-sidebar v-stack gap-8">
+  {%- for block in section.blocks -%}
+    {%- liquid
+      assign block_st = block.settings
+    -%}
+    {%- case block.type -%}
+      {%- when 'categories' -%}
+        <div {{ block.shopify_attributes }} class="blog-sidebar__widget pb-8 border-b">
+          <h4 class="h5 mb-4 blog_sidebar_heading">{{ block_st.title | escape }}</h4>
+          {%- if block_st.menu.links.size > 0 -%}
+            <ul class="unstyled-list v-stack gap-2">
+              {%- for link in block_st.menu.links -%}
+                <li><a href="{{ link.url }}" class="link-faded">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+
+      {%- when 'tags' -%}
+        <div {{ block.shopify_attributes }} class="blog-sidebar__widget pb-8 border-b">
+          <h4 class="h5 mb-4 blog_sidebar_heading">{{ block_st.title | escape }}</h4>
+          <ul class="blog-tags unstyled-list h-stack wrap gap-2" style="justify-content:flex-start">
+            {%- for tag in blog.all_tags limit: 12 -%}
+              <li class="blog-tag{% if current_tags contains tag %} active{% endif %}">
+                {%- if current_tags contains tag -%}
+                  {{- tag | link_to_remove_tag: tag -}}
+                {%- else -%}
+                  {{- tag | link_to_tag: tag -}}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+
+      {%- when 'recent_post' -%}
+        <div {{ block.shopify_attributes }} class="blog-sidebar__widget pb-8 border-b">
+          <h4 class="h5 mb-4  blog_sidebar_heading">{{ block_st.title | escape }}</h4>
+          <div class="v-stack gap-5">
+            {%- for article in blog.articles limit: block_st.maximum -%}
+              <a href="{{ article.url }}" class="blog-sidebar__recent-post h-stack gap-4 no-underline">
+                <span class="blog-sidebar__recent-post-image shrink-0">
+                  {%- if article.image != blank -%}
+                    {{-
+                      article.image
+                      | image_url: width: 160
+                      | image_tag: sizes: '80px', widths: '80,120,160', class: 'w-full image-cover'
+                    -}}
+                  {%- else -%}
+                    {{- 'image' | placeholder_svg_tag: 'placeholder w-full' -}}
+                  {%- endif -%}
+                </span>
+                <span class="v-stack gap-1">
+                  <span class="h6">{{ article.title }}</span>
+                  <span class="text-subdued text-xs">
+                    {{- article.published_at | time_tag: format: 'abbreviated_date' -}}
+                  </span>
+                </span>
+              </a>
+            {%- endfor -%}
+          </div>
+        </div>
+
+      {%- when 'image_banner' -%}
+        <div {{ block.shopify_attributes }} class="blog-sidebar__widget">
+          <a
+            href="{{ block_st.url | default: '#' }}"
+            {% if block_st.open_link %}
+              target="_blank" rel="noopener"
+            {% endif %}
+          >
+            {%- if block_st.image != blank -%}
+              {{-
+                block_st.image
+                | image_url: width: block_st.image.width
+                | image_tag: sizes: '300px', widths: '300,400,500,600', class: 'w-full'
+              -}}
+            {%- else -%}
+              {{- 'image' | placeholder_svg_tag: 'placeholder w-full' -}}
+            {%- endif -%}
+          </a>
+        </div>
+    {%- endcase -%}
+  {%- endfor -%}
+</aside>

@@ -3,11 +3,13 @@
 
   @param {object} article - the article to render. If no article is passed then a placeholder is generated
   @param {object} [blog] - the blog the article belongs to (if any)
-  @param {boolean} [show_category] - if set to true, the first tag of the article is shown as a category
-  @param {boolean} [show_date] - if set to true, the publication date of the article will be visible
+  @param {boolean} [show_category] - if set to true, the first tag of the article is shown as a category badge on the image
+  @param {boolean} [show_date] - if set to true, the publication date of the article will be visible in the "Post by" line
   @param {boolean} [show_excerpt] - if set to true, it will show the excerpt first or truncated part of the main content if none is set
   @param {boolean} [show_read_more] - if set to true, a read more link will be visible after the excerpt to redirect to the full blog post
-  @param {string} [category_class] - the classes to apply on the category (default to h6)
+  @param {string} [category_class] - the classes to apply on the category badge
+  @param {boolean} [show_comment_count] - if true, shows the article's comment count
+  @param {string} [readmore_type] - 'primary' | 'secondary' | 'link' — controls the read-more button style
   @param {string} [title_class] - the classes to apply on the title (default to h4)
   @param {string} [sizes] - the sizes attribute to use for loading the images
   @param {number} [position] - the position of the card in the list. If specified, the theme will eagerly load the first 3 cards images
@@ -19,47 +21,37 @@
     {%- if article.image != blank -%}
       {%- liquid
         assign loading_strategy = null
-
-        if section.index > 3 or position > 3
+        if position > 3
           assign loading_strategy = 'lazy'
         endif
       -%}
-
-      <a href="{{ article.url }}" class="overflow-hidden">
-        {{-
-          article.image
-          | image_url: width: article.image.width
-          | image_tag:
-            loading: loading_strategy,
-            sizes: sizes,
-            widths: '300,400,500,600,800,1000,1200,1400,1600,1800,2000',
-            class: 'blog-post-card__image w-full zoom-image group-hover:zoom'
-        -}}
-      </a>
+      <div class="blog-card-img relative">
+        {%- if show_category and article.tags.size > 0 -%}
+          <a href="{{ blog.url }}/tagged/{{ article.tags.first | handle }}" class="blog-post-card__badge {{ category_class }}">{{ article.tags.first }}</a>
+        {%- endif -%}
+        <a href="{{ article.url }}" class="blog-post-card__img-wrap overflow-hidden block">
+          {{-
+            article.image
+            | image_url: width: article.image.width
+            | image_tag:
+              loading: loading_strategy,
+              sizes: sizes,
+              widths: '300,400,500,600,800,1000,1200,1400,1600,1800,2000',
+              class: 'blog-post-card__image w-full'
+          -}}
+        </a>
+      </div>
     {%- endif -%}
   {%- else -%}
-    <div class="overflow-hidden">
-      {{- 'image' | placeholder_svg_tag: 'blog-post-card__image placeholder placeholder--invert w-full zoom-image group-hover:zoom' -}}
+    <div class="overflow-hidden blog-card-img relative">
+      {%- if show_category -%}
+        <span class="blog-post-card__badge {{ category_class }}">News</span>
+      {%- endif -%}
+      {{- 'image' | placeholder_svg_tag: 'blog-post-card__image placeholder placeholder--invert w-full' -}}
     </div>
   {%- endif -%}
 
   <div class="blog-post-card__info">
-    {%- capture blog_post_meta -%}
-      {%- if show_category and article.tags.size > 0 -%}
-        <a href="{{ blog.url }}/tagged/{{ article.tags.first | handle }}" class="blog-post-card__category {{ category_class | default: 'h6' }} link-faded">{{ article.tags | first }}</a>
-      {%- endif -%}
-
-      {%- if show_date -%}
-        <span class="h6 text-subdued">{{- article.published_at | time_tag: format: 'abbreviated_date' -}}</span>
-      {%- endif -%}
-    {%- endcapture -%}
-
-    {%- if blog_post_meta != blank -%}
-      <div class="blog-post-card__meta">
-        {{- blog_post_meta -}}
-      </div>
-    {%- endif -%}
-
     {%- if article -%}
       <p>
         <a href="{{ article.url }}" class="blog-post-card__title {{ title_class | default: 'h4' }}">{{ article.title }}</a>
@@ -79,7 +71,27 @@
     {%- endif -%}
 
     {%- if show_read_more -%}
-      <a href="{{ article.url | default: '#' }}" class="blog-post-card__read-more link">{{ 'blog.general.read_more' | t }}</a>
+      {%- case readmore_type -%}
+        {%- when 'secondary' -%}
+          <a href="{{ article.url | default: '#' }}" class="button button--outline button--sm justify-self-start">{{ 'blog.general.read_more' | t }}</a>
+        {%- when 'primary' -%}
+          <a href="{{ article.url | default: '#' }}" class="button button--sm justify-self-start">{{ 'blog.general.read_more' | t }}</a>
+        {%- else -%}
+          <a href="{{ article.url | default: '#' }}" class="blog-post-card__read-more link">{{ 'blog.general.read_more' | t }}</a>
+      {%- endcase -%}
+    {%- endif -%}
+
+    {%- if article -%}
+      <div class="blog-post-card__meta">
+        <span class="text-subdued">{{ 'blog.general.post_by' | t: default: 'Post by:' }}</span>
+        <span class="blog-post-card__author">{{ article.author }}</span>
+        {%- if show_date -%}
+          <span class="text-subdued">{{ article.published_at | time_tag: format: 'abbreviated_date' }}</span>
+        {%- endif -%}
+        {%- if show_comment_count and blog.comments_enabled? -%}
+          <span class="text-subdued">{{ article.comments_count }} {{ 'blog.general.comments' | t: count: article.comments_count }}</span>
+        {%- endif -%}
+      </div>
     {%- endif -%}
   </div>
 </div>

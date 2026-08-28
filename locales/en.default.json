@@ -205,7 +205,9 @@
       "back_to_home": "Back to home",
       "view": "View",
       "all_posts": "All posts",
-      "read_more": "Read more"
+      "read_more": "Read more",
+      "post_by": "Post by",
+      "comments" : "Comments count"
     },
     "post": {
       "written_by": "Written by {{ author }}",

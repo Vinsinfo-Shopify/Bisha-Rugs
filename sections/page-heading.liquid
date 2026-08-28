@@ -1,0 +1,217 @@
+{%- liquid
+  assign section_st = section.settings
+  assign t = template | split: '.' | first
+  assign color_scheme = section_st.color_scheme
+  assign background_image = section_st.background_image
+  assign height = section_st.height
+  assign alignment = section_st.alignment
+
+  assign width_class = 'container'
+  case section_st.section_width
+    when 'xs'
+      assign width_class = 'container container--xs'
+    when 'sm'
+      assign width_class = 'container container--sm'
+    when 'md'
+      assign width_class = 'container container--md'
+    when 'lg'
+      assign width_class = 'container container--lg'
+    when 'xl'
+      assign width_class = 'container container--xl'
+    when 'full'
+      assign width_class = ''
+  endcase
+
+  assign height_class = ''
+  case height
+    when 'xs'
+      assign height_class = 'content-over-media--xs'
+    when 'sm'
+      assign height_class = 'content-over-media--sm'
+    when 'md'
+      assign height_class = 'content-over-media--md'
+    when 'lg'
+      assign height_class = 'content-over-media--lg'
+  endcase
+
+  assign overlay_alpha = section_st.overlay_opacity | times: 1.0 | divided_by: 100.0
+-%}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="section-custom-padding" style="--section-padding-top: {{ section_st.padding_top }}px; --section-padding-bottom: {{ section_st.padding_bottom }}px;">
+    <div class="color-scheme color-scheme--{{ color_scheme.id }}{% if background_image != blank %} color-scheme--with-image-overlay{% endif %}">
+      {%- if background_image != blank -%}
+        <div
+          class="content-over-media {{ height_class }}"
+          style="--content-over-media-overlay: 0 0 0 / {{ overlay_alpha }};"
+        >
+          {%- assign image_alt = background_image.alt | default: 'page banner' | escape -%}
+          {{-
+            background_image
+            | image_url: width: background_image.width
+            | image_tag: sizes: '100vw', widths: '400,600,800,1000,1200,1400,1600,1800,2000,2200', alt: image_alt, class: 'media-cover'
+          -}}
+
+          <div class="prose prose-justify-{{ alignment }}">
+            {%- for block in section.blocks -%}
+              {%- render 'page-heading-block', block: block, template: template -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- else -%}
+        <div class="{{ width_class }}">
+          <div class="prose prose-justify-{{ alignment }}">
+            {%- for block in section.blocks -%}
+              {%- render 'page-heading-block', block: block, template: template -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Page heading",
+  "tag": "section",
+  "class": "shopify-section--page-heading",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        { "value": "xs", "label": "Extra small" },
+        { "value": "sm", "label": "Small" },
+        { "value": "md", "label": "Medium" },
+        { "value": "lg", "label": "Large" },
+        { "value": "xl", "label": "Extra large" },
+        { "value": "full", "label": "Full width" }
+      ],
+      "default": "md"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "options": [
+        { "value": "xs", "label": "Extra small" },
+        { "value": "sm", "label": "Small" },
+        { "value": "md", "label": "Medium" },
+        { "value": "lg", "label": "Large" }
+      ],
+      "default": "sm",
+      "info": "Only applies when a background image is set."
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "default": 80,
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "default": 40,
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px"
+    }
+  ],
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "breadcrumb",
+      "name": "Breadcrumb",
+      "limit": 1
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "page_title",
+          "label": "Heading",
+          "info": "Leave blank to use the page/blog/cart title automatically."
+        },
+        {
+          "type": "select",
+          "id": "header_size",
+          "label": "t:global.text.style",
+          "default": "default",
+          "options": [
+            { "value": "default", "label": "Default (H2)" },
+            { "value": "small", "label": "Small (H3)" },
+            { "value": "large", "label": "Large (H1)" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Content"
+        },
+        {
+          "type": "paragraph",
+          "content": "On a Page template, leaving this blank will show the page's content instead."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
