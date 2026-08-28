@@ -17,7 +17,7 @@
         {%- endif -%}
 
         {%- if heading != blank -%}
-          <h2 class="{{ heading_style | default: 'h2' }} section_header_heading">{{- heading -}}</h2>
+          <h1 class="{{ heading_style | default: 'h1' }} section_header_heading">{{- heading -}}</h1>
         {%- endif -%}
         <div class="section_header_content">
         {{- content -}}
