@@ -42,10 +42,6 @@
     align-self: start;
     color: #1A1A1A;
   }
-  #shopify-section-{{ section.id }} .faq-sidebar_header {
-    font-family: 'Forum';
-    color: #1A1A1A;
-  }
 
   /* Pill-shaped buttons, matching reference */
   #shopify-section-{{ section.id }} .faq-sidebar-btn1,
@@ -115,7 +111,7 @@
           {%- if section.settings.show_sidebar -%}
             <div class="faq-sidebar v-stack gap-6 {{ section.settings.sidebar_custom_class }}">
               {%- if section.settings.sidebar_heading != blank -%}
-                <p class="h4 faq-sidebar_header">{{ section.settings.sidebar_heading }}</p>
+                <h2 class="h3 faq-sidebar_header">{{ section.settings.sidebar_heading }}</h2>
               {%- endif -%}
 
               {%- if section.settings.sidebar_text != blank -%}
@@ -169,7 +165,7 @@
                   {%- case block.type -%}
                     {%- when 'category' -%}
                       {%- if block.settings.title != blank -%}
-                        <p id="block-{{ block.id }}" class="faq__category h4 {{ block.settings.custom_class }}" {{ block.shopify_attributes }}>
+                        <p id="block-{{ block.id }}" class="faq__category h3 {{ block.settings.custom_class }}" {{ block.shopify_attributes }}>
                           {%- if block.settings.custom_icon != blank -%}
                             {%- capture sizes -%}{{ block.settings.icon_width }}px{%- endcapture -%}
                             {%- capture widths -%}{{ block.settings.icon_width }}, {{ block.settings.icon_width | times: 2 | at_most: block.settings.custom_icon.width }}{%- endcapture -%}
