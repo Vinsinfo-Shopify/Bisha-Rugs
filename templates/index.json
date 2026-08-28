@@ -17,18 +17,24 @@
           "settings": {
             "subheading": "Our bag",
             "title": "Inspired by the 90s",
+            "heading_style": "h1",
             "mobile_text_position": "place-self-center text-center",
             "desktop_text_position": "sm:place-self-center sm:text-center",
             "content_max_width": 780,
             "button_1_text": "Shop now",
+            "button_1_link": "",
             "button_1_style": "fill",
             "button_1_background": "#ffffff",
             "button_1_text_color": "#1c1c1c",
+            "button_2_text": "",
+            "button_2_link": "",
             "button_2_style": "solid",
             "button_2_background": "#1c1c1c",
             "button_2_text_color": "#ffffff",
+            "background": "",
             "background_opacity": 50,
             "text_color": "#ffffff",
+            "border_color": "",
             "gradient_overlay": "linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0) 100%)"
           }
         },
@@ -37,16 +43,21 @@
           "settings": {
             "subheading": "Our bag",
             "title": "Elegant & Timeless",
+            "heading_style": "h1",
             "mobile_text_position": "place-self-center text-center",
             "desktop_text_position": "sm:place-self-center sm:text-center",
             "content_max_width": 400,
             "button_1_text": "View collection",
+            "button_1_link": "",
             "button_1_style": "solid",
             "button_1_background": "#ffffff",
             "button_1_text_color": "#000000",
+            "button_2_text": "",
+            "button_2_link": "",
             "button_2_style": "outline",
             "button_2_background": "#ffffff",
             "button_2_text_color": "#000000",
+            "background": "",
             "background_opacity": 50,
             "text_color": "#ffffff",
             "border_color": "#ffffff",
@@ -59,7 +70,7 @@
         "slide-2"
       ],
       "settings": {
-        "allow_transparent_header": true,
+        "allow_transparent_header": false,
         "show_next_section_button": true,
         "media_size": "fill",
         "show_initial_transition": true,
@@ -76,6 +87,7 @@
         "collection-1": {
           "type": "collection",
           "settings": {
+            "collection": "",
             "products_count": 8,
             "title": "Women",
             "link_url": "shopify://collections/all",
@@ -85,6 +97,7 @@
         "collection-2": {
           "type": "collection",
           "settings": {
+            "collection": "",
             "products_count": 8,
             "title": "Men",
             "link_url": "shopify://collections/all",
@@ -105,7 +118,10 @@
         "products_per_row_desktop": 4,
         "horizontal_spacing_factor": 1,
         "vertical_spacing_factor": 1,
-        "subheading": "Our best sellers"
+        "header_alignment": "center",
+        "heading_style": "h2",
+        "subheading": "Our best sellers",
+        "hide_collection_title": false
       }
     },
     "image-with-text-overlay-1": {
@@ -129,6 +145,7 @@
           "settings": {
             "style": "solid",
             "text": "Shop",
+            "url": "",
             "background": "#ffffff",
             "text_color": "#1c1c1c"
           }
@@ -165,13 +182,15 @@
         "link-1": {
           "type": "link",
           "settings": {
-            "text": "Our story"
+            "text": "Our story",
+            "url": ""
           }
         },
         "link-2": {
           "type": "link",
           "settings": {
-            "text": "Commitments"
+            "text": "Commitments",
+            "url": ""
           }
         }
       },
@@ -197,8 +216,12 @@
             "color_scheme": "scheme-4",
             "column_count": "8",
             "row_count": 2,
+            "add_padding": false,
             "title": "Women",
             "heading_tag": "h1",
+            "content": "",
+            "link_text": "",
+            "link_url": "",
             "link_style": "link",
             "text_position": "place-self-center text-center",
             "overlay_color": "#000000",
@@ -211,8 +234,12 @@
             "color_scheme": "scheme-4",
             "column_count": "4",
             "row_count": 1,
+            "add_padding": false,
             "title": "Men",
             "heading_tag": "h3",
+            "content": "",
+            "link_text": "",
+            "link_url": "",
             "link_style": "link",
             "text_position": "place-self-center text-center",
             "overlay_color": "#000000",
@@ -225,8 +252,12 @@
             "color_scheme": "scheme-4",
             "column_count": "4",
             "row_count": 1,
+            "add_padding": false,
             "title": "Accessories",
             "heading_tag": "h4",
+            "content": "",
+            "link_text": "",
+            "link_url": "",
             "link_style": "link",
             "text_position": "place-self-center text-center",
             "overlay_color": "#000000",
@@ -245,7 +276,11 @@
         "desktop_row_height": 290,
         "mobile_row_height": 180,
         "section_width": "lg",
-        "spacing": "md"
+        "spacing": "md",
+        "subheading": "",
+        "title": "Media grid",
+        "heading_style": "h2",
+        "content": ""
       }
     },
     "scrolling-content-1": {
@@ -273,6 +308,7 @@
         "section_vertical_spacing_desktop": 40,
         "item_horizontal_spacing_mobile": 25,
         "item_horizontal_spacing_desktop": 50,
+        "background": "",
         "text_color": "#b3b3b3"
       }
     },
@@ -301,6 +337,7 @@
         "section_vertical_spacing_desktop": 40,
         "item_horizontal_spacing_mobile": 25,
         "item_horizontal_spacing_desktop": 50,
+        "background": "",
         "text_color": "#b3b3b3"
       }
     },
@@ -310,8 +347,11 @@
         "collection-1": {
           "type": "collection",
           "settings": {
+            "collection": "",
             "products_count": 5,
-            "title": "Ideal for a weekend outing"
+            "title": "Ideal for a weekend outing",
+            "link_url": "",
+            "link_text": "View all"
           }
         }
       },
@@ -327,7 +367,10 @@
         "products_per_row_desktop": 4,
         "horizontal_spacing_factor": 1,
         "vertical_spacing_factor": 1,
-        "subheading": "Be classy"
+        "header_alignment": "center",
+        "heading_style": "h2",
+        "subheading": "Be classy",
+        "hide_collection_title": false
       }
     },
     "video": {
@@ -373,24 +416,36 @@
           "type": "look",
           "settings": {
             "hot_spots_background": "#ffffff",
+            "product_1": "",
             "product_1_horizontal_position": 24,
             "product_1_vertical_position": 35,
+            "product_2": "",
             "product_2_horizontal_position": 67,
             "product_2_vertical_position": 51,
+            "product_3": "",
             "product_3_horizontal_position": 30,
-            "product_3_vertical_position": 65
+            "product_3_vertical_position": 65,
+            "product_4": "",
+            "product_4_horizontal_position": 85,
+            "product_4_vertical_position": 85
           }
         },
         "look-2": {
           "type": "look",
           "settings": {
             "hot_spots_background": "#ffffff",
+            "product_1": "",
             "product_1_horizontal_position": 35,
             "product_1_vertical_position": 58,
+            "product_2": "",
             "product_2_horizontal_position": 69,
             "product_2_vertical_position": 75,
+            "product_3": "",
             "product_3_horizontal_position": 75,
-            "product_3_vertical_position": 30
+            "product_3_vertical_position": 30,
+            "product_4": "",
+            "product_4_horizontal_position": 85,
+            "product_4_vertical_position": 85
           }
         }
       },
@@ -403,6 +458,8 @@
         "separate_section_with_border": true,
         "subheading": "Shop",
         "title": "Our looks",
+        "heading_style": "h2",
+        "content": "",
         "popover_title": "Shop the look"
       }
     },
@@ -414,6 +471,7 @@
         "image_size": "auto",
         "subheading": "Limited time only",
         "title": "Super Sale Up to 40% off",
+        "heading_style": "h1",
         "content": "<p>Shop our selection of exclusive handbags and backpacks at reduced price during the Super Sale. Hurry up!</p>",
         "button_link": "shopify://collections/sale",
         "button_text": "Shop now",
@@ -450,8 +508,17 @@
       ],
       "settings": {
         "color_scheme": "scheme-1",
+        "custom_class": "",
         "reveal_on_scroll": true,
         "separate_section_with_border": true,
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
         "media_position_desktop": "after_text",
         "media_position_mobile": "before_text",
         "media_layout": "overlap",
@@ -461,9 +528,13 @@
         "text_alignment": "center",
         "subheading": "collaboration",
         "title": "Us x them",
+        "heading_style": "h3",
         "content": "<p>Born from the meeting of a minimalist creative and a timeless design studio, this collection combines refined aesthetics with thoughtful craftsmanship. Their shared vision results in pieces that are both elegant and understated.</p>",
         "button_1_text": "discover",
+        "button_1_link": "",
         "button_1_style": "solid",
+        "button_2_text": "",
+        "button_2_link": "",
         "button_2_style": "solid"
       }
     },
@@ -476,6 +547,7 @@
             "color_scheme": "scheme-1",
             "text": "Before",
             "link_text": "View product",
+            "link_url": "",
             "link_style": "link"
           }
         },
@@ -485,6 +557,7 @@
             "color_scheme": "scheme-1",
             "text": "After",
             "link_text": "View product",
+            "link_url": "",
             "link_style": "link"
           }
         }
@@ -498,6 +571,8 @@
         "separate_section_with_border": false,
         "subheading": "Our bag",
         "title": "Choose your colour",
+        "heading_style": "h2",
+        "content": "<p>Showcase your product benefit by using before/after image comparison.</p>",
         "cursor_direction": "horizontal",
         "cursor_initial_position": 50,
         "cursor_background": "#ffffff",
@@ -514,6 +589,7 @@
             "title": "The Design",
             "content": "<p>Each piece is designed with your needs at heart. All products are imagined and developed in our studio, where ideas often stem from the thoughtful feedback we receive throughout the year.</p>",
             "link_text": "Learn more",
+            "link_url": "",
             "link_style": "link"
           }
         },
@@ -524,6 +600,7 @@
             "title": "Our commitments",
             "content": "<p>From the very beginning, responsibility has been a core value — both towards you and the environment. From design to distribution, each step is approached with care to create pieces that are timeless, high quality, and fairly priced.</p>",
             "link_text": "Learn more",
+            "link_url": "",
             "link_style": "link"
           }
         }
@@ -555,6 +632,8 @@
         "show_read_more": true,
         "subheading": "News",
         "title": "From the blog",
+        "heading_style": "h2",
+        "content": "",
         "button_link": "shopify://blogs/news",
         "button_text": "Discover all our stories"
       }
@@ -597,7 +676,10 @@
           "settings": {
             "hide_sold_out_variants": false,
             "selector_style": "block",
-            "swatch_selector_style": "swatch"
+            "swatch_selector_style": "swatch",
+            "variant_image_options": "",
+            "variant_image_show_underline": false,
+            "size_chart_page": ""
           }
         },
         "quantity-selector-1": {
@@ -608,7 +690,11 @@
           "type": "buy_buttons",
           "settings": {
             "show_payment_button": false,
-            "show_gift_card_recipient": false
+            "show_gift_card_recipient": false,
+            "atc_button_background": "",
+            "atc_button_text_color": "",
+            "payment_button_background": "",
+            "payment_button_text_color": ""
           }
         },
         "pickup-availability-1": {
@@ -630,6 +716,7 @@
       ],
       "settings": {
         "color_scheme": "scheme-1",
+        "product": "",
         "separate_section_with_border": true,
         "container_size": "lg",
         "product_info_size": 45,
@@ -642,7 +729,9 @@
         "enable_image_zoom": false,
         "max_image_zoom_level": 3,
         "subheading": "Our selection",
-        "title": "Product of the week"
+        "title": "Product of the week",
+        "heading_style": "h2",
+        "content": ""
       }
     },
     "image-with-text-block": {
@@ -663,7 +752,8 @@
         "link-1": {
           "type": "link",
           "settings": {
-            "text": "Learn more"
+            "text": "Learn more",
+            "url": ""
           }
         }
       },
@@ -688,7 +778,8 @@
           "settings": {
             "content": "<p>Sleek and compact, this piece keeps everything organized with just the right balance of structure and softness.</p>",
             "logo_max_width": 140,
-            "logo_mobile_max_width": 100
+            "logo_mobile_max_width": 100,
+            "author": ""
           }
         },
         "testimonial-2": {
@@ -696,7 +787,8 @@
           "settings": {
             "content": "<p>Whether in classic black or a bold tone, it stands out for its smart compartments and refined leather finish.</p>",
             "logo_max_width": 140,
-            "logo_mobile_max_width": 100
+            "logo_mobile_max_width": 100,
+            "author": ""
           }
         },
         "testimonial-3": {
@@ -704,7 +796,8 @@
           "settings": {
             "content": "<p>Minimalist design meets everyday function — perfect for keeping your essentials secure and stylish on the go.</p>",
             "logo_max_width": 140,
-            "logo_mobile_max_width": 100
+            "logo_mobile_max_width": 100,
+            "author": ""
           }
         }
       },
@@ -718,7 +811,11 @@
         "separate_section_with_border": true,
         "auto_rotate_between_testimonials": false,
         "cycle_speed": 5,
-        "font_size_factor": 1
+        "font_size_factor": 1,
+        "subheading": "",
+        "title": "",
+        "heading_style": "h2",
+        "content": ""
       }
     },
     "timeline": {
@@ -730,7 +827,10 @@
             "label": "2013",
             "subheading": "",
             "title": "A story of shared vision",
+            "heading_style": "h2",
             "content": "<p>This project began with two creative minds, united by both passion and purpose. From day one, the goal was clear: to build something meaningful together. What started as a simple idea turned into a first product launch—and the beginning of a lasting journey.</p>",
+            "link_text": "",
+            "link_url": "",
             "link_style": "link",
             "mobile_text_color": "#ffffff"
           }
@@ -741,7 +841,10 @@
             "label": "2014",
             "subheading": "",
             "title": "No middlemen",
+            "heading_style": "h2",
             "content": "<p>By working directly with you, we eliminate unnecessary markups and focus on what matters: offering thoughtfully designed, high-quality pieces at a fair price. A modern approach to fashion, rooted in transparency.</p>",
+            "link_text": "",
+            "link_url": "",
             "link_style": "link",
             "mobile_text_color": "#ffffff"
           }
@@ -752,7 +855,10 @@
             "label": "2015",
             "subheading": "",
             "title": "Crafted in Italy",
+            "heading_style": "h2",
             "content": "<p>Production takes place in a family-run workshop near Naples, known for its artisanal expertise. The collaboration is close and ongoing, with daily conversations shaping both the process and the products. More than just a manufacturer—true partners in craft.</p>",
+            "link_text": "",
+            "link_url": "",
             "link_style": "link",
             "mobile_text_color": "#ffffff"
           }
@@ -761,8 +867,12 @@
           "type": "item",
           "settings": {
             "label": "2017",
+            "subheading": "Subheading",
             "title": "Discover our products",
+            "heading_style": "h2",
             "content": "<p>Located in the heart of the city, our showroom is open throughout the week and offers the ideal place to explore the full range in person.</p>",
+            "link_text": "",
+            "link_url": "",
             "link_style": "link",
             "mobile_text_color": "#ffffff"
           }
@@ -822,7 +932,9 @@
           "settings": {
             "title": "The design",
             "heading_tag": "h4",
-            "content": "<p>Every product is imagined and developed in our studio, with a focus on both form and function.</p>"
+            "content": "<p>Every product is imagined and developed in our studio, with a focus on both form and function.</p>",
+            "link_url": "",
+            "link_text": ""
           }
         },
         "image-with-text-2": {
@@ -830,7 +942,9 @@
           "settings": {
             "title": "Materials",
             "heading_tag": "h4",
-            "content": "<p>Our materials come from hides sourced as byproducts of the food industry. We collaborate exclusively with trusted tanneries based in Italy, France, and Spain.</p>"
+            "content": "<p>Our materials come from hides sourced as byproducts of the food industry. We collaborate exclusively with trusted tanneries based in Italy, France, and Spain.</p>",
+            "link_url": "",
+            "link_text": ""
           }
         },
         "image-with-text-3": {
@@ -838,7 +952,9 @@
           "settings": {
             "title": "The know-how",
             "heading_tag": "h4",
-            "content": "<p>Every step of the process follows the rigorous standards of traditional leatherworking—ensuring durability, precision, and lasting quality.</p>"
+            "content": "<p>Every step of the process follows the rigorous standards of traditional leatherworking—ensuring durability, precision, and lasting quality.</p>",
+            "link_url": "",
+            "link_text": ""
           }
         }
       },
@@ -849,6 +965,7 @@
       ],
       "settings": {
         "color_scheme": "scheme-1",
+        "custom_class": "",
         "separate_section_with_border": true,
         "columns_per_row": 3,
         "stack_on_mobile": false,
@@ -857,7 +974,17 @@
         "text_alignment": "center",
         "spacing": "md",
         "subheading": "About us",
-        "title": "From A to Z"
+        "title": "From A to Z",
+        "heading_style": "h2",
+        "content": "",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
       }
     },
     "newsletter": {
@@ -865,13 +992,13 @@
       "settings": {
         "color_scheme": "scheme-3",
         "separate_section_with_border": true,
-        "image_size": "md",
+        "image_position_mobile": "after_text",
         "subheading": "Keep me updated",
         "title": "Newsletter",
+        "heading_style": "h2",
         "content": "<p>Subscribe to get notified about product launches, special offers and company news.</p>",
         "button_text": "Subscribe",
-        "overlay_color": "#000000",
-        "overlay_opacity": 30
+        "disclaimer": "<p>You can unsubscribe anytime. For more details, read our Privacy Policy.</p>"
       }
     }
   },
