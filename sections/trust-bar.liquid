@@ -57,23 +57,49 @@
     letter-spacing: 0;
     color: var(--trust-text);
   }
+/* Visibility control per item */
+.trust-bar__item--desktop { display: inline-flex; }   /* shown on desktop */
+.trust-bar__item--mobile { display: none; }            /* hidden on desktop */
+/* 'both' uses the default .trust-bar__item display */
 
-  /* Mobile: 2-column grid */
-  @media screen and (max-width: 749px) {
-    #TrustBar-{{ section_id }} .trust-bar__inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem 1.25rem;
-      padding-left: 12px;
-      padding-right: 12px;
-    }
-    #TrustBar-{{ section_id }} .trust-bar__item {
-      white-space: normal;
-    }
-    #TrustBar-{{ section_id }} .trust-bar__text {
-      font-size: 14px;
-    }
+/* Desktop icon size */
+#TrustBar-{{ section_id }} .trust-bar__icon img {
+  width: 20px;   /* desktop icon width */
+  height: auto;
+}
+
+/* Mobile */
+@media screen and (max-width: 749px) {
+  /* Visibility swap on mobile */
+  .trust-bar__item--desktop { display: none; }         /* hide desktop-only on mobile */
+  .trust-bar__item--mobile { display: inline-flex; }   /* show mobile-only on mobile */
+
+  #TrustBar-{{ section_id }} .trust-bar__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;   /* 2 columns */
+    gap: 12px;                        /* Figma gap 12px */
+    padding-left: 12px;
+    padding-right: 12px;
+    max-width: 351px;
+    margin: 0 auto;
   }
+
+  #TrustBar-{{ section_id }} .trust-bar__item {
+    gap: 6px;                         /* Figma gap 6px icon-to-text */
+    white-space: normal;
+  }
+
+  #TrustBar-{{ section_id }} .trust-bar__icon img {
+    width: 22px;                      /* Figma mobile icon 22px */
+    height: 22px;
+  }
+
+  #TrustBar-{{ section_id }} .trust-bar__text {
+    font-size: 14px;                  /* Figma mobile 14px */
+    font-weight: 600;
+    line-height: 1.4;
+  }
+}
 </style>
 
 <div id="TrustBar-{{ section_id }}" class="trust-bar">
