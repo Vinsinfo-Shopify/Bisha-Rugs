@@ -11,70 +11,20 @@
   "type": "footer",
   "name": "Footer group",
   "sections": {
-    "text-with-icons": {
-      "type": "text-with-icons",
-      "blocks": {
-        "icon-1": {
-          "type": "item",
-          "settings": {
-            "icon": "picto-award-gift",
-            "icon_width": 24,
-            "mobile_icon_width": 24,
-            "title": "Free delivery worldwide",
-            "content": "<p>Short content about your store</p>"
-          }
-        },
-        "icon-2": {
-          "type": "item",
-          "settings": {
-            "icon": "picto-award-gift",
-            "icon_width": 24,
-            "mobile_icon_width": 24,
-            "title": "Satisfied or refunded",
-            "content": "<p>Short content about your store</p>"
-          }
-        },
-        "icon-3": {
-          "type": "item",
-          "settings": {
-            "icon": "picto-award-gift",
-            "icon_width": 24,
-            "mobile_icon_width": 24,
-            "title": "Top-notch support",
-            "content": "<p>Short content about your store</p>"
-          }
-        },
-        "icon-4": {
-          "type": "item",
-          "settings": {
-            "icon": "picto-award-gift",
-            "icon_width": 24,
-            "mobile_icon_width": 24,
-            "title": "Secure payments",
-            "content": "<p>Short content about your store</p>"
-          }
-        }
-      },
-      "block_order": [
-        "icon-1",
-        "icon-2",
-        "icon-3",
-        "icon-4"
-      ],
-      "settings": {
-        "color_scheme": "",
-        "separate_section_with_border": true,
-        "stack_on_mobile": false,
-        "icon_color": "",
-        "text_color": "",
-        "text_alignment": "center"
-      }
-    },
     "footer": {
       "type": "footer",
       "blocks": {
+        "image_Tmmyee": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Frame_1437258595.png",
+            "image_width": 160,
+            "link": ""
+          }
+        },
         "text_z77pQj": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "title": "BISHA RUGS",
             "content": "",
@@ -85,7 +35,9 @@
           "type": "links",
           "settings": {
             "menu": "shop-all",
-            "collapse_on_mobile": false,
+            "custom_icon_closed": "shopify://shop_images/Vector_5.png",
+            "custom_icon_open": "shopify://shop_images/Vector_6.png",
+            "collapse_on_mobile": true,
             "show_menu_title": true,
             "menu_title": ""
           }
@@ -94,7 +46,9 @@
           "type": "links",
           "settings": {
             "menu": "rug-resources",
-            "collapse_on_mobile": false,
+            "custom_icon_closed": "shopify://shop_images/Vector_5.png",
+            "custom_icon_open": "shopify://shop_images/Vector_6.png",
+            "collapse_on_mobile": true,
             "show_menu_title": true,
             "menu_title": "Rug Resources"
           }
@@ -103,7 +57,9 @@
           "type": "links",
           "settings": {
             "menu": "know-us-better",
-            "collapse_on_mobile": false,
+            "custom_icon_closed": "shopify://shop_images/Vector_5.png",
+            "custom_icon_open": "shopify://shop_images/Vector_6.png",
+            "collapse_on_mobile": true,
             "show_menu_title": true,
             "menu_title": ""
           }
@@ -112,7 +68,9 @@
           "type": "links",
           "settings": {
             "menu": "help",
-            "collapse_on_mobile": false,
+            "custom_icon_closed": "shopify://shop_images/Vector_5.png",
+            "custom_icon_open": "shopify://shop_images/Vector_6.png",
+            "collapse_on_mobile": true,
             "show_menu_title": true,
             "menu_title": ""
           }
@@ -122,18 +80,21 @@
           "settings": {
             "heading": "Contact Us",
             "collapsible": true,
+            "custom_icon_closed": "shopify://shop_images/Vector_5.png",
+            "custom_icon_open": "shopify://shop_images/Vector_6.png",
             "highlight_border": true,
             "desktop_width": 20,
-            "address_icon": "shopify://shop_images/boxicons_location.png",
-            "address": "30 North Gould Street, Sheridan, Wyoming",
-            "phone_icon": "shopify://shop_images/Vector_4.png",
+            "address_icon": "shopify://shop_images/boxicons_location_1.png",
+            "address": "30 North Gould Street, Sheridan, Wyoming",
+            "phone_icon": "shopify://shop_images/proicons_call.png",
             "phone": "+1 (415) 980-7774",
-            "email_icon": "shopify://shop_images/Vector_3.png",
+            "email_icon": "shopify://shop_images/material-symbols_mail-outline.png",
             "email": "love@bisharugs.com"
           }
         }
       },
       "block_order": [
+        "image_Tmmyee",
         "text_z77pQj",
         "links_jCCMqU",
         "links_aRa6NT",
@@ -155,7 +116,6 @@
     }
   },
   "order": [
-    "text-with-icons",
     "footer"
   ]
 }

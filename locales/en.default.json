@@ -50,7 +50,7 @@
       "title": "Reviews"
     },
     "newsletter": {
-      "email": "E-mail",
+      "email": "Enter your email",
       "subscribe": "Subscribe",
       "notify_me": "Notify me",
       "subscribed_successfully": "You have been subscribed to our newsletter."
@@ -205,7 +205,9 @@
       "back_to_home": "Back to home",
       "view": "View",
       "all_posts": "All posts",
-      "read_more": "Read more"
+      "read_more": "Read more",
+      "post_by": "Post by",
+      "comments" : "Comments count"
     },
     "post": {
       "written_by": "Written by {{ author }}",

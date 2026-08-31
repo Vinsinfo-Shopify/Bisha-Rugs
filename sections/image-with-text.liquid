@@ -5,11 +5,93 @@
     ------------------------------------------------------------------------------------------------------------------------
   {%- endcomment -%}
 
-  <style>
-    #shopify-section-{{ section.id }} {
-      --image-with-text-content-max-width: {% if section.settings.content_width == 'sm' %}430px{% elsif section.settings.content_width == 'md' %}780px{% else %}100%{% endif %};
+<style>
+  #shopify-section-{{ section.id }} {
+    --image-with-text-content-max-width: {% if section.settings.content_width == 'sm' %}430px{% elsif section.settings.content_width == 'md' %}780px{% else %}100%{% endif %};
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --section-padding-left: {{ section.settings.padding_left }}px;
+    --section-padding-right: {{ section.settings.padding_right }}px;
+  }
+
+  #shopify-section-{{ section.id }} .image-with-text-container {
+    margin-inline: auto;
+  }
+
+  /* --- Icon with text list --- */
+  #shopify-section-{{ section.id }} .icon-with-text-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 22px;
+    list-style: none;
+    padding: 0;
+  }
+
+  #shopify-section-{{ section.id }} .icon-with-text-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .icon-with-text-item img,
+  #shopify-section-{{ section.id }} .icon-with-text-item svg {
+    width: 1.2em;
+    height: 1.2em;
+    flex-shrink: 0;
+    object-fit: contain;
+  }
+
+  /* Desktop: single line, side by side */
+  @media screen and (min-width: 800px) {
+    #shopify-section-{{ section.id }} .icon-with-text-list {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: start;
+      column-gap: 28px;
+      row-gap: 0;
     }
-  </style>
+
+    #shopify-section-{{ section.id }} .icon-with-text-item {
+      flex: 0 0 auto;
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .image-with-text > picture,
+    #shopify-section-{{ section.id }} .image-with-text > .placeholder {
+      order: {% if section.settings.media_position_mobile == 'after_text' %}2{% else %}0{% endif %};
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text > .prose {
+      order: 1;
+    }
+  }
+
+  /* --- Responsive left/right padding --- */
+  @media screen and (max-width: 1000px) {
+    #shopify-section-{{ section.id }} {
+      --section-padding-left: 36px;
+      --section-padding-right: 36px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} {
+      --section-padding-left: 24px;
+      --section-padding-right: 24px;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    #shopify-section-{{ section.id }} {
+      --section-padding-top: {{ section.settings.padding_top_mobile | default: section.settings.padding_top }}px;
+      --section-padding-bottom: {{ section.settings.padding_bottom_mobile | default: section.settings.padding_bottom }}px;
+      --section-padding-left: {{ section.settings.padding_left_mobile | default: 12 }}px;
+      --section-padding-right: {{ section.settings.padding_right_mobile | default: 12 }}px;
+    }
+  }
+</style>
 
   {%- comment -%}
     ------------------------------------------------------------------------------------------------------------------------
@@ -19,7 +101,8 @@
 
   {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 
-  <div class="{% unless section.settings.remove_vertical_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+<div class="{% unless section.settings.remove_vertical_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_class }}">
+  <div class="image-with-text-container section-custom-padding">
     <image-with-text class="image-with-text {% if section.settings.image_position == 'end' %}image-with-text--reverse{% endif %}">
       {%- if section.settings.image != blank -%}
         <picture>
@@ -46,23 +129,23 @@
       {%- else -%}
         {{- 'image' | placeholder_svg_tag: 'placeholder' -}}
       {%- endif -%}
-
+      {%- assign icon_text_blocks = section.blocks | where: "type", "icon_with_text" -%}
       <div class="prose text-center sm:text-start">
         {%- for block in section.blocks -%}
           {%- case block.type -%}
             {%- when 'subheading' -%}
               {%- if block.settings.text != blank -%}
-                <p class="h6" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+                <p class="h6 image_with_text_subheading" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
               {%- endif -%}
 
             {%- when 'heading' -%}
               {%- if block.settings.text != blank -%}
-                <p class="{{ block.settings.heading_tag }}" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+                <p class="{{ block.settings.heading_tag }} image_with_text_heading" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
               {%- endif -%}
 
             {%- when 'richtext' -%}
               {%- if block.settings.content != blank -%}
-                <div {{ block.shopify_attributes }}>
+                <div class="image_with_text_content" {{ block.shopify_attributes }}>
                   {{- block.settings.content -}}
                 </div>
               {%- endif -%}
@@ -105,8 +188,50 @@
               {%- endif -%}
           {%- endcase -%}
         {%- endfor -%}
+        {%- comment -%} Shipping / Returns feature row {%- endcomment -%}
+        {%- if section.settings.show_features -%}
+          <div class="image-with-text__features">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'feature' and block.settings.text != blank -%}
+                <div
+                  class="image-with-text__feature"
+                  {{ block.shopify_attributes }}
+                >
+                  <span class="image-with-text__feature-icon" aria-hidden="true">
+                    {%- case block.settings.icon -%}
+                      {%- when 'shipping' -%}
+                        {% render 'truck-icon' %}
+                      {%- when 'returns' -%}
+                        {% render 'easy-return' %}
+                    {%- endcase -%}
+                  </span>
+                  <span class="image-with-text__feature-text">
+                    {{ block.settings.text | escape }}
+                  </span>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+        {%- if icon_text_blocks.size > 0 -%}
+          <ul class="icon-with-text-list">
+            {%- for block in icon_text_blocks -%}
+              <li class="icon-with-text-item" {{ block.shopify_attributes }}>
+                {%- if block.settings.icon != blank -%}
+                  {{-
+                    block.settings.icon
+                    | image_url: width: 64
+                    | image_tag: loading: 'lazy', widths: '32,48,64'
+                  -}}
+                {%- endif -%}
+                <span>{{ block.settings.text }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
       </div>
     </image-with-text>
+    </div>
   </div>
 {%- endif -%}
 
@@ -126,11 +251,101 @@
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
     },
+      {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class",
+      "info": "Add a class name (no dots/spaces) to target this section with custom CSS."
+    },
     {
       "type": "checkbox",
       "id": "separate_section_with_border",
       "label": "t:global.section.separate_section_with_border",
       "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Left padding",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Right padding",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "header",
+      "content": "Mobile padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding (below 500px)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding (below 500px)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "label": "Left padding (below 500px)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "label": "Right padding (below 500px)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 12
     },
     {
       "type": "image_picker",
@@ -143,6 +358,22 @@
       "id": "mobile_image",
       "label": "t:global.image.mobile_image",
       "info": "t:sections.image_with_text.mobile_image_size_recommendation"
+    },
+    {
+      "type": "select",
+      "id": "media_position_mobile",
+      "label": "Media position (mobile)",
+      "options": [
+        {
+          "value": "before_text",
+          "label": "Before text"
+        },
+        {
+          "value": "after_text",
+          "label": "After text"
+        }
+      ],
+      "default": "before_text"
     },
     {
       "type": "checkbox",
@@ -190,7 +421,13 @@
       "id": "remove_vertical_spacing",
       "label": "t:global.spacing.remove_vertical_spacing",
       "default": true
-    }
+    },
+    {
+      "type": "checkbox",
+      "id": "show_features",
+      "label": "Show shipping & returns",
+      "default": true
+    },
   ],
   "blocks": [
     {
@@ -202,6 +439,25 @@
           "id": "text",
           "label": "t:global.text.text",
           "default": "Subheading"
+        }
+      ]
+    },
+    {
+      "type": "icon_with_text",
+      "name": "Icon with text",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon",
+          "info": "Recommended: small square image/svg, e.g. 64x64px"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Feature text"
         }
       ]
     },
@@ -341,6 +597,34 @@
           "type": "color",
           "id": "text_color",
           "label": "t:global.text.text"
+        }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "shipping",
+              "label": "Shipping"
+            },
+            {
+              "value": "returns",
+              "label": "Returns"
+            }
+          ],
+          "default": "shipping"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free Insured Shipping"
         }
       ]
     }

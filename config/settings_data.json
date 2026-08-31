@@ -27,7 +27,7 @@
     "color_schemes": {
       "scheme-1": {
         "settings": {
-          "background": "#f3eee4",
+          "background": "#fffbf3",
           "background_gradient": "",
           "text_color": "#2b2724",
           "primary_button_background": "#2b2724",
@@ -38,9 +38,9 @@
       },
       "scheme-2": {
         "settings": {
-          "background": "#2A2825",
+          "background": "#2a2825",
           "background_gradient": "",
-          "text_color": "#FFFFFF",
+          "text_color": "#ffffff",
           "primary_button_background": "#b15a38",
           "primary_button_text_color": "#f3eee4",
           "circle_button_background": "#2b2724",
@@ -95,9 +95,42 @@
         "settings": {
           "background": "#f3eee4",
           "background_gradient": "",
-          "text_color": "#2b2724",
+          "text_color": "#000000",
           "primary_button_background": "#2b2724",
           "primary_button_text_color": "#f3eee4",
+          "circle_button_background": "#f3eee4",
+          "circle_button_icon": "#2b2724"
+        }
+      },
+      "scheme-8eec0b30-7dd6-40f7-bdf8-3f2aa3b45117": {
+        "settings": {
+          "background": "#6e2a2b",
+          "background_gradient": "",
+          "text_color": "#ffffff",
+          "primary_button_background": "#ffffff",
+          "primary_button_text_color": "#000000",
+          "circle_button_background": "#f3eee4",
+          "circle_button_icon": "#2b2724"
+        }
+      },
+      "scheme-257fc222-3048-499d-91ad-4c0f672389c7": {
+        "settings": {
+          "background": "#b35642",
+          "background_gradient": "",
+          "text_color": "#ffffff",
+          "primary_button_background": "#2b2724",
+          "primary_button_text_color": "#f3eee4",
+          "circle_button_background": "#f3eee4",
+          "circle_button_icon": "#2b2724"
+        }
+      },
+      "scheme-4c11c2e1-14d6-4fc0-af50-467273763670": {
+        "settings": {
+          "background": "#F3EEE4",
+          "background_gradient": "",
+          "text_color": "#000000",
+          "primary_button_background": "#B35642",
+          "primary_button_text_color": "#FFFFFF",
           "circle_button_background": "#f3eee4",
           "circle_button_icon": "#2b2724"
         }

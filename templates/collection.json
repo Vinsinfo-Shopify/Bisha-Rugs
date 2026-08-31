@@ -9,6 +9,10 @@
  */
 {
   "sections": {
+    "collection_breadcrumb": {
+      "type": "collection-breadcrumb",
+      "settings": {}
+    },
     "collection-banner": {
       "type": "collection-banner",
       "settings": {}
@@ -19,6 +23,7 @@
     }
   },
   "order": [
+    "collection_breadcrumb",
     "collection-banner",
     "main"
   ]

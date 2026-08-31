@@ -1,0 +1,119 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "page_heading": {
+      "type": "page-heading",
+      "blocks": {
+        "breadcrumb_PM9XaQ": {
+          "type": "breadcrumb",
+          "settings": {}
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "page_title": "News",
+            "header_size": "default"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "description": "<p>Discover style insights and trends on our fashion lifestyle blog.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "breadcrumb_PM9XaQ",
+        "heading",
+        "description"
+      ],
+      "settings": {
+        "section_width": "md",
+        "color_scheme": "scheme-1",
+        "alignment": "center",
+        "overlay_opacity": 0,
+        "height": "sm",
+        "padding_top": 60,
+        "padding_bottom": 28
+      }
+    },
+    "main": {
+      "type": "main-blog",
+      "blocks": {
+        "categories_WbMkLB": {
+          "type": "categories",
+          "settings": {
+            "title": "Blog categories",
+            "menu": ""
+          }
+        },
+        "recent_post_ADtUFj": {
+          "type": "recent_post",
+          "settings": {
+            "title": "Popular posts",
+            "maximum": 4
+          }
+        },
+        "tags_4Xm4EF": {
+          "type": "tags",
+          "settings": {
+            "title": "Tags"
+          }
+        },
+        "image_banner_UYQdxt": {
+          "type": "image_banner",
+          "settings": {
+            "url": "",
+            "open_link": false
+          }
+        }
+      },
+      "block_order": [
+        "categories_WbMkLB",
+        "recent_post_ADtUFj",
+        "tags_4Xm4EF",
+        "image_banner_UYQdxt"
+      ],
+      "settings": {
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
+        "show_blog_title": false,
+        "subheading": "",
+        "heading": "",
+        "heading_style": "h1",
+        "content": "",
+        "show_rss_feed": false,
+        "show_tags": false,
+        "posts_per_page": 10,
+        "enable_sidebar": true,
+        "sidebar_position": "left",
+        "layout": "grid",
+        "items_per_row": 3,
+        "column_gap": 30,
+        "pagination_type": "infinite_scroll",
+        "load_more_button_text": "Load more",
+        "promotion_link": "",
+        "promotion_position": 3,
+        "feature_first_blog_post": false,
+        "featured_blog_post_color_scheme": "",
+        "show_category": true,
+        "show_date": true,
+        "show_excerpt": true,
+        "show_comment_count": true,
+        "show_read_more": false,
+        "readmore_type": "link"
+      }
+    }
+  },
+  "order": [
+    "page_heading",
+    "main"
+  ]
+}

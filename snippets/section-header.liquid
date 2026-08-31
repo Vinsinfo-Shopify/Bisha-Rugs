@@ -13,14 +13,15 @@
     {%- if subheading != blank or heading != blank or content != blank -%}
       <div class="prose">
         {%- if subheading != blank -%}
-          <p class="h6">{{- subheading -}}</p>
+          <p class="h6 section_header_subheading">{{- subheading -}}</p>
         {%- endif -%}
 
         {%- if heading != blank -%}
-          <h2 class="{{ heading_style | default: 'h2' }}">{{- heading -}}</h2>
+          <h1 class="{{ heading_style | default: 'h1' }} section_header_heading">{{- heading -}}</h1>
         {%- endif -%}
-
+        <div class="section_header_content">
         {{- content -}}
+        </div>
       </div>
     {%- endif -%}
   </div>

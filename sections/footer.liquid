@@ -65,7 +65,7 @@
                     {%- capture contact_content -%}
                       <ul class="v-stack gap-3 unstyled-list footer-contact-list{% if block.settings.highlight_border %} footer-contact-list--accent{% endif %}" role="list" style="--footer-contact-width: {{ block.settings.desktop_width }}%;">
                         {%- if block.settings.address != blank -%}
-                          <li class="h-stack gap-2 items-start">
+                          <li class="h-stack gap-2 items-start contact_us_list">
                             {%- if block.settings.address_icon != blank -%}
                               {{- block.settings.address_icon | image_url: width: 24 | image_tag: class: 'contact-icon', loading: 'lazy', alt: 'Address' -}}
                             {%- else -%}
@@ -74,6 +74,19 @@
                               </svg>
                             {%- endif -%}
                             <span class="text-subdued">{{ block.settings.address | newline_to_br }}</span>
+                          </li>
+                        {%- endif -%}
+
+                                                {%- if block.settings.email != blank -%}
+                          <li class="h-stack gap-2 items-center">
+                            {%- if block.settings.email_icon != blank -%}
+                              {{- block.settings.email_icon | image_url: width: 24 | image_tag: class: 'contact-icon', loading: 'lazy', alt: 'Email' -}}
+                            {%- else -%}
+                              <svg class="contact-icon" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1zm16 2.35l-8 5.99-8-5.99V6l8 6 8-6z"/>
+                              </svg>
+                            {%- endif -%}
+                            <a href="mailto:{{ block.settings.email }}" class="link-faded">{{ block.settings.email }}</a>
                           </li>
                         {%- endif -%}
 
@@ -90,18 +103,6 @@
                           </li>
                         {%- endif -%}
 
-                        {%- if block.settings.email != blank -%}
-                          <li class="h-stack gap-2 items-center">
-                            {%- if block.settings.email_icon != blank -%}
-                              {{- block.settings.email_icon | image_url: width: 24 | image_tag: class: 'contact-icon', loading: 'lazy', alt: 'Email' -}}
-                            {%- else -%}
-                              <svg class="contact-icon" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path d="M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1zm16 2.35l-8 5.99-8-5.99V6l8 6 8-6z"/>
-                              </svg>
-                            {%- endif -%}
-                            <a href="mailto:{{ block.settings.email }}" class="link-faded">{{ block.settings.email }}</a>
-                          </li>
-                        {%- endif -%}
                       </ul>
                     {%- endcapture -%}
 
@@ -114,7 +115,14 @@
                     </div>
 
                     {%- if block.settings.collapsible -%}
-                      {%- render 'accordion', title: block.settings.heading, content: contact_content, class: 'sm:hidden' open: true -%}
+                      {%- render 'accordion',
+                        title: block.settings.heading,
+                        content: contact_content,
+                        class: 'sm:hidden',
+                        open: true,
+                        custom_icon_closed: block.settings.custom_icon_closed,
+                        custom_icon_open: block.settings.custom_icon_open
+                      -%}
                     {%- endif -%}
                   {%- endif -%}
 
@@ -142,9 +150,15 @@
                       {{- menu_content -}}
                     </div>
 
-                    {%- if block.settings.collapse_on_mobile -%}
-                      {%- render 'accordion', title: menu_title, content: menu_content, class: 'sm:hidden' -%}
-                    {%- endif -%}
+                  {%- if block.settings.collapse_on_mobile -%}
+                    {%- render 'accordion',
+                      title: menu_title,
+                      content: menu_content,
+                      class: 'sm:hidden',
+                      custom_icon_closed: block.settings.custom_icon_closed,
+                      custom_icon_open: block.settings.custom_icon_open
+                    -%}
+                  {%- endif -%}
                   {%- endif -%}
 
                 {%- when 'newsletter' -%}
@@ -280,7 +294,7 @@
         {%- endif -%}
 
         <p class="heading text-subdued text-xxs">
-          © {{ 'now' | date: '%Y' }} - {{ shop.name }} -{{"All Rights Reserved"}}
+          ©{{ 'now' | date:'%Y' }} {{ shop.name }}. {{"All rights reserved."}}
           {%- if section.settings.show_powered_by_shopify -%}{{ powered_by_link }}{%- endif -%}
         </p>
 
@@ -437,6 +451,16 @@
           "label": "t:sections.footer.blocks.links.menu",
           "info": "t:sections.footer.blocks.links.menu_info",
           "default": "footer"
+          },
+          {
+          "type": "image_picker",
+          "id": "custom_icon_closed",
+          "label": "Accordion icon (closed)"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon_open",
+          "label": "Accordion icon (open)"
         },
         {
           "type": "checkbox",
@@ -508,6 +532,18 @@
       "visible_if": "{{ block.settings.heading != blank }}",
       "default": true,
       "label": "Collapsible row on mobile"
+    },
+        {
+      "type": "image_picker",
+      "id": "custom_icon_closed",
+      "label": "Accordion icon (closed)",
+      "visible_if": "{{ block.settings.collapsible }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_icon_open",
+      "label": "Accordion icon (open)",
+      "visible_if": "{{ block.settings.collapsible }}"
     },
     {
       "type": "checkbox",

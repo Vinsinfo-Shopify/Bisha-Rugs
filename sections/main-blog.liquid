@@ -1,101 +1,90 @@
-{%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
+{{ 'blog-sidebar.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.pagination_type != 'default' -%}
+  <script src="{{ 'blog-pagination.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
-<div class="section-spacing section-spacing--tight color-scheme color-scheme--{{ section.settings.color_scheme }} color-scheme--bg-{{ color_scheme_hash }}">
-  {%- if blog.articles_count == 0 -%}
-    <div class="container container--xs">
-      <div class="empty-state">
-        <div class="prose">
-          <h1 class="h4">{{ blog.title }}</h1>
-          <p>{{ 'blog.general.empty_blog' | t }}</p>
-
-          {%- assign button_content = 'blog.general.back_to_home' | t -%}
-          {%- render 'button', content: button_content, href: routes.root_url -%}
+<div class="section-spacing section-spacing--tight color-scheme color-scheme--{{ section.settings.color_scheme }}">
+{%- if blog.articles_count == 0 -%}
+  ...same empty state...
+{%- else -%}
+  <div class="container container--lg">
+    <div class="section-stack">
+      {%- if section.settings.show_blog_title -%}
+        <div class="v-stack gap-5">
+          {%- assign heading_text = section.settings.heading | default: blog.title -%}
+          {%- render 'section-header',
+            subheading: section.settings.subheading,
+            heading: heading_text,
+            heading_style: section.settings.heading_style,
+            content: section.settings.content,
+            text_alignment: 'center'
+          -%}
+          {%- if section.settings.show_rss_feed -%}
+            <div class="text-center">
+              <a href="{{ blog.url }}.atom" class="link-faded">
+                <span class="sr-only">{{ 'general.accessibility.rss_feed' | t }}</span>
+                {%- render 'icon', icon: 'rss', width: 12 -%}
+              </a>
+            </div>
+          {%- endif -%}
         </div>
-      </div>
-    </div>
-  {%- else -%}
-    <div class="container container--lg">
-      <div class="section-stack">
-        {%- if section.settings.show_blog_title or section.settings.show_tags and blog.tags.size > 0 -%}
-          <div class="v-stack gap-5">
-            {%- if section.settings.show_blog_title -%}
-              <div class="section-header justify-self-center text-center">
-                <div class="h-stack justify-center gap-4">
-                  <h1 class="h2">{{ blog.title }}</h1>
+      {%- endif -%}
 
-                  {%- if section.settings.show_rss_feed -%}
-                    <a href="{{ blog.url }}.atom" class="link-faded">
-                      <span class="sr-only">{{ 'general.accessibility.rss_feed' | t }}</span>
-                      {%- render 'icon' with 'rss', width: 12 -%}
-                    </a>
-                  {%- endif -%}
-                </div>
-              </div>
-            {%- endif -%}
-
-            {%- if section.settings.show_tags and blog.tags.size > 0 -%}
-              <ul class="blog-tags unstyled-list" role="list">
-                <li
-                  {% if current_tags.size > 0 %}
-                    class="link-faded"
-                  {% endif %}
-                >
-                  <a href="{{ blog.url }}">{{- 'blog.general.all_posts' | t -}}</a>
-                </li>
-
-                {%- for tag in blog.all_tags -%}
-                  {%- if current_tags contains tag -%}
-                    <li>{{- tag | link_to_remove_tag: tag -}}</li>
-                  {%- else -%}
-                    <li class="link-faded">{{- tag | link_to_tag: tag -}}</li>
-                  {%- endif -%}
-                {%- endfor -%}
-              </ul>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
+      <div class="{% if section.settings.enable_sidebar %}blog-with-sidebar{% if section.settings.sidebar_position == 'right' %} blog-with-sidebar--right{% endif %}{% endif %}" style="--blog-sidebar-width: 17.5rem;">
 
         <div class="v-stack gap-8 sm:gap-12">
           {%- paginate blog.articles by section.settings.posts_per_page -%}
+            {%- liquid
+              capture list_style
+                echo '--items-per-row-desktop: ' | append: section.settings.items_per_row | append: ';'
+                echo '--blog-post-list-column-gap: ' | append: section.settings.column_gap | append: 'px;'
+              endcapture
+
+              assign next_url = ''
+              if paginate.next
+                assign next_url = paginate.next.url
+              endif
+
+               assign use_custom_pagination = false
+                if section.settings.pagination_type != 'default'
+                  assign use_custom_pagination = true
+                endif
+            -%}
+
+            {%- if use_custom_pagination -%}
+              <paginated-blog-list
+                data-mode="{{ section.settings.pagination_type }}"
+                {% if next_url != blank %}data-next-url="{{ next_url }}"{% endif %}
+              >
+            {%- endif -%}
+
             <blog-posts
-              class="blog-post-list"
-              {% if settings.stagger_blog_posts_apparition %}
-                reveal-on-scroll="true"
-              {% endif %}
+              data-blog-list
+              class="blog-post-list{% if section.settings.layout == 'list' %} blog-post-list--layout-list{% endif %}"
+              style="{{ list_style | strip | strip_newlines }}"
+              {% if settings.stagger_blog_posts_apparition %}reveal-on-scroll="true"{% endif %}
             >
-              {%- capture sizes -%}(max-width: 699px) 95vw, (max-width: 1149px) calc(100vw / 2), calc((80rem - (5rem * ({{ section.settings.blog.articles_count | default: 3 | at_most: 3 }} - 1))) / 3){%- endcapture -%}
+              {%- capture sizes -%}(max-width: 699px) 95vw, (max-width: 1149px) calc(100vw / 2), calc((80rem - (5rem * ({{ blog.articles_count | at_most: 3 }} - 1))) / 3){%- endcapture -%}
+
+              {%- assign midnum = section.settings.posts_per_page | times: paginate.current_page | minus: section.settings.posts_per_page -%}
 
               {%- for article in blog.articles -%}
-                {%- if section.settings.feature_first_blog_post and forloop.first -%}
-                  <div class="featured-blog-post color-scheme color-scheme--{{ section.settings.featured_blog_post_color_scheme.id }} group">
-                    <a href="{{ article.url }}" class="content-over-media content-over-media--xs">
-                      {%- capture featured_blog_post_sizes -%}(max-width: 1149px) 95vw, 1260px{%- endcapture -%}
+                {%- assign global_index = forloop.index | plus: midnum -%}
 
-                      {%- if article.image != blank -%}
-                        {{-
-                          article.image
-                          | image_url: width: article.image.width
-                          | image_tag: sizes: featured_blog_post_sizes, widths: '200,300,400,500,600,800,1000,1200,1400,1600,1800,2000,2200', class: 'zoom-image group-hover:zoom'
-                        -}}
-                      {%- endif -%}
-
-                      <div class="prose place-self-end-start">
-                        <h2 class="h2">
-                          {%- if article -%}
-                            {{ article.title }}
-                          {%- else -%}
-                            {{- 'general.on_boarding.blog_post_title' | t -}}
-                          {%- endif -%}
-                        </h2>
-
-                        {%- assign button_content = 'blog.general.read_more' | t -%}
-                        {%- render 'button',
-                          type: 'button',
-                          content: button_content,
-                          background: section.settings.featured_blog_post_button_background,
-                          text_color: section.settings.featured_blog_post_button_text_color
-                        -%}
-                      </div>
+                {%- if section.settings.promotion_image != blank and global_index == section.settings.promotion_position -%}
+                  <div class="blog-post-list__promo">
+                    <a
+                      {% if section.settings.promotion_link == blank %}
+                        role="link" aria-disabled="true"
+                      {% else %}
+                        href="{{ section.settings.promotion_link }}"
+                      {% endif %}
+                    >
+                      {{-
+                        section.settings.promotion_image
+                        | image_url: width: section.settings.promotion_image.width
+                        | image_tag: sizes: '(min-width: 1000px) 33vw, 95vw', widths: '400,600,800,1000,1200'
+                      -}}
                     </a>
                   </div>
                 {%- endif -%}
@@ -107,18 +96,40 @@
                   show_date: section.settings.show_date,
                   show_excerpt: section.settings.show_excerpt,
                   show_read_more: section.settings.show_read_more,
+                  show_comment_count: section.settings.show_comment_count,
+                  readmore_type: section.settings.readmore_type,
                   sizes: sizes,
                   position: forloop.index
                 -%}
               {%- endfor -%}
             </blog-posts>
 
-            {%- render 'pagination', paginate: paginate -%}
+            {%- if section.settings.pagination_type == 'load_more' -%}
+              {%- if paginate.next -%}
+                <div class="justify-self-center">
+                  <button type="button" data-load-more-button class="button">
+                    {{ section.settings.load_more_button_text | default: 'Load more' }}
+                  </button>
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+
+            {%- if use_custom_pagination -%}
+              </paginated-blog-list>
+            {%- else -%}
+              {%- render 'pagination', paginate: paginate -%}
+            {%- endif -%}
           {%- endpaginate -%}
         </div>
+
+        {%- if section.settings.enable_sidebar -%}
+          {%- render 'blog-sidebar', blog: blog, section: section -%}
+        {%- endif -%}
+        
       </div>
     </div>
-  {%- endif -%}
+  </div>
+{%- endif -%}
 </div>
 
 {% schema %}
@@ -140,6 +151,36 @@
       "default": true
     },
     {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "t:global.text.subheading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:global.text.heading",
+      "info": "Leave blank to use the blog's title."
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "t:global.text.style",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "t:global.text.content"
+    },
+    {
       "type": "checkbox",
       "id": "show_rss_feed",
       "label": "t:sections.main_blog.show_rss",
@@ -159,6 +200,103 @@
       "max": 50,
       "step": 1,
       "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sidebar",
+      "label": "Show sidebar",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "sidebar_position",
+      "label": "Sidebar position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Post layout",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "list", "label": "List" }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "label": "Posts per row (desktop)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Pagination"
+    },
+    {
+      "type": "select",
+      "id": "pagination_type",
+      "label": "Pagination type",
+      "options": [
+        { "value": "default", "label": "Page numbers" },
+        { "value": "load_more", "label": "Load more button" },
+        { "value": "infinite_scroll", "label": "Infinite scroll" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "text",
+      "id": "load_more_button_text",
+      "label": "Load more button text",
+      "default": "Load more"
+    },
+    {
+      "type": "header",
+      "content": "Promotion banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "promotion_image",
+      "label": "Promotion image"
+    },
+    {
+      "type": "url",
+      "id": "promotion_link",
+      "label": "Promotion link"
+    },
+    {
+      "type": "range",
+      "id": "promotion_position",
+      "label": "Promotion position",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "default": 3
     },
     {
       "type": "header",
@@ -203,9 +341,64 @@
     },
     {
       "type": "checkbox",
+      "id": "show_comment_count",
+      "label": "Show comment count",
+      "default": false
+    },
+    {
+      "type": "checkbox",
       "id": "show_read_more",
       "label": "t:global.blog.show_read_more",
       "default": true
+    },
+    {
+      "type": "select",
+      "id": "readmore_type",
+      "label": "Read more style",
+      "options": [
+        { "value": "primary", "label": "Primary button" },
+        { "value": "secondary", "label": "Secondary button" },
+        { "value": "link", "label": "Link" }
+      ],
+      "default": "link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "categories",
+      "name": "Categories",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Heading", "default": "Blog categories" },
+        { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    },
+    {
+      "type": "tags",
+      "name": "Tags",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Heading", "default": "Tags" }
+      ]
+    },
+    {
+      "type": "recent_post",
+      "name": "Popular posts",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Heading", "default": "Popular posts" },
+        { "type": "range", "id": "maximum", "label": "Posts to show", "min": 1, "max": 6, "step": 1, "default": 3 }
+      ]
+    },
+    {
+      "type": "image_banner",
+      "name": "Image banner",
+      "limit": 1,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "url", "label": "Link" },
+        { "type": "checkbox", "id": "open_link", "label": "Open in new tab", "default": false }
+      ]
     }
   ]
 }
