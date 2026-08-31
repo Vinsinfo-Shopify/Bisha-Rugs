@@ -36,15 +36,17 @@
     display: block;
   }
 
-  .hero-slide--image-right .hero-slide__inner {
-    grid-template-columns: 55% 45%;
-    grid-template-areas: "content image";
-  }
 
-  .hero-slide--image-left .hero-slide__inner {
-    grid-template-columns: 45% 55%;
-    grid-template-areas: "image content";
-  }
+.hero-slide--image-right .hero-slide__inner {
+  grid-template-columns: 53% 47%;
+  grid-template-areas: "content image";
+}
+
+/* Image on left: image 47% | content 53% */
+.hero-slide--image-left .hero-slide__inner {
+  grid-template-columns: 47% 53%;
+  grid-template-areas: "image content";
+}
 
 /* Shared */
 .hero-slide__inner {
