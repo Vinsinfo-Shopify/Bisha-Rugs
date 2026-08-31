@@ -101,6 +101,8 @@
         "slide_KXNeKx": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/Desktop_-_Fresh_Arrivals.png",
+            "mobile_image": "shopify://shop_images/Mobile_-_Fresh_Arrivals.png",
             "image_position": "right",
             "subheading": "",
             "heading": "Fresh Arrivals,  Curated for Timeless Living",
