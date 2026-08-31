@@ -51,92 +51,93 @@
   </style>
 
   <style>
-  #shopify-section-{{ section.id }} {
-    --collection-list-gap: 1rem;
-  }
+    #shopify-section-{{ section.id }} {
+      --collection-list-gap: 1rem;
+    }
 
-  #shopify-section-{{ section.id }} .section-stack {
-    gap: 24px;
-  }
+    #shopify-section-{{ section.id }} .section-stack {
+      gap: 24px;
+    }
 
-  #shopify-section-{{ section.id }} .section_header_subheading {
-    font-family: var(--text-font-family);
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.4;
-    letter-spacing: 0;
-    text-transform: uppercase;
-    margin: 0 0 4px;
-  }
+    #shopify-section-{{ section.id }} .section-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
 
-  #shopify-section-{{ section.id }} .section_header_heading {
-    font-family: var(--heading-font-family);
-    font-size: 28px;
-    font-weight: 400;
-    line-height: 1.2;
-    letter-spacing: 0;
-    text-transform: none !important;
-    margin: 0;
-  }
+    #shopify-section-{{ section.id }} .section-header > *:first-child {
+      font-family: var(--text-font-family);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      margin: 0;
+    }
 
-  #shopify-section-{{ section.id }} .section_header_content:empty {
-    display: none;
-  }
+    #shopify-section-{{ section.id }} .section-header > *:last-child {
+      font-family: var(--heading-font-family);
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: 0;
+      margin: 0;
+    }
 
-  #shopify-section-{{ section.id }} .collection-card .content-over-media {
-    aspect-ratio: 313 / 400;
-    border-radius: 0;
-    overflow: hidden;
-  }
+    #shopify-section-{{ section.id }} .collection-card .content-over-media {
+      aspect-ratio: 313 / 400;
+      border-radius: 0;
+      overflow: hidden;
+    }
 
-  #shopify-section-{{ section.id }} .collection-card__content {
-    width: 100%;
-    padding: 60px 16px 20px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
-  }
+    #shopify-section-{{ section.id }} .collection-card__content {
+      width: 100%;
+      padding: 60px 16px 20px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+    }
 
-  #shopify-section-{{ section.id }} .collection-card__row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    width: 100%;
-  }
+    #shopify-section-{{ section.id }} .collection-card__row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+    }
 
-  #shopify-section-{{ section.id }} .collection-card__title {
-    font-family: var(--text-font-family);
-    font-size: 22px;
-    font-weight: 600;
-    line-height: 1.4;
-    letter-spacing: 0;
-    text-transform: none;
-    color: #fff;
-    margin: 0;
-  }
+    #shopify-section-{{ section.id }} .collection-card__title {
+      font-family: var(--text-font-family);
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: 0;
+      text-transform: none;
+      color: #fff;
+      margin: 0;
+    }
 
-  #shopify-section-{{ section.id }} .collection-card__arrow {
-    display: grid;
-    place-items: center;
-    flex: none;
-    width: 34px;
-    height: 34px;
-    border: 1px solid #fff;
-    border-radius: 50%;
-    background-color: #fff;
-    color: #1a1a1a;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
+    #shopify-section-{{ section.id }} .collection-card__arrow {
+      display: grid;
+      place-items: center;
+      flex: none;
+      width: 34px;
+      height: 34px;
+      border: 1px solid #fff;
+      border-radius: 50%;
+      background-color: #fff;
+      color: #1a1a1a;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
 
-  #shopify-section-{{ section.id }} .collection-card__arrow svg {
-    width: 16px;
-    height: 16px;
-  }
+    #shopify-section-{{ section.id }} .collection-card__arrow svg {
+      width: 16px;
+      height: 16px;
+    }
 
-  #shopify-section-{{ section.id }} .collection-card:hover .collection-card__arrow {
-    background-color: transparent;
-    color: #fff;
-  }
-</style>
+    #shopify-section-{{ section.id }} .collection-card:hover .collection-card__arrow {
+      background-color: transparent;
+      color: #fff;
+    }
+  </style>
 
   {%- comment -%}
     ------------------------------------------------------------------------------------------------------------------------
