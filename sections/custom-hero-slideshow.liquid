@@ -191,14 +191,19 @@
       max-width: none;
     }
     .hero-slideshow__arrow {
-      right: 1rem;
-      top: auto;
-      bottom: 4.5rem;
-      transform: none;
-      width: 38px;
-      height: 38px;
+        top: auto;
+        /* position it near the bottom of the image area */
+        bottom: auto;
+        right: 1rem;
+        /* place it just above the content panel — adjust based on image height */
+        top: calc(100vw - 2.5rem);  /* if image is square (100vw tall), sit near its bottom */
+        transform: none;
+        width: 34px;
+        height: 34px;
     }
-    .hero-slideshow__arrow:hover { transform: scale(1.05); }
+    .hero-slideshow__arrow:hover {
+        transform: scale(1.05);
+    }
     .hero-slideshow__dots {
       bottom: 1rem;
     }
