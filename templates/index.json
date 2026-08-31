@@ -198,7 +198,7 @@
       ],
       "name": "Trust Bar",
       "settings": {
-        "bg_color": "#FFFBF3",
+        "bg_color": "#fffbf3",
         "text_color": "#000000",
         "max_width": 1300,
         "side_padding": 70,
@@ -295,7 +295,7 @@
         "stack_collections": true,
         "collections_per_row_desktop": 4,
         "stack_collections_mobile": true,
-        "collections_per_row_mobile": "1",
+        "collections_per_row_mobile": "2",
         "subheading": "Categories",
         "title": "Explore Our Range",
         "heading_style": "h1",
