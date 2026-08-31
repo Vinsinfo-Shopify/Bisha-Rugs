@@ -32,6 +32,9 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    font-size: 18px;
+    line-height: 140%;
+    font-weight: 500;
   }
 
   #shopify-section-{{ section.id }} .icon-with-text-item img,
@@ -140,7 +143,7 @@
 
             {%- when 'heading' -%}
               {%- if block.settings.text != blank -%}
-                <p class="{{ block.settings.heading_tag }} image_with_text_heading" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+                <h2 class="{{ block.settings.heading_tag }} image_with_text_heading" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
               {%- endif -%}
 
             {%- when 'richtext' -%}
