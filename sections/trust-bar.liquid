@@ -18,13 +18,13 @@
   }
 
   #TrustBar-{{ section_id }} .trust-bar__inner {
-    max-width: none;                              /* remove the 1300px cap */
-    margin: 0;
-    padding-left: var(--container-gutter);        /* match header gutter */
-    padding-right: var(--container-gutter);       /* match header gutter */
+    padding-left: var(--container-gutter);
+    padding-right: var(--container-gutter);
     display: flex;
+    flex-wrap: wrap;                    /* allow wrapping instead of cramping */
     justify-content: space-between;
     align-items: center;
+    gap: 16px 24px;
     box-sizing: border-box;
     }
 
