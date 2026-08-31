@@ -112,17 +112,21 @@
       justify-content: space-between;
       gap: 12px;
       width: 100%;
+      max-width: none;
+      min-height: 34px;
     }
 
     #shopify-section-{{ section.id }} .collection-card__title {
       font-family: var(--text-font-family);
       font-size: 22px;
       font-weight: 600;
-      line-height: 1.4;
+      line-height: 1.1;
       letter-spacing: 0;
       text-transform: none;
       color: #fff;
-      margin: 0;
+      margin: 0 !important;
+      padding: 0;
+      align-self: center;
     }
 
     #shopify-section-{{ section.id }} .collection-card__arrow {
