@@ -1064,6 +1064,66 @@
         "button_text": "Subscribe",
         "disclaimer": "<p>You can unsubscribe anytime. For more details, read our Privacy Policy.</p>"
       }
+    },
+    "trust_bar_MUX4MJ": {
+      "type": "trust-bar",
+      "blocks": {
+        "item_Y7VXCq": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/hugeicons_shipping-truck-01.png",
+            "text": "Free & Insured Shipping"
+          }
+        },
+        "item_FRWqrJ": {
+          "type": "item",
+          "settings": {
+            "text": "Free & Insured Shipping"
+          }
+        },
+        "item_TCN7zD": {
+          "type": "item",
+          "settings": {
+            "text": "30-Day Returns"
+          }
+        },
+        "item_jT4RHe": {
+          "type": "item",
+          "settings": {
+            "text": "Hand-Woven"
+          }
+        },
+        "item_FUEmaY": {
+          "type": "item",
+          "settings": {
+            "text": "Natural Wool & Dyes"
+          }
+        },
+        "item_WaiB86": {
+          "type": "item",
+          "settings": {
+            "text": "Fair Trade Practices"
+          }
+        }
+      },
+      "block_order": [
+        "item_Y7VXCq",
+        "item_FRWqrJ",
+        "item_TCN7zD",
+        "item_jT4RHe",
+        "item_FUEmaY",
+        "item_WaiB86"
+      ],
+      "name": "Trust Bar",
+      "settings": {
+        "bg_color": "#FDF9F0",
+        "text_color": "#000000",
+        "max_width": 1300,
+        "side_padding": 70,
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "icon_width": 20
+      }
     }
   },
   "order": [
@@ -1089,6 +1149,7 @@
     "timeline",
     "image-with-text-overlay-2",
     "multi-column",
-    "newsletter"
+    "newsletter",
+    "trust_bar_MUX4MJ"
   ]
 }
