@@ -1216,9 +1216,9 @@
         "collections_per_row_desktop": 3,
         "stack_collections_mobile": true,
         "collections_per_row_mobile": "1",
-        "subheading": "",
-        "title": "",
-        "heading_style": "h2",
+        "subheading": "Categories",
+        "title": "Explore Our Range",
+        "heading_style": "h1",
         "content": ""
       }
     }
