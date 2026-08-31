@@ -79,12 +79,12 @@
     white-space: normal;             /* allow text to wrap in grid cells */
   }
 }
-
+#TrustBar-{{ section_id }}  .trust-bar__item--mobile { display: none; }
 /* Mobile */
 @media screen and (max-width: 749px) {
   /* Visibility swap on mobile */
-  .trust-bar__item--desktop { display: none; }         /* hide desktop-only on mobile */
-  .trust-bar__item--mobile { display: inline-flex; }   /* show mobile-only on mobile */
+  #TrustBar-{{ section_id }} .trust-bar__item--desktop { display: none; }        /* hide desktop-only on mobile */
+  #TrustBar-{{ section_id }}  .trust-bar__item--mobile { display: inline-flex; }   /* show mobile-only on mobile */
 
   #TrustBar-{{ section_id }} .trust-bar__inner {
     display: grid;
