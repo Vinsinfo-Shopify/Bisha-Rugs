@@ -147,7 +147,28 @@
 
                           <div class="header-sidebar__nested-linklist">
                             {%- for sub_sub_link in sub_link.links -%}
-                              <a href="{{ sub_sub_link.url }}" class="link-faded-reverse">{{ sub_sub_link.title }}</a>
+                              {%- assign link_label = sub_sub_link.title | downcase | strip -%}
+                              {%- assign swatch = '' -%}
+                              {%- assign is_shop_all = false -%}
+                              {%- if link_label contains 'shop all' -%}{%- assign is_shop_all = true -%}{%- endif -%}
+
+                              {%- comment -%} Look up swatch hex from the client-managed Color metaobject {%- endcomment -%}
+                              {%- unless is_shop_all -%}
+                                {%- for c in shop.metaobjects.color.values -%}
+                                  {%- assign c_label = c.label | downcase | strip -%}
+                                  {%- if c_label == link_label -%}
+                                    {%- assign swatch = c.swatch -%}
+                                    {%- break -%}
+                                  {%- endif -%}
+                                {%- endfor -%}
+                              {%- endunless -%}
+
+                              <a href="{{ sub_sub_link.url }}" class="link-faded-reverse header-sidebar__nested-link{% if swatch != '' and swatch != blank %} has-swatch{% endif %}">
+                                {%- if swatch != '' and swatch != blank -%}
+                                  <span class="header-sidebar__swatch" style="--swatch: {{ swatch }};"></span>
+                                {%- endif -%}
+                                {{- sub_sub_link.title -}}
+                              </a>
                             {%- endfor -%}
                           </div>
                         </details>
