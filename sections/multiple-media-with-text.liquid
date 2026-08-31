@@ -30,7 +30,7 @@
 
       {%- capture grid_auto_columns -%}
         {%- if use_overlap_layout -%}
-          minmax(0, 1.75fr) minmax(0, 0.8fr) minmax(0, 0.8fr)
+          289fr 81fr 289fr
         {%- else -%}
           minmax(0, 1fr)
         {%- endif -%}
@@ -61,17 +61,13 @@
         --multiple-media-with-text-media-alignment-offset: {{ section.settings.media_alignment_offset }}px;
         --multiple-media-with-text-media-gap: {% if use_overlap_layout %}0{% else %}0.625rem{% endif %};
 
-        {%- capture grid_auto_columns -%}
-          {%- if use_overlap_layout -%}
-            {%- if section.settings.media_position_desktop == 'before_text' -%}
-              minmax(0, 1.85fr) minmax(0, 0.35fr) minmax(0, 1.4fr)
+          {%- capture grid_auto_columns -%}
+            {%- if use_overlap_layout -%}
+              289fr 81fr 289fr
             {%- else -%}
-              minmax(0, 1.4fr) minmax(0, 0.35fr) minmax(0, 1.85fr)
+              minmax(0, 1fr) minmax(0, 1fr)
             {%- endif -%}
-          {%- else -%}
-            minmax(0, 1fr) minmax(0, 1fr)
-          {%- endif -%}
-        {%- endcapture -%}
+          {%- endcapture -%}
 
         --multiple-media-with-text-media-grid-auto-columns: {{- grid_auto_columns -}};
       }
@@ -159,7 +155,7 @@
           {%- for block in media_blocks -%}
             <div
               {{ block.shopify_attributes }}
-              class="align-self-{{ section.settings.media_alignment }}"
+              class="align-self-{{ section.settings.media_alignment }} multiple-media-with-text__media-wrapper_img"
               style="--media-rotate: {{ block.settings.rotation }}deg; {% if forloop.first %}{% if section.settings.media_alignment == 'start' %}grid-row-start: offset-end;{% elsif section.settings.media_alignment == 'end' %}grid-row-end: main-end;{% endif %}{% endif %}"
             >
               {%- if block.type == 'image' and block.settings.image -%}
