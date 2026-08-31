@@ -1,25 +1,63 @@
 {%- doc -%}
-  Render the mega-menu. The mega-menu is a kind of menu optimized for showing a large number of items into several columns.
-
-  @param {object} link - the link from which we need to render the mega-menu. The link must always be a second level link, but it can also be empty (no links), which is the case if the merchant only wants to show images
-  @param {object} block - the block containing all the information about the menu to render
+  Render the mega-menu with support for a colour-swatch column and a promo card.
+  Swatch colours are read from the client-managed "Color" metaobject
+  (shop.metaobjects.color) by matching the link title to the metaobject label.
+  @param {object} link
+  @param {object} block
 {%- enddoc -%}
 
 <div class="mega-menu {% if block.settings.images_position == 'left' %}mega-menu--reverse{% endif %}" {{ block.shopify_attributes }}>
   {%- if link.levels > 0 -%}
     <ul class="mega-menu__linklist unstyled-list">
       {%- for sub_link in link.links -%}
-        <li class="v-stack justify-items-start gap-5">
+        {%- assign column_key = sub_link.title | downcase | strip -%}
+        {%- assign is_color_column = false -%}
+        {%- if column_key contains 'color' -%}
+          {%- assign is_color_column = true -%}
+        {%- endif -%}
+
+        <li class="v-stack justify-items-start gap-5 mega-menu__column{% if is_color_column %} mega-menu__column--colors{% endif %}">
           <a href="{{ sub_link.url }}" class="h6">{{ sub_link.title }}</a>
 
           {%- if sub_link.links.size > 0 -%}
-            <ul class="v-stack gap-2.5 unstyled-list">
-              {%- for sub_sub_link in sub_link.links -%}
-                <li>
-                  <a href="{{ sub_sub_link.url }}" class="link-faded">{{ sub_sub_link.title }}</a>
-                </li>
-              {%- endfor -%}
-            </ul>
+            {%- if is_color_column -%}
+              <ul class="mega-menu__swatch-grid unstyled-list">
+                {%- for sub_sub_link in sub_link.links -%}
+                  {%- assign color_key = sub_sub_link.title | downcase | strip -%}
+                  {%- assign swatch = '' -%}
+                  {%- assign is_shop_all = false -%}
+                  {%- if color_key contains 'shop all' -%}{%- assign is_shop_all = true -%}{%- endif -%}
+
+                  {%- comment -%} Look up the swatch hex from the client-managed Color metaobject {%- endcomment -%}
+                  {%- unless is_shop_all -%}
+                    {%- for c in shop.metaobjects.color.values -%}
+                      {%- assign c_label = c.label | downcase | strip -%}
+                      {%- if c_label == color_key -%}
+                        {%- assign swatch = c.swatch -%}
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- endunless -%}
+
+                  <li class="{% if is_shop_all %}mega-menu__swatch-item--full{% endif %}">
+                    <a href="{{ sub_sub_link.url }}" class="link-faded mega-menu__swatch-link" {% if sub_sub_link.current %}aria-current="page"{% endif %}>
+                      {%- if swatch != '' and swatch != blank -%}
+                        <span class="mega-menu__swatch" style="--swatch: {{ swatch }};"></span>
+                      {%- endif -%}
+                      {{- sub_sub_link.title -}}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- else -%}
+              <ul class="v-stack gap-2.5 unstyled-list">
+                {%- for sub_sub_link in sub_link.links -%}
+                  <li>
+                    <a href="{{ sub_sub_link.url }}" class="link-faded" {% if sub_sub_link.current %}aria-current="page"{% endif %}>{{ sub_sub_link.title }}</a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
           {%- endif -%}
         </li>
       {%- endfor -%}
