@@ -462,6 +462,38 @@
     max-width: 30%;
     margin-left: 2rem;
   }
+  /* Swatch dots in the drawer */
+  .header-sidebar__nested-link.has-swatch {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-sidebar__swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--swatch, transparent);
+    border: 1px solid rgba(0,0,0,.12);
+    flex: none;
+  }
+  .header-sidebar__nested-linklist {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+  }
+  .header-sidebar__linklist-button,
+  .header-sidebar__back-button {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .header-sidebar__nested-link {
+    font-size: 15px;
+    font-weight: 400;
+    padding: 6px 0;
+  }
 
 {% endstyle %}
 
