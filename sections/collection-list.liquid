@@ -90,9 +90,17 @@
                   <p class="h6">{{- block.settings.subheading -}}</p>
                 {%- endif -%}
 
-                {%- if block.settings.title != blank -%}
-                  <p class="h3">{{- block.settings.title -}}</p>
-                {%- endif -%}
+                <div class="collection-card__row">
+                  {%- if block.settings.title != blank -%}
+                    <p class="h3 collection-card__title">{{- block.settings.title -}}</p>
+                  {%- endif -%}
+
+                  {%- if collection_url != blank -%}
+                    <span class="collection-card__arrow" aria-hidden="true">
+                      {%- render 'icon' with 'arrow-right', direction_aware: true -%}
+                    </span>
+                  {%- endif -%}
+                </div>
 
                 {%- if block.settings.button_text != blank -%}
                   {%- render 'button', type: 'button', content: block.settings.button_text, style: block.settings.button_style, focusable: false -%}
