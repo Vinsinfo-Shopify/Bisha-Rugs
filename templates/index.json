@@ -145,6 +145,71 @@
         "autoplay_seconds": 5
       }
     },
+    "trust_bar_MUX4MJ": {
+      "type": "trust-bar",
+      "blocks": {
+        "item_Y7VXCq": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/hugeicons_shipping-truck-01.png",
+            "text": "Free & Insured Shipping"
+          }
+        },
+        "item_FRWqrJ": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "text": "Free & Insured Shipping"
+          }
+        },
+        "item_TCN7zD": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/hugeicons_return-request.png",
+            "text": "30-Day Returns"
+          }
+        },
+        "item_jT4RHe": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/solar_hand-heart-linear.png",
+            "text": "Hand-Woven"
+          }
+        },
+        "item_FUEmaY": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/material-symbols_nest-eco-leaf-outline.png",
+            "text": "Natural Wool & Dyes"
+          }
+        },
+        "item_WaiB86": {
+          "type": "item",
+          "settings": {
+            "icon": "shopify://shop_images/Fair_trade_Practices.png",
+            "text": "Fair Trade Practices"
+          }
+        }
+      },
+      "block_order": [
+        "item_Y7VXCq",
+        "item_FRWqrJ",
+        "item_TCN7zD",
+        "item_jT4RHe",
+        "item_FUEmaY",
+        "item_WaiB86"
+      ],
+      "name": "Trust Bar",
+      "settings": {
+        "bg_color": "#FDF9F0",
+        "text_color": "#000000",
+        "max_width": 1300,
+        "side_padding": 70,
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "icon_width": 20
+      }
+    },
     "featured-collections-1": {
       "type": "featured-collections",
       "blocks": {
@@ -1064,76 +1129,12 @@
         "button_text": "Subscribe",
         "disclaimer": "<p>You can unsubscribe anytime. For more details, read our Privacy Policy.</p>"
       }
-    },
-    "trust_bar_MUX4MJ": {
-      "type": "trust-bar",
-      "blocks": {
-        "item_Y7VXCq": {
-          "type": "item",
-          "settings": {
-            "icon": "shopify://shop_images/hugeicons_shipping-truck-01.png",
-            "text": "Free & Insured Shipping"
-          }
-        },
-        "item_FRWqrJ": {
-          "type": "item",
-          "disabled": true,
-          "settings": {
-            "text": "Free & Insured Shipping"
-          }
-        },
-        "item_TCN7zD": {
-          "type": "item",
-          "settings": {
-            "icon": "shopify://shop_images/hugeicons_return-request.png",
-            "text": "30-Day Returns"
-          }
-        },
-        "item_jT4RHe": {
-          "type": "item",
-          "settings": {
-            "icon": "shopify://shop_images/solar_hand-heart-linear.png",
-            "text": "Hand-Woven"
-          }
-        },
-        "item_FUEmaY": {
-          "type": "item",
-          "settings": {
-            "icon": "shopify://shop_images/material-symbols_nest-eco-leaf-outline.png",
-            "text": "Natural Wool & Dyes"
-          }
-        },
-        "item_WaiB86": {
-          "type": "item",
-          "settings": {
-            "icon": "shopify://shop_images/Fair_trade_Practices.png",
-            "text": "Fair Trade Practices"
-          }
-        }
-      },
-      "block_order": [
-        "item_Y7VXCq",
-        "item_FRWqrJ",
-        "item_TCN7zD",
-        "item_jT4RHe",
-        "item_FUEmaY",
-        "item_WaiB86"
-      ],
-      "name": "Trust Bar",
-      "settings": {
-        "bg_color": "#FDF9F0",
-        "text_color": "#000000",
-        "max_width": 1300,
-        "side_padding": 70,
-        "padding_top": 20,
-        "padding_bottom": 20,
-        "icon_width": 20
-      }
     }
   },
   "order": [
     "slideshow",
     "custom_hero_slideshow_J94J39",
+    "trust_bar_MUX4MJ",
     "featured-collections-1",
     "image-with-text-overlay-1",
     "rich-text",
@@ -1154,7 +1155,6 @@
     "timeline",
     "image-with-text-overlay-2",
     "multi-column",
-    "newsletter",
-    "trust_bar_MUX4MJ"
+    "newsletter"
   ]
 }
