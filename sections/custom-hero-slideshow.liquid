@@ -140,27 +140,33 @@
     background: var(--hero-dot-active);
   }
 
-  /* Arrow (next) */
   .hero-slideshow__arrow {
     position: absolute;
     top: 50%;
     right: 1.5rem;
     transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.9);
-    color: {{ section.settings.button_bg }};
+    background: rgba(255, 255, 255, 0.85);
+    color: #333;
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 3;
-    transition: transform 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: background 0.2s ease, transform 0.2s ease;
   }
-  .hero-slideshow__arrow:hover { transform: translateY(-50%) scale(1.05); }
-  .hero-slideshow__arrow svg { width: 18px; height: 18px; }
+  .hero-slideshow__arrow:hover {
+    background: #ffffff;
+    transform: translateY(-50%) scale(1.05);
+  }
+  .hero-slideshow__arrow svg {
+    width: 16px;
+    height: 16px;
+  }
 
   /* Mobile: stack image top, content bottom */
   @media screen and (max-width: 749px) {
