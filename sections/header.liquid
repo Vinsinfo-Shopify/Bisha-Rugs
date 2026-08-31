@@ -516,25 +516,28 @@
     width: 18px;
     height: 18px;
   }
-  .header-sidebar [part="header"] {
+
+  .header-sidebar::part(header) {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    padding: 1rem 1.25rem;
+    gap: 1rem;
   }
-  .header-sidebar__logo {
+  .header-sidebar::part(sidebar-logo) {
     display: inline-flex;
     align-items: center;
-    text-decoration: none;
-    color: inherit;
+    flex: 0 1 auto;
+    min-width: 0;
   }
-  .header-sidebar__logo-image {
-    max-width: 130px;   
+  .header-sidebar::part(sidebar-logo-image) {
+    max-width: 120px;    
+    width: 120px;
     height: auto;
   }
-  .header-sidebar__logo-text {
-    font-weight: 700;
-    letter-spacing: 0.02em;
+  .header-sidebar::part(close-button) {
+    flex: none;
   }
 
 {% endstyle %}
