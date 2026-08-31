@@ -69,6 +69,7 @@
         "slide-1",
         "slide-2"
       ],
+      "disabled": true,
       "settings": {
         "allow_transparent_header": false,
         "show_next_section_button": true,
@@ -1059,6 +1060,7 @@
   },
   "order": [
     "slideshow",
+    "custom_hero_slideshow_J94J39",
     "featured-collections-1",
     "image-with-text-overlay-1",
     "rich-text",
@@ -1079,7 +1081,6 @@
     "timeline",
     "image-with-text-overlay-2",
     "multi-column",
-    "newsletter",
-    "custom_hero_slideshow_J94J39"
+    "newsletter"
   ]
 }
