@@ -547,6 +547,17 @@
     flex: none;
   }
 
+  .header-sidebar__chevron {
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
+
+  .group.accordion__disclosure[open] .header-sidebar__chevron,
+  details[open] .header-sidebar__chevron {
+    transform: rotate(180deg);
+  }
+
 {% endstyle %}
 
 {% schema %}
