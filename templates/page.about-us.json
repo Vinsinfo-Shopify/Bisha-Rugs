@@ -42,7 +42,7 @@
       "settings": {
         "color_scheme": "",
         "image_size": "xs",
-        "image": "shopify://shop_images/About_us_banner.png",
+        "image": "shopify://shop_images/0f111b50afa1cbc748628327e86a3d50423143c9_1.png",
         "allow_transparent_header": false,
         "reveal_on_scroll": true,
         "remove_vertical_spacing": true,
@@ -99,7 +99,7 @@
       ],
       "name": "t:sections.image_with_text.presets.image_with_text.name",
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
         "custom_class": "who_we_are",
         "separate_section_with_border": false,
         "padding_top": 60,
@@ -216,7 +216,7 @@
       ],
       "name": "t:sections.multiple_media_with_text.presets.multiple_media_with_text.name",
       "settings": {
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
         "custom_class": "",
         "reveal_on_scroll": true,
         "separate_section_with_border": false,
@@ -450,7 +450,7 @@
       ],
       "name": "t:sections.image_with_text.presets.image_with_text.name",
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
         "custom_class": "crafted_in_india",
         "separate_section_with_border": true,
         "padding_top": 60,
@@ -577,24 +577,31 @@
         "richtext_7xBL3G": {
           "type": "richtext",
           "settings": {
-            "content": "<p>“Bisha Rugs was created to celebrate India's extraordinary weaving heritage and the people who preserve it every day. </p><p>Our mission is simple: to bring authentic handcrafted rugs to homes around the world while ensuring the artisans behind every piece receive the recognition their craftsmanship deserves.”<br/><br/><strong>- Founder’s Name </strong><br/>Founder, Bisha Rugs</p>"
+            "content": "<p>“Bisha Rugs was created to celebrate India's extraordinary weaving heritage and the people who preserve it every day. </p><p>Our mission is simple: to bring authentic handcrafted rugs to homes around the world while ensuring the artisans behind every piece receive the recognition their craftsmanship deserves.”</p>"
+          }
+        },
+        "richtext_64nxex": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p><strong>- Founder’s Name </strong><br/>Founder, Bisha Rugs</p>"
           }
         }
       },
       "block_order": [
         "subheading_TgwdDK",
         "heading_3xTXTK",
-        "richtext_7xBL3G"
+        "richtext_7xBL3G",
+        "richtext_64nxex"
       ],
       "name": "t:sections.image_with_text.presets.image_with_text.name",
       "settings": {
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
         "custom_class": "founders_note",
         "separate_section_with_border": true,
         "padding_top": 60,
         "padding_bottom": 60,
-        "padding_left": 70,
-        "padding_right": 70,
+        "padding_left": 72,
+        "padding_right": 68,
         "padding_top_mobile": 50,
         "padding_bottom_mobile": 50,
         "padding_left_mobile": 12,

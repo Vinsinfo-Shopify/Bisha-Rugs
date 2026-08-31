@@ -612,7 +612,7 @@ shopify-accelerated-checkout, shopify-accelerated-checkout-cart {
   height: var(--content-over-media-height, auto);
   overflow-wrap: anywhere;
   object-fit: cover;
-  object-position: center;
+  object-position: center 55%;
   border-radius: inherit;
   -webkit-user-select: none;
   user-select: none;
@@ -5839,6 +5839,12 @@ shopify-account::part(signed-out-avatar) {
   overflow: hidden;
   gap: 22px;
 }
+.crafted_in_india .image-with-text img, 
+.who_we_are .image-with-text img{
+  max-height: 426px;
+  height: 100%;
+  width: 100%;
+}
 
 .image-with-text > .prose {
   box-sizing: content-box;
@@ -6141,6 +6147,24 @@ shopify-account::part(signed-out-avatar) {
   grid-area: content-wrapper;
 }
 
+.multiple-media-with-text__media-wrapper_img {
+  width: 100%;
+  aspect-ratio: 370 / 500;
+}
+
+.multiple-media-with-text__media-wrapper_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* only constrain width on small screens, where the section stacks anyway */
+@media screen and (max-width: 699px) {
+  .multiple-media-with-text__media-wrapper_img {
+    width: 100%;
+    max-width: 370px;
+  }
+}
 @media screen and (min-width: 1000px) {
   .multiple-media-with-text {
     --multiple-media-with-text-gap: 2rem 4rem;
@@ -8504,9 +8528,9 @@ ul {
 .footer__divider {
   height: 0.3px;
   background-color: #FFFFFF;
-  width: 100vw;
+  /* width: 100vw;
   margin-left: calc(50% - 50vw);
-  margin-right: calc(49% - 50vw);
+  margin-right: calc(49% - 50vw); */
 }
 .accordion__toggle-icon {
   display: grid;
@@ -8582,6 +8606,7 @@ ul {
   margin-top: 4px;
   font-weight: 400;
   text-transform: capitalize;
+  vertical-align: middle;
 }
 
 .why_choose_bisha .section_header_subheading,
@@ -8589,6 +8614,7 @@ ul {
   font-size: 14px;
   line-height: 140%;
   font-weight: 500;
+  text-transform: uppercase;
 }
 
 .why_choose_bisha .section-stack,
@@ -8622,6 +8648,7 @@ ul {
   font-size: 14px;
   line-height: 140%;
   font-weight: 500;
+  text-transform: uppercase;
 }
 
 .prose .image_with_text_heading,
@@ -8630,6 +8657,7 @@ ul {
   font-weight: 400;
   margin-top: 4px;
   text-transform: capitalize;
+  vertical-align: middle;
 }
 
 .prose .image_with_text_content,
@@ -8638,6 +8666,10 @@ ul {
   font-size: 18px;
   line-height: 140%;
   margin-top: 32px;
+  font-weight: 400;
+}
+.prose .image_with_text_content strong{
+  font-weight: 600;
 }
 
 .icon-with-text-list {
@@ -8667,15 +8699,18 @@ ul {
 
 .multi-column-card_heading {
   line-height: 140%;
+  font-weight: 600;
 }
 
 .multi-column-card_content {
   font-size: 16px;
   line-height: 140%;
   font-weight: 400;
-  margin-top: 8px;
+  vertical-align: middle;
 }
-
+  .prose .multi-column-card_content{
+    margin-top: 8px;
+  }
 .form-row .form-control {
   font-size: 18px;
   line-height: 140%;
@@ -8694,6 +8729,7 @@ ul {
 
 .newsletter-disclaimer a {
   text-decoration: underline;
+  font-weight: 600;
 }
 
 .newsletter .section-header p {
@@ -8703,7 +8739,7 @@ ul {
 }
 
 .newsletter-with-media .section_header_heading {
-  font-size: 24px;
+  font-size: 28px;
   line-height: 120%;
   font-weight: 400;
   text-transform: capitalize;
@@ -8740,6 +8776,27 @@ ul {
 }
 .our_impact .prose .section_header_content{
   margin: 0;
+}
+  .newsletter-with-media__content-wrapper .form{
+    row-gap: 10px;
+  }
+  .newsletter-with-media__content-wrapper .newsletter{
+    gap: 24px;
+  }
+
+  .founders_note .prose .image_with_text_content:nth-of-type(1) p {
+      font-style: italic;
+}
+  .founders_note .prose .image_with_text_content:nth-of-type(2) p {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 161%;
+
+}
+  .founders_note .prose .image_with_text_content:nth-of-type(2) strong{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 161%;
 }
 
 @media screen and (max-width: 700px) {
@@ -8837,7 +8894,7 @@ ul {
   }
 
   .newsletter-with-media .section_header_heading {
-    font-size: 24px;
+    font-size: 34px;
     line-height: 120%;
     font-weight: 400;
   }
@@ -8894,6 +8951,12 @@ ul {
   .newsletter-with-media .form-row{
     display: block;
   }
+    .founders_note .prose .image_with_text_content:nth-of-type(2) p {
+      font-size: 12px;
+}
+  .founders_note .prose .image_with_text_content:nth-of-type(2) strong{
+    font-size: 14px;
+}
 }
 .faq_section .section-stack{
   gap: 0;
