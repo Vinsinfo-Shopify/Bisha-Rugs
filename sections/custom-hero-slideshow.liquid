@@ -118,13 +118,13 @@
 
   /* Dots */
   .hero-slideshow__dots {
-    position: absolute;
-    bottom: 1.5rem;
-    left: 50%;
-    transform: translateX(-50%);
+    position: static;
+    transform: none;
     display: flex;
+    justify-content: center;
     gap: 8px;
-    z-index: 3;
+    padding: 1.5rem 0;
+    background: var(--hero-cream);
   }
   .hero-slideshow__dot {
     width: 8px;
