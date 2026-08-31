@@ -92,7 +92,7 @@
             "mobile_image": "shopify://shop_images/Mobile_-_Authentic_Outshak_Rugs_bd9fe007-bee1-418e-8732-d6c48e3faa7b.png",
             "image_position": "right",
             "subheading": "",
-            "heading": "Authentic Oushak Rugs. <br> Made to Last a Lifetime.",
+            "heading": "Authentic Oushak Rugs.  Made to Last a Lifetime.",
             "heading_width": 520,
             "description": "<p>Featuring oversized motifs and soft tones, every Oushak rug is hand-knotted to fit your space perfectly.</p>",
             "button_label": "Explore Oushak Rugs",
@@ -198,7 +198,7 @@
       ],
       "name": "Trust Bar",
       "settings": {
-        "bg_color": "#fdf9f0",
+        "bg_color": "#FFFBF3",
         "text_color": "#000000",
         "max_width": 1300,
         "side_padding": 70,
@@ -287,7 +287,7 @@
       ],
       "name": "t:sections.collection_list.presets.collection_list.name",
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-1",
         "separate_section_with_border": true,
         "image_size": "auto",
         "show_text_outside": false,
