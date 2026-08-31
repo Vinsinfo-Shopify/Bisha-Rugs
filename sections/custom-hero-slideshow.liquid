@@ -248,12 +248,6 @@
       <button type="button" class="hero-slideshow__arrow" aria-label="Next slide" data-hero-next>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
-
-      <div class="hero-slideshow__dots">
-        {%- for block in section.blocks -%}
-          <button type="button" class="hero-slideshow__dot{% if forloop.first %} is-active{% endif %}" data-hero-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}"></button>
-        {%- endfor -%}
-      </div>
     {%- endif -%}
   </div>
   {%- if section.blocks.size > 1 -%}
