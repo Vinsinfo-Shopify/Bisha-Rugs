@@ -152,48 +152,45 @@
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/hugeicons_shipping-truck-01.png",
-            "text": "Free & Insured Shipping"
-          }
-        },
-        "item_FRWqrJ": {
-          "type": "item",
-          "disabled": true,
-          "settings": {
-            "text": "Free & Insured Shipping"
+            "text": "Free & Insured Shipping",
+            "visibility": "both"
           }
         },
         "item_TCN7zD": {
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/hugeicons_return-request.png",
-            "text": "30-Day Returns"
+            "text": "30-Day Returns",
+            "visibility": "both"
           }
         },
         "item_jT4RHe": {
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/solar_hand-heart-linear.png",
-            "text": "Hand-Woven"
+            "text": "Hand-Woven",
+            "visibility": "both"
           }
         },
         "item_FUEmaY": {
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/material-symbols_nest-eco-leaf-outline.png",
-            "text": "Natural Wool & Dyes"
+            "text": "Natural Wool & Dyes",
+            "visibility": "desktop"
           }
         },
         "item_WaiB86": {
           "type": "item",
           "settings": {
             "icon": "shopify://shop_images/Fair_trade_Practices.png",
-            "text": "Fair Trade Practices"
+            "text": "Fair Trade Practices",
+            "visibility": "both"
           }
         }
       },
       "block_order": [
         "item_Y7VXCq",
-        "item_FRWqrJ",
         "item_TCN7zD",
         "item_jT4RHe",
         "item_FUEmaY",
@@ -201,7 +198,7 @@
       ],
       "name": "Trust Bar",
       "settings": {
-        "bg_color": "#FDF9F0",
+        "bg_color": "#fdf9f0",
         "text_color": "#000000",
         "max_width": 1300,
         "side_padding": 70,
