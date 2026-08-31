@@ -212,18 +212,33 @@
     {%- for block in section.blocks -%}
       <div class="hero-slide hero-slide--image-{{ block.settings.image_position }}{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
         <div class="hero-slide__inner">
-          <div class="hero-slide__image">
-            {%- if block.settings.image != blank -%}
-                <img
-                src="{{ block.settings.image | image_url: width: 1600 }}"
-                alt="{{ block.settings.heading | strip_html | escape }}"
-                loading="lazy"
-                width="{{ block.settings.image.width }}"
-                height="{{ block.settings.image.height }}"
-                >
-            {%- else -%}
-                {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            {%- endif -%}
+            <div class="hero-slide__image">
+                {%- if block.settings.image != blank -%}
+                    <img
+                    class="hero-slide__img hero-slide__img--desktop"
+                    src="{{ block.settings.image | image_url: width: 1600 }}"
+                    alt="{{ block.settings.heading | strip_html | escape }}"
+                    loading="lazy"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    >
+                {%- endif -%}
+
+                {%- assign mobile_img = block.settings.mobile_image | default: block.settings.image -%}
+                {%- if mobile_img != blank -%}
+                    <img
+                    class="hero-slide__img hero-slide__img--mobile"
+                    src="{{ mobile_img | image_url: width: 1200 }}"
+                    alt="{{ block.settings.heading | strip_html | escape }}"
+                    loading="lazy"
+                    width="{{ mobile_img.width }}"
+                    height="{{ mobile_img.height }}"
+                    >
+                {%- endif -%}
+
+                {%- if block.settings.image == blank and block.settings.mobile_image == blank -%}
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
             </div>
 
           <div class="hero-slide__content">
