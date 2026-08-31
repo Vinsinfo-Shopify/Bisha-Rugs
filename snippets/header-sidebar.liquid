@@ -18,6 +18,15 @@
 
     <div part="content">
       <header part="header">
+        <a href="{{ routes.root_url }}" part="sidebar-logo" class="header-sidebar__logo">
+          {%- if section.settings.logo != blank -%}
+            {%- assign alt_text = section.settings.logo.alt | default: shop.name -%}
+            {{- section.settings.logo | image_url: width: 300 | image_tag: alt: alt_text, class: 'header-sidebar__logo-image', widths: '150,300' -}}
+          {%- else -%}
+            <span class="header-sidebar__logo-text h5">{{ shop.name }}</span>
+          {%- endif -%}
+        </a>
+
         <dialog-close-button class="contents">
           <button type="button" part="close-button tap-area" aria-label="{{ 'general.accessibility.close' | t | escape }}">
             {%- render 'icon' with 'close', width: 16 -%}
