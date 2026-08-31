@@ -293,7 +293,7 @@
         "show_text_outside": false,
         "space_items": true,
         "stack_collections": true,
-        "collections_per_row_desktop": 3,
+        "collections_per_row_desktop": 4,
         "stack_collections_mobile": true,
         "collections_per_row_mobile": "1",
         "subheading": "Categories",
