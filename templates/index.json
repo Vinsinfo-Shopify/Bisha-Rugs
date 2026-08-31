@@ -1077,6 +1077,7 @@
         },
         "item_FRWqrJ": {
           "type": "item",
+          "disabled": true,
           "settings": {
             "text": "Free & Insured Shipping"
           }
@@ -1084,12 +1085,14 @@
         "item_TCN7zD": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/hugeicons_return-request.png",
             "text": "30-Day Returns"
           }
         },
         "item_jT4RHe": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/solar_hand-heart-linear.png",
             "text": "Hand-Woven"
           }
         },
