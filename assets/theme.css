@@ -8901,6 +8901,9 @@ ul {
 .faq_section_header{
   margin-bottom: 60px;
 }
+.faq_section_header .section-header{
+  max-width: 100%;
+}
 .faq_section .button--outline{
   color: #FFFFFF;
 }
