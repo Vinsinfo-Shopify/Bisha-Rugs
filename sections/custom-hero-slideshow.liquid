@@ -127,8 +127,8 @@
     z-index: 3;
   }
   .hero-slideshow__dot {
-    width: 9px;
-    height: 9px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: var(--hero-dot);
     border: none;
@@ -140,27 +140,32 @@
     background: var(--hero-dot-active);
   }
 
-  /* Arrow (next) */
   .hero-slideshow__arrow {
     position: absolute;
     top: 50%;
     right: 1.5rem;
     transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.9);
-    color: {{ section.settings.button_bg }};
+    background: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 3;
-    transition: transform 0.2s ease;
-  }
-  .hero-slideshow__arrow:hover { transform: translateY(-50%) scale(1.05); }
-  .hero-slideshow__arrow svg { width: 18px; height: 18px; }
+    transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .hero-slideshow__arrow:hover {
+    background: rgba(0, 0, 0, 0.6);
+    transform: translateY(-50%) scale(1.05);
+    }
+    .hero-slideshow__arrow svg {
+    width: 14px;
+    height: 14px;
+    }
 
   /* Mobile: stack image top, content bottom */
   @media screen and (max-width: 749px) {
@@ -172,7 +177,7 @@
       min-height: 0;
     }
     .hero-slide__image {
-      aspect-ratio: 1 / 1;   /* square image on mobile, adjust as needed */
+      aspect-ratio: 1 / 1;  
     }
     .hero-slide__content {
       padding: 2rem 1.5rem 3.5rem;
@@ -185,16 +190,19 @@
       max-width: none;
     }
     .hero-slideshow__arrow {
-      right: 1rem;
-      top: auto;
-      bottom: 4.5rem;
-      transform: none;
-      width: 38px;
-      height: 38px;
+        width: 22px;
+        height: 22px;
+        top: calc(100vw - 11px);   /* 11px = half of 22px, centers on the seam */
+        bottom: auto;
+        right: 1.25rem;
+        transform: none;
     }
-    .hero-slideshow__arrow:hover { transform: scale(1.05); }
-    .hero-slideshow__dots {
-      bottom: 1rem;
+    .hero-slideshow__arrow svg {
+        width: 10px;               /* smaller chevron for the 22px circle */
+        height: 10px;
+    }
+    .hero-slideshow__arrow:hover {
+        transform: scale(1.05);
     }
   }
 </style>
