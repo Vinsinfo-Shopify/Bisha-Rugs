@@ -146,7 +146,7 @@
         "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
         "separate_section_with_border": true,
         "show_categories": false,
-        "custom_class": "faq_section",
+        "custom_class": "",
         "faq_custom_class": "",
         "show_breadcrumb": true,
         "breadcrumb_home_label": "Home",
@@ -157,11 +157,11 @@
         "content": "<p>Please use the below form. You can also call customer service on +1 (973) 435-3638.</p>",
         "show_sidebar": true,
         "sidebar_heading": "Contact Us",
-        "sidebar_text": "<p>If you have an issue or question that requires immediate assistance, you can mail us on Love@bisharugs.com<br/></p><p>We will reply as soon as possible with solution.</p>",
+        "sidebar_text": "<p>If you have an issue or question that requires immediate assistance, you can mail us on <a href=\"mailto:love@example.com\" title=\"mailto:love@example.com\">love@example.com</a></p><p>We will reply as soon as possible with solution.</p>",
         "sidebar_button_1_label": "Contact Us",
-        "sidebar_button_1_link": "shopify://pages/contact",
+        "sidebar_button_1_link": "",
         "sidebar_button_2_label": "About Us",
-        "sidebar_button_2_link": "shopify://pages/about-us",
+        "sidebar_button_2_link": "",
         "sidebar_custom_class": ""
       }
     }

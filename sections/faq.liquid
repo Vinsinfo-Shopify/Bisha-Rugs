@@ -15,9 +15,11 @@
   }
   #shopify-section-{{ section.id }} .faq-breadcrumb a {
     color: rgb(var(--text-color));
-    text-decoration: underline;
-    text-underline-offset: 2px;
+    text-decoration: none;
   }
+    #shopify-section-{{ section.id }} .faq-breadcrumb a:hover{
+      color: #b35642;
+    }
   #shopify-section-{{ section.id }} .faq-breadcrumb .breadcrumb__list-item:last-child span {
     color: rgb(var(--text-color) / .55);
   }
@@ -59,7 +61,7 @@
   #shopify-section-{{ section.id }} .faq-sidebar-btn1:hover {
     background-color: rgb(var(--button-background));
     color: rgb(var(--button-text-color));
-    border-color: rgb(var(--button-background));
+    border-color: #000000;
   }
 
   /* Solid "About Us" button — black bg / white text normally,
