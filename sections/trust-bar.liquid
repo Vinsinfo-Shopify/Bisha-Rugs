@@ -1,0 +1,213 @@
+{%- comment -%}
+  Custom Trust Bar — BISHA RUGS
+  - Desktop: 5 icon+text pairs in one row, space-between (Figma: 1300px, 70px side padding)
+  - Text: Figtree 16px / 600 / 140% line-height, black
+  - Icons: uploaded per item (Figma ~20x16px)
+  - Mobile: 2-column grid
+{%- endcomment -%}
+
+{%- assign section_id = section.id -%}
+
+<style>
+  #TrustBar-{{ section_id }} {
+    --trust-bg: {{ section.settings.bg_color }};
+    --trust-text: {{ section.settings.text_color }};
+    background: var(--trust-bg);
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  #TrustBar-{{ section_id }} .trust-bar__inner {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    padding-left: {{ section.settings.side_padding }}px;
+    padding-right: {{ section.settings.side_padding }}px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    box-sizing: border-box;
+  }
+
+  #TrustBar-{{ section_id }} .trust-bar__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+  }
+
+  #TrustBar-{{ section_id }} .trust-bar__icon {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #TrustBar-{{ section_id }} .trust-bar__icon img {
+    display: block;
+    width: {{ section.settings.icon_width }}px;
+    height: auto;
+  }
+
+  #TrustBar-{{ section_id }} .trust-bar__text {
+    font-family: 'Figtree', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;          /* 140% */
+    letter-spacing: 0;
+    color: var(--trust-text);
+  }
+
+  /* Mobile: 2-column grid */
+  @media screen and (max-width: 749px) {
+    #TrustBar-{{ section_id }} .trust-bar__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 1.25rem;
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+    #TrustBar-{{ section_id }} .trust-bar__item {
+      white-space: normal;
+    }
+    #TrustBar-{{ section_id }} .trust-bar__text {
+      font-size: 14px;
+    }
+  }
+</style>
+
+<div id="TrustBar-{{ section_id }}" class="trust-bar">
+  <div class="trust-bar__inner">
+    {%- for block in section.blocks -%}
+      <div class="trust-bar__item" {{ block.shopify_attributes }}>
+        {%- if block.settings.icon != blank -%}
+          <span class="trust-bar__icon">
+            <img
+              src="{{ block.settings.icon | image_url: width: 80 }}"
+              alt="{{ block.settings.text | escape }}"
+              loading="lazy"
+              width="{{ block.settings.icon.width }}"
+              height="{{ block.settings.icon.height }}"
+            >
+          </span>
+        {%- endif -%}
+        {%- if block.settings.text != blank -%}
+          <span class="trust-bar__text">{{ block.settings.text }}</span>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Trust Bar",
+  "tag": "section",
+  "class": "shopify-section--trust-bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background",
+      "default": "#FDF9F0"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Max width",
+      "default": 1300
+    },
+    {
+      "type": "range",
+      "id": "side_padding",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Side padding",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "icon_width",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon width",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Trust item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon",
+          "info": "Recommended small icon (~20px)"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Free & Insured Shipping"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Trust Bar",
+      "blocks": [
+        { "type": "item", "settings": { "text": "Free & Insured Shipping" } },
+        { "type": "item", "settings": { "text": "30-Day Returns" } },
+        { "type": "item", "settings": { "text": "Hand-Woven" } },
+        { "type": "item", "settings": { "text": "Natural Wool & Dyes" } },
+        { "type": "item", "settings": { "text": "Fair Trade Practices" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
