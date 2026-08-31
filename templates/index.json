@@ -82,6 +82,62 @@
         "controls_color": "#ffffff"
       }
     },
+    "custom_hero_slideshow_J94J39": {
+      "type": "custom-hero-slideshow",
+      "blocks": {
+        "slide_z8P9Ni": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Frame_1400008471.png",
+            "mobile_image": "shopify://shop_images/Mobile_-_Authentic_Outshak_Rugs.png",
+            "image_position": "right",
+            "subheading": "",
+            "heading": "Authentic Oushak Rugs. Made to Last a Lifetime.",
+            "description": "<p>Featuring oversized motifs and soft tones, every Oushak rug is hand-knotted to fit your space perfectly.</p>",
+            "button_label": "Explore Oushak Rugs",
+            "button_link": "shopify://collections/oushak-rugs"
+          }
+        },
+        "slide_KXNeKx": {
+          "type": "slide",
+          "settings": {
+            "image_position": "right",
+            "subheading": "",
+            "heading": "Fresh Arrivals,  Curated for Timeless Living",
+            "description": "<p>From antique to plush hand-tufted rugs, discover our latest handcrafted pieces that fit your space perfectly.</p>",
+            "button_label": "Explore new arrivals",
+            "button_link": "shopify://collections/new-arrivals"
+          }
+        },
+        "slide_Y4VnDH": {
+          "type": "slide",
+          "settings": {
+            "image_position": "right",
+            "subheading": "",
+            "heading": "Have a design in mind?  Let us know.",
+            "description": "<p>Create a rug that's uniquely yours. Customize the size, colors and more with guidance from our rug experts.</p>",
+            "button_label": "get in touch",
+            "button_link": "shopify://pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "slide_z8P9Ni",
+        "slide_KXNeKx",
+        "slide_Y4VnDH"
+      ],
+      "name": "Hero Slideshow",
+      "settings": {
+        "bg_color": "#f3eee4",
+        "text_color": "#000000",
+        "button_bg": "#55583c",
+        "button_text_color": "#ffffff",
+        "dot_color": "#d9d9d9",
+        "dot_active_color": "#55583c",
+        "autoplay": true,
+        "autoplay_seconds": 5
+      }
+    },
     "featured-collections-1": {
       "type": "featured-collections",
       "blocks": {
@@ -1000,61 +1056,6 @@
         "content": "<p>Subscribe to get notified about product launches, special offers and company news.</p>",
         "button_text": "Subscribe",
         "disclaimer": "<p>You can unsubscribe anytime. For more details, read our Privacy Policy.</p>"
-      }
-    },
-    "custom_hero_slideshow_J94J39": {
-      "type": "custom-hero-slideshow",
-      "blocks": {
-        "slide_z8P9Ni": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/Frame_1400008471.png",
-            "image_position": "right",
-            "subheading": "",
-            "heading": "Authentic Oushak Rugs. Made to Last a Lifetime.",
-            "description": "<p>Featuring oversized motifs and soft tones, every Oushak rug is hand-knotted to fit your space perfectly.</p>",
-            "button_label": "Explore Oushak Rugs",
-            "button_link": "shopify://collections/oushak-rugs"
-          }
-        },
-        "slide_KXNeKx": {
-          "type": "slide",
-          "settings": {
-            "image_position": "right",
-            "subheading": "",
-            "heading": "Fresh Arrivals,  Curated for Timeless Living",
-            "description": "<p>From antique to plush hand-tufted rugs, discover our latest handcrafted pieces that fit your space perfectly.</p>",
-            "button_label": "Explore new arrivals",
-            "button_link": "shopify://collections/new-arrivals"
-          }
-        },
-        "slide_Y4VnDH": {
-          "type": "slide",
-          "settings": {
-            "image_position": "right",
-            "subheading": "",
-            "heading": "Have a design in mind?  Let us know.",
-            "description": "<p>Create a rug that's uniquely yours. Customize the size, colors and more with guidance from our rug experts.</p>",
-            "button_label": "get in touch",
-            "button_link": "shopify://pages/contact"
-          }
-        }
-      },
-      "block_order": [
-        "slide_z8P9Ni",
-        "slide_KXNeKx",
-        "slide_Y4VnDH"
-      ],
-      "name": "Hero Slideshow",
-      "settings": {
-        "bg_color": "#F3EEE4",
-        "text_color": "#000000",
-        "button_bg": "#55583C",
-        "button_text_color": "#FFFFFF",
-        "dot_color": "#D9D9D9",
-        "dot_active_color": "#55583C",
-        "autoplay": true,
-        "autoplay_seconds": 5
       }
     }
   },
