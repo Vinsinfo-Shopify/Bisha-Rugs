@@ -8976,6 +8976,9 @@ ul {
 .faq_section_header{
   margin-bottom: 60px;
 }
+.faq_section_header .section-header{
+  max-width: 100%;
+}
 .faq_section .button--outline{
   color: #FFFFFF;
 }
@@ -9037,7 +9040,9 @@ ul {
   gap: 48px;
   align-items: start;
 }
-
+.shopify-section--faq .container .section-stack{
+  gap: 0px;
+}
 @media (max-width: 749px) {
   .blog-layout {
     grid-template-columns: 1fr;
