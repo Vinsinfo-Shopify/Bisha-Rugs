@@ -92,7 +92,7 @@
             "mobile_image": "shopify://shop_images/Mobile_-_Authentic_Outshak_Rugs_bd9fe007-bee1-418e-8732-d6c48e3faa7b.png",
             "image_position": "right",
             "subheading": "",
-            "heading": "Authentic Oushak Rugs. <br> Made to Last a Lifetime.",
+            "heading": "Authentic Oushak Rugs.  Made to Last a Lifetime.",
             "heading_width": 520,
             "description": "<p>Featuring oversized motifs and soft tones, every Oushak rug is hand-knotted to fit your space perfectly.</p>",
             "button_label": "Explore Oushak Rugs",
@@ -198,13 +198,108 @@
       ],
       "name": "Trust Bar",
       "settings": {
-        "bg_color": "#fdf9f0",
+        "bg_color": "#fffbf3",
         "text_color": "#000000",
         "max_width": 1300,
         "side_padding": 70,
         "padding_top": 20,
         "padding_bottom": 20,
         "icon_width": 20
+      }
+    },
+    "collection_list_6EFC6y": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_UEdCyy": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "collection": "oushak-rugs",
+            "image": "shopify://shop_images/Oushak_Rugs_bdb6cd46-c650-45b2-9254-35779a65dfcc.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Oushak Rugs",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_kk7GLD": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "collection": "new-arrivals",
+            "image": "shopify://shop_images/Best_Sellers.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Best Sellers",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_6Dzxdj": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "",
+            "collection": "new-arrivals",
+            "image": "shopify://shop_images/New_Arrivals.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "New Arrivals",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_kRWH6f": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "",
+            "collection": "all",
+            "image": "shopify://shop_images/Shop_All.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Shop All",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "collection_UEdCyy",
+        "collection_kk7GLD",
+        "collection_6Dzxdj",
+        "collection_kRWH6f"
+      ],
+      "name": "t:sections.collection_list.presets.collection_list.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "separate_section_with_border": true,
+        "image_size": "auto",
+        "show_text_outside": false,
+        "space_items": true,
+        "stack_collections": true,
+        "collections_per_row_desktop": 4,
+        "stack_collections_mobile": true,
+        "collections_per_row_mobile": "2",
+        "subheading": "Categories",
+        "title": "Explore Our Range",
+        "heading_style": "h1",
+        "content": ""
       }
     },
     "featured-collections-1": {
@@ -1132,6 +1227,7 @@
     "slideshow",
     "custom_hero_slideshow_J94J39",
     "trust_bar_MUX4MJ",
+    "collection_list_6EFC6y",
     "featured-collections-1",
     "image-with-text-overlay-1",
     "rich-text",

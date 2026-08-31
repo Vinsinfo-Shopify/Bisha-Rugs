@@ -50,6 +50,175 @@
     }
   </style>
 
+  <style>
+    #shopify-section-{{ section.id }} {
+      --collection-list-gap: 1rem;
+    }
+
+    #shopify-section-{{ section.id }} .section-stack {
+      gap: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .section-spacing {
+      padding-block-start: var(--container-gutter);
+      padding-block-end: var(--container-gutter);
+      border: 0;
+    } 
+
+    #shopify-section-{{ section.id }} .section-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    #shopify-section-{{ section.id }} .section-header .section_header_subheading {
+      font-family: var(--text-font-family);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .section-header .section_header_heading {
+      font-family: 'Forum', serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 2;
+      letter-spacing: 0;
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .section-header .section_header_content {
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .container {
+      max-width: 1300px;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card .content-over-media {
+      aspect-ratio: 313 / 400;
+      border-radius: 0;
+      overflow: hidden;
+      --content-over-media-gap: 0;
+      --content-over-media-overlay: 0 0 0 / 0;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__content {
+      width: 100%;
+      max-width: none;
+      padding: 60px 16px 20px;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.1) 31%,
+        rgba(0, 0, 0, 0) 100%
+      );
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      max-width: none;
+      min-height: 34px;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__title {
+      font-family: var(--text-font-family);
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: 0;
+      text-transform: none;
+      color: #fff;
+      margin: 0 !important;
+      padding: 0;
+      align-self: center;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__arrow {
+      display: grid;
+      place-items: center;
+      flex: none;
+      width: 34px;
+      height: 34px;
+      border: 1px solid #fff;
+      border-radius: 50%;
+      background-color: transparent;
+      color: #fff;
+      margin: 0;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card:hover .collection-card__arrow {
+      background-color: #fff !important;
+      color: #1a1a1a !important;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__arrow svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card .content-over-media > img,
+    #shopify-section-{{ section.id }} .collection-card .content-over-media > svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card:hover .collection-card__arrow {
+      background-color: transparent;
+      color: #fff;
+    }
+
+    @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} {
+      --collection-list-gap: 8px;
+    }
+
+    #shopify-section-{{ section.id }} .container {
+      padding: 0;
+    }
+
+    #shopify-section-{{ section.id }} .section-stack {
+      gap: 16px;
+    }
+
+    #shopify-section-{{ section.id }} .section_header_heading {
+      font-size: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__content {
+      padding: 40px 8px 10px;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__row {
+      min-height: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__title {
+      font-size: 16px;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__arrow {
+      width: 24px;
+      height: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__arrow svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+  </style>
+
   {%- comment -%}
     ------------------------------------------------------------------------------------------------------------------------
     LIQUID
@@ -90,9 +259,19 @@
                   <p class="h6">{{- block.settings.subheading -}}</p>
                 {%- endif -%}
 
-                {%- if block.settings.title != blank -%}
-                  <p class="h3">{{- block.settings.title -}}</p>
-                {%- endif -%}
+                <div class="collection-card__row">
+                  {%- if block.settings.title != blank -%}
+                    <p class="h3 collection-card__title">{{- block.settings.title -}}</p>
+                  {%- endif -%}
+
+                  {%- if collection_url != blank -%}
+                    <span class="collection-card__arrow" aria-hidden="true">
+                      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                  {%- endif -%}
+                </div>
 
                 {%- if block.settings.button_text != blank -%}
                   {%- render 'button', type: 'button', content: block.settings.button_text, style: block.settings.button_style, focusable: false -%}
