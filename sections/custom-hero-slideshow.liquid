@@ -36,18 +36,21 @@
     display: block;
   }
 
-  /* Desktop split layout */
-  .hero-slide__inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;   /* 50/50 */
-    min-height: 620px;
-  }
-  .hero-slide--image-left .hero-slide__inner {
-    grid-template-areas: "image content";
-  }
   .hero-slide--image-right .hero-slide__inner {
+    grid-template-columns: 55% 45%;
     grid-template-areas: "content image";
   }
+
+  .hero-slide--image-left .hero-slide__inner {
+    grid-template-columns: 45% 55%;
+    grid-template-areas: "image content";
+  }
+
+/* Shared */
+.hero-slide__inner {
+  display: grid;
+  min-height: 620px;
+}
 
   .hero-slide__content {
     grid-area: content;
