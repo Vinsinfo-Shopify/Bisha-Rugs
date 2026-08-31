@@ -501,8 +501,9 @@
     font-weight: 400;
     padding: 6px 0;
   }
+
   .header-sidebar__footer {
-    padding: 0;
+    padding: 0;   
   }
   .header-sidebar__footer .text-with-icon {
     display: flex;
@@ -510,18 +511,23 @@
     justify-content: center;
     gap: 10px;
     width: 100%;
-    background: #b5623c;         /* terracotta — set to Figma's exact hex */
-    color: #ffffff;
+    background: #b5623c;         
+    color: #ffffff;             
     padding: 16px;
-    border-radius: 0;           /* square corners like Figma */
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
+    border-radius: 0;           
+
+    /* Typography — exact Figma spec */
+    font-size: 16px;
+    font-weight: 700;           
+    line-height: 1.4;           
+    letter-spacing: 0;          
+    text-transform: uppercase;  
   }
   .header-sidebar__footer .text-with-icon svg {
     color: #ffffff;
     width: 18px;
     height: 18px;
+    flex: none;
   }
 
   .header-sidebar::part(header) {
