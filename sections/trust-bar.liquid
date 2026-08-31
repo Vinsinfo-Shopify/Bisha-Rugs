@@ -21,12 +21,12 @@
     padding-left: var(--container-gutter);
     padding-right: var(--container-gutter);
     display: flex;
-    flex-wrap: wrap;                    /* allow wrapping instead of cramping */
+    flex-wrap: wrap;                    
     justify-content: space-between;
     align-items: center;
     gap: 16px 24px;
     box-sizing: border-box;
-    }
+  }
 
   #TrustBar-{{ section_id }} .trust-bar__item {
     display: inline-flex;
@@ -41,6 +41,7 @@
     align-items: center;
     justify-content: center;
   }
+
   #TrustBar-{{ section_id }} .trust-bar__icon img {
     display: block;
     width: {{ section.settings.icon_width }}px;
@@ -51,67 +52,65 @@
     font-family: 'Figtree', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    line-height: 1.4;          /* 140% */
+    line-height: 1.4;          
     letter-spacing: 0;
     color: var(--trust-text);
   }
-/* Visibility control per item */
-.trust-bar__item--desktop { display: inline-flex; }   /* shown on desktop */
-.trust-bar__item--mobile { display: none; }            /* hidden on desktop */
-/* 'both' uses the default .trust-bar__item display */
 
-/* Desktop icon size */
-#TrustBar-{{ section_id }} .trust-bar__icon img {
-  width: 20px;   /* desktop icon width */
-  height: auto;
-}
-
-@media screen and (max-width: 990px) {
-  #TrustBar-{{ section_id }} .trust-bar__inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px 24px;
-    /* keep the same gutter as header for alignment */
-    padding-left: var(--container-gutter);
-    padding-right: var(--container-gutter);
-  }
-  #TrustBar-{{ section_id }} .trust-bar__item {
-    white-space: normal;             /* allow text to wrap in grid cells */
-  }
-}
-#TrustBar-{{ section_id }}  .trust-bar__item--mobile { display: none; }
-/* Mobile */
-@media screen and (max-width: 749px) {
-  /* Visibility swap on mobile */
-  #TrustBar-{{ section_id }} .trust-bar__item--desktop { display: none; }        /* hide desktop-only on mobile */
-  #TrustBar-{{ section_id }}  .trust-bar__item--mobile { display: inline-flex; }   /* show mobile-only on mobile */
-
-  #TrustBar-{{ section_id }} .trust-bar__inner {
-    display: grid;
-    grid-template-columns: 1fr 1fr;   /* 2 columns */
-    gap: 14px 20px;
-    padding-left: var(--container-gutter);   /* align with header */
-    padding-right: var(--container-gutter);
-    max-width: none;                  /* remove the 351px cap */
-    margin: 0;                        /* remove centering */
-  }
-
-  #TrustBar-{{ section_id }} .trust-bar__item {
-    gap: 6px;                         /* Figma gap icon-to-text */
-    white-space: normal;
-  }
+  .trust-bar__item--desktop { display: inline-flex; }   
+  .trust-bar__item--mobile { display: none; }            
 
   #TrustBar-{{ section_id }} .trust-bar__icon img {
-    width: 22px;                      /* Figma mobile icon 22px */
-    height: 22px;
+    width: 20px;   
+    height: auto;
   }
 
-  #TrustBar-{{ section_id }} .trust-bar__text {
-    font-size: 14px;                  /* Figma mobile 14px */
-    font-weight: 600;
-    line-height: 1.4;
+  #TrustBar-{{ section_id }}  .trust-bar__item--mobile { display: none; }
+
+  @media screen and (max-width: 990px) {
+    #TrustBar-{{ section_id }} .trust-bar__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 24px;
+      padding-left: var(--container-gutter);
+      padding-right: var(--container-gutter);
+    }
+    #TrustBar-{{ section_id }} .trust-bar__item {
+      white-space: normal;             
+    }
   }
-}
+
+
+  @media screen and (max-width: 749px) {
+    #TrustBar-{{ section_id }} .trust-bar__item--desktop { display: none; }        
+    #TrustBar-{{ section_id }}  .trust-bar__item--mobile { display: inline-flex; }   
+
+    #TrustBar-{{ section_id }} .trust-bar__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;   
+      gap: 14px 20px;
+      padding-left: var(--container-gutter);   
+      padding-right: var(--container-gutter);
+      max-width: none;                  
+      margin: 0;                        
+    }
+
+    #TrustBar-{{ section_id }} .trust-bar__item {
+      gap: 6px;                         
+      white-space: normal;
+    }
+
+    #TrustBar-{{ section_id }} .trust-bar__icon img {
+      width: 22px;                      
+      height: 22px;
+    }
+
+    #TrustBar-{{ section_id }} .trust-bar__text {
+      font-size: 14px;                  
+      font-weight: 600;
+      line-height: 1.4;
+    }
+  }
 </style>
 
 <div id="TrustBar-{{ section_id }}" class="trust-bar">
