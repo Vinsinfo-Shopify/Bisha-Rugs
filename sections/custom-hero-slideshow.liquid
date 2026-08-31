@@ -42,13 +42,13 @@
   grid-template-areas: "content image";
 }
 
-/* Image on left: image 47% | content 53% */
+
 .hero-slide--image-left .hero-slide__inner {
   grid-template-columns: 47% 53%;
   grid-template-areas: "image content";
 }
 
-/* Shared */
+
 .hero-slide__inner {
   display: grid;
   min-height: 620px;
@@ -74,13 +74,14 @@
     grid-area: image;
     position: relative;
     overflow: hidden;
-  }
-  .hero-slide__image img {
+    aspect-ratio: 2728 / 2480;   /* match the image exactly — no distortion */
+    }
+    .hero-slide__image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-  }
+    object-position: center;
+    }
 
   .hero-slide__heading {
     font-family: 'Forum', serif;
