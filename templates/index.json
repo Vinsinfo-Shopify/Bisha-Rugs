@@ -1032,10 +1032,10 @@
           "settings": {
             "image_position": "right",
             "subheading": "",
-            "heading": "Authentic Oushak Rugs. Made to Last a Lifetime.",
-            "description": "<p>Featuring oversized motifs and soft tones, every Oushak rug is hand-knotted to fit your space perfectly.</p>",
-            "button_label": "Explore Oushak Rugs",
-            "button_link": ""
+            "heading": "Have a design in mind?  Let us know.",
+            "description": "<p>Create a rug that's uniquely yours. Customize the size, colors and more with guidance from our rug experts.</p>",
+            "button_label": "get in touch",
+            "button_link": "shopify://pages/contact"
           }
         }
       },
