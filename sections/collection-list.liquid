@@ -171,6 +171,47 @@
       background-color: transparent;
       color: #fff;
     }
+
+    @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} {
+      --collection-list-gap: 8px;
+    }
+
+    #shopify-section-{{ section.id }} .container {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .section-stack {
+      gap: 16px;
+    }
+
+    #shopify-section-{{ section.id }} .section_header_heading {
+      font-size: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__content {
+      padding: 40px 8px 10px;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__row {
+      min-height: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__title {
+      font-size: 16px;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__arrow {
+      width: 24px;
+      height: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .collection-card__arrow svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
   </style>
 
   {%- comment -%}
