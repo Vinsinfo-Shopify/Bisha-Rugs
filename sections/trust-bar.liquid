@@ -66,6 +66,20 @@
   height: auto;
 }
 
+@media screen and (max-width: 990px) {
+  #TrustBar-{{ section_id }} .trust-bar__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 24px;
+    /* keep the same gutter as header for alignment */
+    padding-left: var(--container-gutter);
+    padding-right: var(--container-gutter);
+  }
+  #TrustBar-{{ section_id }} .trust-bar__item {
+    white-space: normal;             /* allow text to wrap in grid cells */
+  }
+}
+
 /* Mobile */
 @media screen and (max-width: 749px) {
   /* Visibility swap on mobile */
