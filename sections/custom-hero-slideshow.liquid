@@ -183,43 +183,67 @@
     .hero-slide__img--desktop { display: block; }
     .hero-slide__img--mobile { display: none; }
 
-  /* Mobile: stack image top, content bottom */
   @media screen and (max-width: 749px) {
-    .hero-slide__inner,
-    .hero-slide--image-left .hero-slide__inner,
-    .hero-slide--image-right .hero-slide__inner {
-      grid-template-columns: 1fr;
-      grid-template-areas: "image" "content";
-      min-height: 0;
-    }
-    .hero-slide__image {
-      aspect-ratio: 1 / 1;  
-    }
-    .hero-slide__heading {
-      font-size: 2rem;
-    }
-    .hero-slide__description {
-      font-size: 0.95rem;
-      max-width: none;
-    }
-    .hero-slideshow__arrow {
-        width: 22px;
-        height: 22px;
-        top: calc(100vw - 11px);   /* 11px = half of 22px, centers on the seam */
-        bottom: auto;
-        right: 1.25rem;
-        transform: none;
-    }
-    .hero-slideshow__arrow svg {
-        width: 10px;               /* smaller chevron for the 22px circle */
-        height: 10px;
-    }
-    .hero-slideshow__arrow:hover {
-        transform: scale(1.05);
-    }
-    .hero-slide__img--desktop { display: none; }
-    .hero-slide__img--mobile { display: block; }
+  /* Stack: image top, content bottom */
+  .hero-slide__inner,
+  .hero-slide--image-left .hero-slide__inner,
+  .hero-slide--image-right .hero-slide__inner {
+    grid-template-columns: 1fr;
+    grid-template-areas: "image" "content";
+    min-height: 0;
   }
+
+  .hero-slide__image {
+    aspect-ratio: 2728 / 2480;   /* keep image undistorted */
+  }
+
+  /* Content — Figma mobile spec */
+  .hero-slide__content {
+    padding: 20px 12px 32px;     /* left 12px like Figma, some top/bottom */
+    align-items: flex-start;
+  }
+
+  /* Heading — Forum 28px / 120% */
+  .hero-slide__heading {
+    font-size: 28px;
+    line-height: 1.2;            /* 120% */
+    margin: 0 0 20px;           /* 20px gap */
+    max-width: none;            /* let it use full width on mobile */
+  }
+
+  /* Description — Figtree 14px / 140% (NOT DM Sans on mobile) */
+  .hero-slide__description {
+    font-family: 'Figtree', sans-serif;   /* mobile uses Figtree per Figma */
+    font-size: 14px;
+    line-height: 1.4;           /* 140% */
+    margin: 0 0 20px;           /* 20px gap */
+    max-width: none;
+  }
+
+  /* Button — Figtree 16px / 700 / uppercase (same as desktop) */
+  .hero-slide__button {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  /* Arrow — 22px on the seam */
+  .hero-slideshow__arrow {
+    width: 22px;
+    height: 22px;
+    top: calc((100vw * 2480 / 2728) - 11px);  /* seam position based on image ratio */
+    bottom: auto;
+    right: 1rem;
+    transform: none;
+  }
+  .hero-slideshow__arrow svg {
+    width: 10px;
+    height: 10px;
+  }
+  .hero-slideshow__arrow:hover {
+    transform: scale(1.05);
+  }
+}
 </style>
 
 <div id="HeroSlideshow-{{ section_id }}" class="hero-slideshow" data-autoplay="{{ section.settings.autoplay }}" data-interval="{{ section.settings.autoplay_seconds | times: 1000 }}">
