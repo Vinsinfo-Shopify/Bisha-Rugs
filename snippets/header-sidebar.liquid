@@ -151,7 +151,9 @@
                         >
                           <summary class="header-sidebar__linklist-button {% if section.settings.sidebar_text_font == 'heading' %}h6{% endif %}">
                             {{- sub_link.title -}}
-                            <span class="animated-plus group-expanded:rotate" aria-hidden="true"></span>
+                            <span class="header-sidebar__chevron group-expanded:rotate" aria-hidden="true">
+                              {%- render 'icon' with 'chevron-down', width: 14 -%}
+                            </span>
                           </summary>
 
                           {%- assign parent_title = sub_link.title | downcase | strip -%}
