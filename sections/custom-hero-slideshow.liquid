@@ -184,6 +184,25 @@
     .hero-slide__img--desktop { display: block; }
     .hero-slide__img--mobile { display: none; }
 
+    @media screen and (min-width: 750px) and (max-width: 991px) {
+  .hero-slide__heading {
+    font-size: 34px;           /* down from 50px — fits the narrow column */
+    line-height: 1.15;
+    margin: 0 0 20px;
+  }
+  .hero-slide__description {
+    font-size: 15px;
+    margin: 0 0 20px;
+  }
+  .hero-slide__content {
+    padding-right: 24px;       /* tighten right padding */
+  }
+  .hero-slide__button {
+    font-size: 14px;
+    padding: 12px 22px;
+  }
+}
+
   @media screen and (max-width: 749px) {
   /* Stack: image top, content bottom */
   .hero-slide__inner,
