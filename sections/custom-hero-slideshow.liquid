@@ -191,15 +191,11 @@
       max-width: none;
     }
     .hero-slideshow__arrow {
-        top: auto;
-        /* position it near the bottom of the image area */
+        top: calc(100vw - 22px);   /* at image/content seam (if image is square) */
         bottom: auto;
-        right: 1rem;
-        /* place it just above the content panel — adjust based on image height */
-        top: calc(100vw - 2.5rem);  /* if image is square (100vw tall), sit near its bottom */
+        right: 1.25rem;
         transform: none;
-        width: 34px;
-        height: 34px;
+        /* background stays rgba(0,0,0,0.4) from the main rule */
     }
     .hero-slideshow__arrow:hover {
         transform: scale(1.05);
