@@ -207,6 +207,101 @@
         "icon_width": 20
       }
     },
+    "collection_list_6EFC6y": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_UEdCyy": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "collection": "oushak-rugs",
+            "image": "shopify://shop_images/Oushak_Rugs_bdb6cd46-c650-45b2-9254-35779a65dfcc.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Oushak Rugs",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_kk7GLD": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "collection": "new-arrivals",
+            "image": "shopify://shop_images/Best_Sellers.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Best Sellers",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_6Dzxdj": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "",
+            "collection": "new-arrivals",
+            "image": "shopify://shop_images/New_Arrivals.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "New Arrivals",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_kRWH6f": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "",
+            "collection": "all",
+            "image": "shopify://shop_images/Shop_All.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Shop All",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "collection_UEdCyy",
+        "collection_kk7GLD",
+        "collection_6Dzxdj",
+        "collection_kRWH6f"
+      ],
+      "name": "t:sections.collection_list.presets.collection_list.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "image_size": "auto",
+        "show_text_outside": false,
+        "space_items": true,
+        "stack_collections": true,
+        "collections_per_row_desktop": 3,
+        "stack_collections_mobile": true,
+        "collections_per_row_mobile": "1",
+        "subheading": "Categories",
+        "title": "Explore Our Range",
+        "heading_style": "h1",
+        "content": ""
+      }
+    },
     "featured-collections-1": {
       "type": "featured-collections",
       "blocks": {
@@ -1126,107 +1221,13 @@
         "button_text": "Subscribe",
         "disclaimer": "<p>You can unsubscribe anytime. For more details, read our Privacy Policy.</p>"
       }
-    },
-    "collection_list_6EFC6y": {
-      "type": "collection-list",
-      "blocks": {
-        "collection_UEdCyy": {
-          "type": "collection",
-          "settings": {
-            "color_scheme": "scheme-4",
-            "collection": "oushak-rugs",
-            "image": "shopify://shop_images/Oushak_Rugs_bdb6cd46-c650-45b2-9254-35779a65dfcc.png",
-            "expand_collection": false,
-            "content_position": "place-self-end-start text-start",
-            "subheading": "",
-            "title": "Oushak Rugs",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "solid",
-            "overlay_color": "#000000",
-            "overlay_opacity": 30
-          }
-        },
-        "collection_kk7GLD": {
-          "type": "collection",
-          "settings": {
-            "color_scheme": "scheme-4",
-            "collection": "new-arrivals",
-            "image": "shopify://shop_images/Best_Sellers.png",
-            "expand_collection": false,
-            "content_position": "place-self-end-start text-start",
-            "subheading": "",
-            "title": "Best Sellers",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "solid",
-            "overlay_color": "#000000",
-            "overlay_opacity": 30
-          }
-        },
-        "collection_6Dzxdj": {
-          "type": "collection",
-          "settings": {
-            "color_scheme": "",
-            "collection": "new-arrivals",
-            "image": "shopify://shop_images/New_Arrivals.png",
-            "expand_collection": false,
-            "content_position": "place-self-end-start text-start",
-            "subheading": "",
-            "title": "New Arrivals",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "solid",
-            "overlay_color": "#000000",
-            "overlay_opacity": 30
-          }
-        },
-        "collection_kRWH6f": {
-          "type": "collection",
-          "settings": {
-            "color_scheme": "",
-            "collection": "all",
-            "image": "shopify://shop_images/Shop_All.png",
-            "expand_collection": false,
-            "content_position": "place-self-end-start text-start",
-            "subheading": "",
-            "title": "Shop All",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "solid",
-            "overlay_color": "#000000",
-            "overlay_opacity": 30
-          }
-        }
-      },
-      "block_order": [
-        "collection_UEdCyy",
-        "collection_kk7GLD",
-        "collection_6Dzxdj",
-        "collection_kRWH6f"
-      ],
-      "name": "t:sections.collection_list.presets.collection_list.name",
-      "settings": {
-        "color_scheme": "",
-        "separate_section_with_border": true,
-        "image_size": "auto",
-        "show_text_outside": false,
-        "space_items": true,
-        "stack_collections": true,
-        "collections_per_row_desktop": 3,
-        "stack_collections_mobile": true,
-        "collections_per_row_mobile": "1",
-        "subheading": "Categories",
-        "title": "Explore Our Range",
-        "heading_style": "h1",
-        "content": ""
-      }
     }
   },
   "order": [
     "slideshow",
     "custom_hero_slideshow_J94J39",
     "trust_bar_MUX4MJ",
+    "collection_list_6EFC6y",
     "featured-collections-1",
     "image-with-text-overlay-1",
     "rich-text",
@@ -1247,7 +1248,6 @@
     "timeline",
     "image-with-text-overlay-2",
     "multi-column",
-    "newsletter",
-    "collection_list_6EFC6y"
+    "newsletter"
   ]
 }
