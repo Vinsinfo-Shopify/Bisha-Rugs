@@ -1099,12 +1099,14 @@
         "item_FUEmaY": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/material-symbols_nest-eco-leaf-outline.png",
             "text": "Natural Wool & Dyes"
           }
         },
         "item_WaiB86": {
           "type": "item",
           "settings": {
+            "icon": "shopify://shop_images/Fair_trade_Practices.png",
             "text": "Fair Trade Practices"
           }
         }
