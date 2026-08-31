@@ -42,12 +42,10 @@
     grid-template-areas: "content image";
   }
 
-
   .hero-slide--image-left .hero-slide__inner {
     grid-template-columns: 47% 53%;
     grid-template-areas: "image content";
   }
-
 
   .hero-slide__inner {
     display: grid;
@@ -61,7 +59,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding-left: var(--container-gutter);   /* match header left edge */
+    padding-left: var(--container-gutter);   
     padding-right: 40px;               
     box-sizing: border-box;
   }
@@ -74,14 +72,15 @@
     grid-area: image;
     position: relative;
     overflow: hidden;
-    aspect-ratio: 2728 / 2480;   /* match the image exactly — no distortion */
-    }
-    .hero-slide__image img {
+    aspect-ratio: 2728 / 2480;   
+  }
+
+  .hero-slide__image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
-    }
+  }
 
   .hero-slide__heading {
     font-family: 'Forum', serif;
@@ -128,9 +127,9 @@
     cursor: pointer;
     transition: opacity 0.2s ease;
   }
+
   .hero-slide__button:hover { opacity: 0.9; }
 
-  /* Dots */
   .hero-slideshow__dots {
     position: static;
     transform: none;
@@ -140,6 +139,7 @@
     padding: 1rem 0;
     background: #fdf9f0;          
   }
+
   .hero-slideshow__dot {
     width: 8px;
     height: 8px;
@@ -150,154 +150,10 @@
     cursor: pointer;
     transition: background 0.2s ease;
   }
+
   .hero-slideshow__dot.is-active {
     background: var(--hero-dot-active);
   }
-
-  .hero-slideshow__arrow {
-    position: absolute;
-    top: 50%;
-    right: 1.5rem;
-    transform: translateY(-50%);
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.4);
-    color: #ffffff;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 3;
-    transition: background 0.2s ease, transform 0.2s ease;
-  }
-
-  .hero-slideshow__track {
-    position: relative;
-  }
-
-  .hero-slide {
-    display: none;
-    width: 100%;
-  }
-  .hero-slide.is-active {
-    display: block;
-  }
-
-  .hero-slide--image-right .hero-slide__inner {
-    grid-template-columns: 53% 47%;
-    grid-template-areas: "content image";
-  }
-
-  .hero-slide--image-left .hero-slide__inner {
-    grid-template-columns: 47% 53%;
-    grid-template-areas: "image content";
-  }
-
-  .hero-slide__inner {
-    display: grid;
-  }
-
-  .hero-slide__content {
-    grid-area: content;
-    background: var(--hero-cream);
-    color: var(--hero-text);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 0 70px;
-    box-sizing: border-box;
-  }
-
-  .hero-slide__content > * {
-    max-width: 473px;
-  }
-
-  .hero-slide__image {
-    grid-area: image;
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 2728 / 2480;
-  }
-    .hero-slide__image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    }
-
-  .hero-slide__heading {
-    font-family: 'Forum', serif;
-    font-weight: 400;
-    font-size: 50px;
-    line-height: 1.2;
-    letter-spacing: 0;
-    margin: 0 0 30px;
-    color: var(--hero-text);
-  }
-
-  .hero-slide__description {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 1.4;
-    letter-spacing: 0;
-    margin: 0 0 30px;
-    color: var(--hero-text);
-    max-width: 473px;
-  }
-
-  .hero-slide__subheading {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    letter-spacing: 0.05em;
-    margin: 0 0 30px;
-    color: var(--hero-text);
-  }
-
-  .hero-slide__button {
-    font-family: 'Figtree', sans-serif;
-    display: inline-block;
-    background: var(--hero-btn-bg);
-    color: var(--hero-btn-text);
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1.4;
-    letter-spacing: 0;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 14px 28px;
-    border: none;
-    cursor: pointer;
-    transition: opacity 0.2s ease;
-  }
-
-  .hero-slide__button:hover { opacity: 0.9; }
-
-  .hero-slideshow__dots {
-    position: static;
-    transform: none;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    padding: 1rem 0;
-    background: #FFFBF3;
-  }
-
-  .hero-slideshow__dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--hero-dot);
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-
-  .hero-slideshow__dot.is-active { background: var(--hero-dot-active);}
 
   .hero-slideshow__arrow {
     position: absolute;
@@ -327,9 +183,8 @@
     width: 14px;
     height: 14px;
   }
-
+    
   .hero-slide__img--desktop { display: block; }
-
   .hero-slide__img--mobile { display: none; }
 
   @media screen and (min-width: 750px) and (max-width: 991px) {
@@ -338,13 +193,16 @@
       line-height: 1.15;
       margin: 0 0 20px;
     }
+
     .hero-slide__description {
       font-size: 15px;
       margin: 0 0 20px;
     }
+
     .hero-slide__content {
       padding-right: 24px;       
     }
+
     .hero-slide__button {
       font-size: 14px;
       padding: 12px 22px;
@@ -352,14 +210,6 @@
   }
 
   @media screen and (max-width: 749px) {
-    .hero-slide__inner,
-    .hero-slide--image-left .hero-slide__inner,
-    .hero-slide--image-right .hero-slide__inner {
-      grid-template-columns: 1fr;
-      grid-template-areas: "image" "content";
-      min-height: 0;
-    }
-
     .hero-slide__inner,
     .hero-slide--image-left .hero-slide__inner,
     .hero-slide--image-right .hero-slide__inner {
@@ -377,11 +227,6 @@
       padding-bottom: 32px;
       padding-left: var(--container-gutter);
       padding-right: var(--container-gutter);
-      align-items: flex-start;
-    }
-
-    .hero-slide__content {
-      padding: 20px 12px 32px;     
       align-items: flex-start;
     }
 
@@ -410,82 +255,65 @@
       width: 22px;
       height: 22px;
       top: calc((100vw * 2480 / 2728) - 11px);  
-      bottom: auto;
       right: 1rem;
       transform: none;
     }
-
     .hero-slideshow__arrow svg {
       width: 10px;
       height: 10px;
     }
-
     .hero-slideshow__arrow:hover {
       transform: scale(1.05);
     }
-      
   }
 </style>
 
-<div
-  id="HeroSlideshow-{{ section_id }}"
-  class="hero-slideshow"
-  data-autoplay="{{ section.settings.autoplay }}"
-  data-interval="{{ section.settings.autoplay_seconds | times: 1000 }}"
->
+<div id="HeroSlideshow-{{ section_id }}" class="hero-slideshow" data-autoplay="{{ section.settings.autoplay }}" data-interval="{{ section.settings.autoplay_seconds | times: 1000 }}">
   <div class="hero-slideshow__track">
     {%- for block in section.blocks -%}
-      <div
-        class="hero-slide hero-slide--image-{{ block.settings.image_position }}{% if forloop.first %} is-active{% endif %}"
-        data-index="{{ forloop.index0 }}"
-        {{ block.shopify_attributes }}
-      >
+      <div class="hero-slide hero-slide--image-{{ block.settings.image_position }}{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
         <div class="hero-slide__inner">
-          <div class="hero-slide__image">
-            {%- if block.settings.image != blank -%}
-              <img
-                class="hero-slide__img hero-slide__img--desktop"
-                src="{{ block.settings.image | image_url: width: 1600 }}"
-                alt="{{ block.settings.heading | strip_html | escape }}"
-                loading="lazy"
-                width="{{ block.settings.image.width }}"
-                height="{{ block.settings.image.height }}"
-              >
-            {%- endif -%}
+            <div class="hero-slide__image">
+                {%- if block.settings.image != blank -%}
+                    <img
+                    class="hero-slide__img hero-slide__img--desktop"
+                    src="{{ block.settings.image | image_url: width: 1600 }}"
+                    alt="{{ block.settings.heading | strip_html | escape }}"
+                    loading="lazy"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    >
+                {%- endif -%}
 
-            {%- assign mobile_img = block.settings.mobile_image | default: block.settings.image -%}
-            {%- if mobile_img != blank -%}
-              <img
-                class="hero-slide__img hero-slide__img--mobile"
-                src="{{ mobile_img | image_url: width: 1200 }}"
-                alt="{{ block.settings.heading | strip_html | escape }}"
-                loading="lazy"
-                width="{{ mobile_img.width }}"
-                height="{{ mobile_img.height }}"
-              >
-            {%- endif -%}
+                {%- assign mobile_img = block.settings.mobile_image | default: block.settings.image -%}
+                {%- if mobile_img != blank -%}
+                    <img
+                    class="hero-slide__img hero-slide__img--mobile"
+                    src="{{ mobile_img | image_url: width: 1200 }}"
+                    alt="{{ block.settings.heading | strip_html | escape }}"
+                    loading="lazy"
+                    width="{{ mobile_img.width }}"
+                    height="{{ mobile_img.height }}"
+                    >
+                {%- endif -%}
 
-            {%- if block.settings.image == blank and block.settings.mobile_image == blank -%}
-              {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            {%- endif -%}
-          </div>
+                {%- if block.settings.image == blank and block.settings.mobile_image == blank -%}
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+            </div>
 
           <div class="hero-slide__content">
             {%- if block.settings.subheading != blank -%}
               <p class="hero-slide__subheading">{{ block.settings.subheading }}</p>
             {%- endif -%}
             {%- if block.settings.heading != blank -%}
-              <h2 class="hero-slide__heading" style="max-width: {{ block.settings.heading_width | default: 520 }}px;">
-                {{ block.settings.heading | newline_to_br }}
-              </h2>
+              <h2 class="hero-slide__heading" style="max-width: {{ block.settings.heading_width | default: 520 }}px;">{{ block.settings.heading | newline_to_br }}</h2>
             {%- endif -%}
             {%- if block.settings.description != blank -%}
               <div class="hero-slide__description">{{ block.settings.description }}</div>
             {%- endif -%}
             {%- if block.settings.button_label != blank -%}
-              <a href="{{ block.settings.button_link | default: '#' }}" class="hero-slide__button">
-                {{- block.settings.button_label -}}
-              </a>
+              <a href="{{ block.settings.button_link | default: '#' }}" class="hero-slide__button">{{ block.settings.button_label }}</a>
             {%- endif -%}
           </div>
         </div>
@@ -494,31 +322,17 @@
 
     {%- if section.blocks.size > 1 -%}
       <button type="button" class="hero-slideshow__arrow" aria-label="Next slide" data-hero-next>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     {%- endif -%}
   </div>
   {%- if section.blocks.size > 1 -%}
     <div class="hero-slideshow__dots">
-      {%- for block in section.blocks -%}
-        <button
-          type="button"
-          class="hero-slideshow__dot{% if forloop.first %} is-active{% endif %}"
-          data-hero-dot="{{ forloop.index0 }}"
-          aria-label="Go to slide {{ forloop.index }}"
-        ></button>
-      {%- endfor -%}
+        {%- for block in section.blocks -%}
+        <button type="button" class="hero-slideshow__dot{% if forloop.first %} is-active{% endif %}" data-hero-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}"></button>
+        {%- endfor -%}
     </div>
-  {%- endif -%}
+    {%- endif -%}
 </div>
 
 <script>
@@ -545,9 +359,7 @@
       if (dots[current]) dots[current].classList.add('is-active');
     }
 
-    function next() {
-      goTo(current + 1);
-    }
+    function next() { goTo(current + 1); }
 
     function startAuto() {
       if (!autoplay) return;
@@ -555,17 +367,11 @@
       timer = setInterval(next, interval);
     }
     function stopAuto() {
-      if (timer) {
-        clearInterval(timer);
-        timer = null;
-      }
+      if (timer) { clearInterval(timer); timer = null; }
     }
 
     if (nextBtn) {
-      nextBtn.addEventListener('click', function () {
-        next();
-        startAuto();
-      });
+      nextBtn.addEventListener('click', function () { next(); startAuto(); });
     }
 
     dots.forEach(function (dot) {
@@ -661,10 +467,10 @@
           "info": "Recommended 1600 x 1600px"
         },
         {
-          "type": "image_picker",
-          "id": "mobile_image",
-          "label": "Mobile image",
-          "info": "Optional. Shown on mobile. Falls back to the main image if empty."
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Mobile image",
+            "info": "Optional. Shown on mobile. Falls back to the main image if empty."
         },
         {
           "type": "select",
@@ -688,15 +494,15 @@
           "default": "Authentic Oushak Rugs. Made to Last a Lifetime."
         },
         {
-          "type": "range",
-          "id": "heading_width",
-          "min": 300,
-          "max": 720,
-          "step": 10,
-          "unit": "px",
-          "label": "Heading max width",
-          "info": "Adjust to control where the heading wraps",
-          "default": 520
+            "type": "range",
+            "id": "heading_width",
+            "min": 300,
+            "max": 720,
+            "step": 10,
+            "unit": "px",
+            "label": "Heading max width",
+            "info": "Adjust to control where the heading wraps",
+            "default": 520
         },
         {
           "type": "richtext",
@@ -722,7 +528,11 @@
   "presets": [
     {
       "name": "Hero Slideshow",
-      "blocks": [{ "type": "slide" }, { "type": "slide" }, { "type": "slide" }]
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
     }
   ]
 }
