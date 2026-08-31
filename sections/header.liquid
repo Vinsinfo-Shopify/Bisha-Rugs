@@ -476,7 +476,14 @@
     border: 1px solid rgba(0,0,0,.12);
     flex: none;
   }
+
   .header-sidebar__nested-linklist {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .header-sidebar__nested-linklist--colors {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px 16px;
