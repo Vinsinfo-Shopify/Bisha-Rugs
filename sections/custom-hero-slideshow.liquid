@@ -145,28 +145,27 @@
     top: 50%;
     right: 1.5rem;
     transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.85);
-    color: #333;
+    background: rgba(0, 0, 0, 0.4);   
+    color: #ffffff;                    
     border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 3;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     transition: background 0.2s ease, transform 0.2s ease;
-  }
-  .hero-slideshow__arrow:hover {
-    background: #ffffff;
+    }
+    .hero-slideshow__arrow:hover {
+    background: rgba(0, 0, 0, 0.6);    
     transform: translateY(-50%) scale(1.05);
-  }
-  .hero-slideshow__arrow svg {
+    }
+    .hero-slideshow__arrow svg {
     width: 16px;
     height: 16px;
-  }
+    }
 
   /* Mobile: stack image top, content bottom */
   @media screen and (max-width: 749px) {
@@ -178,7 +177,7 @@
       min-height: 0;
     }
     .hero-slide__image {
-      aspect-ratio: 1 / 1;   /* square image on mobile, adjust as needed */
+      aspect-ratio: 1 / 1;  
     }
     .hero-slide__content {
       padding: 2rem 1.5rem 3.5rem;
@@ -191,11 +190,10 @@
       max-width: none;
     }
     .hero-slideshow__arrow {
-        top: calc(100vw - 22px);   /* at image/content seam (if image is square) */
+        top: calc(100vw - 22px);   
         bottom: auto;
         right: 1.25rem;
         transform: none;
-        /* background stays rgba(0,0,0,0.4) from the main rule */
     }
     .hero-slideshow__arrow:hover {
         transform: scale(1.05);
