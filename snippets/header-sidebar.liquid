@@ -21,7 +21,7 @@
         <a href="{{ routes.root_url }}" part="sidebar-logo" class="header-sidebar__logo">
           {%- if section.settings.logo != blank -%}
             {%- assign alt_text = section.settings.logo.alt | default: shop.name -%}
-            {{- section.settings.logo | image_url: width: 300 | image_tag: alt: alt_text, class: 'header-sidebar__logo-image', widths: '150,300' -}}
+            {{- section.settings.logo | image_url: width: 300 | image_tag: alt: alt_text, class: 'header-sidebar__logo-image', part: 'sidebar-logo-image', widths: '150,300' -}}
           {%- else -%}
             <span class="header-sidebar__logo-text h5">{{ shop.name }}</span>
           {%- endif -%}
