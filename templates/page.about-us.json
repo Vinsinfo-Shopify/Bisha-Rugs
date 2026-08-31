@@ -99,7 +99,7 @@
       ],
       "name": "t:sections.image_with_text.presets.image_with_text.name",
       "settings": {
-        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "color_scheme": "scheme-1",
         "custom_class": "who_we_are",
         "separate_section_with_border": false,
         "padding_top": 60,
@@ -216,7 +216,7 @@
       ],
       "name": "t:sections.multiple_media_with_text.presets.multiple_media_with_text.name",
       "settings": {
-        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "color_scheme": "scheme-1",
         "custom_class": "",
         "reveal_on_scroll": true,
         "separate_section_with_border": false,
@@ -450,7 +450,7 @@
       ],
       "name": "t:sections.image_with_text.presets.image_with_text.name",
       "settings": {
-        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "color_scheme": "scheme-1",
         "custom_class": "crafted_in_india",
         "separate_section_with_border": true,
         "padding_top": 60,
@@ -595,7 +595,7 @@
       ],
       "name": "t:sections.image_with_text.presets.image_with_text.name",
       "settings": {
-        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "color_scheme": "scheme-1",
         "custom_class": "founders_note",
         "separate_section_with_border": true,
         "padding_top": 60,
