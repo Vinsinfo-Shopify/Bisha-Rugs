@@ -154,7 +154,8 @@
                             <span class="animated-plus group-expanded:rotate" aria-hidden="true"></span>
                           </summary>
 
-                          <div class="header-sidebar__nested-linklist">
+                          {%- assign parent_title = sub_link.title | downcase | strip -%}
+                          <div class="header-sidebar__nested-linklist{% if parent_title contains 'color' %} header-sidebar__nested-linklist--colors{% endif %}">
                             {%- for sub_sub_link in sub_link.links -%}
                               {%- assign link_label = sub_sub_link.title | downcase | strip -%}
                               {%- assign swatch = '' -%}
