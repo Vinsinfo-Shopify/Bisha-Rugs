@@ -343,9 +343,6 @@
   .header__primary-nav summary[data-title="sale" i] { color: #c0392b; }
 
   /* Columns row */
-  .mega-menu .mega-menu__linklist {
-    display: flex; flex-wrap: nowrap; gap: 3rem; align-items: flex-start;
-  }
   .mega-menu__column { min-width: max-content; }
 
   /* Shop by Color: 2-column swatch grid */
@@ -432,7 +429,7 @@
   .mega-menu .mega-menu__linklist {
     gap: 2rem;
     align-items: flex-start;
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     min-width: 0;
   }
   .mega-menu__column {
@@ -456,13 +453,128 @@
     font-size: 14px;
   }
   .mega-menu__column > .h6 {
-    margin-bottom: 0.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
   }
   .mega-menu__promo {
     flex: 0 0 auto;
     width: 380px;
     max-width: 30%;
+    margin-left: 2rem;
   }
+  /* Swatch dots in the drawer */
+  .header-sidebar__nested-link.has-swatch {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-sidebar__swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--swatch, transparent);
+    border: 1px solid rgba(0,0,0,.12);
+    flex: none;
+  }
+
+  .header-sidebar__nested-linklist {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .header-sidebar__nested-linklist--colors {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+  }
+  .header-sidebar__linklist-button,
+  .header-sidebar__back-button {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .header-sidebar__nested-link {
+    font-size: 15px;
+    font-weight: 400;
+    padding: 6px 0;
+  }
+
+  .header-sidebar__footer {
+    padding: 0;   
+  }
+  .header-sidebar__footer .text-with-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: #b5623c;         
+    color: #ffffff;             
+    padding: 16px;
+    border-radius: 0;           
+
+    /* Typography — exact Figma spec */
+    font-size: 16px;
+    font-weight: 700;           
+    line-height: 1.4;           
+    letter-spacing: 0;          
+    text-transform: uppercase;  
+  }
+  .header-sidebar__footer .text-with-icon svg {
+    color: #ffffff;
+    width: 18px;
+    height: 18px;
+    flex: none;
+  }
+
+  .header-sidebar::part(header) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1rem 1.5rem 1rem 0.75rem;  
+    gap: 1rem;
+  }
+  .header-sidebar::part(sidebar-logo) {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+  .header-sidebar::part(sidebar-logo-image) {
+    max-width: 120px;    
+    width: 120px;
+    height: auto;
+  }
+  .header-sidebar::part(close-button) {
+    flex: none;
+  }
+
+  .header-sidebar__chevron {
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
+
+  .group.accordion__disclosure[open] .header-sidebar__chevron,
+  details[open] .header-sidebar__chevron {
+    transform: rotate(180deg);
+  }
+  .shopify-section-group-header-group {
+    --header-padding-block: 1.25rem;
+  }
+
+  .header-sidebar__linklist-button,
+  .header-sidebar__linklist a,
+  .header-sidebar a.link-faded,
+  .header-sidebar a.link-faded-reverse {
+    opacity: 1 !important;
+    color: inherit !important;
+  }
+
 {% endstyle %}
 
 {% schema %}
