@@ -4908,6 +4908,9 @@ product-rerender {
   padding-block-start: var(--section-vertical-spacing);
   padding-block-end: min(var(--section-vertical-spacing), 3rem);
 }
+.footer .container{
+  max-width: none;
+}
 
 .footer__inner {
   row-gap: min(var(--section-vertical-spacing), 3rem);
@@ -4919,6 +4922,7 @@ product-rerender {
   align-items: start;
   gap: min(var(--section-vertical-spacing), 2.5rem);
   display: grid;
+  text-align: initial;
 }
 
 .footer__block-list:has(.footer__accordion-group) {
