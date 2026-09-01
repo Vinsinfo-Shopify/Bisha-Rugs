@@ -29,7 +29,9 @@
 
         <dialog-close-button class="contents">
           <button type="button" part="close-button tap-area" aria-label="{{ 'general.accessibility.close' | t | escape }}">
-            {%- render 'icon' with 'close', width: 16 -%}
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
           </button>
         </dialog-close-button>
       </header>
@@ -62,7 +64,9 @@
                 aria-expanded="false"
               >
                 {{- link.title -}}
-                {%- render 'icon' with 'chevron-right', width: 12, direction_aware: true -%}
+                <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true">
+                  <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
               </button>
             {%- else -%}
               <a href="{{ link.url }}" class="header-sidebar__linklist-button {% if section.settings.sidebar_text_font == 'heading' %}h6{% endif %}">
@@ -152,7 +156,9 @@
                           <summary class="header-sidebar__linklist-button {% if section.settings.sidebar_text_font == 'heading' %}h6{% endif %}">
                             {{- sub_link.title -}}
                             <span class="header-sidebar__chevron group-expanded:rotate" aria-hidden="true">
-                              {%- render 'icon' with 'chevron-down', width: 14 -%}
+                              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+                                <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
                             </span>
                           </summary>
 
