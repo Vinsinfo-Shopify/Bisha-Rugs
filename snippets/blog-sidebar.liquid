@@ -60,7 +60,7 @@
                   {%- endif -%}
                 </span>
                 <span class="v-stack gap-1">
-                  <span class="h6">{{ article.title }}</span>
+                  <span class="h6 blog-sidebar__recent-post-image_content">{{ article.title }}</span>
                   <span class="text-subdued text-xs">
                     {{- article.published_at | time_tag: format: 'abbreviated_date' -}}
                   </span>
@@ -71,24 +71,22 @@
         </div>
 
       {%- when 'image_banner' -%}
-        <div {{ block.shopify_attributes }} class="blog-sidebar__widget">
-          <a
-            href="{{ block_st.url | default: '#' }}"
-            {% if block_st.open_link %}
-              target="_blank" rel="noopener"
-            {% endif %}
-          >
-            {%- if block_st.image != blank -%}
+        {%- if block_st.image != blank -%}
+          <div {{ block.shopify_attributes }} class="blog-sidebar__widget">
+            <a
+              href="{{ block_st.url | default: '#' }}"
+              {% if block_st.open_link %}
+                target="_blank" rel="noopener"
+              {% endif %}
+            >
               {{-
                 block_st.image
                 | image_url: width: block_st.image.width
                 | image_tag: sizes: '300px', widths: '300,400,500,600', class: 'w-full'
               -}}
-            {%- else -%}
-              {{- 'image' | placeholder_svg_tag: 'placeholder w-full' -}}
-            {%- endif -%}
-          </a>
-        </div>
+            </a>
+          </div>
+        {%- endif -%}
     {%- endcase -%}
   {%- endfor -%}
 </aside>

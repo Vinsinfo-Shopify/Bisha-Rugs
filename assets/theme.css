@@ -283,7 +283,6 @@ height-observer {
   justify-items: center;
   row-gap: 1rem;
   display: grid;
-  font-family: 'Forum';
   text-align: center;
 }
 
@@ -9024,16 +9023,20 @@ ul {
 
 .breadcrumbs .breadcrumb-current {
   font-weight: 500;
+  color: rgb(var(--text-color) / .55);
 }
 
 .breadcrumbs .breadcrumb-separator {
-  color: rgb(var(--text-color) / .35);
+  color: rgb(var(--text-color) );
   margin: 0 2px;
   font-weight: 400;
 }
 
 .page-title-breadcrumb {
   margin-bottom: 12px;
+}
+.page-title-breadcrumb .breadcrumbs{
+    font-size: 17px;
 }
 .page-title-breadcrumb .breadcrumbs a{
   background: none;
@@ -9051,7 +9054,13 @@ ul {
 }
 .shopify-section--faq .container .section-stack{
   gap: 0px;
+}.blog-sidebar__recent-post-image_content{
+  font-size: 16px;
 }
+.blog-sidebar__widget .text-subdued{
+  font-size: 12px;
+}
+
 @media (max-width: 749px) {
   .blog-layout {
     grid-template-columns: 1fr;
@@ -9151,7 +9160,10 @@ ul {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13.6px;
+  font-size: 12px;
+}
+.blog-post-card__title{
+  font-family: 'Forum';
 }
 
 .blog-post-card__author {
