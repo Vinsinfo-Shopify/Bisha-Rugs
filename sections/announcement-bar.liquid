@@ -6,7 +6,6 @@
       {%- if section.index == 1 and section.settings.enable_sticky == false -%}
         --header-scroll-tracker-offset: var(--announcement-bar-height);
       {%- endif -%}
-
     }
 
     {%- if section.settings.enable_sticky -%}
@@ -18,7 +17,7 @@
 
       .shopify-section--header ~ #shopify-section-{{ section.id }} {
         top: calc(var(--header-is-sticky, 0) * var(--header-height, 0px));
-        z-index: 4; /* We have to lower the z-index in case the announcement bar is displayed after the header */
+        z-index: 4; /* Lowered in case the announcement bar sits after the header */
       }
     {%- endif -%}
 
@@ -26,11 +25,27 @@
       --announcement-bar-font-size: {{ section.settings.mobile_font_size | divided_by: 16.0 }}rem;
     }
 
-    /* CSS for Left & right announcement bar items */
+    @media screen and (min-width: 999px) {
+      #shopify-section-{{ section.id }} {
+        --announcement-bar-font-size: {{ section.settings.desktop_font_size | divided_by: 16.0 }}rem;
+      }
+    }
+
     #shopify-section-{{ section.id }} .announcement-bar,
     #shopify-section-{{ section.id }} .announcement-bar__inner,
     #shopify-section-{{ section.id }} announcement-bar {
       position: relative;
+    }
+
+    #shopify-section-{{ section.id }} .announcement-bar {
+      min-height: 42px;
+      padding-block: 11px;
+    }
+
+    #shopify-section-{{ section.id }} .announcement-bar__message,
+    #shopify-section-{{ section.id }} [class*="announcement"] .message,
+    #shopify-section-{{ section.id }} .announcement-bar__carousel .heading {
+      text-transform: none !important;
     }
 
     #shopify-section-{{ section.id }} .ann-side {
@@ -43,62 +58,106 @@
       color: inherit;
       text-decoration: none;
       white-space: nowrap;
-      font-size: var(--announcement-bar-font-size);
       z-index: 1;
     }
 
-    #shopify-section-{{ section.id }} .announcement-bar__message,
-    #shopify-section-{{ section.id }} [class*="announcement"] .message, #shopify-section-{{ section.id }} .announcement-bar__carousel .heading {
-      text-transform: capitalize !important;
+    #shopify-section-{{ section.id }} .ann-side--left {
+      left: max(var(--container-gutter, 20px), calc((100% - 1300px) / 2));
     }
 
-    #shopify-section-{{ section.id }} .ann-side--left  { left: var(--container-gutter, 20px); }
-    #shopify-section-{{ section.id }} .ann-side--right { right: var(--container-gutter, 20px); }
+    #shopify-section-{{ section.id }} .ann-side--right {
+      right: max(var(--container-gutter, 20px), calc((100% - 1300px) / 2));
+    }
 
-    #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 40rem;}
-
-    #shopify-section-{{ section.id }} .ann-side--left, #shopify-section-{{ section.id }} .ann-side--right, #shopify-section-{{ section.id }} .announcement-bar__carousel .heading {
+    #shopify-section-{{ section.id }} .ann-side--left,
+    #shopify-section-{{ section.id }} .ann-side--right,
+    #shopify-section-{{ section.id }} .announcement-bar__carousel .heading {
       font-size: 14px;
-      font-weight: 400;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0;
     }
 
-    #shopify-section-{{ section.id }} .ann-icon {width: 20px;}
-
-    @media screen and (min-width: 999px) {
-      #shopify-section-{{ section.id }} {
-        --announcement-bar-font-size: {{ section.settings.desktop_font_size | divided_by: 16.0 }}rem;
-      }
+    #shopify-section-{{ section.id }} .ann-icon {
+      width: 20px;
+      height: 20px;
+      flex: none;
     }
 
-    @media screen and (max-width: 1200px) {
-      #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 33rem;}
+    #shopify-section-{{ section.id }} .announcement-bar__carousel {
+      width: 100%;
+      max-width: 659px;
+      text-align: center;
     }
 
-    @media screen and (max-width: 1200px) {
-      #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 28rem;}
+    #shopify-section-{{ section.id }} .announcement-bar carousel-prev-button button,
+    #shopify-section-{{ section.id }} .announcement-bar carousel-next-button button {
+      display: grid;
+      place-items: center;
+      width: 20px;
+      height: 20px;
+      padding: 0;
+      flex: none;
+    }
+
+    @media screen and (max-width: 1199px) {
+      #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 28rem; }
     }
 
     @media screen and (max-width: 991px) {
-      #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 21rem;}
-      #shopify-section-{{ section.id }} .ann-side--left, #shopify-section-{{ section.id }} .ann-side--right, #shopify-section-{{ section.id }} .announcement-bar__carousel .heading {font-size: 12px;}
-      #shopify-section-{{ section.id }} .icon-arrow-left, #shopify-section-{{ section.id }} .icon-arrow-right { width: 10px;}
-    }
+      #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 21rem; }
 
-    @media screen and (max-width: 768px) {
-      .ann-side--desktop {
-        display: none !important;
+      #shopify-section-{{ section.id }} .ann-side--left,
+      #shopify-section-{{ section.id }} .ann-side--right,
+      #shopify-section-{{ section.id }} .announcement-bar__carousel .heading {
+        font-size: 12px;
       }
-      #shopify-section-{{ section.id }} .announcement-bar__carousel { max-width: 35rem;}
-      #shopify-section-{{ section.id }} .announcement-bar {
-        padding-inline-start: var(--container-gutter) !important;
-        padding-inline-end: var(--container-gutter) !important;
-      }
-      #shopify-section-{{ section.id }} .announcement-bar {
-        column-gap: 0; 
-        justify-content: space-between;
+
+      #shopify-section-{{ section.id }} .announcement-bar carousel-prev-button button,
+      #shopify-section-{{ section.id }} .announcement-bar carousel-next-button button {
+        width: 16px;
+        height: 16px;
       }
     }
 
+    @media screen and (max-width: 749px) {
+        .ann-side--desktop { display: none !important; }
+
+        #shopify-section-{{ section.id }} .announcement-bar {
+          min-height: 32px;
+          padding: 7px 12px 8px;
+          column-gap: 0;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        #shopify-section-{{ section.id }} .announcement-bar__carousel {
+          max-width: none;
+          flex: 1 1 auto;
+        }
+
+        #shopify-section-{{ section.id }} .announcement-bar__carousel .heading {
+          font-size: 12px;
+          font-weight: 500;
+          line-height: 1.4;
+          letter-spacing: 0;
+        }
+
+        #shopify-section-{{ section.id }} .announcement-bar__carousel .heading a {
+          font-size: 12px;
+          font-weight: 500;
+          text-decoration: underline;
+          text-underline-offset: 2px;
+          color: inherit;
+        }
+
+        #shopify-section-{{ section.id }} .announcement-bar carousel-prev-button button,
+        #shopify-section-{{ section.id }} .announcement-bar carousel-next-button button {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
   </style>
 
   <height-observer variable="announcement-bar">
