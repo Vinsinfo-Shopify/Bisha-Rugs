@@ -68,7 +68,7 @@
       "custom_css": [],
       "name": "t:sections.announcement_bar.name",
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-3",
         "enable_sticky": false,
         "autoplay": true,
         "cycle_speed": 5,

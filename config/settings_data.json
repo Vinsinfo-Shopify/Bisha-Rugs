@@ -52,10 +52,10 @@
         "settings": {
           "background": "#b15a38",
           "background_gradient": "",
-          "text_color": "#f3eee4",
+          "text_color": "#FFFFFF",
           "primary_button_background": "#2b2724",
-          "primary_button_text_color": "#f3eee4",
-          "circle_button_background": "#f3eee4",
+          "primary_button_text_color": "#FFFFFF",
+          "circle_button_background": "#FFFFFF",
           "circle_button_icon": "#b15a38"
         }
       },
