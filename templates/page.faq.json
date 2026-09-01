@@ -148,7 +148,7 @@
         "show_categories": false,
         "custom_class": "",
         "faq_custom_class": "",
-        "show_breadcrumb": true,
+        "show_breadcrumb": false,
         "breadcrumb_home_label": "Home",
         "breadcrumb_current_label": "FAQs",
         "subheading": "",

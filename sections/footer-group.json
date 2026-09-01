@@ -11,6 +11,23 @@
   "type": "footer",
   "name": "Footer group",
   "sections": {
+    "newsletter_rifYEN": {
+      "type": "newsletter",
+      "name": "t:sections.newsletter.presets.newsletter.name",
+      "settings": {
+        "color_scheme": "scheme-8eec0b30-7dd6-40f7-bdf8-3f2aa3b45117",
+        "separate_section_with_border": false,
+        "image_1": "shopify://shop_images/newsletter_img1.png",
+        "image_2": "shopify://shop_images/newsletter_img2.png",
+        "image_position_mobile": "after_text",
+        "subheading": "",
+        "title": "Join the Bisha Rugs Journal Today",
+        "heading_style": "h2",
+        "content": "<p>Get early access to new drops, care tips, design inspirations and exclusive offers, straight to your inbox.</p>",
+        "button_text": "Subscribe",
+        "disclaimer": "<p>You can unsubscribe anytime. For more details read our <a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a></p>"
+      }
+    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -116,6 +133,7 @@
     }
   },
   "order": [
+    "newsletter_rifYEN",
     "footer"
   ]
 }

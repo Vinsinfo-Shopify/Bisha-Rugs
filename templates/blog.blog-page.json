@@ -14,6 +14,7 @@
       "blocks": {
         "breadcrumb_PM9XaQ": {
           "type": "breadcrumb",
+          "disabled": true,
           "settings": {}
         },
         "heading": {
