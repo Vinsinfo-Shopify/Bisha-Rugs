@@ -13,17 +13,172 @@
       "type": "collection-breadcrumb",
       "settings": {}
     },
+    "image_with_text_AF8648": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_PVB7Qh": {
+          "type": "heading",
+          "settings": {
+            "text": "Oushak Rugs",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_TEbCEy": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Oushak rugs are hand-knotted and admired for their oversized motifs, soft pastel and timeless craftsman...<span style=\"text-decoration:underline\">Read more</span></p>"
+          }
+        },
+        "icon_with_text_Cg9p8d": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group_1.png",
+            "text": "Free Insured Shipping"
+          }
+        },
+        "icon_with_text_8g93pM": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group_2.png",
+            "text": "30 Day Easy Returns"
+          }
+        }
+      },
+      "block_order": [
+        "heading_PVB7Qh",
+        "richtext_TEbCEy",
+        "icon_with_text_Cg9p8d",
+        "icon_with_text_8g93pM"
+      ],
+      "disabled": true,
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "custom_class": "collection_banner",
+        "separate_section_with_border": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "image": "shopify://shop_images/Frame_1400009646_f3d0f848-1890-46d9-8bf4-d69c422a835b.jpg",
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "end",
+        "content_width": "lg",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
+    "image_with_text_9TrLX9": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_J8Xmnf": {
+          "type": "heading",
+          "settings": {
+            "text": "Shop All",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_YzFKam": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>From iconic Oushak, antiques to tufted rug collections, discover rugs designed to elevate every space...Read more</p>"
+          }
+        },
+        "icon_with_text_9ad9K6": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group_1.png",
+            "text": "Free Insured Shipping"
+          }
+        },
+        "icon_with_text_Bcj9Rh": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group_2.png",
+            "text": "30 Day Easy Returns"
+          }
+        }
+      },
+      "block_order": [
+        "heading_J8Xmnf",
+        "richtext_YzFKam",
+        "icon_with_text_9ad9K6",
+        "icon_with_text_Bcj9Rh"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "custom_class": "collection_banner",
+        "separate_section_with_border": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "image": "shopify://shop_images/Frame_1400009646_f3d0f848-1890-46d9-8bf4-d69c422a835b.jpg",
+        "mobile_image": "shopify://shop_images/Frame_1400008909.jpg",
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "end",
+        "content_width": "lg",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
     "collection-banner": {
       "type": "collection-banner",
-      "settings": {}
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "image": "shopify://shop_images/00df73a76c09ff5a794bf6f169ec525810b8146f.png",
+        "image_size": "xs",
+        "allow_transparent_header": true,
+        "show_image": true,
+        "reveal": true,
+        "enable_parallax": true,
+        "show_collection_title": true,
+        "show_collection_description": true,
+        "show_breadcrumb": true,
+        "content_width": "xs",
+        "text_alignment": "center",
+        "overlay_color": "#000000",
+        "overlay_opacity": 30
+      }
     },
     "main": {
       "type": "main-collection",
-      "settings": {}
+      "settings": {
+        "color_scheme": "scheme-6",
+        "hide_product_information": false,
+        "products_per_page": 48,
+        "products_per_row_mobile": "2",
+        "products_size_desktop": "large",
+        "show_grid_mode_selector": true,
+        "horizontal_spacing_factor": 1,
+        "vertical_spacing_factor": 1,
+        "filter_layout": "sidebar",
+        "quick_links_menu": "",
+        "show_sort_by": true,
+        "show_filters": true,
+        "show_results_count": true,
+        "show_filter_group_name": false,
+        "show_filter_values_count": true,
+        "open_filters_by_default": false
+      }
     }
   },
   "order": [
     "collection_breadcrumb",
+    "image_with_text_AF8648",
+    "image_with_text_9TrLX9",
     "collection-banner",
     "main"
   ]
