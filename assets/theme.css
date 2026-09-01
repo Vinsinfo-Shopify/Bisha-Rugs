@@ -2296,12 +2296,12 @@ model-media model-viewer, model-media .shopify-model-viewer-ui {
 
 .product-card__info {
   --heading-text-transform: var(--product-card-text-transform);
-  text-align: center;
+  text-align: start;
   text-transform: var(--product-card-text-transform);
   align-content: start;
-  justify-items: center;
-  gap: .75rem;
-  padding-block-start: 1.25rem;
+  justify-items: start;
+  gap: 12px;
+  padding-top: 14px;
   display: grid;
 }
 
@@ -2436,8 +2436,8 @@ model-media model-viewer, model-media .shopify-model-viewer-ui {
 @media screen and (min-width: 700px) {
   .product-list {
     --product-list-max-items-per-row-allowed: 3;
-    --product-list-default-row-gap: 3rem;
-    --product-list-default-column-gap: 1.5rem;
+    --product-list-default-row-gap: 22px;
+    --product-list-default-column-gap: 12px;
   }
 
   .product-list--compact {
@@ -2448,8 +2448,8 @@ model-media model-viewer, model-media .shopify-model-viewer-ui {
 @media screen and (min-width: 1000px) {
   .product-list {
     --product-list-max-items-per-row-allowed: 4;
-    --product-list-default-row-gap: 4rem;
-    --product-list-default-column-gap: 3rem;
+    --product-list-default-row-gap: 26px;
+    --product-list-default-column-gap: 16px;
   }
 
   .product-list--compact {
@@ -2469,8 +2469,8 @@ model-media model-viewer, model-media .shopify-model-viewer-ui {
 
 @media screen and (min-width: 1400px) {
   .product-list {
-    --product-list-default-row-gap: 4rem;
-    --product-list-default-column-gap: 3.75rem;
+    --product-list-default-row-gap: 26px;
+    --product-list-default-column-gap: 16px;
   }
 }
 
@@ -3343,7 +3343,7 @@ tr[onclick]:hover {
 .price-list {
   flex-wrap: wrap;
   align-items: baseline;
-  column-gap: .5rem;
+  column-gap: 4px;
   display: flex;
 }
 
@@ -3418,9 +3418,16 @@ tr[onclick]:hover {
   color: rgb(var(--sold-out-badge-text));
 }
 
-.badge--custom {
-  background: rgb(var(--custom-badge-background));
+.badge.badge--custom {
+  background: #B35642;
   color: rgb(var(--custom-badge-text));
+  border-radius: 84px;
+  padding: 1px 10px;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 140%;
+  font-weight: 500;
+  text-transform: capitalize;
 }
 
 @media screen and (min-width: 700px) {
@@ -3463,6 +3470,8 @@ tr[onclick]:hover {
   column-gap: .5rem;
   line-height: normal;
   display: flex;
+  margin-top: 4px;
+  margin-bottom: 8px;
 }
 
 .rating-badge__stars {
@@ -4908,7 +4917,9 @@ product-rerender {
   padding-block-start: var(--section-vertical-spacing);
   padding-block-end: min(var(--section-vertical-spacing), 3rem);
 }
-
+.footer .container{
+  max-width: none;
+}
 .footer__inner {
   row-gap: min(var(--section-vertical-spacing), 3rem);
   display: grid;
@@ -4919,6 +4930,7 @@ product-rerender {
   align-items: start;
   gap: min(var(--section-vertical-spacing), 2.5rem);
   display: grid;
+  text-align: initial;
 }
 
 .footer__block-list:has(.footer__accordion-group) {
@@ -8257,7 +8269,7 @@ shopify-account::part(signed-out-avatar) {
 }
 
 .text-xxs {
-  font-size: .6875rem;
+  font-size: 14px;
 }
 
 .text-xs {
@@ -8803,6 +8815,90 @@ ul {
     font-size: 16px;
     line-height: 161%;
 }
+.product-card-title{
+  font-size: 18px;
+  line-height: 140%;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+.price-list .text-on-sale{
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 700;
+  color : rgb(var(--text-color));
+}
+.price-list .text-subdued{
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 500;
+  color : #656565;
+}
+.product-card__tag {
+  color: rgb(var(--text-color));
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 500;
+}
+.product-card__tag-wrapper{
+    background: #ffffff;
+    padding: 2px 14px;
+    border-radius: 100px;
+}
+.rating-badge .text-xxs.text-subdued{
+    line-height: 140%;
+    font-size: 14px;
+    text-transform: lowercase;
+}
+
+.collection_banner .image-with-text>.prose{
+  margin-top: 32.5px;
+  margin-bottom: 52.5px;
+  padding: 0px;
+  padding: 0;
+  max-width: 509px;
+  margin: 0;
+}
+  .collection_banner .prose .image_with_text_heading{
+    line-height: 130%;
+    font-weight: 400;
+    font-size: 28px;
+  }
+  .collection_banner .prose .image_with_text_content,
+  .collection_banner .icon-with-text-item{
+    margin-top: 12px;
+    font-size: 16px;
+  }
+  .collection_banner .image-with-text picture{
+    max-width: 562px;
+    width: 100%;
+    max-height: 223px;
+  }
+  .collection_banner .icon-with-text-item{
+    font-size: 16px;
+  }
+@media screen and (max-width: 1100px) {
+  .collection_banner .image-with-text > .prose {
+    max-width: 440px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+  }
+
+  .collection_banner .prose .image_with_text_heading {
+    font-size: 24px;
+    line-height: 128%;
+  }
+
+  .collection_banner .prose .image_with_text_content,
+  .collection_banner .icon-with-text-list {
+    font-size: 15px;
+    margin-top: 10px;
+  }
+
+  .collection_banner .image-with-text picture {
+    max-width: 460px;
+    max-height: 190px;
+  }
+}
 
 @media screen and (max-width: 700px) {
   .multi-column__item {
@@ -9052,6 +9148,35 @@ ul {
   .blog-layout {
     grid-template-columns: 1fr;
   }
+  .collection_banner .image-with-text {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 20px;
+  }
+
+  .collection_banner .image-with-text > .prose {
+    max-width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: start;
+  }
+
+  .collection_banner .prose .image_with_text_heading {
+    font-size: 22px;
+    line-height: 126%;
+  }
+
+  .collection_banner .prose .image_with_text_content,
+  .collection_banner .icon-with-text-list {
+    font-size: 14px;
+    margin-top: 8px;
+  }
+
+  .collection_banner .image-with-text picture {
+    max-width: 100%;
+    width: 100%;
+    max-height: 220px;
+  }
 }
 
 /* Sidebar */
@@ -9160,6 +9285,10 @@ ul {
   .blog-post-list {
     --blog-post-list-items-per-row: 2 !important;
   }
+  .collection_banner .image-with-text{
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 /* Page heading */
@@ -9210,5 +9339,22 @@ ul {
 @media (min-width: 1025px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .blog-post-card__img-wrap:hover .blog-post-card__image {
     transform: scale(1.05);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .collection_banner .prose .image_with_text_heading {
+    font-size: 20px;
+    line-height: 122%;
+  }
+
+  .collection_banner .prose .image_with_text_content,
+  .collection_banner .icon-with-text-list {
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  .collection_banner .image-with-text picture {
+    max-height: 180px;
   }
 }

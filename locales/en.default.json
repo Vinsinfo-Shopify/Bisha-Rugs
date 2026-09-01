@@ -27,6 +27,13 @@
       "unmute_video": "Unmute video",
       "rss_feed": "RSS feed"
     },
+    "product": {
+        "save": "Save {{ percentage }}%",
+        "review_count": {
+          "one": "{{ count }} review",
+          "other": "{{ count }} reviews"
+        }
+      },
     "breadcrumb": {
       "label": "Breadcrumb",
       "home": "Home",

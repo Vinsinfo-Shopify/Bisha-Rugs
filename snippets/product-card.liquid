@@ -142,13 +142,29 @@
     --------------------------------------------------------------------------------------------------------------------
   {%- endcomment -%}
 
+
+    {%- comment -%}
+    --------------------------------------------------------------------------------------------------------------------
+    PRODUCT TAG / CATEGORY (below image, above info)
+    --------------------------------------------------------------------------------------------------------------------
+  {%- endcomment -%}
+
+  {%- liquid
+    assign product_tag = product.metafields.custom.pile_type.value | default: product.type
+  -%}
+
+
   <div class="product-card__info empty:hidden">
     {%- assign text_class = '' -%}
 
     {%- if settings.product_card_text_font == 'heading' -%}
       {%- assign text_class = 'h6' -%}
     {%- endif -%}
-
+      {%- if product_tag != blank and hide_product_information != true -%}
+    <div class="product-card__tag-wrapper">
+    <p class="product-card__tag smallcaps text-subdued">{{ product_tag }}</p>
+    </div>
+  {%- endif -%} 
     {%- if show_title or show_prices or show_vendor and product.vendor != blank -%}
       <div class="v-stack justify-items-center gap-2">
         {%- if show_vendor and product.vendor != blank -%}
@@ -156,12 +172,12 @@
           {%- render 'vendor' with product.vendor, class: vendor_class -%}
         {%- endif -%}
 
-        {%- if show_title or show_prices -%}
-          <div class="v-stack justify-items-center gap-1">
+        {%- if show_title or show_rating or show_prices -%}
+          <div class="v-stack justify-items-start gap-1">
             {%- if show_title -%}
               <a
                 href="{{ product.url }}"
-                class="product-title {% if text_class != blank %}{{ text_class }}{% endif %} {% if settings.product_title_max_lines > 0 %}line-clamp{% endif %}"
+                class="product-title product-card-title {% if text_class != blank %}{{ text_class }}{% endif %} {% if settings.product_title_max_lines > 0 %}line-clamp{% endif %}"
                 {% if settings.product_title_max_lines > 0 %}
                   style="--line-clamp-count: {{ settings.product_title_max_lines }}"
                 {% endif %}
@@ -171,8 +187,25 @@
               </a>
             {%- endif -%}
 
+            {%- comment -%} Reviews render before the price, with count {%- endcomment -%}
+            {%- if show_rating -%}
+              {%- render 'product-rating', product: product, show_empty: settings.show_product_rating_if_empty, display_mode: 'rating_with_count' -%}
+            {%- endif -%}
+
             {%- if show_prices -%}
-              {%- render 'price-list', product: product, context: 'card' -%}
+              <div class="h-stack gap-2 align-baseline wrap">
+                {%- render 'price-list', product: product, context: 'card' -%}
+
+                {%- comment -%} Save X% tag {%- endcomment -%}
+                {%- liquid
+                  assign compare_price = product.compare_at_price
+                  assign current_price = product.price
+                -%}
+                {%- if compare_price > current_price -%}
+                  {%- assign discount_percentage = compare_price | minus: current_price | times: 100.0 | divided_by: compare_price | round -%}
+                  <span class="badge badge--custom">{{ 'general.product.save' | t: percentage: discount_percentage }}</span>
+                {%- endif -%}
+              </div>
             {%- endif -%}
           </div>
         {%- endif -%}
@@ -225,10 +258,6 @@
             </fieldset>
         {%- endcase -%}
       {%- endif -%}
-    {%- endif -%}
-
-    {%- if show_rating -%}
-      {%- render 'product-rating', product: product, show_empty: settings.show_product_rating_if_empty, display_mode: settings.product_rating_mode -%}
     {%- endif -%}
   </div>
 </product-card>
