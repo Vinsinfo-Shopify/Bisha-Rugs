@@ -35,19 +35,19 @@
 
     {%- when 'blog' -%}
       {%- if current_tags -%}
-        <span class="breadcrumb-separator">&middot;</span>
+        <span class="breadcrumb-separator">/</span>
         <a href="{{ blog.url }}">{{ blog.title }}</a>
-        <span class="breadcrumb-separator">&middot;</span>
+        <span class="breadcrumb-separator">/</span>
         <span class="breadcrumb-current" aria-current="page">{{ current_tags | join: ' + ' }}</span>
       {%- else -%}
-        <span class="breadcrumb-separator">&middot;</span>
+        <span class="breadcrumb-separator">/</span>
         <span class="breadcrumb-current" aria-current="page">{{ blog.title }}</span>
       {%- endif -%}
 
     {%- when 'article' -%}
-      <span class="breadcrumb-separator">&middot;</span>
+      <span class="breadcrumb-separator">/</span>
       <a href="{{ blog.url }}">{{ blog.title }}</a>
-      <span class="breadcrumb-separator">&middot;</span>
+      <span class="breadcrumb-separator">/</span>
       <span class="breadcrumb-current" aria-current="page">{{ article.title }}</span>
 
     {%- when 'cart' -%}
