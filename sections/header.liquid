@@ -153,8 +153,11 @@
                 {%- else -%}
                   {%- capture disclosure_content -%}
                     <details class="header__menu-disclosure">
-                      <summary data-follow-link="{{ link.url }}" {% if section.settings.menu_text_font == 'heading' %}class="h6"{% endif %} data-title="{{ link.title | escape }}">
+                      <summary data-follow-link="{{ link.url }}" {% if section.settings.menu_text_font == 'heading' %}class="h6"{% endif %} data-title="{{ link.title | escape }}" {% if link.current or link.child_active %}aria-current="page"{% endif %}>
                         {{- link.title -}}
+                        <svg class="header__menu-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false">
+                          <path d="M5 7.5 10 12.5 15 7.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                       </summary>
 
                       {%- if mega_menu_block != '' -%}
@@ -212,6 +215,15 @@
     {%- comment -%}
       --------------------------------------------------------------------------------------------------------------------
       SECONDARY NAVIGATION AREA
+
+      The search, account and cart icons are the Figma exports, cleaned for
+      inline use: width and height attributes removed so CSS controls the
+      size, and every colour swapped to currentColor so they flip to white on
+      the transparent header. Path data and stroke widths are Figma's own.
+
+      To go back to the Prestige defaults, swap any icon variable below for
+      its original tag, for example:
+        render 'icon' with 'search', class: 'header__nav-icon'
       --------------------------------------------------------------------------------------------------------------------
     {%- endcomment -%}
 
@@ -225,6 +237,27 @@
           assign show_locale_selector = true
         endif
       -%}
+
+      {%- capture icon_search -%}
+        <svg class="header__nav-icon" viewBox="0 0 21 21" fill="none" aria-hidden="true" focusable="false">
+          <g transform="translate(2.0308 2.0308)">
+            <path d="M7.57736 14.5644C11.4365 14.5644 14.5649 11.436 14.5649 7.57688C14.5649 3.71777 11.4365 0.589355 7.57736 0.589355C3.71826 0.589355 0.589844 3.71777 0.589844 7.57688C0.589844 11.436 3.71826 14.5644 7.57736 14.5644Z" stroke="currentColor" stroke-width="1.17914" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <path d="M14.55 14.55 20.37 20.37" stroke="currentColor" stroke-width="1.17914" stroke-linecap="round"/>
+        </svg>
+      {%- endcapture -%}
+
+      {%- capture icon_account -%}
+        <svg class="header__nav-icon" viewBox="0 0 18 17" fill="none" aria-hidden="true" focusable="false">
+          <path d="M17.3474 16.2092C15.9328 13.7635 13.6651 12.0936 11.0379 11.4916C15.1859 9.79213 15.9387 4.23958 12.3929 1.49701C8.84712 -1.24556 3.66208 0.87876 3.05984 5.3208C2.7035 7.94905 4.16824 10.486 6.62255 11.4916C3.9987 12.091 1.72767 13.7635 0.312981 16.2092C0.190761 16.4429 0.367305 16.7212 0.630763 16.7102C0.742782 16.7055 0.845425 16.6464 0.905569 16.5517C2.57888 13.6564 5.54355 11.9275 8.83021 11.9275C12.1169 11.9275 15.0815 13.6564 16.7548 16.5517C16.816 16.6576 16.9289 16.7229 17.0511 16.723C17.1113 16.7232 17.1705 16.7072 17.2224 16.6768C17.3859 16.5821 17.4418 16.3729 17.3474 16.2092ZM3.69212 6.1043C3.69212 2.149 7.97386 -0.323059 11.3993 1.65459C14.8246 3.63224 14.8246 8.57637 11.3993 10.554C10.6182 11.005 9.73213 11.2424 8.83021 11.2424C5.9939 11.2391 3.69543 8.94062 3.69212 6.1043Z" fill="currentColor" stroke="currentColor" stroke-width="0.5459"/>
+        </svg>
+      {%- endcapture -%}
+
+      {%- capture icon_cart -%}
+        <svg class="header__nav-icon" viewBox="0 0 16 19" fill="none" aria-hidden="true" focusable="false">
+          <path d="M4.22161 5.35692C4.22161 5.35692 3.81808 0.589355 7.85337 0.589355C11.8887 0.589355 11.4851 5.35692 11.4851 5.35692M0.589844 17.2758L1.33795 4.90168C1.37107 4.35392 1.82495 3.92665 2.37371 3.92665H13.3376C13.8845 3.92665 14.3373 4.34892 14.3727 4.89468C14.6545 9.25047 15.1169 16.5686 15.1169 17.2758C15.1169 18.0386 14.5789 18.2294 14.3098 18.2294C10.2745 18.2294 2.04255 18.2294 1.3969 18.2294C0.751255 18.2294 0.589844 17.5937 0.589844 17.2758Z" stroke="currentColor" stroke-width="1.17914" stroke-linecap="round"/>
+        </svg>
+      {%- endcapture -%}
 
       <ul class="contents unstyled-list">
         {%- if show_country_selector or show_locale_selector -%}
@@ -260,9 +293,9 @@
               <span class="sr-only">{{ 'header.general.search' | t }}</span>
 
               {%- if section.settings.show_icons -%}
-                {%- render 'icon' with 'search', class: 'header__nav-icon' -%}
+                {{- icon_search -}}
               {%- else -%}
-                <span class="md:hidden">{%- render 'icon' with 'search', class: 'header__nav-icon' -%}</span>
+                <span class="md:hidden">{{- icon_search -}}</span>
                 <span class="{% if section.settings.menu_text_font == 'heading' %}h6{% endif %} link-faded md-max:hidden" aria-hidden="true">
                   {{- 'header.general.search' | t -}}
                 </span>
@@ -276,9 +309,9 @@
             <shopify-account menu="{{ section.settings.customer_account_menu }}">
               <div slot="signed-out-avatar">
                 {%- if section.settings.show_icons -%}
-                  {%- render 'icon' with 'account', class: 'header__nav-icon' -%}
+                  {{- icon_account -}}
                 {%- else -%}
-                  <span class="md:hidden">{%- render 'icon' with 'account', class: 'header__nav-icon' -%}</span>
+                  <span class="md:hidden">{{- icon_account -}}</span>
 
                   <span class="{% if section.settings.menu_text_font == 'heading' %}h6{% endif %} link-faded md-max:hidden" aria-hidden="true">
                     {{- 'header.general.login' | t -}}
@@ -300,9 +333,9 @@
             <span class="sr-only">{{ 'header.general.cart' | t }}</span>
 
             {%- if section.settings.show_icons -%}
-              {%- render 'icon' with 'cart', class: 'header__nav-icon' -%}
+              {{- icon_cart -}}
             {%- else -%}
-              <span class="md:hidden">{%- render 'icon' with 'cart', class: 'header__nav-icon' -%}</span>
+              <span class="md:hidden">{{- icon_cart -}}</span>
               <span class="{% if section.settings.menu_text_font == 'heading' %}h6{% endif %} link-faded md-max:hidden">
                 {{- 'header.general.cart' | t }} (<cart-count>{{ cart.item_count }}</cart-count>)</span
               >
@@ -336,198 +369,516 @@
 </script>
 
 {% style %}
-  /* ===== BISHA RUGS — mega menu desktop styling ===== */
+  /* ==========================================================================
+     BISHA RUGS — header styling
 
-  /* SALE menu item in red (case-insensitive match on the title) */
-  .header__primary-nav a[data-title="sale" i],
-  .header__primary-nav summary[data-title="sale" i] { color: #c0392b; }
+     0. Page gutter
+     1. Header bar — every width
+     2. Below the desktop breakpoint
+     3. Desktop header bar (>= 1000px)
+     4. Mega menu
+     5. Sidebar drawer (mobile, 375px spec)
+     ========================================================================== */
 
-  /* Shop by Color: 2-column swatch grid */
-  .mega-menu__column--colors { min-width: 15rem; }
-  .mega-menu__swatch-grid {
-    display: grid; grid-template-columns: repeat(2, minmax(0,1fr));
-    gap: 1rem 1.5rem; width: 100%;
-  }
-  .mega-menu__swatch-link { display: inline-flex; align-items: center; gap: .65rem; white-space: nowrap; }
-  .mega-menu__swatch {
-    display: inline-block; width: 22px; height: 22px; border-radius: 50%;
-    background: var(--swatch, transparent); border: 1px solid rgba(0,0,0,.12); flex: none;
-  }
-  .mega-menu__swatch-item--full { grid-column: 1 / -1; margin-top: .25rem; }
+  /* ---------- 0. Page gutter ---------- */
+  /* One expression, no breakpoints. Largest of the three wins, and which one
+     wins changes on its own as the viewport moves:
 
-  /* Promo card: image with overlay text + round arrow */
-  .mega-menu .mega-menu__promo { width: 480px; max-width: 36%; flex: none; }
-  .mega-menu__promo-card {
-    position: relative; display: block; border-radius: 6px; overflow: hidden;
-    aspect-ratio: 4 / 5; /* change to taste, e.g. 1/1 or 3/4 */
-  }
-  .mega-menu__promo-media, .mega-menu__promo-media img { width: 100%; height: 100%; }
-  .mega-menu__promo-media img { object-fit: cover; display: block; }
-  .mega-menu__promo-overlay {
-    position: absolute; inset: 0; display: flex; align-items: flex-end;
-    justify-content: space-between; gap: 1rem; padding: 1.75rem; color: #fff;
-  }
-  .mega-menu__promo-overlay::before {
-    content: ""; position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(to top, rgba(0,0,0,.5), rgba(0,0,0,0) 55%);
-  }
-  .mega-menu__promo-text { position: relative; display: flex; flex-direction: column; gap: .25rem; }
-  .mega-menu__promo-title { font-size: 1.5rem; line-height: 1.15; font-weight: 500; }
-  .mega-menu__promo-count { font-size: .85rem; opacity: .9; }
-  .mega-menu__promo-arrow {
-    position: relative; flex: none; width: 44px; height: 44px; border-radius: 50%;
-    background: #fff; color: #111; display: flex; align-items: center; justify-content: center;
-    transition: transform .2s ease;
-  }
-  .mega-menu__promo-card:hover .mega-menu__promo-arrow { transform: translateX(3px); }
+       375px   16px floor
+       768px   3vw  = 23px
+       1200px  3vw  = 36px
+       1440px  calc = 70px   <- the Figma number, hit exactly
+       1920px  calc = 310px  <- 1300px row, centred
 
-  .mega-menu a[aria-current="page"] { text-decoration: underline; text-underline-offset: 3px; }
+     Any section that must line up with the header uses this same expression. */
 
-  .header__primary-nav a,
-  .header__primary-nav summary {
-    font-size: 16px;
-    font-weight: 400;
-    letter-spacing: 0;
-    text-transform: capitalize; 
+  .header {
+    padding-inline: max(16px, 3vw, calc((100% - 1300px) / 2));
   }
 
-  .header-sidebar__linklist-button,
-  .header-sidebar__back-button {
-    font-size: 16px;
-    font-weight: 600;          
-    line-height: 1.4;          
-    letter-spacing: 0;
-    text-transform: none;      
+  /* ---------- 1. Header bar — every width ---------- */
+  /* Outside any media query on purpose. Scoping these to the desktop
+     breakpoint is what made the row jump from 78px to ~86px at 999px, when
+     they snapped back to theme defaults. */
+
+  #shopify-section-{{ section.id }} {
+    /* 17 + 44 + 17 = 78px row, held at every width */
+    --header-padding-block: 17px;
+
+    /* Figma logo block: 153 x 44 */
+    --header-logo-width: 153px;
   }
 
-  .header-sidebar__nested-linklist a {
-    font-size: 16px;
-    font-weight: 400;          
-    text-transform: none;
+  .header {
+    align-items: center;
+    border-block-end: 0.5px solid #e2e2e2;
   }
 
-  .header-sidebar__linklist-button[href*="/sale" i],
-  .header-sidebar a[href*="/sale" i] {
-    color: #c0392b;
+  /* -- Logo -- */
+
+  .header__logo {
+    display: flex;
+    align-items: center;
   }
+
+  /* max-height is what holds the row at 78px. The logo file is taller than
+     44px at 153 wide, so without it the image renders at its own ratio and
+     drags the header taller. contain letterboxes rather than crops; swap to
+     cover for the exact Figma crop if the client wants the tagline trimmed. */
+  .header__logo-image {
+    width: var(--header-logo-width);
+    height: auto;
+    max-height: 44px;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  /* Fallback for when no logo image is uploaded and the shop name renders as
+     text. Upload the logo and this rule stops mattering. */
+  .header__logo-text {
+    font-size: 22px;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* -- Secondary navigation (search · account · cart) -- */
+
+  .header__secondary-nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 26px; /* Figma: 25.75px */
+  }
+
+  /* Each icon sits in an identical 22px box, centred, so all three share one
+     optical centre line with the nav text. */
+  .header__secondary-nav > ul > li {
+    display: flex;
+    align-items: center;
+    height: 22px;
+  }
+
+  .header__secondary-nav > ul > li > a,
+  .header__secondary-nav shopify-account,
+  .header__secondary-nav shopify-account > [slot] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: inherit;
+    line-height: 0;
+  }
+
+  /* display:block is what kills the baseline gap under an inline SVG. */
+  .header__secondary-nav .header__nav-icon {
+    display: block;
+  }
+
+  /* Rendered at the Figma sizes. Each viewBox carries half a stroke width of
+     padding, which is why these are a shade larger than the glyph
+     measurements in the inspector (20.96 / 17.12 x 16.45 / 14.53 x 17.64).
+
+     Do NOT add a stroke-width rule here. The widths come from the SVGs, and
+     an override would flatten the account icon's 0.5459 and make it heavy. */
+  .header__search-link .header__nav-icon {
+    width: 21px;
+    height: 21px;
+  }
+
+  .header__account-link .header__nav-icon {
+    width: 18px;
+    height: 17px;
+  }
+
+  .header__cart-link .header__nav-icon {
+    width: 16px;
+    height: 19px;
+  }
+
+  /* The Figma header has three icons only. Delete this if you switch the
+     country/region selector back on. */
+  .header__secondary-nav .localization-selectors {
+    display: none;
+  }
+
+  /* ---------- 2. Below the desktop breakpoint ---------- */
+  /* Prestige swaps the menu for the hamburger at exactly 1000px — that is its
+     md breakpoint, set on the md-max:hidden and md:hidden classes in the
+     markup above. The gutter and the 78px row carry through the switch on
+     their own now, so only the small-screen logo and icon spacing need
+     adjusting. Provisional until the mobile Figma arrives. */
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} {
+      --header-logo-width: 120px;
+    }
+
+    .header__secondary-nav {
+      gap: 18px;
+    }
+  }
+
+  /* ---------- 3. Desktop header bar (>= 1000px) ---------- */
+  /* Figma: nav bar 1440 x 78 · inner row 1300 x 44 · gutter 70 */
+
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} {
+      /* Logo left · nav centred · icons right. Both outer columns take an
+         equal 1fr share of the leftover space, which is what pins the nav to
+         the true centre of the row. */
+      --header-grid:
+        'logo primary-nav secondary-nav' /
+        minmax(max-content, 1fr) auto minmax(max-content, 1fr);
+    }
+
+    .header {
+      column-gap: 0;
+    }
+
+    .header__primary-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header__primary-nav-item > a,
+    .header__primary-nav-item > * > details > summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px; /* label -> chevron */
+
+      font-family: var(--text-font-family);
+      font-size: 16px;
+      font-weight: 400;
+      font-style: normal;
+      line-height: 1.4; /* 140% */
+      letter-spacing: 0;
+      text-transform: none;
+      white-space: nowrap;
+      text-decoration: none;
+      opacity: 1;
+    }
+
+    /* Chevron on "Shop All" — 20 x 20 box, 1.2px stroke */
+    .header__menu-chevron {
+      width: 20px;
+      height: 20px;
+      flex: none;
+      transition: transform 0.2s ease;
+    }
+
+    .header__primary-nav-item > * > details[open] > summary .header__menu-chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Current page: SemiBold + underline.
+       Weight deliberately stays 400 on hover — bolding on hover re-measures
+       the text and shoves the neighbouring links sideways. */
+    .header__primary-nav-item > a[aria-current='page'],
+    .header__primary-nav-item > * > details > summary[aria-current='page'] {
+      font-weight: 600;
+    }
+
+    .header__primary-nav-item > a[aria-current='page'],
+    .header__primary-nav-item > a:hover,
+    .header__primary-nav-item > * > details > summary[aria-current='page'],
+    .header__primary-nav-item > * > details > summary:hover,
+    .header__primary-nav-item > * > details[open] > summary {
+      text-decoration: underline;
+      text-decoration-thickness: 1.5px; 
+      text-underline-offset: 4px; 
+      text-decoration-skip-ink: auto;
+    }
+
+    /* Harmless if there is no SALE item in the menu. */
+    .header__primary-nav-item > a[data-title='sale' i],
+    .header__primary-nav-item > * > details > summary[data-title='sale' i] {
+      color: #c0392b;
+    }
+  }
+
+  /* Prestige slides its own bar along the bottom edge of the header on hover.
+     Figma uses a text underline instead, so switch the bar off. */
+  .header__primary-nav-item::before,
+  .header__primary-nav-item::after,
+  .header__primary-nav-item > a::before,
+  .header__primary-nav-item > a::after,
+  .header__primary-nav-item > * > details > summary::before,
+  .header__primary-nav-item > * > details > summary::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  .header__primary-nav-item > a,
+  .header__primary-nav-item > * > details > summary {
+    border-block-end: 0;
+    background-image: none;
+  }
+
+  /* -- Nav gap per width tier. The Figma 50px lands at 1440; below that the
+        nav will not fit alongside the logo and icons, so it tightens. -- */
+
+  @media screen and (min-width: 1000px) {
+    .header__primary-nav {
+      gap: 22px;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .header__primary-nav {
+      gap: 34px;
+    }
+  }
+
+  @media screen and (min-width: 1440px) {
+    .header__primary-nav {
+      gap: 50px;
+    }
+  }
+
+  /* ---------- 4. Mega menu ---------- */
 
   .mega-menu {
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+    padding-block: 44px;
+    padding-inline: max(16px, 3vw, calc((100% - 1300px) / 2));
     display: flex;
     flex-wrap: nowrap;
     align-items: flex-start;
-    gap: 2rem;
+    gap: 34px;
     width: 100%;
     box-sizing: border-box;
-    overflow-x: auto;         
+    overflow-x: auto;
   }
 
   @media screen and (min-width: 1350px) {
     .mega-menu {
-      overflow-x: visible;    
+      overflow-x: visible;
     }
   }
+
   .mega-menu .mega-menu__linklist {
-    gap: 2rem;
-    align-items: flex-start;
-    flex: 0 1 auto;
-    min-width: 0;
-  }
-  .mega-menu__column {
-    gap: 0.75rem !important;
-    min-width: 0;
-  }
-  .mega-menu__column .v-stack {
-    gap: 0.5rem;
-  }
-  .mega-menu__linklist .v-stack.gap-2\.5 {
-    gap: 0.4rem !important;
-  }
-  .mega-menu__swatch-grid {
-    gap: 0.5rem 1.25rem;
-  }
-  .mega-menu__swatch {
-    width: 18px;
-    height: 18px;
-  }
-  .mega-menu__swatch-link {
-    font-size: 14px;
-  }
-  .mega-menu__column > .h6 {
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-  .mega-menu__promo {
-    flex: 0 0 auto;
-    width: 380px;
-    max-width: 30%;
-    margin-left: 2rem;
-  }
-  /* Swatch dots in the drawer */
-  .header-sidebar__nested-link.has-swatch {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .header-sidebar__swatch {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: var(--swatch, transparent);
-    border: 1px solid rgba(0,0,0,.12);
-    flex: none;
-  }
-
-  .header-sidebar__nested-linklist {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
+    flex: 1 1 auto;
+    align-items: flex-start;
+    gap: 34px;
+    min-width: 0;
   }
 
-  .header-sidebar__nested-linklist--colors {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px 16px;
+  .mega-menu__column {
+    flex: 0 0 140px;
+    width: 140px;
+    gap: 24px !important;
+    min-width: 0;
   }
-  .header-sidebar__linklist-button,
-  .header-sidebar__back-button {
-    font-size: 16px;
+
+  .mega-menu__column--colors {
+    flex: 0 0 254px;
+    width: 254px;
+    min-width: 254px;
+  }
+
+  .mega-menu__column > .h6 {
+    font-size: 18px;
     font-weight: 600;
     line-height: 1.4;
     letter-spacing: 0;
-    text-transform: none;
-  }
-  .header-sidebar__nested-link {
-    font-size: 15px;
-    font-weight: 400;
-    padding: 6px 0;
+    margin-bottom: 0;
   }
 
-  .header-sidebar__footer {
-    padding: 0;   
+  .mega-menu__column .v-stack,
+  .mega-menu__linklist .v-stack.gap-2\.5 {
+    gap: 12px !important;
   }
-  .header-sidebar__footer .text-with-icon {
+
+  .mega-menu__linklist a.link-faded {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0;
+    opacity: 1;
+  }
+
+  .mega-menu a[aria-current='page'] {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+    text-decoration-skip-ink: auto;
+  }
+
+  .mega-menu__swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 12px;
+    row-gap: 12px;
+    width: 100%;
+  }
+
+  .mega-menu__swatch-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .mega-menu__swatch {
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--swatch, transparent);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    flex: none;
+  }
+
+  .mega-menu__swatch-item--full {
+    grid-column: 1 / -1;
+    margin-top: 2px;
+  }
+
+  .mega-menu .mega-menu__promo {
+    flex: 0 0 313px;
+    width: 313px;
+    max-width: none;
+    margin-left: 0;
+  }
+
+  .mega-menu__promo-card {
+    position: relative;
+    display: block;
+    border-radius: 0;
+    overflow: hidden;
+    aspect-ratio: 313 / 391;
+  }
+
+  .mega-menu__promo-media,
+  .mega-menu__promo-media img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .mega-menu__promo-media img {
+    object-fit: cover;
+    display: block;
+  }
+
+  .mega-menu__promo-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 15px 15px 16px;
+    color: #fff;
+  }
+
+  .mega-menu__promo-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.1) 31%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  .mega-menu__promo-text {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mega-menu__promo-title {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+
+  .mega-menu__promo-count {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0;
+    opacity: 1;
+  }
+
+  .mega-menu__promo-arrow {
+    position: relative;
+    flex: none;
+    width: 33px;
+    height: 33px;
+    border-radius: 50%;
+    background: #fff;
+    color: #1a1a1a;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    width: 100%;
-    background: #b5623c;         
-    color: #ffffff;             
-    padding: 12px 28px;
-    border-radius: 0;           
-    font-size: 14px;
-    font-weight: 700;           
-    line-height: 1.4;           
-    letter-spacing: 0;          
-    text-transform: uppercase;  
+    transition: transform 0.2s ease;
   }
-  .header-sidebar__footer .text-with-icon svg {
-    color: #ffffff;
-    width: 18px;
-    height: 18px;
-    flex: none;
+
+  .mega-menu__promo-arrow svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .mega-menu__promo-card:hover .mega-menu__promo-arrow {
+    transform: translateX(3px);
+  }
+
+  /* The gutter comes from the shared expression now, so only the column and
+     promo widths need to shrink on narrower desktops. */
+  @media screen and (min-width: 1000px) and (max-width: 1199px) {
+    .mega-menu,
+    .mega-menu .mega-menu__linklist {
+      gap: 20px;
+    }
+    .mega-menu__column {
+      flex-basis: 120px;
+      width: 120px;
+    }
+    .mega-menu .mega-menu__promo {
+      flex-basis: 240px;
+      width: 240px;
+    }
+  }
+
+  @media screen and (min-width: 1200px) and (max-width: 1439px) {
+    .mega-menu,
+    .mega-menu .mega-menu__linklist {
+      gap: 24px;
+    }
+    .mega-menu__column {
+      flex-basis: 130px;
+      width: 130px;
+    }
+    .mega-menu .mega-menu__promo {
+      flex-basis: 280px;
+      width: 280px;
+    }
+  }
+
+  @media screen and (max-width: 999px) {
+    .header__account-link {
+      display: none !important;
+    }
+  }
+
+  /* ---------- 5. Sidebar drawer ---------- */
+
+  .header-sidebar::part(content) {
+    width: 338px;
+    max-width: 90vw;
   }
 
   .header-sidebar::part(header) {
@@ -535,22 +886,177 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 1rem 1.5rem 1rem 0.75rem;  
+    height: 54px;
+    padding: 5px 16px 5px 0px;
     gap: 1rem;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
+    position: relative;
+    z-index: 1;
   }
+
   .header-sidebar::part(sidebar-logo) {
     display: inline-flex;
     align-items: center;
     flex: 0 1 auto;
     min-width: 0;
   }
+
   .header-sidebar::part(sidebar-logo-image) {
-    max-width: 120px;    
-    width: 120px;
+    max-width: 153px;
+    width: 153px;
     height: auto;
   }
+
   .header-sidebar::part(close-button) {
     flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-sidebar__scroller {
+    padding-left: 12px;
+    padding-right: 16px;
+  }
+
+  .header-sidebar__linklist {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 4px;
+  }
+
+  .header-sidebar__linklist > li {
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.15);
+  }
+
+  .header-sidebar__linklist > li:last-child {
+    border-bottom-color: rgba(0, 0, 0, 0.6);
+  }
+
+  .header-sidebar__linklist.divide-y > * + * {
+    border-top: 0;
+  }
+
+  .header-sidebar__linklist-button,
+  .header-sidebar__back-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    min-height: 44px;
+    padding: 11px 12px 11px 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .header-sidebar__back-button {
+    justify-content: flex-start;
+  }
+
+  .header-sidebar__linklist-button svg,
+  .header-sidebar__chevron svg {
+    width: 20px;
+    height: 20px;
+    flex: none;
+  }
+
+  .header-sidebar__linklist-button[href*='/sale' i],
+  .header-sidebar a[href*='/sale' i] {
+    color: #c0392b;
+  }
+
+  .header-sidebar__nested-linklist {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    border-left: 0;
+  }
+
+  .header-sidebar__nested-linklist > a:last-child {
+    border-bottom: 0;
+  }
+
+  .header-sidebar__nested-link {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 9px 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+  }
+
+  .header-sidebar__nested-linklist--colors {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+    row-gap: 16px;
+    padding-top: 16px;
+  }
+
+  .header-sidebar__nested-linklist--colors .header-sidebar__nested-link {
+    min-height: 28px;
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  .header-sidebar__nested-link.has-swatch {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .header-sidebar__swatch {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--swatch, transparent);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    flex: none;
+  }
+
+  .header-sidebar__footer {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-sidebar__footer .text-with-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: auto;
+    background: #b35642;
+    color: #ffffff;
+    padding: 12px 28px;
+    border-radius: 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .header-sidebar__footer .text-with-icon svg {
+    color: #ffffff;
+    width: 17px;
+    height: 17px;
+    flex: none;
+    opacity: 1;
+  }
+
+  .header-sidebar__footer .text-with-icon svg path {
+    stroke-width: 1;
   }
 
   .header-sidebar__chevron {
@@ -572,12 +1078,9 @@
     color: inherit !important;
   }
 
-  @media screen and (min-width: 1200px) and (max-width: 1440px) {
-    .mega-menu { gap: 1.5rem; }
-    .mega-menu .mega-menu__linklist { gap: 1.5rem; }
-    .mega-menu__promo { width: 320px; margin-left: 1.25rem; }
+  .header-sidebar__footer > * {
+    padding-inline-start: 12px;
   }
-
 {% endstyle %}
 
 {% schema %}

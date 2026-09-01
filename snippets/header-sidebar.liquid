@@ -29,7 +29,9 @@
 
         <dialog-close-button class="contents">
           <button type="button" part="close-button tap-area" aria-label="{{ 'general.accessibility.close' | t | escape }}">
-            {%- render 'icon' with 'close', width: 16 -%}
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
           </button>
         </dialog-close-button>
       </header>
@@ -62,7 +64,9 @@
                 aria-expanded="false"
               >
                 {{- link.title -}}
-                {%- render 'icon' with 'chevron-right', width: 12, direction_aware: true -%}
+                <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20" aria-hidden="true">
+                  <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
               </button>
             {%- else -%}
               <a href="{{ link.url }}" class="header-sidebar__linklist-button {% if section.settings.sidebar_text_font == 'heading' %}h6{% endif %}">
@@ -90,7 +94,9 @@
           <shopify-account menu="{{ section.settings.customer_account_menu }}">
             <div slot="signed-out-avatar">
               <div class="text-with-icon smallcaps sm:hidden">
-                {%- render 'icon' with 'account', width: 20 -%}
+                <svg viewBox="0 0 18 17" fill="none" aria-hidden="true" focusable="false">
+                  <path d="M17.3474 16.2092C15.9328 13.7635 13.6651 12.0936 11.0379 11.4916C15.1859 9.79213 15.9387 4.23958 12.3929 1.49701C8.84712 -1.24556 3.66208 0.87876 3.05984 5.3208C2.7035 7.94905 4.16824 10.486 6.62255 11.4916C3.9987 12.091 1.72767 13.7635 0.312981 16.2092C0.190761 16.4429 0.367305 16.7212 0.630763 16.7102C0.742782 16.7055 0.845425 16.6464 0.905569 16.5517C2.57888 13.6564 5.54355 11.9275 8.83021 11.9275C12.1169 11.9275 15.0815 13.6564 16.7548 16.5517C16.816 16.6576 16.9289 16.7229 17.0511 16.723C17.1113 16.7232 17.1705 16.7072 17.2224 16.6768C17.3859 16.5821 17.4418 16.3729 17.3474 16.2092ZM3.69212 6.1043C3.69212 2.149 7.97386 -0.323059 11.3993 1.65459C14.8246 3.63224 14.8246 8.57637 11.3993 10.554C10.6182 11.005 9.73213 11.2424 8.83021 11.2424C5.9939 11.2391 3.69543 8.94062 3.69212 6.1043Z" fill="currentColor" stroke="currentColor" stroke-width="0.5459"/>
+                </svg>
                 {{- 'header.general.login' | t -}}
               </div>
             </div>
@@ -152,7 +158,9 @@
                           <summary class="header-sidebar__linklist-button {% if section.settings.sidebar_text_font == 'heading' %}h6{% endif %}">
                             {{- sub_link.title -}}
                             <span class="header-sidebar__chevron group-expanded:rotate" aria-hidden="true">
-                              {%- render 'icon' with 'chevron-down', width: 14 -%}
+                              <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+                                <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
                             </span>
                           </summary>
 
