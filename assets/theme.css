@@ -2770,6 +2770,7 @@ model-media model-viewer, model-media .shopify-model-viewer-ui {
 .link-faded {
   color: rgb(var(--text-color));
   transition: color .2s ease-in-out;
+  font-family: 'Figtree';
 }
 
 @media screen and (pointer: fine) {
@@ -2821,9 +2822,9 @@ th, td {
   padding: var(--table-cell-padding-block) var(--table-cell-padding-inline);
 }
 
-table:not(.table--bordered) :is(th, td):first-child, table:not(.table--bordered) :is(th, td):empty + td {
+/* table:not(.table--bordered) :is(th, td):first-child, table:not(.table--bordered) :is(th, td):empty + td {
   padding-inline-start: 0;
-}
+} */
 
 :is(th, td):last-child {
   padding-inline-end: 0;
@@ -3989,6 +3990,7 @@ product-rerender {
   padding-inline-start: max(var(--announcement-bar-gutter), 50% - var(--container-max-width) / 2);
   padding-inline-end: max(var(--announcement-bar-gutter), 50% - var(--container-max-width) / 2);
   display: flex;
+  font-family: 'Figtree';
 }
 
 .announcement-bar__carousel {
@@ -7489,7 +7491,9 @@ shopify-account::part(signed-out-avatar) {
   font-size: 14px;
   line-height: 19.6px;
   font-weight: 400;
+  font-family: 'Figtree', sans-serif;
 }
+
 
 .text-on-sale {
   color: rgb(var(--on-sale-text));
@@ -8448,6 +8452,7 @@ ul {
   font-size: 14px;
   line-height: 19.6px;
   font-weight: 400;
+  font-family: 'Figtree', sans-serif;
 }
 .footer_menu_heading{
   font-size: 22px;
@@ -8729,10 +8734,11 @@ ul {
 
 }
 
-.newsletter-disclaimer.text-caption {
+.newsletter-disclaimer.text-caption p{
   font-size: 14px;
   line-height: 140%;
   font-weight: 400;
+  color: rgb(var(--text-color) );
 }
 
 .newsletter-disclaimer a {
@@ -8744,6 +8750,8 @@ ul {
   font-size: 16px;
   line-height: 140%;
   font-weight: 400;
+  color: rgb(var(--text-color));
+  font-family: 'Figtree', sans-serif;
 }
 
 .newsletter-with-media .section_header_heading {
@@ -8892,7 +8900,7 @@ ul {
     font-weight: 700;
   }
 
-  .newsletter-disclaimer.text-caption {
+  .newsletter-disclaimer.text-caption p{
     font-size: 10px;
     line-height: 100%;
   }
@@ -9151,6 +9159,7 @@ ul {
   font-size: 12px;
   line-height: 16px;
   z-index: 2;
+  font-family: 'Figtree';
 }
 .blog-post-card__badge:hover{
   background-color: #B35642;
@@ -9171,6 +9180,7 @@ ul {
   color: var(--color-accent, #c0392b);
   font-weight: 600;
   font-size: 14px;
+  font-family: 'Figtree';
 }
 
 /* Blog list column layout */
@@ -9229,4 +9239,128 @@ ul {
   .blog-post-card__img-wrap:hover .blog-post-card__image {
     transform: scale(1.05);
   }
+}
+/* =====================================================
+   GLOBAL TYPOGRAPHY OVERRIDE FOR ARTICLE RTE CONTENT
+   Wins over any per-article inline <style> block
+   ===================================================== */
+
+/* 1) Catch-all — everything inside article body defaults to Figtree */
+.template-article .prose,
+.template-article .prose * {
+  font-family: 'Figtree'!important;
+  color: rgb(var(--text-color));
+}
+
+/* 2) Headings always use Forum (higher specificity: element selector beats the catch-all) */
+.template-article .prose h1,
+.template-article .prose h2,
+.template-article .prose h3,
+.template-article .prose h4,
+.template-article .prose h5,
+.template-article .prose h6 {
+  font-family: 'Forum' !important;
+  color: rgb(var(--text-color));
+}
+
+/* 3) In case an RTE author wraps heading text in <span>/<em>/<strong>, keep it Forum too */
+.template-article .prose h1 *,
+.template-article .prose h2 *,
+.template-article .prose h3 *,
+.template-article .prose h4 *,
+.template-article .prose h5 *,
+.template-article .prose h6 * {
+  font-family: 'Forum' !important;
+    color: rgb(var(--text-color));
+}
+
+/* 4) Explicit for p/a since they're the most common inline-styled tags in RTE content */
+.template-article .prose p,
+.template-article .prose a {
+  font-family: 'Figtree' !important;
+    color: rgb(var(--text-color));
+}
+.template-article .newsletter .section-header p,
+.template-article .newsletter-disclaimer.text-caption p{
+  font-family: 'Figtree' !important;
+}
+.template-article .announcement-bar__carousel .heading {
+    font-family: 'Figtree', sans-serif !important;
+    color: rgb(var(--text-color)) !important;
+    margin: 0 ;
+}
+.template-article footer {
+  padding: 0px;
+}
+.template-article .br-product-btn{
+  color: rgb(var(--button-text-color));
+  background-color: rgb(var(--button-background));
+}
+.template-article .br-cta{
+  background-color: #55583C;
+  text-align: center !important;
+}
+.template-article .br-cta p{
+  color: rgb(var(--button-text-color));
+}
+.template-article .br-cta a{
+  background: rgb(var(--button-text-color));
+}
+.template-article .toc-links a{
+  margin: 0;
+}
+
+.template-article .swatch,
+.template-article .timeline-content,
+.template-article .care-card,
+.template-article .br-product-card,
+.template-article .br-stat,
+.template-article .fact-item{
+  margin-top: 0px;
+}
+.blog-post-card__excerpt{
+  font-family: 'Figtree';
+  font-size: 16px;
+}
+.template-article .prose{
+  padding: 0;
+} 
+.template-article .hero-title,
+.template-article .hero-title span,
+.template-article .hero-meta span,
+.template-article footer .ornament,
+.template-article .hero-ornament,
+.template-article .hero-sub,
+.template-article .br-fact .ft,
+.template-article .secret-title,
+.template-article .promise-block.reveal h3{
+  color: #EEC274 !important;
+}
+/* .template-article .hero h1,
+.template-article .hero h1 em{
+  color: #FFFFFF !important;
+} */
+.template-article footer .ornament{
+  padding-top:10px;
+}
+.template-article .article-footer{
+  padding: 36px 24px;
+}
+.template-article .article-footer p{
+  color:#EEC274;
+}
+.template-article .hero,
+.template-article .did-you-know,
+.template-article .secret-header,
+.template-article .promise-block,
+.template-article .footer_wrap{
+  background: #ffffff;
+  border: 1px solid #000000;
+}
+.template-article .footer_wrap{
+    padding: 56px 40px;
+    text-align: center;
+}
+.template-article thead tr{
+    background: #ffffff;
 }
