@@ -60,10 +60,10 @@
         "feature_first_blog_post": true,
         "featured_blog_post_color_scheme": "",
         "show_category": true,
-        "show_date": false,
+        "show_date": true,
         "show_excerpt": true,
         "show_comment_count": false,
-        "show_read_more": true,
+        "show_read_more": false,
         "readmore_type": "link"
       }
     }
