@@ -9316,7 +9316,8 @@ ul {
 .template-article .care-card,
 .template-article .br-product-card,
 .template-article .br-stat,
-.template-article .fact-item{
+.template-article .fact-item,
+.template-article .style-card{
   margin-top: 0px;
 }
 .blog-post-card__excerpt{
@@ -9384,7 +9385,8 @@ ul {
 }
 
 .template-article .table-scroller table,
-.template-article .table-scroller table th{
+.template-article .table-scroller table th,
+.template-article .compare-table thead th{
   border-inline-start-width:1px;
   border-inline-end-width:1px;
   }
