@@ -54,7 +54,7 @@
       "name": "t:sections.image_with_text.presets.image_with_text.name",
       "settings": {
         "color_scheme": "scheme-4",
-        "custom_class": "collection_banner",
+        "custom_class": "",
         "separate_section_with_border": false,
         "padding_top": 0,
         "padding_bottom": 0,
@@ -86,7 +86,7 @@
         "richtext_YzFKam": {
           "type": "richtext",
           "settings": {
-            "content": "<p>From iconic Oushak, antiques to tufted rug collections, discover rugs designed to elevate every space...Read more</p>"
+            "content": "<p>From iconic Oushak, antiques to tufted rug collections, <br/>discover rugs designed to elevate every...Read more</p>"
           }
         },
         "icon_with_text_9ad9K6": {
@@ -156,7 +156,7 @@
     "main": {
       "type": "main-collection",
       "settings": {
-        "color_scheme": "scheme-6",
+        "color_scheme": "scheme-1",
         "hide_product_information": false,
         "products_per_page": 48,
         "products_per_row_mobile": "2",

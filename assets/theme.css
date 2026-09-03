@@ -8846,6 +8846,7 @@ ul {
   font-size: 14px;
   line-height: 140%;
   font-weight: 500;
+  text-transform: capitalize;
 }
 .product-card__tag-wrapper{
     background: #ffffff;
@@ -8892,19 +8893,25 @@ ul {
   }
 
   .collection_banner .prose .image_with_text_heading {
-    font-size: 24px;
+    font-size: 26px;
     line-height: 128%;
   }
 
   .collection_banner .prose .image_with_text_content,
   .collection_banner .icon-with-text-list {
-    font-size: 15px;
+    font-size: 16px;
     margin-top: 10px;
   }
 
   .collection_banner .image-with-text picture {
     max-width: 460px;
     max-height: 190px;
+  }
+}
+@media screen and (max-width: 900px) {
+  .collection_banner .image-with-text picture {
+    max-width: 400px;
+    max-height: 170px;
   }
 }
 
@@ -9066,6 +9073,24 @@ ul {
   .founders_note .prose .image_with_text_content:nth-of-type(2) strong{
     font-size: 14px;
 }
+  .product-card-title{
+    font-size: 16px;
+  }
+  .product-card__tag{
+    font-size: 12px;
+  }
+  .rating-badge .text-xxs.text-subdued{
+    font-size: 12px;
+  }
+  .price-list .text-on-sale{
+    font-size: 14px;
+  }
+  .price-list .text-subdued{
+    font-size: 12px;
+  }
+  .badge.badge--custom{
+    font-size: 10px;
+  }
 }
 .faq_section .section-stack{
   gap: 0;
@@ -9169,7 +9194,8 @@ ul {
   .collection_banner .image-with-text {
     flex-direction: column;
     justify-content: flex-start;
-    gap: 20px;
+    gap: 70px;
+    align-items: self-start;
   }
 
   .collection_banner .image-with-text > .prose {
@@ -9177,16 +9203,17 @@ ul {
     margin-top: 0;
     margin-bottom: 0;
     text-align: start;
+    padding: 15px 12px 25px 14px;
   }
 
   .collection_banner .prose .image_with_text_heading {
-    font-size: 22px;
+    font-size: 24px;
     line-height: 126%;
   }
 
   .collection_banner .prose .image_with_text_content,
   .collection_banner .icon-with-text-list {
-    font-size: 14px;
+    font-size: 16px;
     margin-top: 8px;
   }
 
@@ -9269,7 +9296,11 @@ ul {
     min-height: 200px;
   }
 }
-
+@media (max-width: 600px) {
+  .collection_banner .image-with-text{
+    gap:12px;
+  }
+}
 /* Badge/meta styles */
 .blog-post-card__badge {
   position: absolute;
@@ -9366,16 +9397,15 @@ ul {
     transform: scale(1.05);
   }
 }
-
 @media screen and (max-width: 500px) {
   .collection_banner .prose .image_with_text_heading {
-    font-size: 20px;
+    font-size: 24px;
     line-height: 122%;
   }
 
   .collection_banner .prose .image_with_text_content,
   .collection_banner .icon-with-text-list {
-    font-size: 13px;
+    font-size: 14px;
     margin-top: 6px;
   }
 
