@@ -9297,14 +9297,22 @@ ul {
   background-color: rgb(var(--button-background));
 }
 .template-article .br-cta{
-  background-color: #55583C;
+  background-color: #55583C ;
   text-align: center !important;
+}
+.template-article .cta-btn{
+  background: none !important;
+  border: 1px solid #000000;
+}
+.template-article .cta-btn:hover{
+  transform: none;
 }
 .template-article .br-cta p{
   color: rgb(var(--button-text-color));
 }
-.template-article .br-cta a{
-  background: rgb(var(--button-text-color));
+.template-article .br-cta a
+{
+  background: rgb(var(--button-text-color)) ;
 }
 .template-article .toc-links a,
 .template-article .newsletter-disclaimer.text-caption p{
@@ -9316,7 +9324,8 @@ ul {
 .template-article .care-card,
 .template-article .br-product-card,
 .template-article .br-stat,
-.template-article .fact-item{
+.template-article .fact-item,
+.template-article .style-card{
   margin-top: 0px;
 }
 .blog-post-card__excerpt{
@@ -9349,7 +9358,7 @@ ul {
   padding: 36px 24px;
 }
 .template-article .article-footer p{
-  color:#EEC274;
+  color: #000000;
 }
 .template-article .hero,
 .template-article .did-you-know,
@@ -9380,13 +9389,15 @@ ul {
   background: #55583c;
 }
 .template-article .table-scroller thead tr{
-  background: none;
+  background: #ffffff;
 }
 
 .template-article .table-scroller table,
-.template-article .table-scroller table th{
+.template-article .table-scroller table th,
+.template-article .compare-table thead th{
   border-inline-start-width:1px;
   border-inline-end-width:1px;
+  padding: 9px 8px 9px 14px;
   }
 
 .template-article .table-scroller table{
@@ -9396,4 +9407,18 @@ ul {
   .template-article .hero .hero-ornament{
     color: #000000;
   }
-  
+  .template-article .br-table tbody tr:nth-child(odd){
+    background: #ffffff;
+  }
+  .template-article .br-table thead th{
+    font-size: 16px;
+  }
+  .template-article .table-scroller table tbody tr,
+  .template-article .compare-table th {
+    background: #ffffff;
+  } 
+.template-article .table-scroller table tbody tr td{
+      padding: 3px 7px 9px 7px;
+      background: #ffffff;
+      font-size: 14px;
+}
