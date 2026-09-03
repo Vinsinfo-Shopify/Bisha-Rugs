@@ -283,7 +283,6 @@ height-observer {
   justify-items: center;
   row-gap: 1rem;
   display: grid;
-  font-family: 'Forum';
   text-align: center;
 }
 
@@ -2771,6 +2770,7 @@ model-media model-viewer, model-media .shopify-model-viewer-ui {
 .link-faded {
   color: rgb(var(--text-color));
   transition: color .2s ease-in-out;
+  font-family: 'Figtree';
 }
 
 @media screen and (pointer: fine) {
@@ -2822,9 +2822,9 @@ th, td {
   padding: var(--table-cell-padding-block) var(--table-cell-padding-inline);
 }
 
-table:not(.table--bordered) :is(th, td):first-child, table:not(.table--bordered) :is(th, td):empty + td {
+/* table:not(.table--bordered) :is(th, td):first-child, table:not(.table--bordered) :is(th, td):empty + td {
   padding-inline-start: 0;
-}
+} */
 
 :is(th, td):last-child {
   padding-inline-end: 0;
@@ -3999,6 +3999,7 @@ product-rerender {
   padding-inline-start: max(var(--announcement-bar-gutter), 50% - var(--container-max-width) / 2);
   padding-inline-end: max(var(--announcement-bar-gutter), 50% - var(--container-max-width) / 2);
   display: flex;
+  font-family: 'Figtree';
 }
 
 .announcement-bar__carousel {
@@ -4920,6 +4921,7 @@ product-rerender {
 .footer .container{
   max-width: none;
 }
+
 .footer__inner {
   row-gap: min(var(--section-vertical-spacing), 3rem);
   display: grid;
@@ -7498,7 +7500,9 @@ shopify-account::part(signed-out-avatar) {
   font-size: 14px;
   line-height: 19.6px;
   font-weight: 400;
+  font-family: 'Figtree', sans-serif;
 }
+
 
 .text-on-sale {
   color: rgb(var(--on-sale-text));
@@ -8457,6 +8461,7 @@ ul {
   font-size: 14px;
   line-height: 19.6px;
   font-weight: 400;
+  font-family: 'Figtree', sans-serif;
 }
 .footer_menu_heading{
   font-size: 22px;
@@ -8738,10 +8743,11 @@ ul {
 
 }
 
-.newsletter-disclaimer.text-caption {
+.newsletter-disclaimer.text-caption p{
   font-size: 14px;
   line-height: 140%;
   font-weight: 400;
+  color: rgb(var(--text-color) );
 }
 
 .newsletter-disclaimer a {
@@ -8753,6 +8759,8 @@ ul {
   font-size: 16px;
   line-height: 140%;
   font-weight: 400;
+  color: rgb(var(--text-color));
+  font-family: 'Figtree', sans-serif;
 }
 
 .newsletter-with-media .section_header_heading {
@@ -8985,7 +8993,7 @@ ul {
     font-weight: 700;
   }
 
-  .newsletter-disclaimer.text-caption {
+  .newsletter-disclaimer.text-caption p{
     font-size: 10px;
     line-height: 100%;
   }
@@ -9116,16 +9124,20 @@ ul {
 
 .breadcrumbs .breadcrumb-current {
   font-weight: 500;
+  color: rgb(var(--text-color) / .55);
 }
 
 .breadcrumbs .breadcrumb-separator {
-  color: rgb(var(--text-color) / .35);
+  color: rgb(var(--text-color) );
   margin: 0 2px;
   font-weight: 400;
 }
 
 .page-title-breadcrumb {
   margin-bottom: 12px;
+}
+.page-title-breadcrumb .breadcrumbs{
+    font-size: 17px;
 }
 .page-title-breadcrumb .breadcrumbs a{
   background: none;
@@ -9143,7 +9155,13 @@ ul {
 }
 .shopify-section--faq .container .section-stack{
   gap: 0px;
+}.blog-sidebar__recent-post-image_content{
+  font-size: 16px;
 }
+.blog-sidebar__widget .text-subdued{
+  font-size: 12px;
+}
+
 @media (max-width: 749px) {
   .blog-layout {
     grid-template-columns: 1fr;
@@ -9255,13 +9273,15 @@ ul {
 /* Badge/meta styles */
 .blog-post-card__badge {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 11px;
+  left: 11px;
   background: #fff;
   border-radius: 999px;
-  padding: 5px 14px;
+  padding: 8px 20px;
   font-size: 12px;
+  line-height: 16px;
   z-index: 2;
+  font-family: 'Figtree';
 }
 .blog-post-card__badge:hover{
   background-color: #B35642;
@@ -9272,12 +9292,17 @@ ul {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13.6px;
+  font-size: 12px;
+}
+.blog-post-card__title{
+  font-family: 'Forum';
 }
 
 .blog-post-card__author {
   color: var(--color-accent, #c0392b);
   font-weight: 600;
+  font-size: 14px;
+  font-family: 'Figtree';
 }
 
 /* Blog list column layout */
@@ -9357,4 +9382,186 @@ ul {
   .collection_banner .image-with-text picture {
     max-height: 180px;
   }
+}
+/* =====================================================
+   GLOBAL TYPOGRAPHY OVERRIDE FOR ARTICLE RTE CONTENT
+   Wins over any per-article inline <style> block
+   ===================================================== */
+
+/* 1) Catch-all — everything inside article body defaults to Figtree */
+.template-article .prose,
+.template-article .prose * {
+  font-family: 'Figtree'!important;
+  color: rgb(var(--text-color));
+}
+
+/* 2) Headings always use Forum (higher specificity: element selector beats the catch-all) */
+.template-article .prose h1,
+.template-article .prose h2,
+.template-article .prose h3,
+.template-article .prose h4,
+.template-article .prose h5,
+.template-article .prose h6 {
+  font-family: 'Forum' !important;
+  color: rgb(var(--text-color));
+}
+
+/* 3) In case an RTE author wraps heading text in <span>/<em>/<strong>, keep it Forum too */
+.template-article .prose h1 *,
+.template-article .prose h2 *,
+.template-article .prose h3 *,
+.template-article .prose h4 *,
+.template-article .prose h5 *,
+.template-article .prose h6 * {
+  font-family: 'Forum' !important;
+    color: rgb(var(--text-color));
+}
+
+/* 4) Explicit for p/a since they're the most common inline-styled tags in RTE content */
+.template-article .prose p,
+.template-article .prose a {
+  font-family: 'Figtree' !important;
+    color: rgb(var(--text-color));
+}
+.template-article .newsletter .section-header p,
+.template-article .newsletter-disclaimer.text-caption p{
+  font-family: 'Figtree' !important;
+}
+.template-article .announcement-bar__carousel .heading {
+    font-family: 'Figtree', sans-serif !important;
+    color: rgb(var(--text-color)) !important;
+    margin: 0 ;
+}
+.template-article footer {
+  padding: 0px;
+}
+.template-article .br-product-btn{
+  color: rgb(var(--button-text-color));
+  background-color: rgb(var(--button-background));
+}
+.template-article .br-cta{
+  background-color: #55583C ;
+  text-align: center !important;
+}
+.template-article .cta-btn{
+  background: none !important;
+  border: 1px solid #000000;
+}
+.template-article .cta-btn:hover{
+  transform: none;
+}
+.template-article .br-cta p{
+  color: rgb(var(--button-text-color));
+}
+.template-article .br-cta a
+{
+  background: rgb(var(--button-text-color)) ;
+}
+.template-article .toc-links a,
+.template-article .newsletter-disclaimer.text-caption p{
+  margin: 0;
+}
+
+.template-article .swatch,
+.template-article .timeline-content,
+.template-article .care-card,
+.template-article .br-product-card,
+.template-article .br-stat,
+.template-article .fact-item,
+.template-article .style-card{
+  margin-top: 0px;
+}
+.blog-post-card__excerpt{
+  font-family: 'Figtree';
+  font-size: 16px;
+}
+.template-article .prose{
+  padding: 0;
+} 
+.template-article .hero-title,
+.template-article .hero-title span,
+.template-article footer .ornament,
+.template-article .br-fact .ft,
+.template-article .secret-title,
+.template-article .promise-block.reveal h3,
+.template-article .br-stat .sn,
+.template-article .hero h1,
+.template-article .hero h1 em,
+.template-article .cta-banner h2{
+  color: #EEC274 !important;
+}
+/* .template-article .hero h1,
+.template-article .hero h1 em{
+  color: #FFFFFF !important;
+} */
+.template-article footer .ornament{
+  padding-top:10px;
+}
+.template-article .article-footer{
+  padding: 36px 24px;
+}
+.template-article .article-footer p{
+  color: #000000;
+}
+.template-article .hero,
+.template-article .did-you-know,
+.template-article .secret-header,
+.template-article .promise-block,
+.template-article .footer_wrap,
+.template-article .toc,
+.template-article .callout,
+.template-article .cta-banner,
+.template-article .article-footer{
+  background: #ffffff;
+  border: 1px solid #000000;
+}
+.template-article .footer_wrap{
+    padding: 56px 40px;
+    text-align: center;
+}
+.template-article thead tr,
+.template-article .br-table thead tr{
+    background: #ffffff;
+}
+.template-article .br-blog a:hover,
+.template-article .br-cta a:hover,
+.template-article .toc a:hover{
+    color: #EEC274;
+}
+.template-article .br-product-btn:hover{
+  background: #55583c;
+}
+.template-article .table-scroller thead tr{
+  background: #ffffff;
+}
+
+.template-article .table-scroller table,
+.template-article .table-scroller table th,
+.template-article .compare-table thead th{
+  border-inline-start-width:1px;
+  border-inline-end-width:1px;
+  padding: 9px 8px 9px 14px;
+  }
+
+.template-article .table-scroller table{
+  border-block-width: 1px;
+  }
+
+  .template-article .hero .hero-ornament{
+    color: #000000;
+  }
+  .template-article .br-table tbody tr:nth-child(odd){
+    background: #ffffff;
+  }
+  .template-article .br-table thead th{
+    font-size: 16px;
+  }
+  .template-article .table-scroller table tbody tr,
+  .template-article .compare-table th {
+    background: #ffffff;
+  } 
+.template-article .table-scroller table tbody tr td{
+      padding: 3px 7px 9px 7px;
+      background: #ffffff;
+      font-size: 14px;
 }

@@ -24,10 +24,11 @@
         if position > 3
           assign loading_strategy = 'lazy'
         endif
+        assign blog_name = article.handle | split: '/' | first
       -%}
       <div class="blog-card-img relative">
-        {%- if show_category and article.tags.size > 0 -%}
-          <a href="{{ blog.url }}/tagged/{{ article.tags.first | handle }}" class="blog-post-card__badge {{ category_class }}">{{ article.tags.first }}</a>
+        {%- if show_category and blog_name != blank -%}
+          <a href="{{ blog.url }}" class="blog-post-card__badge {{ category_class }}">{{ blog_name | capitalize }}</a>
         {%- endif -%}
         <a href="{{ article.url }}" class="blog-post-card__img-wrap overflow-hidden block">
           {{-

@@ -30,7 +30,7 @@
         "settings": {
           "background": "#fffbf3",
           "background_gradient": "",
-          "text_color": "#2b2724",
+          "text_color": "#000000",
           "primary_button_background": "#2b2724",
           "primary_button_text_color": "#f3eee4",
           "circle_button_background": "#f3eee4",
@@ -52,10 +52,10 @@
         "settings": {
           "background": "#b15a38",
           "background_gradient": "",
-          "text_color": "#FFFFFF",
+          "text_color": "#ffffff",
           "primary_button_background": "#2b2724",
-          "primary_button_text_color": "#FFFFFF",
-          "circle_button_background": "#FFFFFF",
+          "primary_button_text_color": "#ffffff",
+          "circle_button_background": "#ffffff",
           "circle_button_icon": "#b15a38"
         }
       },
