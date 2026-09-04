@@ -9113,6 +9113,10 @@ ul {
 .faq_section_header .section-header{
   max-width: 100%;
 }
+.header_flex{
+  display: flex;
+  align-items: self-start;
+}
 .faq_section .button--outline{
   color: #FFFFFF;
 }

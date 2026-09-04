@@ -36,7 +36,30 @@
   #shopify-section-{{ section.id }} .faq-layout--with-sidebar .section-header > * {
     margin-inline: 0;
   }
-
+    /* Image layout (right-side image, desktop only) */
+  #shopify-section-{{ section.id }} .faq-layout--with-image {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 40px;
+  }
+  #shopify-section-{{ section.id }} .faq-content-column {
+    min-width: 0;
+  }
+  #shopify-section-{{ section.id }} .faq-layout--with-image .faq {
+    justify-content: flex-start;
+  }
+  #shopify-section-{{ section.id }} .faq-image-wrapper {
+    border-radius: 9px;
+    overflow: hidden;
+    align-self: start;
+  }
+  #shopify-section-{{ section.id }} .faq-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
   #shopify-section-{{ section.id }} .faq-sidebar {
      background: #F5F5F5;
     border-radius: 9px;
@@ -85,6 +108,12 @@
       row-gap: 0;
       align-items: start;
     }
+    #shopify-section-{{ section.id }} .faq-layout--with-image {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      column-gap: 60px;
+      row-gap: 0;
+      align-items: start;
+    }
   }
 </style>
 
@@ -101,17 +130,23 @@
             </span>
           </nav>
         {%- endif -%}
+        {%- assign faq_show_image = false -%}
+        {%- if section.settings.show_image and section.settings.image != blank -%}
+          {%- assign faq_show_image = true -%}
+        {%- endif -%}
 
-        <div class="faq_section_header">
-          {%- render 'section-header',
-            subheading: section.settings.subheading,
-            heading: section.settings.title,
-            heading_style: section.settings.heading_style,
-            content: section.settings.content
-          -%}
-        </div>
+        {%- unless faq_show_image -%}
+          <div class="faq_section_header">
+            {%- render 'section-header',
+              subheading: section.settings.subheading,
+              heading: section.settings.title,
+              heading_style: section.settings.heading_style,
+              content: section.settings.content
+            -%}
+          </div>
+        {%- endunless -%}
 
-        <div class="faq-layout {% if section.settings.show_sidebar %}faq-layout--with-sidebar{% endif %}">
+        <div class="faq-layout {% if section.settings.show_sidebar %}faq-layout--with-sidebar{% endif %} {% if faq_show_image %}faq-layout--with-image{% endif %}">
           {%- if section.settings.show_sidebar -%}
             <div class="faq-sidebar v-stack gap-6 {{ section.settings.sidebar_custom_class }}">
               {%- if section.settings.sidebar_heading != blank -%}
@@ -152,61 +187,81 @@
             </div>
           {%- endif -%}
 
-          <div class="faq-main section-stack {{ section.settings.faq_custom_class }}">
-            <div class="faq">
-              {%- assign categories_blocks = section.blocks | where: 'type', 'category' -%}
+          <div class="faq-content-column">
+            {%- if faq_show_image -%}
+              <div class="faq_section_header header_flex">
+                {%- render 'section-header',
+                  subheading: section.settings.subheading,
+                  heading: section.settings.title,
+                  heading_style: section.settings.heading_style,
+                  content: section.settings.content
+                -%}
+              </div>
+            {%- endif -%}
 
-              {%- if section.settings.show_categories and categories_blocks.size > 0 -%}
-                <faq-toc class="faq__toc hidden md:grid">
-                  {%- for block in categories_blocks -%}
-                    <a class="faq__toc-item {% if forloop.first %}is-active{% endif %}" href="#block-{{ block.id }}">{{ block.settings.title }}</a>
+            <div class="faq-main section-stack {{ section.settings.faq_custom_class }}">
+              <div class="faq">
+                {%- assign categories_blocks = section.blocks | where: 'type', 'category' -%}
+
+                {%- if section.settings.show_categories and categories_blocks.size > 0 -%}
+                  <faq-toc class="faq__toc hidden md:grid">
+                    {%- for block in categories_blocks -%}
+                      <a class="faq__toc-item {% if forloop.first %}is-active{% endif %}" href="#block-{{ block.id }}">{{ block.settings.title }}</a>
+                    {%- endfor -%}
+                  </faq-toc>
+                {%- endif -%}
+
+                <div class="faq__content">
+                  {%- for block in section.blocks -%}
+                    {%- case block.type -%}
+                      {%- when 'category' -%}
+                        {%- if block.settings.title != blank -%}
+                          <p id="block-{{ block.id }}" class="faq__category h2 {{ block.settings.custom_class }}" {{ block.shopify_attributes }}>
+                            {%- if block.settings.custom_icon != blank -%}
+                              {%- capture sizes -%}{{ block.settings.icon_width }}px{%- endcapture -%}
+                              {%- capture widths -%}{{ block.settings.icon_width }}, {{ block.settings.icon_width | times: 2 | at_most: block.settings.custom_icon.width }}{%- endcapture -%}
+                              {%- capture style -%}--image-max-width: {{ block.settings.icon_width }}px{%- endcapture -%}
+
+                              {{-
+                                block.settings.custom_icon
+                                | image_url: width: block.settings.custom_icon.width
+                                | image_tag: sizes: sizes, widths: widths, class: 'constrained-image', style: style
+                              -}}
+                            {%- elsif block.settings.icon != 'none' -%}
+                              {%- render 'icon' with block.settings.icon, width: block.settings.icon_width -%}
+                            {%- endif -%}
+
+                            {{- block.settings.title -}}
+                          </p>
+                        {%- endif -%}
+
+                      {%- when 'question' -%}
+                        {%- if block.settings.question != blank and block.settings.answer != blank -%}
+                          {%- capture answer -%}
+                            <div class="prose">
+                              {{- block.settings.answer -}}
+                            </div>
+                          {%- endcapture -%}
+
+                          {%- render 'accordion', title: block.settings.question, content: answer, show_title_as_text: true, block: block, class: block.settings.custom_class -%}
+                        {%- endif -%}
+                    {%- endcase -%}
                   {%- endfor -%}
-                </faq-toc>
-              {%- endif -%}
-
-              <div class="faq__content">
-                {%- for block in section.blocks -%}
-                  {%- case block.type -%}
-                    {%- when 'category' -%}
-                      {%- if block.settings.title != blank -%}
-                        <p id="block-{{ block.id }}" class="faq__category h2 {{ block.settings.custom_class }}" {{ block.shopify_attributes }}>
-                          {%- if block.settings.custom_icon != blank -%}
-                            {%- capture sizes -%}{{ block.settings.icon_width }}px{%- endcapture -%}
-                            {%- capture widths -%}{{ block.settings.icon_width }}, {{ block.settings.icon_width | times: 2 | at_most: block.settings.custom_icon.width }}{%- endcapture -%}
-                            {%- capture style -%}--image-max-width: {{ block.settings.icon_width }}px{%- endcapture -%}
-
-                            {{-
-                              block.settings.custom_icon
-                              | image_url: width: block.settings.custom_icon.width
-                              | image_tag: sizes: sizes, widths: widths, class: 'constrained-image', style: style
-                            -}}
-                          {%- elsif block.settings.icon != 'none' -%}
-                            {%- render 'icon' with block.settings.icon, width: block.settings.icon_width -%}
-                          {%- endif -%}
-
-                          {{- block.settings.title -}}
-                        </p>
-                      {%- endif -%}
-
-                    {%- when 'question' -%}
-                      {%- if block.settings.question != blank and block.settings.answer != blank -%}
-                        {%- capture answer -%}
-                          <div class="prose">
-                            {{- block.settings.answer -}}
-                          </div>
-                        {%- endcapture -%}
-
-                        {%- render 'accordion', title: block.settings.question, content: answer, show_title_as_text: true, block: block, class: block.settings.custom_class -%}
-                      {%- endif -%}
-                  {%- endcase -%}
-                {%- endfor -%}
+                </div>
               </div>
             </div>
           </div>
+
+          {%- if faq_show_image -%}
+            <div class="faq-image-wrapper hidden md:block">
+              {{
+                section.settings.image
+                | image_url: width: 1000
+                | image_tag: loading: 'lazy', widths: '500, 750, 1000, 1500'
+              }}
+            </div>
+          {%- endif -%}
         </div>
-      </div>
-    </div>
-  </div>
 
   {%- comment -%}We also output the content with JSON microdata for SEO{%- endcomment -%}
 
@@ -399,6 +454,22 @@
       "id": "sidebar_custom_class",
       "label": "Sidebar custom class(es)",
       "info": "Space-separated class names added to the sidebar card only."
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show image",
+      "info": "Displays an image next to the FAQ list. Shown on desktop only; hidden on mobile.",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
     }
   ],
   "blocks": [
