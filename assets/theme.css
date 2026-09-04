@@ -241,6 +241,10 @@ height-observer {
   border-block-start-width: 0;
 }
 
+.accordion:first-child {
+  border-block-start-width: 0;
+}
+
 .accordion__toggle {
   justify-content: space-between;
   align-items: center;
@@ -8719,6 +8723,7 @@ ul {
 
 .multi-column-card_heading {
   line-height: 140%;
+  margin-top: 0px !important;
 }
 .multi-column-card_heading strong{
   font-weight: 600;
@@ -9010,7 +9015,7 @@ ul {
   }
 
   .newsletter-with-media .section_header_heading {
-    font-size: 34px;
+    font-size: 24px;
     line-height: 120%;
     font-weight: 400;
   }
@@ -9113,9 +9118,11 @@ ul {
 .faq_section_header .section-header{
   max-width: 100%;
 }
+
 .header_flex{
   display: flex;
   align-items: self-start;
+  margin-bottom: 20px;
 }
 .faq_section .button--outline{
   color: #FFFFFF;
@@ -9598,4 +9605,167 @@ ul {
       padding: 3px 7px 9px 7px;
       background: #ffffff;
       font-size: 14px;
+}
+
+.collection_faq .section_header_content{
+  margin-top:0px;
+}
+.collection_faq .section_header_heading{
+  font-size: 28px;
+  line-height: 120%;
+  font-weight: 400;
+  text-transform: capitalize;
+  margin-top: 4px;
+}
+.collection_faq .section_header_subheading{
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 500;
+}
+.collection_faq .accordion__toggle .text-with-icon{
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 700;
+}
+.collection_faq .faq__answer{
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 400;
+  letter-spacing: 0%;
+}
+.custom_rugs .image-with-text picture{
+  max-height: 357px;
+}
+.custom_rugs .prose .image_with_text_content{
+  margin-top: 16px;
+  font-size: 18px;
+  line-height: 140%;
+  font-weight: 400;
+}
+.custom_rugs .prose .image_with_text_heading{
+  font-size: 28px;
+  line-height: 120%;
+  font-weight: 400;
+  margin-top: 4px;
+}
+.custom_rugs .image_with_text_subheading{
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 500;
+}
+.custom_rugs .image-with-text>.prose{
+  max-width: 100%;
+}
+.custom_rugs .prose .button{
+  margin-top: 24px !important;
+  padding: 12px 28px 12px 28px;
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 700;
+}
+.custom_rugs .image-with-text{
+  gap: 39px;
+}
+@media screen and (max-width: 768px) {
+  .custom_rugs .image-with-text{
+    gap: 15px;
+  }
+  .custom_rugs .prose .image_with_text_heading{
+    font-size: 26px;
+  }
+  .custom_rugs .image-with-text>.prose{
+    padding: 0px;
+    width: auto;
+  }
+  .custom_rugs .prose .image_with_text_content{
+      font-size: 16px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .custom_rugs .image-with-text{
+    gap: 0px;
+  }
+  .custom_rugs .image-with-text>.prose{
+    padding: 0px 12px;
+  }
+}
+
+.multi-column-card_heading-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.multi-column-card_icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+/* keep the description spacing consistent under the icon+title row */
+.multi-column-card_heading-wrapper + .multi-column-card_content {
+  margin-top: 8px;
+}
+.Collection_contact_us .multi-column__item{
+    padding: 23px 21px 23px 28px;
+    background: #FFFFFF;
+}
+.Collection_contact_us{
+  padding-top: 42px;
+  padding-bottom: 42px;
+  margin-bottom: 60px;
+}
+.Collection_contact_us .section_header_subheading{
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 500;
+}
+.Collection_contact_us .section_header_heading{
+  font-size: 28px;
+  line-height: 120%;
+  font-weight: 400;
+  margin-top: 4px;
+}
+.Collection_contact_us .section_header_content{
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 400;
+  margin-top: 10px;
+}
+.Collection_contact_us .section-stack{
+  gap: 24px;
+}
+.Collection_contact_us .multi-column-card_heading{
+  font-size: 18px;
+  line-height: 140%;
+  font-weight: 700;
+}
+.Collection_contact_us .prose .link{
+  margin-top: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 140%;
+}
+
+@media screen and (max-width: 768px){
+.Collection_contact_us .section_header_heading{
+    font-size: 24px;
+  }
+  .Collection_contact_us .multi-column-card_heading{
+    font-size: 16px;
+  }
+  .Collection_contact_us .multi-column-card_content{
+    font-size: 14px;
+  }
+  .Collection_contact_us .prose .link{
+      margin-top: 16px;
+      font-size: 14px;
+    }
+    .Collection_contact_us{
+        padding-top: 34px;
+        padding-bottom: 34px;
+        margin-bottom: 50px;
+      }
 }

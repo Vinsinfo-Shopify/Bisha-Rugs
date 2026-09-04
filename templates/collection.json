@@ -19,7 +19,7 @@
         "heading_PVB7Qh": {
           "type": "heading",
           "settings": {
-            "text": "Oushak Rugs",
+            "text": "<p>Oushak Rugs</p>",
             "heading_tag": "h1"
           }
         },
@@ -79,7 +79,7 @@
         "heading_J8Xmnf": {
           "type": "heading",
           "settings": {
-            "text": "Shop All",
+            "text": "<p>Shop All</p>",
             "heading_tag": "h1"
           }
         },
@@ -173,6 +173,203 @@
         "show_filter_values_count": true,
         "open_filters_by_default": false
       }
+    },
+    "image_with_text_zkLCMr": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_FrwqEe": {
+          "type": "subheading",
+          "settings": {
+            "text": "CUSTOM RUGS"
+          }
+        },
+        "heading_A87yf9": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Can't Find the Perfect Rug? <br/>Let's Create It Together.</p>",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_cVc9n7": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Choose the ideal size, colors, materials, and design with guidance from our rug experts. Our artisans will transform your vision to reality.</p>"
+          }
+        },
+        "button_CMc8UT": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "GET IN TOUCH",
+            "url": "",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "subheading_FrwqEe",
+        "heading_A87yf9",
+        "richtext_cVc9n7",
+        "button_CMc8UT"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
+        "custom_class": "custom_rugs",
+        "separate_section_with_border": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "image": "shopify://shop_images/df4757b35b342ceb512cface52f83f77935973da.png",
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "start",
+        "content_width": "sm",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
+    "faq_cCHDjP": {
+      "type": "faq",
+      "blocks": {
+        "question_LGzJkm": {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship overseas?",
+            "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_3WWPqk": {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship overseas?",
+            "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_UqmTXh": {
+          "type": "question",
+          "settings": {
+            "question": "How long will it take to get my orders?",
+            "answer": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_3BX9Rm": {
+          "type": "question",
+          "settings": {
+            "question": "Any question?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "custom_class": ""
+          }
+        }
+      },
+      "block_order": [
+        "question_LGzJkm",
+        "question_3WWPqk",
+        "question_UqmTXh",
+        "question_3BX9Rm"
+      ],
+      "name": "t:sections.faq.presets.faq.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "show_categories": false,
+        "custom_class": "collection_faq",
+        "faq_custom_class": "",
+        "show_breadcrumb": false,
+        "breadcrumb_home_label": "Home",
+        "breadcrumb_current_label": "FAQs",
+        "subheading": "FAQs",
+        "title": "Your Questions Answered",
+        "heading_style": "h2",
+        "content": "",
+        "show_sidebar": false,
+        "sidebar_heading": "Contact Us",
+        "sidebar_text": "<p>If you have an issue or question that requires immediate assistance, you can mail us on love@example.com</p><p>We will reply as soon as possible with solution.</p>",
+        "sidebar_button_1_label": "Contact Us",
+        "sidebar_button_1_link": "",
+        "sidebar_button_2_label": "About Us",
+        "sidebar_button_2_link": "",
+        "sidebar_custom_class": "",
+        "show_image": true,
+        "image": "shopify://shop_images/c0a4d61bbc28d2127363ecf547d1f6829f8d6d42.png"
+      }
+    },
+    "multi_column_YffJWe": {
+      "type": "multi-column",
+      "blocks": {
+        "image_with_text_HLGxLF": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_7.png",
+            "title": "Give Us a Call",
+            "heading_tag": "h3",
+            "content": "<p>Our experts are just a call away to help you find your perfect rug.</p>",
+            "link_url": "tel:+1 (415) 980-7774",
+            "link_text": "+1 (415) 980-7774"
+          }
+        },
+        "image_with_text_gdjPUn": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/tabler_video_1.png",
+            "title": "Virtual Appointment",
+            "heading_tag": "h3",
+            "content": "<p>Schedule a call to explore designs, ask questions and shop online with our experts.</p>",
+            "link_url": "#",
+            "link_text": "Book Now"
+          }
+        },
+        "image_with_text_9WNFQm": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_8.png",
+            "title": "Send Us an Email",
+            "heading_tag": "h3",
+            "content": "<p>Prefer email? Send your query and our team will respond with all the details you need.</p>",
+            "link_url": "mailto:love@bisharugs.com",
+            "link_text": "love@bisharugs.com"
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_HLGxLF",
+        "image_with_text_gdjPUn",
+        "image_with_text_9WNFQm"
+      ],
+      "name": "t:sections.multi_column.presets.multi_column.name",
+      "settings": {
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
+        "custom_class": "Collection_contact_us",
+        "separate_section_with_border": true,
+        "remove_section_spacing": true,
+        "columns_per_row": 3,
+        "stack_on_mobile": true,
+        "overlap_image": false,
+        "content_alignment": "center",
+        "text_alignment": "start",
+        "spacing": "sm",
+        "subheading": "CONTACT US",
+        "title": "Still Have Questions?",
+        "heading_style": "h2",
+        "content": "<p>We’re here to help you pick the right rug for your space, talk to our experts today.</p>",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
+      }
     }
   },
   "order": [
@@ -180,6 +377,9 @@
     "image_with_text_AF8648",
     "image_with_text_9TrLX9",
     "collection-banner",
-    "main"
+    "main",
+    "image_with_text_zkLCMr",
+    "faq_cCHDjP",
+    "multi_column_YffJWe"
   ]
 }
