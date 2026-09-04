@@ -13,18 +13,373 @@
       "type": "collection-breadcrumb",
       "settings": {}
     },
+    "image_with_text_AF8648": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_PVB7Qh": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Oushak Rugs</p>",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_TEbCEy": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Oushak rugs are hand-knotted and admired for their oversized motifs, soft pastel and timeless craftsman...<span style=\"text-decoration:underline\">Read more</span></p>"
+          }
+        },
+        "icon_with_text_Cg9p8d": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group_1.png",
+            "text": "Free Insured Shipping"
+          }
+        },
+        "icon_with_text_8g93pM": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group_2.png",
+            "text": "30 Day Easy Returns"
+          }
+        }
+      },
+      "block_order": [
+        "heading_PVB7Qh",
+        "richtext_TEbCEy",
+        "icon_with_text_Cg9p8d",
+        "icon_with_text_8g93pM"
+      ],
+      "disabled": true,
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "custom_class": "",
+        "separate_section_with_border": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "image": "shopify://shop_images/Frame_1400009646_f3d0f848-1890-46d9-8bf4-d69c422a835b.jpg",
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "end",
+        "content_width": "lg",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
+    "image_with_text_9TrLX9": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_J8Xmnf": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Shop All</p>",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_YzFKam": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>From iconic Oushak, antiques to tufted rug collections, <br/>discover rugs designed to elevate every...Read more</p>"
+          }
+        },
+        "icon_with_text_9ad9K6": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group_1.png",
+            "text": "Free Insured Shipping"
+          }
+        },
+        "icon_with_text_Bcj9Rh": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group_2.png",
+            "text": "30 Day Easy Returns"
+          }
+        }
+      },
+      "block_order": [
+        "heading_J8Xmnf",
+        "richtext_YzFKam",
+        "icon_with_text_9ad9K6",
+        "icon_with_text_Bcj9Rh"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "custom_class": "collection_banner",
+        "separate_section_with_border": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "image": "shopify://shop_images/Frame_1400009646_f3d0f848-1890-46d9-8bf4-d69c422a835b.jpg",
+        "mobile_image": "shopify://shop_images/Frame_1400008909.jpg",
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "end",
+        "content_width": "lg",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
     "collection-banner": {
       "type": "collection-banner",
-      "settings": {}
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "image": "shopify://shop_images/00df73a76c09ff5a794bf6f169ec525810b8146f.png",
+        "image_size": "xs",
+        "allow_transparent_header": true,
+        "show_image": true,
+        "reveal": true,
+        "enable_parallax": true,
+        "show_collection_title": true,
+        "show_collection_description": true,
+        "show_breadcrumb": true,
+        "content_width": "xs",
+        "text_alignment": "center",
+        "overlay_color": "#000000",
+        "overlay_opacity": 30
+      }
     },
     "main": {
       "type": "main-collection",
-      "settings": {}
+      "settings": {
+        "color_scheme": "scheme-1",
+        "hide_product_information": false,
+        "products_per_page": 48,
+        "products_per_row_mobile": "2",
+        "products_size_desktop": "large",
+        "show_grid_mode_selector": true,
+        "horizontal_spacing_factor": 1,
+        "vertical_spacing_factor": 1,
+        "filter_layout": "sidebar",
+        "quick_links_menu": "",
+        "show_sort_by": true,
+        "show_filters": true,
+        "show_results_count": true,
+        "show_filter_group_name": false,
+        "show_filter_values_count": true,
+        "open_filters_by_default": false
+      }
+    },
+    "image_with_text_zkLCMr": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_FrwqEe": {
+          "type": "subheading",
+          "settings": {
+            "text": "CUSTOM RUGS"
+          }
+        },
+        "heading_A87yf9": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Can't Find the Perfect Rug? <br/>Let's Create It Together.</p>",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_cVc9n7": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Choose the ideal size, colors, materials, and design with guidance from our rug experts. Our artisans will transform your vision to reality.</p>"
+          }
+        },
+        "button_CMc8UT": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "GET IN TOUCH",
+            "url": "",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "subheading_FrwqEe",
+        "heading_A87yf9",
+        "richtext_cVc9n7",
+        "button_CMc8UT"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
+        "custom_class": "custom_rugs",
+        "separate_section_with_border": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "image": "shopify://shop_images/df4757b35b342ceb512cface52f83f77935973da.png",
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "start",
+        "content_width": "sm",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
+    "faq_cCHDjP": {
+      "type": "faq",
+      "blocks": {
+        "question_LGzJkm": {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship overseas?",
+            "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_3WWPqk": {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship overseas?",
+            "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_UqmTXh": {
+          "type": "question",
+          "settings": {
+            "question": "How long will it take to get my orders?",
+            "answer": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_3BX9Rm": {
+          "type": "question",
+          "settings": {
+            "question": "Any question?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "custom_class": ""
+          }
+        }
+      },
+      "block_order": [
+        "question_LGzJkm",
+        "question_3WWPqk",
+        "question_UqmTXh",
+        "question_3BX9Rm"
+      ],
+      "name": "t:sections.faq.presets.faq.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "show_categories": false,
+        "custom_class": "collection_faq",
+        "faq_custom_class": "",
+        "show_breadcrumb": false,
+        "breadcrumb_home_label": "Home",
+        "breadcrumb_current_label": "FAQs",
+        "subheading": "FAQs",
+        "title": "Your Questions Answered",
+        "heading_style": "h2",
+        "content": "",
+        "show_sidebar": false,
+        "sidebar_heading": "Contact Us",
+        "sidebar_text": "<p>If you have an issue or question that requires immediate assistance, you can mail us on love@example.com</p><p>We will reply as soon as possible with solution.</p>",
+        "sidebar_button_1_label": "Contact Us",
+        "sidebar_button_1_link": "",
+        "sidebar_button_2_label": "About Us",
+        "sidebar_button_2_link": "",
+        "sidebar_custom_class": "",
+        "show_image": true,
+        "image": "shopify://shop_images/c0a4d61bbc28d2127363ecf547d1f6829f8d6d42.png"
+      }
+    },
+    "multi_column_YffJWe": {
+      "type": "multi-column",
+      "blocks": {
+        "image_with_text_HLGxLF": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_7.png",
+            "title": "Give Us a Call",
+            "heading_tag": "h3",
+            "content": "<p>Our experts are just a call away to help you find your perfect rug.</p>",
+            "link_url": "tel:+1 (415) 980-7774",
+            "link_text": "+1 (415) 980-7774"
+          }
+        },
+        "image_with_text_gdjPUn": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/tabler_video_1.png",
+            "title": "Virtual Appointment",
+            "heading_tag": "h3",
+            "content": "<p>Schedule a call to explore designs, ask questions and shop online with our experts.</p>",
+            "link_url": "#",
+            "link_text": "Book Now"
+          }
+        },
+        "image_with_text_9WNFQm": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_8.png",
+            "title": "Send Us an Email",
+            "heading_tag": "h3",
+            "content": "<p>Prefer email? Send your query and our team will respond with all the details you need.</p>",
+            "link_url": "mailto:love@bisharugs.com",
+            "link_text": "love@bisharugs.com"
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_HLGxLF",
+        "image_with_text_gdjPUn",
+        "image_with_text_9WNFQm"
+      ],
+      "name": "t:sections.multi_column.presets.multi_column.name",
+      "settings": {
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
+        "custom_class": "Collection_contact_us",
+        "separate_section_with_border": true,
+        "remove_section_spacing": true,
+        "columns_per_row": 3,
+        "stack_on_mobile": true,
+        "overlap_image": false,
+        "content_alignment": "center",
+        "text_alignment": "start",
+        "spacing": "sm",
+        "subheading": "CONTACT US",
+        "title": "Still Have Questions?",
+        "heading_style": "h2",
+        "content": "<p>We’re here to help you pick the right rug for your space, talk to our experts today.</p>",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
+      }
     }
   },
   "order": [
     "collection_breadcrumb",
+    "image_with_text_AF8648",
+    "image_with_text_9TrLX9",
     "collection-banner",
-    "main"
+    "main",
+    "image_with_text_zkLCMr",
+    "faq_cCHDjP",
+    "multi_column_YffJWe"
   ]
 }

@@ -23,6 +23,11 @@
     "text_font_size_mobile": 16,
     "text_font_size_desktop": 18,
     "button_letter_spacing": 0,
+    "product_image_aspect_ratio": "portrait_crop",
+    "show_secondary_image": false,
+    "show_vendor": false,
+    "product_price_strategy": "max_price",
+    "show_quick_buy": false,
     "favicon": "shopify://shop_images/bisha_rugs_logo_transparent_90237c26-0b0e-438c-8202-6bf4727d6570.png",
     "content_for_index": [],
     "color_schemes": {
