@@ -1,0 +1,416 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_with_text_overlay_QwXF4E": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "subheading_A4hR9U": {
+          "type": "subheading",
+          "settings": {
+            "text": "THE CRAFT & CRAFTMANSHIP"
+          }
+        },
+        "heading_Y3hNqm": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "text": "Where Every Knot Carries a Legacy.",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_BYeckP": {
+          "type": "richtext",
+          "settings": {
+            "content": "<h2>Where Every Knot Carries a Legacy.</h2>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_A4hR9U",
+        "heading_Y3hNqm",
+        "richtext_BYeckP"
+      ],
+      "name": "t:sections.image_with_text_overlay.presets.image_with_text_overlay.name",
+      "settings": {
+        "color_scheme": "",
+        "image_size": "xs",
+        "image": "shopify://shop_images/Craftmanship_Banner.png",
+        "allow_transparent_header": false,
+        "reveal_on_scroll": true,
+        "remove_vertical_spacing": true,
+        "content_width": "xxs",
+        "mobile_text_position": "place-self-center text-center",
+        "desktop_text_position": "sm:place-self-center sm:text-center",
+        "overlay_color": "#000000",
+        "overlay_opacity": 30
+      }
+    },
+    "image_with_text_DpGFn4": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_LWizpy": {
+          "type": "subheading",
+          "settings": {
+            "text": "Artisanal Craftsmanship"
+          }
+        },
+        "heading_7ATwmp": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Crafted by Master Artisans</p>",
+            "heading_tag": "h2"
+          }
+        },
+        "richtext_wqkkh8": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Every Bisha rug begins in the hands of artisans who have inherited their craft through generations. Using time-honoured techniques, each rug is woven entirely by hand, one knot at a time.   </p><p>It's a slow,<strong> meticulous process that cannot be replicated by machines, resulting in exceptional quality, lasting durability,</strong> and craftsmanship that stands the test of time.</p>"
+          }
+        },
+        "icon_with_text_VkQfgf": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/cff864219a3a7f086c67a50e5e7dd58c66657ffe.png",
+            "text": "Hand Crafted in India"
+          }
+        },
+        "icon_with_text_xk6GN9": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group.png",
+            "text": "Generational Master Artisans"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_LWizpy",
+        "heading_7ATwmp",
+        "richtext_wqkkh8",
+        "icon_with_text_VkQfgf",
+        "icon_with_text_xk6GN9"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "custom_class": "who_we_are",
+        "separate_section_with_border": false,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 50,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "image": "shopify://shop_images/a040de119455a72a631b73b39e834e632f5ddeef_1.png",
+        "media_position_mobile": "after_text",
+        "reveal_on_scroll": true,
+        "image_position": "end",
+        "content_width": "lg",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
+    "multiple_media_with_text_HFK9yi": {
+      "type": "multiple-media-with-text",
+      "blocks": {
+        "image_GG4XH8": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/e613975cecffa062b79ca0e7e1e4ed5ab2fdc53e_1.png",
+            "rotation": 0
+          }
+        },
+        "image_QhYrW7": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/b9e751fca65ddb7babf84b866a3a154d30ca7a25.png",
+            "rotation": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_GG4XH8",
+        "image_QhYrW7"
+      ],
+      "name": "t:sections.multiple_media_with_text.presets.multiple_media_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "custom_class": "",
+        "reveal_on_scroll": true,
+        "separate_section_with_border": false,
+        "padding_top": 0,
+        "padding_bottom": 60,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 50,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "media_position_desktop": "before_text",
+        "media_position_mobile": "after_text",
+        "media_layout": "overlap",
+        "media_alignment": "end",
+        "media_alignment_offset": 60,
+        "media_mobile_alignment_offset": 40,
+        "text_alignment": "center",
+        "subheading": "The Story",
+        "title": "The Legacy of Oushak",
+        "heading_style": "h2",
+        "content": "<p>The story of the Oushak rug begins in the historic city of Uşak in western Türkiye, where <strong>master weavers became renowned for creating rugs with soft palettes, oversized motifs,</strong> and remarkable craftsmanship.   </p><p>Celebrated across palaces and estates, Oushak rugs earned a reputation as symbols of timeless elegance, designed not just to decorate a home, but to become part of its story.</p>",
+        "button_1_text": "",
+        "button_1_link": "",
+        "button_1_style": "solid",
+        "button_2_text": "",
+        "button_2_link": "",
+        "button_2_style": "solid"
+      }
+    },
+    "multiple_media_with_text_J3eGF7": {
+      "type": "multiple-media-with-text",
+      "blocks": {
+        "image_n8Uh7F": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/fc155988e4b7996a791b8690a0f9bd2762961df8.png",
+            "rotation": 0
+          }
+        },
+        "image_rceMGh": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ebc6915b91c6b11cb65c64181c9ad69f296b3bf0.png",
+            "rotation": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_n8Uh7F",
+        "image_rceMGh"
+      ],
+      "name": "t:sections.multiple_media_with_text.presets.multiple_media_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "custom_class": "",
+        "reveal_on_scroll": true,
+        "separate_section_with_border": false,
+        "padding_top": 0,
+        "padding_bottom": 60,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 50,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "media_position_desktop": "after_text",
+        "media_position_mobile": "after_text",
+        "media_layout": "overlap",
+        "media_alignment": "end",
+        "media_alignment_offset": 60,
+        "media_mobile_alignment_offset": 40,
+        "text_alignment": "center",
+        "subheading": "A Timeless Journey",
+        "title": "<h2>From Persia to India:  <br/>A Legacy Woven Through Generations</h2>",
+        "heading_style": "h2",
+        "content": "<p><strong>During the reign of Emperor Akbar, master carpet artisans from Persia, Iran were welcomed to India</strong> to establish the royal weaving workshops that supplied the Mughal courts.   </p><p><strong>Many of these artisans chose to make India their home,</strong> settling in regions that would later become the country's renowned rug-weaving centres. </p><p><strong>Over generations, their knowledge, techniques, and artistry were passed down</strong> from parent to child, <strong>preserving a centuries-old craft</strong> through families dedicated to hand-knotting rugs.   </p><p>Today, those same weaving traditions continue to live on in the hands of generational artisans, whose craftsmanship forms the foundation of every Bisha rug.<br/><br/></p>",
+        "button_1_text": "",
+        "button_1_link": "",
+        "button_1_style": "solid",
+        "button_2_text": "",
+        "button_2_link": "",
+        "button_2_style": "solid"
+      }
+    },
+    "multi_column_WmHANY": {
+      "type": "multi-column",
+      "blocks": {
+        "image_with_text_qL9dee": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/CWP-2.png",
+            "title": "<strong>Step 1: Premium New Zealand Wool</strong>",
+            "heading_tag": "h4",
+            "content": "<p>We begin with carefully selected New Zealand wool, chosen for its softness, durability, and ability to absorb rich natural dyes.</p>",
+            "link_url": "",
+            "link_text": ""
+          }
+        },
+        "image_with_text_CeVrhX": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/CWP-3.png",
+            "title": "<strong>Step 2: Naturally Dyed</strong>",
+            "heading_tag": "h4",
+            "content": "<p>Traditional dyeing techniques create the soft, earthy tones that make every Oushak rug unique. Gentle variations in colour are a hallmark of authentic craftsmanship.</p>",
+            "link_url": "",
+            "link_text": ""
+          }
+        },
+        "image_with_text_TmR3me": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/d32ac65c516f1c324c1b42db7699e39b9bfbbe3c_1.png",
+            "title": "<strong>Step 3: Hand Knotting</strong>",
+            "heading_tag": "h4",
+            "content": "<p>Every individual knot is tied entirely by hand on a traditional loom. Depending on the size and complexity, a single rug may require hundreds of thousands of knots.</p>",
+            "link_url": "",
+            "link_text": ""
+          }
+        },
+        "image_with_text_qUwkh9": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/ba9b8b83c2da2ba751ce438b650856ff12a2a56c.png",
+            "title": "<strong>Step 4: Timeless Motifs</strong>",
+            "heading_tag": "h4",
+            "content": "<p>Inspired by the historic city of Oushak in Türkiye, these rugs feature large-scale motifs and balanced compositions that bring elegance to any interior.</p>",
+            "link_url": "",
+            "link_text": ""
+          }
+        },
+        "image_with_text_wiAegE": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/9aaa18f2caf9fec11b13037c586fe1a5847951a7.png",
+            "title": "<strong>Step 5: Finishing</strong>",
+            "heading_tag": "h4",
+            "content": "<p>Each rug is carefully washed, trimmed, softened, and inspected to ensure exceptional quality before leaving our workshop.</p>",
+            "link_url": "",
+            "link_text": ""
+          }
+        },
+        "image_with_text_YdCnFk": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/2655df5f97946c8fc798be6e840610fabeef002d.png",
+            "title": "<strong>Step 6: From Our Loom to Your Home</strong>",
+            "heading_tag": "h4",
+            "content": "<p>Once complete, your rug is carefully packed and delivered, ready to become a lasting part of your home and a piece to be cherished for generations.</p>",
+            "link_url": "",
+            "link_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_qL9dee",
+        "image_with_text_CeVrhX",
+        "image_with_text_TmR3me",
+        "image_with_text_qUwkh9",
+        "image_with_text_wiAegE",
+        "image_with_text_YdCnFk"
+      ],
+      "name": "t:sections.multi_column.presets.multi_column.name",
+      "settings": {
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "custom_class": "why_choose_bisha",
+        "separate_section_with_border": false,
+        "remove_section_spacing": false,
+        "columns_per_row": 3,
+        "stack_on_mobile": true,
+        "overlap_image": false,
+        "content_alignment": "center",
+        "text_alignment": "start",
+        "spacing": "xs",
+        "subheading": "The Making",
+        "title": "<p>From Wool to Woven Masterpiece.</p>",
+        "heading_style": "h2",
+        "content": "",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
+      }
+    },
+    "image_with_text_iwjUp9": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_RMdMUX": {
+          "type": "subheading",
+          "settings": {
+            "text": "Worth the Wait"
+          }
+        },
+        "heading_NBWwJX": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>True Luxury Is Never Rushed.</p>",
+            "heading_tag": "h2"
+          }
+        },
+        "richtext_q87Vw8": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>In a world built for speed, true craftsmanship takes time. Every knot, every pattern, and every touch reflects the patience and dedication of skilled artisans, creating a rug that grows more beautiful with every passing year.<br/><br/><em><strong>\"Time isn't the cost of craftsmanship. It's the source of its value.\"</strong></em></p>"
+          }
+        },
+        "button_AGG3LD": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "Explore our Rugs",
+            "url": "",
+            "background": "#55583c",
+            "text_color": "#ffffff"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_RMdMUX",
+        "heading_NBWwJX",
+        "richtext_q87Vw8",
+        "button_AGG3LD"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "custom_class": "crafted_in_india",
+        "separate_section_with_border": true,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 50,
+        "padding_bottom_mobile": 50,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "image": "shopify://shop_images/e613975cecffa062b79ca0e7e1e4ed5ab2fdc53e_2.png",
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "start",
+        "content_width": "lg",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "show_title": true,
+        "page_width": "xs"
+      }
+    }
+  },
+  "order": [
+    "image_with_text_overlay_QwXF4E",
+    "image_with_text_DpGFn4",
+    "multiple_media_with_text_HFK9yi",
+    "multiple_media_with_text_J3eGF7",
+    "multi_column_WmHANY",
+    "image_with_text_iwjUp9",
+    "main"
+  ]
+}
