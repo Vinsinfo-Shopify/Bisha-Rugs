@@ -235,21 +235,137 @@
         "show_features": false
       }
     },
+    "collection_list_xqVd7g": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_6m4Nhf": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "collection": "oushak-rugs",
+            "image": "shopify://shop_images/Oushak_Rugs_bdb6cd46-c650-45b2-9254-35779a65dfcc.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Oushak Rugs",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_Kbhdbz": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "collection": "new-arrivals",
+            "image": "shopify://shop_images/Best_Sellers.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Best Sellers",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_KdHw9q": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "",
+            "collection": "new-arrivals",
+            "image": "shopify://shop_images/New_Arrivals.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "New Arrivals",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_VHBk3i": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "",
+            "collection": "all",
+            "image": "shopify://shop_images/Shop_All.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Shop All",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "collection_6m4Nhf",
+        "collection_Kbhdbz",
+        "collection_KdHw9q",
+        "collection_VHBk3i"
+      ],
+      "name": "t:sections.collection_list.presets.collection_list.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "separate_section_with_border": true,
+        "image_size": "auto",
+        "show_text_outside": false,
+        "space_items": true,
+        "stack_collections": true,
+        "collections_per_row_desktop": 4,
+        "stack_collections_mobile": true,
+        "collections_per_row_mobile": "2",
+        "subheading": "Categories",
+        "title": "Explore Our Range",
+        "heading_style": "h1",
+        "content": ""
+      }
+    },
+    "recently_viewed_products_9enjJe": {
+      "type": "recently-viewed-products",
+      "name": "t:sections.recently_viewed_products.presets.recently_viewed_products.name",
+      "settings": {
+        "separate_section_with_border": true,
+        "remove_vertical_spacing": true,
+        "custom_class": "recent_products",
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "hide_product_information": false,
+        "stack_products": false,
+        "products_count": 9,
+        "products_per_row_mobile": "2",
+        "products_per_row_desktop": 4,
+        "horizontal_spacing_factor": 1,
+        "vertical_spacing_factor": 1,
+        "subheading": "CONTINUE BROWSING",
+        "title": "Recently Viewed",
+        "heading_style": "h2",
+        "content": ""
+      }
+    },
     "faq_cCHDjP": {
       "type": "faq",
       "blocks": {
         "question_LGzJkm": {
           "type": "question",
           "settings": {
-            "question": "Do you ship overseas?",
-            "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>",
+            "question": "What makes an Oushak rug special?",
+            "answer": "<p>Oushak rugs are among the most celebrated traditional rugs in the world, known for their soft color palettes, large-scale motifs, and refined elegance. Originating from centuries-old weaving traditions, they are valued for their ability to bring warmth, sophistication, and timeless character to a space. At Bisha Rugs, each Oushak is handwoven by skilled artisans, ensuring every piece carries its own individuality and craftsmanship.<br/></p>",
             "custom_class": ""
           }
         },
         "question_3WWPqk": {
           "type": "question",
           "settings": {
-            "question": "Do you ship overseas?",
+            "question": "Why invest in a handmade Oushak rug?",
             "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>",
             "custom_class": ""
           }
@@ -257,7 +373,7 @@
         "question_UqmTXh": {
           "type": "question",
           "settings": {
-            "question": "How long will it take to get my orders?",
+            "question": "How should I care for my Oushak rug?",
             "answer": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>",
             "custom_class": ""
           }
@@ -265,7 +381,23 @@
         "question_3BX9Rm": {
           "type": "question",
           "settings": {
-            "question": "Any question?",
+            "question": "Can I return my rug?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_HPtNMN": {
+          "type": "question",
+          "settings": {
+            "question": "What if my rug arrives damaged?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_hUMepf": {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship internationally?",
             "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
             "custom_class": ""
           }
@@ -275,7 +407,9 @@
         "question_LGzJkm",
         "question_3WWPqk",
         "question_UqmTXh",
-        "question_3BX9Rm"
+        "question_3BX9Rm",
+        "question_HPtNMN",
+        "question_hUMepf"
       ],
       "name": "t:sections.faq.presets.faq.name",
       "settings": {
@@ -300,7 +434,7 @@
         "sidebar_button_2_link": "",
         "sidebar_custom_class": "",
         "show_image": true,
-        "image": "shopify://shop_images/c0a4d61bbc28d2127363ecf547d1f6829f8d6d42.png"
+        "image": "shopify://shop_images/c0a4d61bbc28d2127363ecf547d1f6829f8d6d42_1.png"
       }
     },
     "multi_column_YffJWe": {
@@ -379,6 +513,8 @@
     "collection-banner",
     "main",
     "image_with_text_zkLCMr",
+    "collection_list_xqVd7g",
+    "recently_viewed_products_9enjJe",
     "faq_cCHDjP",
     "multi_column_YffJWe"
   ]
