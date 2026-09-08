@@ -79,36 +79,29 @@
         "heading_J8Xmnf": {
           "type": "heading",
           "settings": {
-            "text": "<p>Shop All</p>",
+            "text": "<p>{{ collection.title }}</p>",
             "heading_tag": "h1"
           }
         },
         "richtext_YzFKam": {
           "type": "richtext",
           "settings": {
-            "content": "<p>From iconic Oushak, antiques to tufted rug collections, <br/>discover rugs designed to elevate every...Read more</p>"
+            "content": "{{ collection.metafields.custom.collection_banner_content | metafield_tag }}"
           }
         },
         "icon_with_text_9ad9K6": {
           "type": "icon_with_text",
+          "repeater": "{{ collection.metafields.custom.icon_text_item.value }}",
           "settings": {
-            "icon": "shopify://shop_images/Group_1.png",
-            "text": "Free Insured Shipping"
-          }
-        },
-        "icon_with_text_Bcj9Rh": {
-          "type": "icon_with_text",
-          "settings": {
-            "icon": "shopify://shop_images/Group_2.png",
-            "text": "30 Day Easy Returns"
+            "icon": "{{ block.repeater.icon.value }}",
+            "text": "{{ block.repeater.text.value }}"
           }
         }
       },
       "block_order": [
         "heading_J8Xmnf",
         "richtext_YzFKam",
-        "icon_with_text_9ad9K6",
-        "icon_with_text_Bcj9Rh"
+        "icon_with_text_9ad9K6"
       ],
       "name": "t:sections.image_with_text.presets.image_with_text.name",
       "settings": {
@@ -123,8 +116,8 @@
         "padding_bottom_mobile": 0,
         "padding_left_mobile": 0,
         "padding_right_mobile": 0,
-        "image": "shopify://shop_images/Frame_1400009646_f3d0f848-1890-46d9-8bf4-d69c422a835b.jpg",
-        "mobile_image": "shopify://shop_images/Frame_1400008909.jpg",
+        "image": "{{ collection.metafields.custom.collection_banner.value }}",
+        "mobile_image": "{{ collection.metafields.custom.collection_banner_mobile.value }}",
         "media_position_mobile": "before_text",
         "reveal_on_scroll": true,
         "image_position": "end",
