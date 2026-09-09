@@ -413,20 +413,20 @@
         "subheading_WhVRtt": {
           "type": "subheading",
           "settings": {
-            "text": "Subheading"
+            "text": "trade program"
           }
         },
         "heading_iaHzfW": {
           "type": "heading",
           "settings": {
-            "text": "<p>Image with text</p>",
-            "heading_tag": "h1"
+            "text": "<p>Special Offers for Interior Designers & Architects</p>",
+            "heading_tag": "h2"
           }
         },
         "richtext_KnNaGT": {
           "type": "richtext",
           "settings": {
-            "content": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+            "content": "<p>Join Bisha's Trade Program, designed to help bring your design vision to life.</p>"
           }
         }
       },
