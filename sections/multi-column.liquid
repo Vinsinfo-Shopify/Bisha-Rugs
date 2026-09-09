@@ -58,7 +58,11 @@
       overflow: hidden;
       border-radius: var(--multi-column-media-radius, 0);
     }
-
+    @media screen and (min-width: 1600px) {
+      #shopify-section-{{ section.id }} .multi-column__media {
+        height: 700px;
+      }
+    }
     @media screen and (max-width: 500px) {
       #shopify-section-{{ section.id }} .multi-column__media {
         height: 220px;
@@ -144,11 +148,25 @@
               {%- if block.settings.title != blank or block.settings.content != blank or block.settings.link_text != blank -%}
                 <div class="prose text-{{ section.settings.text_alignment }}">
                   {%- if block.settings.title != blank -%}
+                    {%- liquid
+                      if block.settings.heading_tag == 'custom'
+                        assign heading_class = 'multi-column-card_heading'
+                        assign heading_font_size = block.settings.custom_heading_size | default: 24
+                      else
+                        assign heading_class = block.settings.heading_tag | append: ' multi-column-card_heading'
+                        assign heading_font_size = nil
+                      endif
+                    -%}
                     <div class="multi-column-card_heading-wrapper">
                       {%- if block.settings.icon != blank -%}
                         {{ block.settings.icon | image_url: width: 48 | image_tag: class: 'multi-column-card_icon', widths: '24,32,48', loading: 'lazy' }}
                       {%- endif -%}
-                      <p class="{{ block.settings.heading_tag }} multi-column-card_heading">{{ block.settings.title }}</p>
+                      <p
+                        class="{{ heading_class }}"
+                        {% if heading_font_size %}
+                          style="font-size: {{ heading_font_size }}px;"
+                        {% endif %}
+                      >{{ block.settings.title }}</p>
                     </div>
                   {%- endif -%}
                   <div class="multi-column-card_content">
@@ -422,9 +440,21 @@
             { "value": "h3", "label": "H3" },
             { "value": "h4", "label": "H4" },
             { "value": "h5", "label": "H5" },
-            { "value": "h6", "label": "H6" }
+            { "value": "h6", "label": "H6" },
+            { "value": "custom", "label": "Custom size" }
           ],
           "default": "h3"
+        },
+        {
+          "type": "range",
+          "id": "custom_heading_size",
+          "label": "Custom heading size",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 24,
+          "visible_if": "{{ block.settings.heading_tag == 'custom' }}"
         },
         {
           "type": "richtext",
@@ -476,9 +506,21 @@
             { "value": "h3", "label": "H3" },
             { "value": "h4", "label": "H4" },
             { "value": "h5", "label": "H5" },
-            { "value": "h6", "label": "H6" }
+            { "value": "h6", "label": "H6" },
+            { "value": "custom", "label": "Custom size" }
           ],
           "default": "h3"
+        },
+        {
+          "type": "range",
+          "id": "custom_heading_size",
+          "label": "Custom heading size",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 24,
+          "visible_if": "{{ block.settings.heading_tag == 'custom' }}"
         },
         {
           "type": "richtext",
