@@ -12,11 +12,55 @@
     "main": {
       "type": "main-page",
       "disabled": true,
-      "settings": {}
+      "settings": {
+        "color_scheme": "",
+        "show_title": true,
+        "page_width": "xs"
+      }
     },
     "contact-form": {
       "type": "contact",
-      "settings": {}
+      "blocks": {
+        "text_block_GaTqgw": {
+          "type": "text_block",
+          "settings": {
+            "heading_text_block": "Customer Support",
+            "description_text_block": "<p>Have a question? Please contact us using the customer support channels below. (We'll connect with you within 24 hours)</p>",
+            "content": "<p><strong>Customer Care:<br/></strong>Email: Love@bisharugs.com<br/>Working hours: Everyday 10:00am - 5:00pm</p><p><strong>Trade Program:<br/></strong>Email: bisharugs@gmail.com<br/><br/></p>"
+          }
+        },
+        "contact_AXn63T": {
+          "type": "contact",
+          "settings": {
+            "heading": "Contact Us",
+            "description": "<p>Please submit all general enquiries in the contact form below and we look forward to hearing from you soon.</p>",
+            "show_privacy": true,
+            "name": "",
+            "email": "",
+            "your_comment": "",
+            "button_label": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_block_GaTqgw",
+        "contact_AXn63T"
+      ],
+      "settings": {
+        "section_width": "wide",
+        "color_scheme": "scheme-1",
+        "separate_section_with_border": true,
+        "subheading": "",
+        "title": "Connect with Us",
+        "heading_style": "h2",
+        "content": "<p>Please use the below form or connect us on Mail.</p>",
+        "iframe": "",
+        "column_gap": 100,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false,
+        "custom_class": "contact_us"
+      }
     }
   },
   "order": [
