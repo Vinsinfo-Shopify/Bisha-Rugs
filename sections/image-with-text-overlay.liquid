@@ -22,7 +22,7 @@
   {%- endcomment -%}
 
   <div
-    class="{% unless section.settings.remove_vertical_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--with-image-overlay"
+    class="{% unless section.settings.remove_vertical_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--with-image-overlay {{ section.settings.custom_class }}"
     {% if section.settings.allow_transparent_header %}
       allow-transparent-header
     {% endif %}
@@ -120,6 +120,11 @@
       "id": "color_scheme",
       "label": "t:global.colors.scheme",
       "default": "scheme-4"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class"
     },
     {
       "type": "select",
