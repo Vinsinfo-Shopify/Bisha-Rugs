@@ -128,6 +128,18 @@
   {%- endif -%}
  
     {%- if section.settings.layout_variant == 'trade' -%}
+      #shopify-section-{{ section.id }} .image-with-text > .prose {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #shopify-section-{{ section.id }} .icon-with-text-list {
+      order: 1;
+    }
+
+    #shopify-section-{{ section.id }} .prose .button {
+      order: 2;
+    }
     /* Figma: 1440 x 357, image 700 wide flush left, content 572 wide at x=765 */
     @media screen and (min-width: 1000px) {
       #shopify-section-{{ section.id }} .image-with-text {
