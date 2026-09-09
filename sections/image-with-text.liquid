@@ -123,206 +123,276 @@
   {%- endif -%}
  
   {%- if section.settings.layout_variant == 'trade' -%}
-    /* ---------------------------------------------------------------
-       TRADE PROGRAM
-       Desktop  1440 x 357, image 700 flush left, content 572 at x=765
-       Mobile    375 x 566, image 375 x 253 full width above the text
-       --------------------------------------------------------------- */
- 
-    /* The icon list is last in the DOM but must sit above the button.
-       order needs a flex parent, so this is set at every width. */
-    #shopify-section-{{ section.id }} .image-with-text > .prose {
+  /* ---------------------------------------------------------------
+     TRADE PROGRAM
+     Desktop  1440 x 357, image 700 flush left, content 572 at x=765
+     Mobile    375 x 566, image 375 x 253 full width above the text
+
+     COLOUR TOKENS — replace the four values below with the Figma
+     Dev Mode values. Prestige reads these as rgb(var(--x)), so they
+     MUST be space-separated RGB triplets, NOT hex. A hex here fails
+     silently and you fall straight back to the theme's cream/brown.
+     --------------------------------------------------------------- */
+
+  #shopify-section-{{ section.id }},
+  #shopify-section-{{ section.id }} .color-scheme,
+  #shopify-section-{{ section.id }} [class*='color-scheme--'] {
+    --background: 245 244 242;   /* section bg — light warm grey */
+    --text-color: 26 26 26;      /* body copy + tick labels      */
+    --heading-color: 26 26 26;   /* serif heading                */
+    --accent-color: 85 88 60;    /* button fill + tick circles   */
+    --border-color: 26 26 26;
+  }
+
+  #shopify-section-{{ section.id }} {
+    background-color: rgb(var(--background));
+  }
+
+  /* -- Layout ------------------------------------------------------ */
+  /* The icon list is last in the DOM but must sit above the button.
+     order needs a flex parent, so this is set at every width. */
+  #shopify-section-{{ section.id }} .image-with-text > .prose {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  #shopify-section-{{ section.id }} .image-with-text > .prose > * {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .icon-with-text-list {
+    order: 1;
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+  }
+
+  #shopify-section-{{ section.id }} .prose .button {
+    order: 2;
+    align-self: flex-start;
+  }
+
+  /* -- Eyebrow: "TRADE PROGRAM" ------------------------------------ */
+  /* CONFIRM THE CLASS. Inspect the element in the browser and keep
+     only the selector that matches; the others are harmless no-ops.
+     Without an explicit colour here it inherits Prestige's accent,
+     which is the brown you were seeing. */
+  #shopify-section-{{ section.id }} .subheading,
+  #shopify-section-{{ section.id }} .image_with_text_subheading {
+    margin: 0;
+    color: rgb(var(--text-color));
+    font-family: var(--text-font-family);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* -- Heading ----------------------------------------------------- */
+  /* Everything except font-size lives here so it applies at BOTH
+     widths. Previously these were trapped in the mobile query. */
+  #shopify-section-{{ section.id }} .image_with_text_heading {
+    margin: 4px 0 0;
+    color: rgb(var(--heading-color));
+    font-family: 'Forum', serif;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  /* -- Body copy --------------------------------------------------- */
+  #shopify-section-{{ section.id }} .image_with_text_content,
+  #shopify-section-{{ section.id }} .image_with_text_content > * {
+    margin: 0;
+    color: rgb(var(--text-color));
+    font-family: var(--text-font-family);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  /* -- Tick list --------------------------------------------------- */
+  #shopify-section-{{ section.id }} .icon-with-text-item {
+    flex: 0 0 auto;
+    display: flex; /* was missing — align-items/gap did nothing */
+    align-items: center;
+    gap: 6px;
+    color: rgb(var(--text-color));
+    font-family: var(--text-font-family);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  #shopify-section-{{ section.id }} .icon-with-text-item img,
+  #shopify-section-{{ section.id }} .icon-with-text-item svg {
+    flex-shrink: 0;
+    object-fit: contain;
+  }
+
+  /* Only recolours an INLINE svg that uses currentColor. If the tick
+     is an uploaded PNG/JPG, CSS cannot touch it — re-export the icon
+     from Figma in the correct colour, or swap it for an inline svg. */
+  #shopify-section-{{ section.id }} .icon-with-text-item svg {
+    color: rgb(var(--accent-color));
+    fill: currentColor;
+  }
+
+  /* -- Button ------------------------------------------------------ */
+  #shopify-section-{{ section.id }} .prose .button,
+  #shopify-section-{{ section.id }} .prose .button:hover,
+  #shopify-section-{{ section.id }} .prose .button:focus,
+  #shopify-section-{{ section.id }} .prose .button:visited {
+    background: rgb(var(--accent-color));
+    color: #ffffff;
+    border: 0;
+    border-radius: 0;
+    padding: 12px 28px;
+    font-family: var(--text-font-family);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  /* -- Mobile: 0 to 999px ------------------------------------------ */
+  @media screen and (max-width: 999px) {
+    #shopify-section-{{ section.id }} .image-with-text {
       display: flex;
       flex-direction: column;
-      text-align: left;
     }
- 
-    #shopify-section-{{ section.id }} .image-with-text > .prose > * {
-      margin: 0;
+
+    /* Figma has the image full width, so it bleeds past the gutter. */
+    #shopify-section-{{ section.id }} .image-with-text > picture {
+      margin-inline: calc(-1 * var(--section-padding-left)) calc(-1 * var(--section-padding-right));
+      width: calc(100% + var(--section-padding-left) + var(--section-padding-right));
     }
- 
-    #shopify-section-{{ section.id }} .icon-with-text-list {
-      order: 1;
-      display: flex;
-      flex-wrap: wrap;
-      list-style: none;
-      padding: 0;
+
+    #shopify-section-{{ section.id }} .image-with-text > picture img {
+      width: 100%;
+      aspect-ratio: 375 / 253;
+      object-fit: cover;
+      display: block;
     }
- 
-    #shopify-section-{{ section.id }} .prose .button {
-      order: 2;
-      align-self: flex-start;
-      background: #55583c;
-      color: #ffffff;
-      border: 0;
-      border-radius: 0;
-      padding: 12px 28px;
-      font-family: var(--text-font-family);
+
+    /* image -> content 24px */
+    #shopify-section-{{ section.id }} .image-with-text > .prose {
+      margin-top: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .image_with_text_heading {
+      font-size: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .image_with_text_content {
+      margin-top: 12px;
       font-size: 16px;
-      font-weight: 700;
-      line-height: 1.4;
-      letter-spacing: 0;
-      text-transform: uppercase;
-      text-decoration: none;
     }
- 
+
+    #shopify-section-{{ section.id }} .image_with_text_content > * {
+      font-size: 16px;
+    }
+
+    #shopify-section-{{ section.id }} .icon-with-text-list {
+      margin-top: 16px;
+      column-gap: 22px; /* derived, +/- 3 */
+      row-gap: 10px;
+    }
+
     #shopify-section-{{ section.id }} .icon-with-text-item {
-      flex: 0 0 auto;
-      align-items: center;
-      gap: 6px;
-      font-weight: 400;
-      line-height: 1.4;
+      font-size: 16px;
     }
- 
+
     #shopify-section-{{ section.id }} .icon-with-text-item img,
     #shopify-section-{{ section.id }} .icon-with-text-item svg {
-      flex-shrink: 0;
-      object-fit: contain;
+      width: 18px;
+      height: 18px;
     }
- 
-    /* -- Mobile: 0 to 999px ------------------------------------------ */
-    @media screen and (max-width: 999px) {
-      #shopify-section-{{ section.id }} .image-with-text {
-        display: flex;
-        flex-direction: column;
-      }
- 
-      /* Figma has the image full width, so it bleeds past the gutter. */
-      #shopify-section-{{ section.id }} .image-with-text > picture {
-        margin-inline: calc(-1 * var(--section-padding-left)) calc(-1 * var(--section-padding-right));
-        width: calc(100% + var(--section-padding-left) + var(--section-padding-right));
-      }
- 
-      #shopify-section-{{ section.id }} .image-with-text > picture img {
-        width: 100%;
-        aspect-ratio: 375 / 253;
-        object-fit: cover;
-        display: block;
-      }
- 
-      /* image -> content 24px */
-      #shopify-section-{{ section.id }} .image-with-text > .prose {
-        margin-top: 24px;
-      }
- 
-      #shopify-section-{{ section.id }} .image_with_text_heading {
-        margin-top: 4px;
-        font-family: 'Forum', serif;
-        font-size: 24px;
-        font-weight: 400;
-        line-height: 1.2;
-        letter-spacing: 0;
-        text-transform: none;
-      }
- 
-      #shopify-section-{{ section.id }} .image_with_text_content,
-      #shopify-section-{{ section.id }} .image_with_text_content > * {
-        font-size: 16px;
-        line-height: 1.4;
-        margin: 0;
-      }
- 
-      #shopify-section-{{ section.id }} .image_with_text_content {
-        margin-top: 12px;
-      }
- 
-      #shopify-section-{{ section.id }} .icon-with-text-list {
-        margin-top: 16px;
-        column-gap: 22px; /* derived, +/- 3 */
-        row-gap: 10px;
-      }
- 
-      #shopify-section-{{ section.id }} .icon-with-text-item {
-        font-size: 16px;
-      }
- 
-      #shopify-section-{{ section.id }} .icon-with-text-item img,
-      #shopify-section-{{ section.id }} .icon-with-text-item svg {
-        width: 18px;
-        height: 18px;
-      }
- 
-      #shopify-section-{{ section.id }} .prose .button {
-        margin-top: 16px;
-      }
+
+    #shopify-section-{{ section.id }} .prose .button {
+      margin-top: 16px;
     }
- 
-    /* -- Desktop: 1000px and up -------------------------------------- */
-    @media screen and (min-width: 1000px) {
-      /* Full bleed. This also cancels the section's own max-width:1000px
-         rule, which would otherwise force 36px at exactly 1000px. */
-      #shopify-section-{{ section.id }} {
-        --section-padding-left: 0px;
-        --section-padding-right: 0px;
-        --section-padding-top: 0px;
-        --section-padding-bottom: 0px;
-      }
- 
-      #shopify-section-{{ section.id }} .image-with-text {
-        display: grid;
-        grid-template-columns: 48.6111% 1fr; /* 700 / 1440 */
-        align-items: center;
-        gap: 0;
-        min-height: 357px;
-      }
- 
-      #shopify-section-{{ section.id }} .image-with-text > picture {
-        margin-inline: 0;
-        width: 100%;
-        height: 357px;
-      }
- 
-      #shopify-section-{{ section.id }} .image-with-text > picture img {
-        width: 100%;
-        height: 357px;
-        aspect-ratio: auto;
-        object-fit: cover;
-        display: block;
-      }
- 
-      /* Content: 572 wide starting at x=765, i.e. 65px past the image */
-      #shopify-section-{{ section.id }} .image-with-text > .prose {
-        margin-top: 0;
-        max-width: 572px;
-        padding-inline-start: 65px;
-      }
- 
-      #shopify-section-{{ section.id }} .image_with_text_heading {
-        margin-top: 4px;
-        font-size: 28px;
-      }
- 
-      #shopify-section-{{ section.id }} .image_with_text_content {
-        margin-top: 16px;
-      }
- 
-      #shopify-section-{{ section.id }} .image_with_text_content,
-      #shopify-section-{{ section.id }} .image_with_text_content > * {
-        font-size: 18px;
-        line-height: 1.4;
-      }
- 
-      #shopify-section-{{ section.id }} .icon-with-text-list {
-        margin-top: 24px;
-        column-gap: 24px; /* derived, +/- 3 */
-        row-gap: 14px;
-      }
- 
-      #shopify-section-{{ section.id }} .icon-with-text-item {
-        font-size: 18px;
-      }
- 
-      #shopify-section-{{ section.id }} .icon-with-text-item img,
-      #shopify-section-{{ section.id }} .icon-with-text-item svg {
-        width: 20px;
-        height: 20px;
-      }
- 
-      #shopify-section-{{ section.id }} .prose .button {
-        margin-top: 24px;
-      }
+  }
+
+  /* -- Desktop: 1000px and up -------------------------------------- */
+  @media screen and (min-width: 1000px) {
+    /* Full bleed. This also cancels the section's own max-width:1000px
+       rule, which would otherwise force 36px at exactly 1000px. */
+    #shopify-section-{{ section.id }} {
+      --section-padding-left: 0px;
+      --section-padding-right: 0px;
+      --section-padding-top: 0px;
+      --section-padding-bottom: 0px;
     }
-  {%- endif -%} 
+
+    #shopify-section-{{ section.id }} .image-with-text {
+      display: grid;
+      grid-template-columns: 48.6111% 1fr; /* 700 / 1440 */
+      align-items: center;
+      gap: 0;
+      min-height: 357px;
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text > picture {
+      margin-inline: 0;
+      width: 100%;
+      height: 357px;
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text > picture img {
+      width: 100%;
+      height: 357px;
+      aspect-ratio: auto;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Content: 572 wide starting at x=765, i.e. 65px past the image */
+    #shopify-section-{{ section.id }} .image-with-text > .prose {
+      margin-top: 0;
+      max-width: 572px;
+      padding-inline-start: 65px;
+    }
+
+    #shopify-section-{{ section.id }} .image_with_text_heading {
+      font-size: 28px;
+    }
+
+    #shopify-section-{{ section.id }} .image_with_text_content {
+      margin-top: 16px;
+      font-size: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .image_with_text_content > * {
+      font-size: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .icon-with-text-list {
+      margin-top: 24px;
+      column-gap: 24px; /* derived, +/- 3 */
+      row-gap: 14px;
+    }
+
+    #shopify-section-{{ section.id }} .icon-with-text-item {
+      font-size: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .icon-with-text-item img,
+    #shopify-section-{{ section.id }} .icon-with-text-item svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    #shopify-section-{{ section.id }} .prose .button {
+      margin-top: 24px;
+    }
+  }
+{%- endif -%}
+
 </style>
 
   {%- comment -%}
