@@ -414,6 +414,24 @@
           "type": "icon_with_text",
           "settings": {
             "icon": "shopify://shop_images/icon-park-solid_check-one.png",
+            "text": "Dedicated project support",
+            "icon_size": 20,
+            "text_size": 18
+          }
+        },
+        "icon_with_text_Gw8ypY": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/icon-park-solid_check-one.png",
+            "text": "Fully customizable rugs",
+            "icon_size": 20,
+            "text_size": 18
+          }
+        },
+        "icon_with_text_zFGGHM": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/icon-park-solid_check-one.png",
             "text": "Trade Discounts",
             "icon_size": 20,
             "text_size": 18
@@ -441,6 +459,8 @@
       },
       "block_order": [
         "icon_with_text_UrLjm7",
+        "icon_with_text_Gw8ypY",
+        "icon_with_text_zFGGHM",
         "subheading_WhVRtt",
         "heading_iaHzfW",
         "richtext_KnNaGT"
