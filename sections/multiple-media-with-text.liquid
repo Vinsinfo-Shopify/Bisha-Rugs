@@ -6,11 +6,27 @@
   {%- endcomment -%}
 
   {%- liquid
-    assign use_overlap_layout = false
+      assign use_overlap_layout = false
 
-    if section.settings.media_layout == 'overlap' and section.blocks.size > 1
-      assign use_overlap_layout = true
-    endif
+      if section.settings.media_layout == 'overlap' and section.blocks.size > 1
+        assign use_overlap_layout = true
+      endif
+
+      assign media_width_1 = section.settings.media_width_1 | times: 1
+      assign media_width_2 = section.settings.media_width_2 | times: 1
+      assign media_gap_width = section.settings.media_gap_width | times: 1
+
+      if media_width_1 <= 0
+        assign media_width_1 = 289
+      endif
+
+      if media_width_2 <= 0
+        assign media_width_2 = 289
+      endif
+
+      if media_gap_width <= 0
+        assign media_gap_width = 81
+      endif
   -%}
 
   <style>
@@ -30,7 +46,7 @@
 
       {%- capture grid_auto_columns -%}
         {%- if use_overlap_layout -%}
-          289fr 81fr 289fr
+          {{ media_width_1 }}fr {{ media_gap_width }}fr {{ media_width_2 }}fr
         {%- else -%}
           minmax(0, 1fr)
         {%- endif -%}
@@ -63,12 +79,11 @@
 
           {%- capture grid_auto_columns -%}
             {%- if use_overlap_layout -%}
-              289fr 81fr 289fr
+              {{ media_width_1 }}fr {{ media_gap_width }}fr {{ media_width_2 }}fr
             {%- else -%}
-              minmax(0, 1fr) minmax(0, 1fr)
+              minmax(0, 1fr)
             {%- endif -%}
           {%- endcapture -%}
-
         --multiple-media-with-text-media-grid-auto-columns: {{- grid_auto_columns -}};
       }
     }
@@ -416,6 +431,30 @@
         }
       ],
       "default": "overlap"
+    },
+    {
+      "type": "text",
+      "id": "media_width_1",
+      "label": "First image width (px)",
+      "info": "Only applies when layout is set to Overlap. Enter a number only, e.g. 289",
+      "default": "289",
+      "visible_if": "{{ section.settings.media_layout == 'overlap' }}"
+    },
+    {
+      "type": "text",
+      "id": "media_width_2",
+      "label": "Second image width (px)",
+      "info": "Only applies when layout is set to Overlap. Enter a number only, e.g. 289",
+      "default": "289",
+      "visible_if": "{{ section.settings.media_layout == 'overlap' }}"
+    },
+    {
+      "type": "text",
+      "id": "media_gap_width",
+      "label": "Center gap width (px)",
+      "info": "Only applies when layout is set to Overlap. Enter a number only, e.g. 81",
+      "default": "81",
+      "visible_if": "{{ section.settings.media_layout == 'overlap' }}"
     },
     {
       "type": "select",
