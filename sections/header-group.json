@@ -110,7 +110,7 @@
         "color_scheme": "scheme-6",
         "enable_sticky": true,
         "hide_on_scroll": false,
-        "show_separation_border": true,
+        "show_separation_border": false,
         "reduce_padding": false,
         "logo": "shopify://shop_images/image_3702.png",
         "logo_max_width": 130,
