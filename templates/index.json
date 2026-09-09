@@ -460,10 +460,10 @@
           "type": "button",
           "settings": {
             "style": "solid",
-            "text": "Button text",
+            "text": "learn more",
             "url": "",
-            "background": "",
-            "text_color": ""
+            "background": "#55583C",
+            "text_color": "#FFFFFF"
           }
         }
       },
