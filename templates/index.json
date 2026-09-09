@@ -1157,13 +1157,13 @@
         "subheading_4cNQQE": {
           "type": "subheading",
           "settings": {
-            "text": "Subheading"
+            "text": "CUSTOM RUGS"
           }
         },
         "heading_ycAFV3": {
           "type": "heading",
           "settings": {
-            "text": "<p>Image with text</p>",
+            "text": "<p>Can't Find the Perfect Rug? <br/>Let's Create It Together.</p>",
             "heading_tag": "h1"
           }
         },
@@ -1199,7 +1199,7 @@
         "image_position": "start",
         "content_width": "sm",
         "remove_vertical_spacing": true,
-        "show_features": true
+        "show_features": false
       }
     }
   },
