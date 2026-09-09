@@ -341,14 +341,18 @@
           "type": "icon_with_text",
           "settings": {
             "icon": "shopify://shop_images/Vector_2_268ff39a-54cc-47bc-be01-4aec8508fa9e.png",
-            "text": "Colored with Natural Dyes"
+            "text": "Colored with Natural Dyes",
+            "icon_size": 20,
+            "text_size": 16
           }
         },
         "icon_with_text_iYF9gq": {
           "type": "icon_with_text",
           "settings": {
             "icon": "shopify://shop_images/Vector_1.png",
-            "text": "Premium New Zealand Wool"
+            "text": "Premium New Zealand Wool",
+            "icon_size": 20,
+            "text_size": 16
           }
         },
         "subheading_Ay9Gn7": {
