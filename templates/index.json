@@ -413,9 +413,10 @@
         "icon_with_text_UrLjm7": {
           "type": "icon_with_text",
           "settings": {
-            "text": "Feature text",
+            "icon": "shopify://shop_images/icon-park-solid_check-one.png",
+            "text": "Trade Discounts",
             "icon_size": 20,
-            "text_size": 16
+            "text_size": 18
           }
         },
         "subheading_WhVRtt": {
