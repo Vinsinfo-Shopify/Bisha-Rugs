@@ -1172,12 +1172,23 @@
           "settings": {
             "content": "<p>Choose the ideal size, colors, materials, and design with guidance from our rug experts. Our artisans will transform your vision to reality.</p>"
           }
+        },
+        "button_KPL8iC": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "GET IN TOUCH",
+            "url": "",
+            "background": "",
+            "text_color": ""
+          }
         }
       },
       "block_order": [
         "subheading_4cNQQE",
         "heading_ycAFV3",
-        "richtext_QXPfet"
+        "richtext_QXPfet",
+        "button_KPL8iC"
       ],
       "name": "t:sections.image_with_text.presets.image_with_text.name",
       "settings": {
