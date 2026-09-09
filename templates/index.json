@@ -329,7 +329,7 @@
         "media_position_mobile": "before_text",
         "reveal_on_scroll": true,
         "image_position": "start",
-        "content_width": "sm",
+        "content_width": "lg",
         "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
@@ -407,6 +407,56 @@
         "show_features": false
       }
     },
+    "image_with_text_nK66R9": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_WhVRtt": {
+          "type": "subheading",
+          "settings": {
+            "text": "Subheading"
+          }
+        },
+        "heading_iaHzfW": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Image with text</p>",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_KnNaGT": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_WhVRtt",
+        "heading_iaHzfW",
+        "richtext_KnNaGT"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "",
+        "custom_class": "crafted_in_india",
+        "separate_section_with_border": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "start",
+        "content_width": "lg",
+        "layout_variant": "",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
     "image-with-text-overlay-1": {
       "type": "image-with-text-overlay",
       "blocks": {
@@ -451,44 +501,6 @@
         "desktop_text_position": "sm:place-self-end-start sm:text-start",
         "overlay_color": "#000000",
         "overlay_opacity": 20
-      }
-    },
-    "rich-text": {
-      "type": "rich-text",
-      "blocks": {
-        "heading-1": {
-          "type": "heading",
-          "settings": {
-            "text": "Our aim: offer elegant, timeless & functional products",
-            "heading_tag": "h1"
-          }
-        },
-        "link-1": {
-          "type": "link",
-          "settings": {
-            "text": "Our story",
-            "url": ""
-          }
-        },
-        "link-2": {
-          "type": "link",
-          "settings": {
-            "text": "Commitments",
-            "url": ""
-          }
-        }
-      },
-      "block_order": [
-        "heading-1",
-        "link-1",
-        "link-2"
-      ],
-      "settings": {
-        "color_scheme": "scheme-1",
-        "separate_section_with_border": true,
-        "content_width": "xs",
-        "text_position": "center",
-        "remove_vertical_spacing": false
       }
     },
     "media-grid": {
@@ -1267,8 +1279,8 @@
     "featured-collections-1",
     "image_with_text_eJwpDm",
     "image_with_text_xnyQHV",
+    "image_with_text_nK66R9",
     "image-with-text-overlay-1",
-    "rich-text",
     "media-grid",
     "scrolling-content-1",
     "scrolling-content-2",
