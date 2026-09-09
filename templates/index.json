@@ -306,6 +306,7 @@
       ],
       "settings": {
         "color_scheme": "scheme-4",
+        "custom_class": "",
         "image_size": "sm",
         "allow_transparent_header": false,
         "reveal_on_scroll": true,
@@ -521,42 +522,6 @@
         "hide_collection_title": false
       }
     },
-    "video": {
-      "type": "video",
-      "blocks": {
-        "subheading-1": {
-          "type": "subheading",
-          "settings": {
-            "text": "Made in Italy"
-          }
-        },
-        "heading-1": {
-          "type": "heading",
-          "settings": {
-            "text": "Finest handmade",
-            "heading_tag": "h2"
-          }
-        },
-        "play-1": {
-          "type": "play",
-          "settings": {
-            "icon_color": "#ffffff"
-          }
-        }
-      },
-      "block_order": [
-        "subheading-1",
-        "heading-1",
-        "play-1"
-      ],
-      "settings": {
-        "autoplay": false,
-        "show_controls": true,
-        "video_size": "md",
-        "external_video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
-        "text_color": "#1c1c1c"
-      }
-    },
     "shop-the-look": {
       "type": "shop-the-look",
       "blocks": {
@@ -675,7 +640,7 @@
         "media_mobile_alignment_offset": 40,
         "text_alignment": "center",
         "subheading": "collaboration",
-        "title": "Us x them",
+        "title": "<p>Us x them</p>",
         "heading_style": "h3",
         "content": "<p>Born from the meeting of a minimalist creative and a timeless design studio, this collection combines refined aesthetics with thoughtful craftsmanship. Their shared vision results in pieces that are both elegant and understated.</p>",
         "button_1_text": "discover",
@@ -1061,6 +1026,7 @@
       ],
       "settings": {
         "color_scheme": "scheme-4",
+        "custom_class": "",
         "image_size": "auto",
         "allow_transparent_header": false,
         "reveal_on_scroll": true,
@@ -1122,6 +1088,7 @@
         "content_alignment": "center",
         "text_alignment": "center",
         "spacing": "md",
+        "media_height": "379px",
         "subheading": "About us",
         "title": "From A to Z",
         "heading_style": "h2",
@@ -1225,7 +1192,6 @@
     "scrolling-content-1",
     "scrolling-content-2",
     "featured-collections-2",
-    "video",
     "shop-the-look",
     "countdown",
     "multiple-media-with-text",
