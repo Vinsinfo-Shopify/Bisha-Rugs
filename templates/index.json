@@ -272,6 +272,68 @@
         "hide_collection_title": false
       }
     },
+    "image_with_text_eJwpDm": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_4cNQQE": {
+          "type": "subheading",
+          "settings": {
+            "text": "CUSTOM RUGS"
+          }
+        },
+        "heading_ycAFV3": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Can't Find the Perfect Rug? <br/>Let's Create It Together.</p>",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_QXPfet": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Choose the ideal size, colors, materials, and design with guidance from our rug experts. Our artisans will transform your vision to reality.</p>"
+          }
+        },
+        "button_KPL8iC": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "GET IN TOUCH",
+            "url": "",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "subheading_4cNQQE",
+        "heading_ycAFV3",
+        "richtext_QXPfet",
+        "button_KPL8iC"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
+        "custom_class": "Custom_rugs",
+        "separate_section_with_border": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "image": "shopify://shop_images/Desktop_-_Design_in_Mind_d7cbe819-03f7-42ac-aaeb-8bc84180cafd.png",
+        "mobile_image": "shopify://shop_images/Mobile_-_Design_in_Mind_096f3677-ee0d-4c1b-bd44-7fe88ea31508.png",
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "start",
+        "content_width": "sm",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
     "image-with-text-overlay-1": {
       "type": "image-with-text-overlay",
       "blocks": {
@@ -1118,68 +1180,6 @@
         "disclaimer": "<p>You can unsubscribe anytime. For more details, read our Privacy Policy.</p>"
       }
     },
-    "image_with_text_eJwpDm": {
-      "type": "image-with-text",
-      "blocks": {
-        "subheading_4cNQQE": {
-          "type": "subheading",
-          "settings": {
-            "text": "CUSTOM RUGS"
-          }
-        },
-        "heading_ycAFV3": {
-          "type": "heading",
-          "settings": {
-            "text": "<p>Can't Find the Perfect Rug? <br/>Let's Create It Together.</p>",
-            "heading_tag": "h1"
-          }
-        },
-        "richtext_QXPfet": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>Choose the ideal size, colors, materials, and design with guidance from our rug experts. Our artisans will transform your vision to reality.</p>"
-          }
-        },
-        "button_KPL8iC": {
-          "type": "button",
-          "settings": {
-            "style": "solid",
-            "text": "GET IN TOUCH",
-            "url": "",
-            "background": "",
-            "text_color": ""
-          }
-        }
-      },
-      "block_order": [
-        "subheading_4cNQQE",
-        "heading_ycAFV3",
-        "richtext_QXPfet",
-        "button_KPL8iC"
-      ],
-      "name": "t:sections.image_with_text.presets.image_with_text.name",
-      "settings": {
-        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
-        "custom_class": "Custom_rugs",
-        "separate_section_with_border": true,
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_left": 0,
-        "padding_right": 0,
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 0,
-        "padding_left_mobile": 0,
-        "padding_right_mobile": 0,
-        "image": "shopify://shop_images/Desktop_-_Design_in_Mind_d7cbe819-03f7-42ac-aaeb-8bc84180cafd.png",
-        "mobile_image": "shopify://shop_images/Mobile_-_Design_in_Mind_096f3677-ee0d-4c1b-bd44-7fe88ea31508.png",
-        "media_position_mobile": "before_text",
-        "reveal_on_scroll": true,
-        "image_position": "start",
-        "content_width": "sm",
-        "remove_vertical_spacing": true,
-        "show_features": false
-      }
-    },
     "image_with_text_xnyQHV": {
       "type": "image-with-text",
       "blocks": {
@@ -1253,6 +1253,8 @@
     "trust_bar_MUX4MJ",
     "collection_list_6EFC6y",
     "featured-collections-1",
+    "image_with_text_eJwpDm",
+    "image_with_text_xnyQHV",
     "image-with-text-overlay-1",
     "rich-text",
     "media-grid",
@@ -1271,8 +1273,6 @@
     "timeline",
     "image-with-text-overlay-2",
     "multi-column",
-    "newsletter",
-    "image_with_text_eJwpDm",
-    "image_with_text_xnyQHV"
+    "newsletter"
   ]
 }
