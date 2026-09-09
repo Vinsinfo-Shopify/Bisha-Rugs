@@ -127,7 +127,7 @@
     }
   {%- endif -%}
  
-  {%- if section.settings.layout_variant == 'trade' -%}
+    {%- if section.settings.layout_variant == 'trade' -%}
     /* Figma: 1440 x 357, image 700 wide flush left, content 572 wide at x=765 */
     @media screen and (min-width: 1000px) {
       #shopify-section-{{ section.id }} .image-with-text {
@@ -137,18 +137,18 @@
         gap: 0;
         min-height: 357px;
       }
- 
+
       #shopify-section-{{ section.id }} .image-with-text > picture,
       #shopify-section-{{ section.id }} .image-with-text > picture img {
         height: 357px;
         width: 100%;
       }
- 
+
       #shopify-section-{{ section.id }} .image-with-text > picture img {
         object-fit: cover;
         display: block;
       }
- 
+
       #shopify-section-{{ section.id }} .image-with-text > .prose {
         display: flex;
         flex-direction: column;
@@ -156,29 +156,32 @@
         max-width: 572px;
         padding-inline-start: 65px; /* 765 - 700 */
       }
- 
-      /* Paragraph and feature labels share one 18px style here */
+
+      /* The gap alone is not enough — Prestige puts margins on these children,
+         and in a flex container margins add to the gap rather than collapsing.
+         Zeroing them is what makes 24px actually mean 24px. */
+      #shopify-section-{{ section.id }} .image-with-text > .prose > * {
+        margin: 0;
+      }
+
       #shopify-section-{{ section.id }} .image_with_text_content,
-      #shopify-section-{{ section.id }} .image_with_text_content p {
+      #shopify-section-{{ section.id }} .image_with_text_content > * {
         font-size: 18px;
         line-height: 1.4;
         margin: 0;
       }
- 
-      /* Three features wrapping 2 then 1 */
+
       #shopify-section-{{ section.id }} .icon-with-text-list {
         max-width: 420px;
         row-gap: 8px;
-        margin-top: 0;
+        margin: 0;
         order: 1;
       }
- 
-      /* The section renders the icon list after the block loop, so without
-         these the button lands above the features. order defaults to 0, so
-         only these two move to the end. */
+
       #shopify-section-{{ section.id }} .prose .button {
         order: 2;
         align-self: flex-start;
+        margin: 0;
         padding: 12px 28px;
         border-radius: 0;
         gap: 10px;
