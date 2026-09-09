@@ -107,7 +107,7 @@
 
   {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 
-<div class="{% unless section.settings.remove_vertical_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_class }}">
+<div class="{% unless section.settings.remove_vertical_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {% if section.settings.layout_variant != blank %}image-with-text--{{ section.settings.layout_variant }}{% endif %} {{ section.settings.custom_class }}">
   <div class="image-with-text-container section-custom-padding">
     <image-with-text class="image-with-text {% if section.settings.image_position == 'end' %}image-with-text--reverse{% endif %}">
       {%- if section.settings.image != blank -%}
@@ -425,6 +425,16 @@
         }
       ],
       "default": "sm"
+    },
+    {
+      "type": "select",
+      "id": "layout_variant",
+      "label": "Layout variant",
+      "options": [
+        { "value": "", "label": "Default" },
+        { "value": "the-craft", "label": "The Craft" }
+      ],
+      "default": ""
     },
     {
       "type": "checkbox",
