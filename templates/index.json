@@ -390,7 +390,7 @@
         "separate_section_with_border": true,
         "padding_top": 0,
         "padding_bottom": 0,
-        "padding_left": 0,
+        "padding_left": 70,
         "padding_right": 0,
         "padding_top_mobile": 50,
         "padding_bottom_mobile": 50,
@@ -401,7 +401,7 @@
         "media_position_mobile": "before_text",
         "reveal_on_scroll": true,
         "image_position": "end",
-        "content_width": "sm",
+        "content_width": "lg",
         "layout_variant": "the-craft",
         "remove_vertical_spacing": true,
         "show_features": false
