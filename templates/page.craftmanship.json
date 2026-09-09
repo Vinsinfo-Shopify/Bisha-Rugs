@@ -41,6 +41,7 @@
       "name": "t:sections.image_with_text_overlay.presets.image_with_text_overlay.name",
       "settings": {
         "color_scheme": "",
+        "custom_class": "craftmanship",
         "image_size": "xs",
         "image": "shopify://shop_images/Craftmanship_Banner.png",
         "allow_transparent_header": false,
@@ -50,7 +51,7 @@
         "mobile_text_position": "place-self-center text-center",
         "desktop_text_position": "sm:place-self-center sm:text-center",
         "overlay_color": "#000000",
-        "overlay_opacity": 30
+        "overlay_opacity": 20
       }
     },
     "image_with_text_DpGFn4": {
@@ -148,7 +149,7 @@
         "reveal_on_scroll": true,
         "separate_section_with_border": false,
         "padding_top": 0,
-        "padding_bottom": 60,
+        "padding_bottom": 72,
         "padding_left": 70,
         "padding_right": 70,
         "padding_top_mobile": 0,
@@ -159,11 +160,11 @@
         "media_position_mobile": "after_text",
         "media_layout": "overlap",
         "media_alignment": "end",
-        "media_alignment_offset": 60,
+        "media_alignment_offset": 100,
         "media_mobile_alignment_offset": 40,
         "text_alignment": "center",
         "subheading": "The Story",
-        "title": "The Legacy of Oushak",
+        "title": "<p>The Legacy of Oushak</p>",
         "heading_style": "h2",
         "content": "<p>The story of the Oushak rug begins in the historic city of Uşak in western Türkiye, where <strong>master weavers became renowned for creating rugs with soft palettes, oversized motifs,</strong> and remarkable craftsmanship.   </p><p>Celebrated across palaces and estates, Oushak rugs earned a reputation as symbols of timeless elegance, designed not just to decorate a home, but to become part of its story.</p>",
         "button_1_text": "",
@@ -213,12 +214,12 @@
         "media_position_desktop": "after_text",
         "media_position_mobile": "after_text",
         "media_layout": "overlap",
-        "media_alignment": "end",
-        "media_alignment_offset": 60,
+        "media_alignment": "start",
+        "media_alignment_offset": 104,
         "media_mobile_alignment_offset": 40,
         "text_alignment": "center",
         "subheading": "A Timeless Journey",
-        "title": "<h2>From Persia to India:  <br/>A Legacy Woven Through Generations</h2>",
+        "title": "<p>From Persia to India: <br/>A Legacy Woven Through Generations</p>",
         "heading_style": "h2",
         "content": "<p><strong>During the reign of Emperor Akbar, master carpet artisans from Persia, Iran were welcomed to India</strong> to establish the royal weaving workshops that supplied the Mughal courts.   </p><p><strong>Many of these artisans chose to make India their home,</strong> settling in regions that would later become the country's renowned rug-weaving centres. </p><p><strong>Over generations, their knowledge, techniques, and artistry were passed down</strong> from parent to child, <strong>preserving a centuries-old craft</strong> through families dedicated to hand-knotting rugs.   </p><p>Today, those same weaving traditions continue to live on in the hands of generational artisans, whose craftsmanship forms the foundation of every Bisha rug.<br/><br/></p>",
         "button_1_text": "",
@@ -314,13 +315,14 @@
         "separate_section_with_border": false,
         "remove_section_spacing": false,
         "columns_per_row": 3,
-        "stack_on_mobile": true,
+        "stack_on_mobile": false,
         "overlap_image": false,
         "content_alignment": "center",
         "text_alignment": "start",
         "spacing": "xs",
+        "media_height": "445px",
         "subheading": "The Making",
-        "title": "<p>From Wool to Woven Masterpiece.</p>",
+        "title": "From Wool to Woven Masterpiece.",
         "heading_style": "h2",
         "content": "",
         "padding_top_mobile": 0,

@@ -199,7 +199,7 @@
             {%- endif -%}
 
             {%- if section.settings.title != blank -%}
-              <p class="{{ section.settings.heading_style }} multiple-media-with-text_heading">{{ section.settings.title }}</p>
+              <div class="{{ section.settings.heading_style }} multiple-media-with-text_heading">{{ section.settings.title }}</div>
             {%- endif -%}
             <div class="multiple-media-with-text_content">
             {{- section.settings.content -}}
@@ -490,10 +490,10 @@
       "default": "About"
     },
     {
-      "type": "inline_richtext",
+      "type": "richtext",
       "id": "title",
       "label": "t:global.text.heading",
-      "default": "Showcase your product"
+      "default": "<p>Showcase your product</p>"
     },
     {
       "type": "select",
