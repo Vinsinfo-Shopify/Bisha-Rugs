@@ -1183,6 +1183,19 @@
     "image_with_text_xnyQHV": {
       "type": "image-with-text",
       "blocks": {
+        "icon_with_text_ya4EdM": {
+          "type": "icon_with_text",
+          "settings": {
+            "text": "Feature text"
+          }
+        },
+        "icon_with_text_iYF9gq": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_1.png",
+            "text": "Premium New Zealand Wool"
+          }
+        },
         "subheading_Ay9Gn7": {
           "type": "subheading",
           "settings": {
@@ -1199,11 +1212,13 @@
         "richtext_7kfr6d": {
           "type": "richtext",
           "settings": {
-            "content": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+            "content": "<p>From premium natural materials to hand weaving, every Bisha rug is created with patience, precision, and generations of expertise. </p><p>Whether it's a timeless Oushak, heirloom Antique or a handcrafted Tufted rug, every piece is made to bring lasting beauty into your home.</p>"
           }
         }
       },
       "block_order": [
+        "icon_with_text_ya4EdM",
+        "icon_with_text_iYF9gq",
         "subheading_Ay9Gn7",
         "heading_rVqGRX",
         "richtext_7kfr6d"
@@ -1221,6 +1236,8 @@
         "padding_bottom_mobile": 50,
         "padding_left_mobile": 12,
         "padding_right_mobile": 12,
+        "image": "shopify://shop_images/The_Craft_-_Mobile.png",
+        "mobile_image": "shopify://shop_images/The_Craft_-_Mobile_18270fbc-c0e6-4b62-ace0-25009958d5ef.png",
         "media_position_mobile": "before_text",
         "reveal_on_scroll": true,
         "image_position": "end",
