@@ -410,33 +410,6 @@
     "image_with_text_nK66R9": {
       "type": "image-with-text",
       "blocks": {
-        "icon_with_text_UrLjm7": {
-          "type": "icon_with_text",
-          "settings": {
-            "icon": "shopify://shop_images/icon-park-solid_check-one.png",
-            "text": "Dedicated project support",
-            "icon_size": 20,
-            "text_size": 18
-          }
-        },
-        "icon_with_text_Gw8ypY": {
-          "type": "icon_with_text",
-          "settings": {
-            "icon": "shopify://shop_images/icon-park-solid_check-one.png",
-            "text": "Fully customizable rugs",
-            "icon_size": 20,
-            "text_size": 18
-          }
-        },
-        "icon_with_text_zFGGHM": {
-          "type": "icon_with_text",
-          "settings": {
-            "icon": "shopify://shop_images/icon-park-solid_check-one.png",
-            "text": "Trade Discounts",
-            "icon_size": 20,
-            "text_size": 18
-          }
-        },
         "subheading_WhVRtt": {
           "type": "subheading",
           "settings": {
@@ -455,15 +428,53 @@
           "settings": {
             "content": "<p>Join Bisha's Trade Program, designed to help bring your design vision to life.</p>"
           }
+        },
+        "icon_with_text_zFGGHM": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/icon-park-solid_check-one.png",
+            "text": "Trade Discounts",
+            "icon_size": 20,
+            "text_size": 18
+          }
+        },
+        "icon_with_text_Gw8ypY": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/icon-park-solid_check-one.png",
+            "text": "Fully customizable rugs",
+            "icon_size": 20,
+            "text_size": 18
+          }
+        },
+        "icon_with_text_UrLjm7": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/icon-park-solid_check-one.png",
+            "text": "Dedicated project support",
+            "icon_size": 20,
+            "text_size": 18
+          }
+        },
+        "button_PdBjpz": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "Button text",
+            "url": "",
+            "background": "",
+            "text_color": ""
+          }
         }
       },
       "block_order": [
-        "icon_with_text_UrLjm7",
-        "icon_with_text_Gw8ypY",
-        "icon_with_text_zFGGHM",
         "subheading_WhVRtt",
         "heading_iaHzfW",
-        "richtext_KnNaGT"
+        "richtext_KnNaGT",
+        "icon_with_text_zFGGHM",
+        "icon_with_text_Gw8ypY",
+        "icon_with_text_UrLjm7",
+        "button_PdBjpz"
       ],
       "name": "t:sections.image_with_text.presets.image_with_text.name",
       "settings": {
@@ -473,9 +484,9 @@
         "padding_top": 0,
         "padding_bottom": 0,
         "padding_left": 0,
-        "padding_right": 70,
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 50,
+        "padding_bottom_mobile": 50,
         "padding_left_mobile": 12,
         "padding_right_mobile": 12,
         "image": "shopify://shop_images/Trade_Program_-_Desktop.png",
