@@ -13,11 +13,11 @@
     --section-padding-left: {{ section.settings.padding_left }}px;
     --section-padding-right: {{ section.settings.padding_right }}px;
   }
-
+ 
   #shopify-section-{{ section.id }} .image-with-text-container {
     margin-inline: auto;
   }
-
+ 
   /* --- Icon with text list --- */
   #shopify-section-{{ section.id }} .icon-with-text-list {
     display: flex;
@@ -27,7 +27,7 @@
     list-style: none;
     padding: 0;
   }
-
+ 
   #shopify-section-{{ section.id }} .icon-with-text-item {
     display: flex;
     align-items: center;
@@ -36,7 +36,7 @@
     line-height: 140%;
     font-weight: 500;
   }
-
+ 
   #shopify-section-{{ section.id }} .icon-with-text-item img,
   #shopify-section-{{ section.id }} .icon-with-text-item svg {
     width: var(--icon-size, 1.2em);
@@ -44,49 +44,37 @@
     flex-shrink: 0;
     object-fit: contain;
   }
-
-  .image-with-text--the-craft {
-    --icon-row-gap: 56px;
-  }
-
+ 
   /* Desktop: single line, side by side */
   @media screen and (min-width: 800px) {
     #shopify-section-{{ section.id }} .icon-with-text-list {
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: start;
-      column-gap: var(--icon-row-gap, 28px);
+      column-gap: 28px;
       row-gap: 0;
     }
-
+ 
     #shopify-section-{{ section.id }} .icon-with-text-item {
       flex: 0 0 auto;
     }
   }
-
+ 
   @media screen and (max-width: 749px) {
     #shopify-section-{{ section.id }} .image-with-text > picture,
     #shopify-section-{{ section.id }} .image-with-text > .placeholder {
       order: {% if section.settings.media_position_mobile == 'after_text' %}2{% else %}0{% endif %};
     }
-
+ 
     #shopify-section-{{ section.id }} .image-with-text > .prose {
       order: 1;
     }
-      #shopify-section-{{ section.id }} .icon-with-text-item {
+ 
+    #shopify-section-{{ section.id }} .icon-with-text-item {
       font-size: calc(var(--icon-text-size, 16px) - 2px);
     }
-
-    .image-with-text--the-craft .image-with-text > picture,
-    .image-with-text--the-craft .image-with-text > picture img {
-      height: 380px;
-    }
-    .image-with-text--the-craft .image-with-text > picture img {
-      width: 100%;
-      object-fit: cover;
-    }
   }
-
+ 
   /* --- Responsive left/right padding --- */
   @media screen and (max-width: 1000px) {
     #shopify-section-{{ section.id }} {
@@ -94,14 +82,14 @@
       --section-padding-right: 36px;
     }
   }
-
+ 
   @media screen and (max-width: 768px) {
     #shopify-section-{{ section.id }} {
       --section-padding-left: 24px;
       --section-padding-right: 24px;
     }
   }
-
+ 
   @media screen and (max-width: 500px) {
     #shopify-section-{{ section.id }} {
       --section-padding-top: {{ section.settings.padding_top_mobile | default: section.settings.padding_top }}px;
@@ -110,6 +98,99 @@
       --section-padding-right: {{ section.settings.padding_right_mobile | default: 12 }}px;
     }
   }
+ 
+  {%- comment -%}
+    ======================================================================
+    LAYOUT VARIANTS
+    Each block only renders when its option is picked in the editor, so
+    other instances of this section never receive the CSS at all.
+    ======================================================================
+  {%- endcomment -%}
+ 
+  {%- if section.settings.layout_variant == 'the-craft' -%}
+    /* Figma: 1300 x 380, icons on one line with a wider gap */
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .image-with-text > picture,
+      #shopify-section-{{ section.id }} .image-with-text > picture img {
+        height: 380px;
+      }
+ 
+      #shopify-section-{{ section.id }} .image-with-text > picture img {
+        width: 100%;
+        object-fit: cover;
+        display: block;
+      }
+ 
+      #shopify-section-{{ section.id }} .icon-with-text-list {
+        column-gap: 56px;
+      }
+    }
+  {%- endif -%}
+ 
+  {%- if section.settings.layout_variant == 'trade' -%}
+    /* Figma: 1440 x 357, image 700 wide flush left, content 572 wide at x=765 */
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .image-with-text {
+        display: grid;
+        grid-template-columns: 48.61% 1fr; /* 700 / 1440 */
+        align-items: center;
+        gap: 0;
+        min-height: 357px;
+      }
+ 
+      #shopify-section-{{ section.id }} .image-with-text > picture,
+      #shopify-section-{{ section.id }} .image-with-text > picture img {
+        height: 357px;
+        width: 100%;
+      }
+ 
+      #shopify-section-{{ section.id }} .image-with-text > picture img {
+        object-fit: cover;
+        display: block;
+      }
+ 
+      #shopify-section-{{ section.id }} .image-with-text > .prose {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        max-width: 572px;
+        padding-inline-start: 65px; /* 765 - 700 */
+      }
+ 
+      /* Paragraph and feature labels share one 18px style here */
+      #shopify-section-{{ section.id }} .image_with_text_content,
+      #shopify-section-{{ section.id }} .image_with_text_content p {
+        font-size: 18px;
+        line-height: 1.4;
+        margin: 0;
+      }
+ 
+      /* Three features wrapping 2 then 1 */
+      #shopify-section-{{ section.id }} .icon-with-text-list {
+        max-width: 420px;
+        row-gap: 8px;
+        margin-top: 0;
+        order: 1;
+      }
+ 
+      /* The section renders the icon list after the block loop, so without
+         these the button lands above the features. order defaults to 0, so
+         only these two move to the end. */
+      #shopify-section-{{ section.id }} .prose .button {
+        order: 2;
+        align-self: flex-start;
+        padding: 12px 28px;
+        border-radius: 0;
+        gap: 10px;
+        font-family: var(--text-font-family);
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.4;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+    }
+  {%- endif -%}
 </style>
 
   {%- comment -%}
