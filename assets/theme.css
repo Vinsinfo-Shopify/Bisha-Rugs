@@ -8747,11 +8747,17 @@ ul {
   line-height: 140%;
   font-weight: 500;
 }
-
-.form-row > button {
-
+.contact_us .section_header_heading{
+  font-size: 32px;
 }
-
+.contact_us .heading-style{
+  font-size: 28px;
+}
+.contact_us .form-control .input,
+.contact_us .form-control .textarea{
+  padding: 10px 20px ;
+  border-radius: 30px;
+}
 .newsletter-disclaimer.text-caption p{
   font-size: 14px;
   line-height: 140%;

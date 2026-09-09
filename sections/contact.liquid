@@ -1,64 +1,213 @@
 {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
+{%- liquid
+  assign column_gap = section.settings.column_gap
+  assign iframe = section.settings.iframe
+  assign section_width = section.settings.section_width
 
-<div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
-  <div class="container container--xs">
-    <div class="section-stack text-center">
-      {%- render 'section-header',
-        subheading: section.settings.subheading,
-        heading: section.settings.title,
-        heading_style: section.settings.heading_style,
-        content: section.settings.content,
-        text_alignment: 'center'
-      -%}
+  case section_width
+    when 'narrow'
+      assign width_class = 'container container--xs'
+    when 'wide'
+      assign width_class = 'container container--lg'
+    when 'full'
+      assign width_class = 'section-full-width'
+    else
+      assign width_class = 'container'
+  endcase
 
-      {%- form 'contact', class: 'form' -%}
-        {%- if form.posted_successfully? -%}
-          {%- assign content = 'contact.form.success_message' | t -%}
-          {%- render 'banner', status: 'success', content: content -%}
-        {%- endif -%}
+  if section.settings.reset_spacing
+    assign section_class = 'section-custom-padding'
+  else
+    assign section_class = 'section-spacing'
+  endif
 
-        {%- if form.errors -%}
-          {%- capture content -%}{{ form.errors.translated_fields[form.errors.first] | capitalize }} {{ form.errors.messages[form.errors.first] }}{%- endcapture -%}
-          {%- render 'banner', status: 'error', content: content -%}
-        {%- endif -%}
+  assign custom_class = section.settings.custom_class | strip
+-%}
 
-        <div class="fieldset">
-          <div class="fieldset-row">
-            {%- assign label = 'contact.form.name' | t -%}
-            {%- render 'input', type: 'text', name: 'contact[name]', label: label, value: customer.name, required: true, autocomplete: 'name' -%}
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .section-full-width {
+    padding-inline-start: var(--container-gutter);
+    padding-inline-end: var(--container-gutter);
+    width: 100%;
+  }
+  #shopify-section-{{ section.id }} .contact-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(3rem, 4vw, {{ column_gap }}px);
+  }
+  #shopify-section-{{ section.id }} .contact_map {
+    margin-bottom: 3rem;
+  }
+  #shopify-section-{{ section.id }} .contact_map iframe {
+    width: 100%;
+    border: 0;
+    border-radius: var(--input-border-radius);
+  }
+  #shopify-section-{{ section.id }} .contact_form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 1 1 20rem;
+  }
+  #shopify-section-{{ section.id }} .support_customer {
+    flex: 1 1 20rem;
+  }
+  #shopify-section-{{ section.id }} .contact_header :is(h3, h4) {
+    margin-block-start: 0;
+  }
+  #shopify-section-{{ section.id }} .form_action.has-privacy:not(:has(#privacy:checked)) .privacy_btn {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  #shopify-section-{{ section.id }} .checkbox-control {
+    margin-block-end: 1.25rem;
+  }
+  @media screen and (min-width: 700px) {
+    #shopify-section-{{ section.id }} .support_customer {
+      max-width: 26rem;
+    }
+  }
+{%- endstyle -%}
 
-            {%- assign label = 'contact.form.email' | t -%}
-            {%- render 'input', type: 'email', name: 'contact[email]', label: label, value: customer.email, required: true, autocomplete: 'email' -%}
-          </div>
+<div class="{{ section_class }} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}{% if custom_class != blank %} {{ custom_class }}{% endif %}">
+  <div class="{{ width_class }}">
 
-          {%- for block in section.blocks -%}
-            {%- assign field_title = block.settings.title -%}
+    {%- if section.settings.title != blank or section.settings.subheading != blank or section.settings.content != blank -%}
+      <div class="section-stack text-center" style="margin-bottom: 4rem;">
+        {%- render 'section-header',
+          subheading: section.settings.subheading,
+          heading: section.settings.title,
+          heading_style: section.settings.heading_style,
+          content: section.settings.content,
+          text_alignment: 'center'
+        -%}
+      </div>
+    {%- endif -%}
 
-            {%- if field_title == blank -%}
-              {%- capture field_title -%}Custom field {% increment custom_field %}{%- endcapture -%}
-            {%- endif -%}
+    {%- if iframe != blank -%}
+      <div class="contact_map">
+        {{ iframe }}
+      </div>
+    {%- endif -%}
 
-            {%- capture name -%}contact[{{ field_title | escape }}]{%- endcapture -%}
+    <div class="contact-container">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign block_st = block.settings
+        -%}
 
-            {%- if block.type == 'text' -%}
-              {%- if block.settings.use_long_text -%}
-                {%- render 'input', name: name, label: block.settings.title, required: block.settings.required, multiline: 4 -%}
-              {%- else -%}
-                {%- render 'input', type: 'text', name: name, label: block.settings.title, required: block.settings.required -%}
+        {%- case block.type -%}
+
+          {%- when 'contact' -%}
+            {%- liquid
+              assign name_label = block_st.name | default: 'contact.form.name' | t
+              assign email_label = block_st.email | default: 'contact.form.email' | t
+              assign message_label = block_st.your_comment | default: 'contact.form.message' | t
+              assign button_label = block_st.button_label | default: 'contact.form.submit' | t
+              assign name_value = form.name | default: customer.name
+            -%}
+            <div class="contact_form" {{ block.shopify_attributes }}>
+              <div class="contact_header">
+                {%- if block_st.heading != blank -%}
+                  <h3 class="h4 heading-style">{{ block_st.heading }}</h3>
+                {%- endif -%}
+                {%- if block_st.description != blank -%}
+                  <div class="prose prose--tight">
+                    {{ block_st.description }}
+                  </div>
+                {%- endif -%}
+              </div>
+
+              {%- form 'contact', class: 'form' -%}
+                {%- if form.posted_successfully? -%}
+                  {%- assign success_content = 'contact.form.success_message' | t -%}
+                  {%- render 'banner', status: 'success', content: success_content -%}
+                {%- endif -%}
+
+                {%- if form.errors -%}
+                  {%- capture error_content -%}{{ form.errors.translated_fields[form.errors.first] | capitalize }} {{ form.errors.messages[form.errors.first] }}{%- endcapture -%}
+                  {%- render 'banner', status: 'error', content: error_content -%}
+                {%- endif -%}
+
+                <div class="fieldset">
+                  <div class="fieldset-row">
+                    {%- render 'input',
+                      type: 'text',
+                      name: 'contact[name]',
+                      label: name_label,
+                      value: name_value,
+                      required: true,
+                      autocomplete: 'name'
+                    -%}
+                    {%- render 'input',
+                      type: 'email',
+                      name: 'contact[email]',
+                      label: email_label,
+                      value: customer.email,
+                      required: true,
+                      autocomplete: 'email'
+                    -%}
+                  </div>
+
+                  {%- render 'input',
+                    name: 'contact[body]',
+                    label: message_label,
+                    multiline: 4,
+                    required: true
+                  -%}
+                </div>
+
+                <div class="form_action{% if block_st.show_privacy %} has-privacy{% endif %}">
+                  {%- if block_st.show_privacy -%}
+                    <div class="checkbox-control">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        name="conditions"
+                        id="privacy"
+                      >
+                      <label for="privacy">
+                        I agree to the
+                        <a href="{{ shop.privacy_policy.url }}" class="link">Privacy Policy</a>
+                        of the website.
+                      </label>
+                    </div>
+                  {%- endif -%}
+
+                  {%- render 'button',
+                    content: button_label,
+                    type: 'submit',
+                    class: 'privacy_btn'
+                  -%}
+                </div>
+              {%- endform -%}
+            </div>
+
+          {%- when 'text_block' -%}
+            <div class="support_customer" {{ block.shopify_attributes }}>
+              <div class="contact_header">
+                {%- if block_st.heading_text_block != blank -%}
+                  <h3 class="h4 heading-style">{{ block_st.heading_text_block }}</h3>
+                {%- endif -%}
+                {%- if block_st.description_text_block != blank -%}
+                  <p>
+                    {{ block_st.description_text_block }}
+                  </p>
+                {%- endif -%}
+              </div>
+              {%- if block_st.content != blank -%}
+                <div class="prose prose--tight">
+                  {{ block_st.content }}
+                </div>
               {%- endif -%}
-            {%- elsif block.type == 'dropdown' and block.settings.values != blank -%}
-              {%- assign values = block.settings.values | split: ',' -%}
-              {%- render 'select', option_values: values, show_empty_value: true, name: name, label: block.settings.title, required: true -%}
-            {%- endif -%}
-          {%- endfor -%}
+            </div>
 
-          {%- assign label = 'contact.form.message' | t -%}
-          {%- render 'input', name: 'contact[body]', label: label, multiline: 4, required: true -%}
-        </div>
-
-        {%- assign button_content = 'contact.form.submit' | t -%}
-        {%- render 'button', content: button_content, type: 'submit' -%}
-      {%- endform -%}
+        {%- endcase -%}
+      {%- endfor -%}
     </div>
   </div>
 </div>
@@ -72,6 +221,18 @@
     "groups": ["header", "custom.overlay"]
   },
   "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "narrow", "label": "Narrow" },
+        { "value": "wide", "label": "Wide" },
+        { "value": "full", "label": "Full width" }
+      ]
+    },
     {
       "type": "color_scheme",
       "id": "color_scheme",
@@ -92,38 +253,19 @@
     {
       "type": "inline_richtext",
       "id": "title",
-      "label": "t:global.text.heading",
-      "default": "Contact"
+      "label": "t:global.text.heading"
     },
     {
       "type": "select",
       "id": "heading_style",
       "label": "t:global.text.style",
       "options": [
-        {
-          "value": "h1",
-          "label": "H1"
-        },
-        {
-          "value": "h2",
-          "label": "H2"
-        },
-        {
-          "value": "h3",
-          "label": "H3"
-        },
-        {
-          "value": "h4",
-          "label": "H4"
-        },
-        {
-          "value": "h5",
-          "label": "H5"
-        },
-        {
-          "value": "h6",
-          "label": "H6"
-        }
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
       ],
       "default": "h2"
     },
@@ -131,49 +273,129 @@
       "type": "richtext",
       "id": "content",
       "label": "t:global.text.content"
+    },
+    {
+      "type": "textarea",
+      "id": "iframe",
+      "label": "Map embed (iframe)"
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "default": 100,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "Remove default space between sections",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Custom class"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class",
+      "info": "Add one or more space-separated classes to hook into with your own Custom CSS (e.g. \"my-contact-section alt-layout\"). Applied to the section's outer wrapper."
     }
   ],
   "blocks": [
     {
-      "type": "text",
-      "name": "t:sections.contact.blocks.text.name",
+      "type": "contact",
+      "name": "t:sections.contact.name",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
-          "id": "title",
-          "label": "t:sections.contact.blocks.text.name_label",
-          "default": "Custom field"
+          "id": "heading",
+          "label": "Heading",
+          "default": "Contact Us"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Please submit all general enquiries in the contact form below and we look forward to hearing from you soon.</p>"
         },
         {
           "type": "checkbox",
-          "id": "use_long_text",
-          "label": "t:sections.contact.blocks.text.use_long_text",
-          "default": false
+          "id": "show_privacy",
+          "label": "Show privacy checkbox",
+          "default": true
         },
         {
-          "type": "checkbox",
-          "id": "required",
-          "label": "t:sections.contact.blocks.text.required",
-          "default": false
+          "type": "text",
+          "id": "name",
+          "label": "Name field label"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email field label"
+        },
+        {
+          "type": "text",
+          "id": "your_comment",
+          "label": "Message field label"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
         }
       ]
     },
     {
-      "type": "dropdown",
-      "name": "t:sections.contact.blocks.dropdown.name",
+      "type": "text_block",
+      "name": "Text block",
+      "limit": 1,
       "settings": [
         {
           "type": "text",
-          "id": "title",
-          "label": "t:sections.contact.blocks.dropdown.name_label",
-          "default": "Custom field"
+          "id": "heading_text_block",
+          "label": "Heading",
+          "default": "Customer Support"
         },
         {
-          "type": "text",
-          "id": "values",
-          "label": "t:sections.contact.blocks.dropdown.values",
-          "info": "t:sections.contact.blocks.dropdown.values_info",
-          "default": "value 1, value 2, value 3"
+          "type": "richtext",
+          "id": "description_text_block",
+          "label": "Description"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
         }
       ]
     }
@@ -182,7 +404,10 @@
     {
       "name": "t:sections.contact.presets.contact_form.name",
       "category": "t:global.categories.call_to_action",
-      "settings": {}
+      "blocks": [
+        { "type": "text_block" },
+        { "type": "contact" }
+      ]
     }
   ]
 }
