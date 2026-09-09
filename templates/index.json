@@ -463,7 +463,7 @@
         "reveal_on_scroll": true,
         "image_position": "start",
         "content_width": "lg",
-        "layout_variant": "",
+        "layout_variant": "trade",
         "remove_vertical_spacing": true,
         "show_features": false
       }
