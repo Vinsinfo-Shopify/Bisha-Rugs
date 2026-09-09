@@ -272,6 +272,135 @@
         "hide_collection_title": false
       }
     },
+    "image_with_text_eJwpDm": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_4cNQQE": {
+          "type": "subheading",
+          "settings": {
+            "text": "CUSTOM RUGS"
+          }
+        },
+        "heading_ycAFV3": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Can't Find the Perfect Rug? <br/>Let's Create It Together.</p>",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_QXPfet": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Choose the ideal size, colors, materials, and design with guidance from our rug experts. Our artisans will transform your vision to reality.</p>"
+          }
+        },
+        "button_KPL8iC": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "GET IN TOUCH",
+            "url": "",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "subheading_4cNQQE",
+        "heading_ycAFV3",
+        "richtext_QXPfet",
+        "button_KPL8iC"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
+        "custom_class": "Custom_rugs",
+        "separate_section_with_border": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "image": "shopify://shop_images/Desktop_-_Design_in_Mind_d7cbe819-03f7-42ac-aaeb-8bc84180cafd.png",
+        "mobile_image": "shopify://shop_images/Mobile_-_Design_in_Mind_096f3677-ee0d-4c1b-bd44-7fe88ea31508.png",
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "start",
+        "content_width": "sm",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
+    "image_with_text_xnyQHV": {
+      "type": "image-with-text",
+      "blocks": {
+        "icon_with_text_ya4EdM": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_2_268ff39a-54cc-47bc-be01-4aec8508fa9e.png",
+            "text": "Colored with Natural Dyes"
+          }
+        },
+        "icon_with_text_iYF9gq": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_1.png",
+            "text": "Premium New Zealand Wool"
+          }
+        },
+        "subheading_Ay9Gn7": {
+          "type": "subheading",
+          "settings": {
+            "text": "THE CRAFT"
+          }
+        },
+        "heading_rVqGRX": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>The Making of Every Bisha Rug</p>",
+            "heading_tag": "h2"
+          }
+        },
+        "richtext_7kfr6d": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>From premium natural materials to hand weaving, every Bisha rug is created with patience, precision, and generations of expertise. </p><p>Whether it's a timeless Oushak, heirloom Antique or a handcrafted Tufted rug, every piece is made to bring lasting beauty into your home.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "icon_with_text_ya4EdM",
+        "icon_with_text_iYF9gq",
+        "subheading_Ay9Gn7",
+        "heading_rVqGRX",
+        "richtext_7kfr6d"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "",
+        "custom_class": "crafted_in_india",
+        "separate_section_with_border": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 50,
+        "padding_bottom_mobile": 50,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "image": "shopify://shop_images/The_Craft_-_Mobile.png",
+        "mobile_image": "shopify://shop_images/The_Craft_-_Mobile_18270fbc-c0e6-4b62-ace0-25009958d5ef.png",
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "end",
+        "content_width": "sm",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
     "image-with-text-overlay-1": {
       "type": "image-with-text-overlay",
       "blocks": {
@@ -1117,117 +1246,6 @@
         "button_text": "Subscribe",
         "disclaimer": "<p>You can unsubscribe anytime. For more details, read our Privacy Policy.</p>"
       }
-    },
-    "image_with_text_eJwpDm": {
-      "type": "image-with-text",
-      "blocks": {
-        "subheading_4cNQQE": {
-          "type": "subheading",
-          "settings": {
-            "text": "CUSTOM RUGS"
-          }
-        },
-        "heading_ycAFV3": {
-          "type": "heading",
-          "settings": {
-            "text": "<p>Can't Find the Perfect Rug? <br/>Let's Create It Together.</p>",
-            "heading_tag": "h1"
-          }
-        },
-        "richtext_QXPfet": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>Choose the ideal size, colors, materials, and design with guidance from our rug experts. Our artisans will transform your vision to reality.</p>"
-          }
-        },
-        "button_KPL8iC": {
-          "type": "button",
-          "settings": {
-            "style": "solid",
-            "text": "GET IN TOUCH",
-            "url": "",
-            "background": "",
-            "text_color": ""
-          }
-        }
-      },
-      "block_order": [
-        "subheading_4cNQQE",
-        "heading_ycAFV3",
-        "richtext_QXPfet",
-        "button_KPL8iC"
-      ],
-      "name": "t:sections.image_with_text.presets.image_with_text.name",
-      "settings": {
-        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
-        "custom_class": "Custom_rugs",
-        "separate_section_with_border": true,
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_left": 0,
-        "padding_right": 0,
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 0,
-        "padding_left_mobile": 0,
-        "padding_right_mobile": 0,
-        "image": "shopify://shop_images/Desktop_-_Design_in_Mind_d7cbe819-03f7-42ac-aaeb-8bc84180cafd.png",
-        "mobile_image": "shopify://shop_images/Mobile_-_Design_in_Mind_096f3677-ee0d-4c1b-bd44-7fe88ea31508.png",
-        "media_position_mobile": "before_text",
-        "reveal_on_scroll": true,
-        "image_position": "start",
-        "content_width": "sm",
-        "remove_vertical_spacing": true,
-        "show_features": false
-      }
-    },
-    "image_with_text_xnyQHV": {
-      "type": "image-with-text",
-      "blocks": {
-        "subheading_Ay9Gn7": {
-          "type": "subheading",
-          "settings": {
-            "text": "THE CRAFT"
-          }
-        },
-        "heading_rVqGRX": {
-          "type": "heading",
-          "settings": {
-            "text": "<p>The Making of Every Bisha Rug</p>",
-            "heading_tag": "h1"
-          }
-        },
-        "richtext_7kfr6d": {
-          "type": "richtext",
-          "settings": {
-            "content": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "subheading_Ay9Gn7",
-        "heading_rVqGRX",
-        "richtext_7kfr6d"
-      ],
-      "name": "t:sections.image_with_text.presets.image_with_text.name",
-      "settings": {
-        "color_scheme": "",
-        "custom_class": "crafted_in_india",
-        "separate_section_with_border": true,
-        "padding_top": 60,
-        "padding_bottom": 60,
-        "padding_left": 70,
-        "padding_right": 70,
-        "padding_top_mobile": 50,
-        "padding_bottom_mobile": 50,
-        "padding_left_mobile": 12,
-        "padding_right_mobile": 12,
-        "media_position_mobile": "before_text",
-        "reveal_on_scroll": true,
-        "image_position": "end",
-        "content_width": "sm",
-        "remove_vertical_spacing": true,
-        "show_features": true
-      }
     }
   },
   "order": [
@@ -1235,6 +1253,8 @@
     "trust_bar_MUX4MJ",
     "collection_list_6EFC6y",
     "featured-collections-1",
+    "image_with_text_eJwpDm",
+    "image_with_text_xnyQHV",
     "image-with-text-overlay-1",
     "rich-text",
     "media-grid",
@@ -1253,8 +1273,6 @@
     "timeline",
     "image-with-text-overlay-2",
     "multi-column",
-    "newsletter",
-    "image_with_text_eJwpDm",
-    "image_with_text_xnyQHV"
+    "newsletter"
   ]
 }
