@@ -1186,7 +1186,7 @@
         "subheading_Ay9Gn7": {
           "type": "subheading",
           "settings": {
-            "text": "Subheading"
+            "text": "THE CRAFT"
           }
         },
         "heading_rVqGRX": {
@@ -1223,7 +1223,7 @@
         "padding_right_mobile": 12,
         "media_position_mobile": "before_text",
         "reveal_on_scroll": true,
-        "image_position": "start",
+        "image_position": "end",
         "content_width": "sm",
         "remove_vertical_spacing": true,
         "show_features": true
