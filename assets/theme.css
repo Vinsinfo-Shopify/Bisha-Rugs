@@ -667,7 +667,7 @@ shopify-accelerated-checkout, shopify-accelerated-checkout-cart {
 }
 
 .content-over-media--xs {
-  --content-over-media-height: clamp(15rem, 65vw, 25rem);
+  --content-over-media-height: clamp(15rem, 65vw, 24rem);
 }
 
 .content-over-media--sm {
