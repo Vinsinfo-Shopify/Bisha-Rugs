@@ -1179,6 +1179,55 @@
         "remove_vertical_spacing": true,
         "show_features": false
       }
+    },
+    "image_with_text_xnyQHV": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_Ay9Gn7": {
+          "type": "subheading",
+          "settings": {
+            "text": "Subheading"
+          }
+        },
+        "heading_rVqGRX": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Image with text</p>",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_7kfr6d": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_Ay9Gn7",
+        "heading_rVqGRX",
+        "richtext_7kfr6d"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "",
+        "custom_class": "crafted_in_india",
+        "separate_section_with_border": true,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 50,
+        "padding_bottom_mobile": 50,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "start",
+        "content_width": "sm",
+        "remove_vertical_spacing": true,
+        "show_features": true
+      }
     }
   },
   "order": [
@@ -1205,6 +1254,7 @@
     "image-with-text-overlay-2",
     "multi-column",
     "newsletter",
-    "image_with_text_eJwpDm"
+    "image_with_text_eJwpDm",
+    "image_with_text_xnyQHV"
   ]
 }
