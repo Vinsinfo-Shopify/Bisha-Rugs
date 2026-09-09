@@ -149,39 +149,43 @@
         display: block;
       }
 
-      #shopify-section-{{ section.id }} .image-with-text > .prose {
+            #shopify-section-{{ section.id }} .image-with-text > .prose {
         display: flex;
         flex-direction: column;
-        gap: 24px;
+        gap: 8px;              /* kicker -> heading only */
         max-width: 572px;
         padding-inline-start: 65px; /* 765 - 700 */
       }
 
-      /* The gap alone is not enough — Prestige puts margins on these children,
-         and in a flex container margins add to the gap rather than collapsing.
-         Zeroing them is what makes 24px actually mean 24px. */
+      /* Prestige puts margins on these, and in a flex container margins add to
+         the gap instead of collapsing. Zero them, then add back only where a
+         bigger gap is wanted. */
       #shopify-section-{{ section.id }} .image-with-text > .prose > * {
         margin: 0;
       }
 
-      #shopify-section-{{ section.id }} .image_with_text_content,
-      #shopify-section-{{ section.id }} .image_with_text_content > * {
+      /* 8px gap + 16px margin = the 24px Figma has between the main groups */
+      #shopify-section-{{ section.id }} .image_with_text_content {
+        margin-top: 16px;
         font-size: 18px;
         line-height: 1.4;
+      }
+
+      #shopify-section-{{ section.id }} .image_with_text_content > * {
         margin: 0;
       }
 
       #shopify-section-{{ section.id }} .icon-with-text-list {
         max-width: 420px;
         row-gap: 8px;
-        margin: 0;
+        margin: 16px 0 0;
         order: 1;
       }
 
       #shopify-section-{{ section.id }} .prose .button {
         order: 2;
         align-self: flex-start;
-        margin: 0;
+        margin: 16px 0 0;
         padding: 12px 28px;
         border-radius: 0;
         gap: 10px;
