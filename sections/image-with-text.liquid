@@ -108,7 +108,6 @@
   {%- endcomment -%}
  
   {%- if section.settings.layout_variant == 'the-craft' -%}
-    /* Figma: 1300 x 380, icons on one line with a wider gap */
     @media screen and (min-width: 1000px) {
       #shopify-section-{{ section.id }} .image-with-text > picture,
       #shopify-section-{{ section.id }} .image-with-text > picture img {
@@ -120,93 +119,207 @@
         object-fit: cover;
         display: block;
       }
- 
-      #shopify-section-{{ section.id }} .icon-with-text-list {
-        column-gap: 56px;
-      }
     }
   {%- endif -%}
  
-    {%- if section.settings.layout_variant == 'trade' -%}
-      #shopify-section-{{ section.id }} .image-with-text > .prose {
+  {%- if section.settings.layout_variant == 'trade' -%}
+    /* ---------------------------------------------------------------
+       TRADE PROGRAM
+       Desktop  1440 x 357, image 700 flush left, content 572 at x=765
+       Mobile    375 x 566, image 375 x 253 full width above the text
+       --------------------------------------------------------------- */
+ 
+    /* The icon list is last in the DOM but must sit above the button.
+       order needs a flex parent, so this is set at every width. */
+    #shopify-section-{{ section.id }} .image-with-text > .prose {
       display: flex;
       flex-direction: column;
+      text-align: left;
     }
-
+ 
+    #shopify-section-{{ section.id }} .image-with-text > .prose > * {
+      margin: 0;
+    }
+ 
     #shopify-section-{{ section.id }} .icon-with-text-list {
       order: 1;
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+      padding: 0;
     }
-
+ 
     #shopify-section-{{ section.id }} .prose .button {
       order: 2;
+      align-self: flex-start;
+      background: #55583c;
+      color: #ffffff;
+      border: 0;
+      border-radius: 0;
+      padding: 12px 28px;
+      font-family: var(--text-font-family);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      text-decoration: none;
     }
-    /* Figma: 1440 x 357, image 700 wide flush left, content 572 wide at x=765 */
+ 
+    #shopify-section-{{ section.id }} .icon-with-text-item {
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 6px;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+ 
+    #shopify-section-{{ section.id }} .icon-with-text-item img,
+    #shopify-section-{{ section.id }} .icon-with-text-item svg {
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+ 
+    /* -- Mobile: 0 to 999px ------------------------------------------ */
+    @media screen and (max-width: 999px) {
+      #shopify-section-{{ section.id }} .image-with-text {
+        display: flex;
+        flex-direction: column;
+      }
+ 
+      /* Figma has the image full width, so it bleeds past the gutter. */
+      #shopify-section-{{ section.id }} .image-with-text > picture {
+        margin-inline: calc(-1 * var(--section-padding-left)) calc(-1 * var(--section-padding-right));
+        width: calc(100% + var(--section-padding-left) + var(--section-padding-right));
+      }
+ 
+      #shopify-section-{{ section.id }} .image-with-text > picture img {
+        width: 100%;
+        aspect-ratio: 375 / 253;
+        object-fit: cover;
+        display: block;
+      }
+ 
+      /* image -> content 24px */
+      #shopify-section-{{ section.id }} .image-with-text > .prose {
+        margin-top: 24px;
+      }
+ 
+      #shopify-section-{{ section.id }} .image_with_text_heading {
+        margin-top: 4px;
+        font-family: 'Forum', serif;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 1.2;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+ 
+      #shopify-section-{{ section.id }} .image_with_text_content,
+      #shopify-section-{{ section.id }} .image_with_text_content > * {
+        font-size: 16px;
+        line-height: 1.4;
+        margin: 0;
+      }
+ 
+      #shopify-section-{{ section.id }} .image_with_text_content {
+        margin-top: 12px;
+      }
+ 
+      #shopify-section-{{ section.id }} .icon-with-text-list {
+        margin-top: 16px;
+        column-gap: 22px; /* derived, +/- 3 */
+        row-gap: 10px;
+      }
+ 
+      #shopify-section-{{ section.id }} .icon-with-text-item {
+        font-size: 16px;
+      }
+ 
+      #shopify-section-{{ section.id }} .icon-with-text-item img,
+      #shopify-section-{{ section.id }} .icon-with-text-item svg {
+        width: 18px;
+        height: 18px;
+      }
+ 
+      #shopify-section-{{ section.id }} .prose .button {
+        margin-top: 16px;
+      }
+    }
+ 
+    /* -- Desktop: 1000px and up -------------------------------------- */
     @media screen and (min-width: 1000px) {
+      /* Full bleed. This also cancels the section's own max-width:1000px
+         rule, which would otherwise force 36px at exactly 1000px. */
+      #shopify-section-{{ section.id }} {
+        --section-padding-left: 0px;
+        --section-padding-right: 0px;
+        --section-padding-top: 0px;
+        --section-padding-bottom: 0px;
+      }
+ 
       #shopify-section-{{ section.id }} .image-with-text {
         display: grid;
-        grid-template-columns: 48.61% 1fr; /* 700 / 1440 */
+        grid-template-columns: 48.6111% 1fr; /* 700 / 1440 */
         align-items: center;
         gap: 0;
         min-height: 357px;
       }
-
-      #shopify-section-{{ section.id }} .image-with-text > picture,
-      #shopify-section-{{ section.id }} .image-with-text > picture img {
-        height: 357px;
+ 
+      #shopify-section-{{ section.id }} .image-with-text > picture {
+        margin-inline: 0;
         width: 100%;
+        height: 357px;
       }
-
+ 
       #shopify-section-{{ section.id }} .image-with-text > picture img {
+        width: 100%;
+        height: 357px;
+        aspect-ratio: auto;
         object-fit: cover;
         display: block;
       }
-
+ 
+      /* Content: 572 wide starting at x=765, i.e. 65px past the image */
       #shopify-section-{{ section.id }} .image-with-text > .prose {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;              /* kicker -> heading only */
+        margin-top: 0;
         max-width: 572px;
-        padding-inline-start: 65px; /* 765 - 700 */
+        padding-inline-start: 65px;
       }
-
-      /* Prestige puts margins on these, and in a flex container margins add to
-         the gap instead of collapsing. Zero them, then add back only where a
-         bigger gap is wanted. */
-      #shopify-section-{{ section.id }} .image-with-text > .prose > * {
-        margin: 0;
+ 
+      #shopify-section-{{ section.id }} .image_with_text_heading {
+        margin-top: 4px;
+        font-size: 28px;
       }
-
-      /* 8px gap + 16px margin = the 24px Figma has between the main groups */
+ 
       #shopify-section-{{ section.id }} .image_with_text_content {
         margin-top: 16px;
+      }
+ 
+      #shopify-section-{{ section.id }} .image_with_text_content,
+      #shopify-section-{{ section.id }} .image_with_text_content > * {
         font-size: 18px;
         line-height: 1.4;
       }
-
-      #shopify-section-{{ section.id }} .image_with_text_content > * {
-        margin: 0;
-      }
-
+ 
       #shopify-section-{{ section.id }} .icon-with-text-list {
-        max-width: 420px;
-        row-gap: 8px;
-        margin: 16px 0 0;
-        order: 1;
+        margin-top: 24px;
+        column-gap: 24px; /* derived, +/- 3 */
+        row-gap: 14px;
       }
-
+ 
+      #shopify-section-{{ section.id }} .icon-with-text-item {
+        font-size: 18px;
+      }
+ 
+      #shopify-section-{{ section.id }} .icon-with-text-item img,
+      #shopify-section-{{ section.id }} .icon-with-text-item svg {
+        width: 20px;
+        height: 20px;
+      }
+ 
       #shopify-section-{{ section.id }} .prose .button {
-        order: 2;
-        align-self: flex-start;
-        margin: 16px 0 0;
-        padding: 12px 28px;
-        border-radius: 0;
-        gap: 10px;
-        font-family: var(--text-font-family);
-        font-size: 16px;
-        font-weight: 700;
-        line-height: 1.4;
-        letter-spacing: 0;
-        text-transform: uppercase;
+        margin-top: 24px;
       }
     }
   {%- endif -%}
