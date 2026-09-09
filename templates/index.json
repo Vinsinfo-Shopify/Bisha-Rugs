@@ -462,8 +462,8 @@
             "style": "solid",
             "text": "learn more",
             "url": "",
-            "background": "#55583C",
-            "text_color": "#FFFFFF"
+            "background": "#55583c",
+            "text_color": "#ffffff"
           }
         }
       },
@@ -485,8 +485,8 @@
         "padding_bottom": 0,
         "padding_left": 0,
         "padding_right": 0,
-        "padding_top_mobile": 50,
-        "padding_bottom_mobile": 50,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 20,
         "padding_left_mobile": 12,
         "padding_right_mobile": 12,
         "image": "shopify://shop_images/Trade_Program_-_Desktop.png",
