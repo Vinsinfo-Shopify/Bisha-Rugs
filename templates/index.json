@@ -410,6 +410,14 @@
     "image_with_text_nK66R9": {
       "type": "image-with-text",
       "blocks": {
+        "icon_with_text_UrLjm7": {
+          "type": "icon_with_text",
+          "settings": {
+            "text": "Feature text",
+            "icon_size": 20,
+            "text_size": 16
+          }
+        },
         "subheading_WhVRtt": {
           "type": "subheading",
           "settings": {
@@ -431,6 +439,7 @@
         }
       },
       "block_order": [
+        "icon_with_text_UrLjm7",
         "subheading_WhVRtt",
         "heading_iaHzfW",
         "richtext_KnNaGT"
@@ -442,12 +451,14 @@
         "separate_section_with_border": true,
         "padding_top": 0,
         "padding_bottom": 0,
-        "padding_left": 70,
+        "padding_left": 0,
         "padding_right": 70,
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 0,
         "padding_left_mobile": 12,
         "padding_right_mobile": 12,
+        "image": "shopify://shop_images/Trade_Program_-_Desktop.png",
+        "mobile_image": "shopify://shop_images/Trade_Program_-_Mobile.png",
         "media_position_mobile": "before_text",
         "reveal_on_scroll": true,
         "image_position": "start",
