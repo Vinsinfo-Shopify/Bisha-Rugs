@@ -1229,14 +1229,14 @@
         "color_scheme": "",
         "custom_class": "crafted_in_india",
         "separate_section_with_border": true,
-        "padding_top": 60,
-        "padding_bottom": 60,
-        "padding_left": 70,
-        "padding_right": 70,
-        "padding_top_mobile": 50,
-        "padding_bottom_mobile": 50,
-        "padding_left_mobile": 12,
-        "padding_right_mobile": 12,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
         "image": "shopify://shop_images/The_Craft_-_Mobile.png",
         "mobile_image": "shopify://shop_images/The_Craft_-_Mobile_18270fbc-c0e6-4b62-ace0-25009958d5ef.png",
         "media_position_mobile": "before_text",
@@ -1244,7 +1244,7 @@
         "image_position": "end",
         "content_width": "sm",
         "remove_vertical_spacing": true,
-        "show_features": true
+        "show_features": false
       }
     }
   },
