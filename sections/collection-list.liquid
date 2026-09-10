@@ -87,19 +87,13 @@
         endfor
       endif
 
-      # Column count for the row-major mobile fill option
+      # Column count for the row-major mobile fill option. Counts every block
+      # that is not explicitly disabled, matching the render rule below.
       assign sbs_enabled_count = 0
-      assign sbs_scan_index = 0
 
       for block in section.blocks
-        if block.type == 'style_item'
-          assign scan_link = sbs_links[sbs_scan_index]
-
-          if block.settings.enabled != false and scan_link != blank
-            assign sbs_enabled_count = sbs_enabled_count | plus: 1
-          endif
-
-          assign sbs_scan_index = sbs_scan_index | plus: 1
+        if block.settings.enabled != false
+          assign sbs_enabled_count = sbs_enabled_count | plus: 1
         endif
       endfor
 
@@ -516,19 +510,28 @@
 
             {%- liquid
               if is_sbs
-                if block.type == 'style_item'
-                  assign paired_link = sbs_links[sbs_index]
-                  assign sbs_index = sbs_index | plus: 1
+                # Any block type can carry a Row 08 card. Both 'style_item' and the
+                # original 'collection' block have an image setting, and the title
+                # and URL come from the menu either way, so the block type is not
+                # something this variant needs to police.
+                assign paired_link = sbs_links[sbs_index]
+                assign sbs_index = sbs_index | plus: 1
+
+                if paired_link != blank
                   assign card_title = paired_link.title
                   assign collection_url = paired_link.url
+                endif
 
-                  if block.settings.enabled == false or paired_link == blank
-                    assign render_card = false
-                  endif
-                else
+                # A missing menu link must never blank the card. card_title and
+                # collection_url are already set from the block above, so an
+                # unresolved menu simply falls back to whatever the block carries
+                # and the configured image still renders.
+                if block.settings.enabled == false
                   assign render_card = false
                 endif
               elsif block.type == 'style_item'
+                # A style item in the default variant has no collection or title,
+                # so it would render an empty card. Skip it there only.
                 assign render_card = false
               endif
             -%}
@@ -685,6 +688,25 @@
       </div>
     </div>
   </div>
+
+  {%- comment -%}
+    Theme-editor-only diagnostics for the Shop by Style variant. Emitted as an
+    HTML comment, so it never affects the storefront. View source in the editor
+    to see whether the menu resolved and how many cards were produced.
+  {%- endcomment -%}
+  {%- if is_sbs and request.design_mode -%}
+    <!-- Row 08 (shop_by_style) diagnostics
+      menu setting ........ {{ section.settings.sbs_menu.handle | default: 'NOT SET' }}
+      menu group title .... {{ section.settings.sbs_menu_group_title | default: '(blank - using top level)' }}
+      links resolved ...... {{ sbs_links.size | default: 0 }}
+      link titles ......... {% for l in sbs_links limit: 12 %}{{ l.title }}{% unless forloop.last %} | {% endunless %}{% endfor %}
+      blocks .............. {{ section.blocks.size }}{% for block in section.blocks %} [{{ forloop.index }}:{{ block.type }}{% if block.settings.enabled == false %} disabled{% endif %}]{% endfor %}
+      cards rendered ...... {{ sbs_enabled_count }}
+      note ................ titles/URLs come from the menu; a blank "links resolved"
+                            means the menu or group title is wrong, and cards will
+                            fall back to their own collection title/link.
+    -->
+  {%- endif -%}
 {%- endif -%}
 
 {% schema %}
