@@ -216,7 +216,7 @@
       "settings": {
         "layout_variant": "",
         "sbs_menu": "main-menu",
-        "sbs_menu_group_title": "",
+        "sbs_parent_item": "",
         "sbs_subheading_mobile": "",
         "sbs_title_mobile": "",
         "sbs_mobile_fill": "column",
@@ -350,7 +350,7 @@
       "settings": {
         "layout_variant": "shop_by_style",
         "sbs_menu": "prestige-main-menu",
-        "sbs_menu_group_title": "",
+        "sbs_parent_item": "Shop by Style",
         "sbs_subheading_mobile": "",
         "sbs_title_mobile": "",
         "sbs_mobile_fill": "row",
