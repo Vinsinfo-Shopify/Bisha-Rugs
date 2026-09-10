@@ -118,9 +118,14 @@
       padding-block-end: {{ section.settings.padding_bottom }}px;
     }
 
-    /* Content column matches the locked sections above */
+    /* Content column matches the locked sections above.
+       --section-stack-gap is the only thing separating the section header from
+       the colour grid, so it is set here rather than adding a margin on top of
+       it. The theme default at this breakpoint is 3rem (48px), which was far too
+       open against the Figma. */
     #shopify-section-{{ section.id }} {
       --container-max-width: 81.25rem; /* 1300px */
+      --section-stack-gap: 39px;
     }
 
     /* Header typography mirrors the locked "Explore our Range" header */
@@ -162,7 +167,6 @@
       row-gap: 36px;
       max-width: 946px; /* 9 x 66 swatch + 8 x 44 gap */
       margin-inline: auto;
-      margin-block-start: 47px; /* heading -> grid */
     }
 
     /* Fixed basis keeps the 110px pitch exact regardless of label length */
@@ -210,13 +214,22 @@
 
     /* ---------- Mobile: four columns ---------- */
     @media screen and (max-width: 699px) {
+      /* Theme default here is 2.25rem (36px). Tightened to match the Figma.
+         The 12px gutter matches Row 06 above and widens the content band from
+         336px to 351px at a 375px viewport, which is what gives the four
+         columns their breathing room without resizing the swatches. */
+      #shopify-section-{{ section.id }} {
+        --section-stack-gap: 16px;
+        --container-gutter: 0.75rem;
+      }
+
       #shopify-section-{{ section.id }} .color-palette__grid {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
+        justify-items: center;
         column-gap: 0;
         row-gap: 20px;
         max-width: none;
-        margin-block-start: 23px;
       }
 
       #shopify-section-{{ section.id }} .color-palette__item {
