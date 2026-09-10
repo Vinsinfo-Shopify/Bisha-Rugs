@@ -131,7 +131,7 @@
           carousel cannot swallow drag gestures from the outer one.
         {%- endcomment -%}
         <carousel-prev-button aria-controls="{{ media_carousel_id }}" class="product-card__media-control product-card__media-control--prev">
-          <button type="button" class="circle-button circle-button--sm" aria-label="{{ 'general.accessibility.previous' | t }}">
+          <button type="button" class="circle-button circle-button--sm" aria-label="{{ 'general.accessibility.previous' | t }}" disabled>
             {%- render 'icon' with 'chevron-left' -%}
           </button>
         </carousel-prev-button>
@@ -141,6 +141,21 @@
             {%- render 'icon' with 'chevron-right' -%}
           </button>
         </carousel-next-button>
+
+        {%- comment -%}
+          Mobile image indicator. carousel-navigation listens for this carousel's
+          own `carousel:change` event and moves aria-current, so it needs no extra
+          JavaScript and belongs to this product card only. The buttons are also
+          the way images are changed on touch, since the inner arrows are hidden
+          there. Shown only at mobile widths by the section's scoped CSS.
+        {%- endcomment -%}
+        <carousel-navigation aria-controls="{{ media_carousel_id }}" class="product-card__media-pagination">
+          {%- for image in product.images limit: 6 -%}
+            <button type="button" class="tap-area" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+              <span class="sr-only">{{ 'general.accessibility.go_to_item' | t: index: forloop.index }}</span>
+            </button>
+          {%- endfor -%}
+        </carousel-navigation>
       {%- else -%}
         <a href="{{ product.url }}" class="product-card__media" draggable="false" data-instant>
           {{-
