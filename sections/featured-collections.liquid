@@ -161,8 +161,17 @@
         backdrop-filter: blur(2px);
       }
 
+      /* The chevron glyphs carry no stroke-width attribute, so they default to
+         1 unit in a 10-unit viewBox - about 1.1px on screen, which is what made
+         them look dull. Thickened here and given a faint white halo so they hold
+         up over both light and dark rug photography. */
       #shopify-section-{{ section.id }} .product-card__media-control .circle-button > svg {
-        width: 0.625rem;
+        width: 0.6875rem; /* 11px */
+        color: #ffffff;
+        stroke-width: 1.75;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        filter: drop-shadow(0 0 1px rgb(255 255 255 / 0.55));
       }
 
       /* Disabled at the first/last image rather than hidden, so the control
@@ -217,6 +226,11 @@
         inset-inline-end: 16px;
         box-shadow: none;
         backdrop-filter: blur(2px);
+      }
+
+      #shopify-section-{{ section.id }} .product-card__quick-add-button > svg {
+        color: #ffffff;
+        stroke-width: 1.75;
       }
 
       /* Figma shows it permanently visible; Prestige reveals it on card hover. */
@@ -275,15 +289,19 @@
 
       /* ---------- CTA ---------- */
       #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center {
-        margin-block-start: 48px;
+        margin-block-start: 24px; /* halved from 48px */
       }
 
+      /* .button sets typography with the `font` shorthand, so the weight is
+         overridden with the longhand at higher specificity. Size, radius,
+         colour and centring are untouched. */
       #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center .button {
         --button-background: 85 88 60; /* #55583C */
         --button-outline-color: 85 88 60;
         --button-text-color: 255 255 255;
         min-width: 232px;
         padding-block: 7px;
+        font-weight: 700;
       }
 
       /* ---------- Carousel arrows ----------
@@ -308,7 +326,11 @@
       }
 
       #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
-        width: 0.6875rem; /* 11px chevron */
+        width: 0.875rem; /* 14px, in a 16x18 viewBox */
+        color: #ffffff;
+        stroke-width: 1.75;
+        stroke-linecap: round;
+        stroke-linejoin: round;
       }
 
       @media screen and (pointer: fine) {
@@ -331,23 +353,28 @@
           display: grid;
         }
 
-        /* Sit on the column edge by default so nothing can overflow at
-           mid-size desktop widths, where there is no spare gutter. */
+        /* Push the arrows out of the product row and into the page gutter, as the
+           Figma shows, using however much gutter actually exists so they can
+           never be pushed off-screen.
+
+             gutter        = max(1.2rem, (100vw - 1300px) / 2)
+             ideal offset  = 42px  (25px clear of the column + half a 33px disc)
+             applied       = -min(42px, gutter - 8px)
+
+           At 1440 the gutter is 70px, so the full -42px applies and the discs sit
+           entirely outside the cards. On narrower desktops the offset shrinks
+           rather than overflowing. Nothing in the ancestor chain clips them:
+           .featured-collections-carousel is position:relative with no overflow. */
         #shopify-section-{{ section.id }} .floating-controls-container--inside {
-          --floating-controls-inset-inline: 0rem;
+          --row06-outer-gutter: max(1.2rem, (100vw - 81.25rem) / 2);
+          --floating-controls-inset-inline: calc(-1 * min(2.625rem, var(--row06-outer-gutter) - 0.5rem));
         }
 
+        /* Vertically centred on the product image. This belongs to the outer
+           carousel container, not to any individual card. */
         #shopify-section-{{ section.id }} .floating-controls-container__control {
           inset-block-start: 173px; /* fallback */
           inset-block-start: calc(((min(81.25rem, 100vw - 2.4rem) - 48px) / 4 * 380 / 313) / 2 - 1.03125rem);
-        }
-      }
-
-      /* Only once the viewport is wide enough to hold them can the arrows sit
-         fully outside the 1300px column, as the Figma shows. */
-      @media screen and (pointer: fine) and (min-width: 1400px) {
-        #shopify-section-{{ section.id }} .floating-controls-container--inside {
-          --floating-controls-inset-inline: -2.625rem; /* 42px: 25px clear + half the disc */
         }
       }
 
@@ -460,7 +487,7 @@
         }
 
         #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center {
-          margin-block-start: 28px;
+          margin-block-start: 14px; /* halved from 28px */
         }
 
         #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center .button {
