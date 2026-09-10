@@ -15,31 +15,34 @@
 
   {%- comment -%}
     Homepage Row 06 - "Bestselling Oushak Rugs".
-    Guarded by custom_class so no other instance of this section is affected.
+    Every rule is guarded by custom_class and prefixed with the section id,
+    so no other instance of this section and no other template is affected.
 
-    Desktop values measured from the 1440 Figma frame (supplied at 2x):
-      Row 05 cards end 1360 | +65 | eyebrow 1425 | +16 | heading 1451
-      | +26 | image 1502-1882 (380) | +14 | pill 1896-1926 (30)
-      | +18 | title 1944-1986 (2 lines @25 pitch) | +12 | rating 1998-2011
-      | +15 | price 2026-2051 | +48 | CTA 2100-2130 (232x31) | +65 | Row 07
-      Cards: 4 x 313 with 16px gaps = 1296 inside a 1300px column.
+    Values sampled from the supplied 1440 Figma frame (delivered at 2x):
+      column 1300 | 4 cards x 313 with 16 gaps | image 313 x 380
+      BEST SELLER badge 109 x 38  bg #F3EEE4  text #000
+      NEW badge          59 x 27  bg #B08D4C  text #FFF
+      Hand Knotted pill 117 x 30  bg #F1ECE2  text #000
+      carousel arrow    33 x 33   bg #2B2724  chevron #FFF, ~25px outside the column
+      CTA              232 x 31   bg #55583C  text #FFF
+      rhythm: 65 / eyebrow / 16 / heading / 26 / image / 14 / pill / 18 /
+              title / 12 / rating / 15 / price / 48 / CTA / 65
 
-    Mobile values follow the written 375px specification (content 351px,
-    12px gutters, left-aligned header) and are proportional derivations
-    pending the mobile frame - flagged for QA.
+    Mobile values follow the written 375px specification; the mobile frame
+    was not available, so type sizes are proportional and flagged for QA.
   {%- endcomment -%}
   {%- if section.settings.custom_class contains 'home_bestselling_rugs' -%}
     <style>
       /* ---------- Section frame ---------- */
       #shopify-section-{{ section.id }} {
         --container-max-width: 81.25rem; /* 1300px - same column as the locked sections above */
-        --section-vertical-spacing-override: 46px; /* 46 + 19px gutter from locked Row 05 = 65px measured */
-        --section-stack-gap: 24px; /* heading -> product grid */
+        --section-vertical-spacing-override: 46px; /* + 19px gutter from locked Row 05 = 65px */
+        --section-stack-gap: 24px;
       }
 
-      /* ---------- Header: eyebrow + heading ---------- */
+      /* ---------- Header ---------- */
       #shopify-section-{{ section.id }} .section-stack > .v-stack {
-        gap: 4px; /* same as the locked Row 05 header */
+        gap: 4px;
       }
 
       #shopify-section-{{ section.id }} .section-stack > .v-stack > .h6 {
@@ -60,9 +63,125 @@
         margin: 0;
       }
 
-      /* ---------- Product image: 313 x 380 in the Figma (theme default is 4/5) ---------- */
+      /* ---------- Product image ---------- */
       #shopify-section-{{ section.id }} .product-card__image {
         aspect-ratio: 313 / 380;
+      }
+
+
+      #shopify-section-{{ section.id }} .product-card__figure > .badge-list {
+        inset-block-start: 3px;
+        inset-inline-start: 3px;
+        gap: 3px;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--custom {
+        border-radius: 2px;
+        font-size: 12px;
+        line-height: 140%;
+        font-weight: 500;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--best-seller {
+        background: #f3eee4;
+        color: #000000;
+        padding: 10.5px 15px;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--new {
+        background: #b08d4c;
+        color: #ffffff;
+        padding: 5px 14px;
+      }
+
+      /* ---------- Hand Knotted pill ---------- */
+      #shopify-section-{{ section.id }} .product-card__tag-wrapper {
+        background: #f1ece2;
+        border-radius: 100px;
+        padding: 5px 14px;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__tag {
+        color: #000000;
+        font-size: 14px;
+        line-height: 140%;
+        font-weight: 500;
+      }
+
+      /* ---------- Per-product image carousel (opt-in via image_carousel) ----------
+         Cells are full-width and paged only by the small controls; the element is
+         not drag-enabled and does not scroll on touch, so it cannot steal gestures
+         from the outer product carousel. */
+      #shopify-section-{{ section.id }} .product-card__media-carousel {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 100%;
+        overflow: hidden;
+        scroll-snap-type: x mandatory;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-cell {
+        scroll-snap-align: start;
+        width: 100%;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-control {
+        z-index: 2;
+        position: absolute;
+        inset-block-start: 50%;
+        transform: translateY(-50%);
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-control--prev {
+        inset-inline-start: 26px;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-control--next {
+        inset-inline-end: 26px;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-control .circle-button {
+        --circle-button-size: 1.75rem; /* 28px */
+        --circle-button-background: 255 255 255;
+        --circle-button-text-color: 43 39 36; /* #2B2724 */
+        box-shadow: 0 1px 4px rgb(0 0 0 / 0.12);
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-control .circle-button > svg {
+        width: 0.625rem;
+      }
+
+      /* Disabled at the first/last image rather than hidden, so the control
+         positions stay stable. */
+      #shopify-section-{{ section.id }} .product-card__media-control button[disabled] {
+        opacity: 0.35;
+        pointer-events: none;
+      }
+
+      /* ---------- Quick buy (enabled per-render for this section only) ---------- */
+      #shopify-section-{{ section.id }} .product-card__quick-add-button {
+        background: #ffffff;
+        color: #2b2724;
+        border-radius: var(--rounded-full);
+        padding: 8px;
+        inset-block-end: 16px;
+        inset-inline-end: 16px;
+        box-shadow: 0 1px 4px rgb(0 0 0 / 0.12);
+      }
+
+      /* Figma shows it permanently visible; Prestige reveals it on card hover. */
+      @media screen and (pointer: fine) {
+        #shopify-section-{{ section.id }} .product-card__quick-add-button {
+          opacity: 1;
+          transform: none;
+        }
+
+        /* The 90deg spin is designed for the plus glyph, not a bag. */
+        #shopify-section-{{ section.id }} .product-card__quick-add-button:is(:hover, :focus) svg {
+          transform: none;
+        }
       }
 
       /* ---------- Card information rhythm ---------- */
@@ -71,22 +190,25 @@
         padding-top: 14px;
       }
 
-      #shopify-section-{{ section.id }} .product-card__tag-wrapper {
-        padding-block: 5px; /* pill measures 30px tall */
-      }
-
       #shopify-section-{{ section.id }} .product-card__info .gap-1 {
         gap: 8px;
       }
 
-      /* Title uses the body font in the Figma, clamped to two lines so card
-         heights stay level. product_title_max_lines is 0 site-wide, so the
-         clamp is applied here rather than by changing the global setting. */
+      /* .rating-badge ships with 4px/8px margins that double up on the stack gap */
+      #shopify-section-{{ section.id }} .rating-badge {
+        margin-top: 0;
+        margin-bottom: 0;
+        column-gap: 6px;
+      }
+
+      /* Title uses the body font in the Figma and is clamped to two lines so
+         card heights stay level. product_title_max_lines is 0 site-wide, so
+         the clamp lives here rather than in the global setting. */
       #shopify-section-{{ section.id }} .product-card-title {
         font-family: var(--text-font-family);
         font-size: 16px;
-        font-weight: 600;
         line-height: 25px;
+        font-weight: 600;
         min-height: 50px;
         display: -webkit-box;
         -webkit-box-orient: vertical;
@@ -108,22 +230,42 @@
       }
 
       /* ---------- Carousel arrows ----------
-         Figma puts them on the column edge and vertically centred on the
-         product image, not the whole card, and always visible. The offset is
-         derived from the grid so it holds as the container narrows. */
-      @media screen and (pointer: fine) {
-        #shopify-section-{{ section.id }} .floating-controls-container--inside {
-          --floating-controls-inset-inline: -1.5625rem;
-        }
+         Charcoal disc with a white chevron, compact, always visible, and
+         vertically centred on the product image rather than the whole card. */
+      #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+        --circle-button-size: 2.0625rem; /* 33px */
+        --circle-button-background: 43 39 36; /* #2B2724 */
+        --circle-button-text-color: 255 255 255;
+        box-shadow: none;
+      }
 
+      #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+        width: 0.6875rem; /* 11px chevron */
+      }
+
+      @media screen and (pointer: fine) {
         #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control {
           opacity: 1;
           transform: none;
         }
 
+        /* Sit on the column edge by default so nothing can overflow at
+           mid-size desktop widths, where there is no spare gutter. */
+        #shopify-section-{{ section.id }} .floating-controls-container--inside {
+          --floating-controls-inset-inline: 0rem;
+        }
+
         #shopify-section-{{ section.id }} .floating-controls-container__control {
-          inset-block-start: 165px; /* fallback */
-          inset-block-start: calc(((min(81.25rem, 100vw - 2.4rem) - 48px) / 4 * 380 / 313) / 2 - 1.5625rem);
+          inset-block-start: 173px; /* fallback */
+          inset-block-start: calc(((min(81.25rem, 100vw - 2.4rem) - 48px) / 4 * 380 / 313) / 2 - 1.03125rem);
+        }
+      }
+
+      /* Only once the viewport is wide enough to hold them can the arrows sit
+         fully outside the 1300px column, as the Figma shows. */
+      @media screen and (pointer: fine) and (min-width: 1400px) {
+        #shopify-section-{{ section.id }} .floating-controls-container--inside {
+          --floating-controls-inset-inline: -2.625rem; /* 42px: 25px clear + half the disc */
         }
       }
 
@@ -133,6 +275,15 @@
           --container-gutter: 0.75rem; /* 12px each side -> 351px content at 375px */
           --section-vertical-spacing-override: 32px;
           --section-stack-gap: 16px;
+        }
+
+        /* Prestige forces --product-list-card-width to min(300px, 65%) for
+           carousels below 700px (theme.css), which overrides
+           products_per_row_mobile and leaves the second card clipped.
+           Restore a true two-up width for this section only. */
+        #shopify-section-{{ section.id }} .product-list--carousel {
+          --product-list-default-column-gap: 0.625rem; /* 10px */
+          --product-list-card-width: calc((100% - var(--product-list-calculated-column-gap)) / 2);
         }
 
         /* Header is left-aligned on mobile; the section setting stays centred
@@ -155,13 +306,34 @@
           line-height: 1.25;
         }
 
-        #shopify-section-{{ section.id }} .product-card__info {
-          gap: 8px;
-          padding-top: 10px;
+        #shopify-section-{{ section.id }} .product-card__figure > .badge-list {
+          inset-block-start: 2px;
+          inset-inline-start: 2px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--custom {
+          font-size: 10px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--best-seller {
+          padding: 5px 8px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--new {
+          padding: 3px 8px;
         }
 
         #shopify-section-{{ section.id }} .product-card__tag-wrapper {
-          padding-block: 3px;
+          padding: 3px 10px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__tag {
+          font-size: 11px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__info {
+          gap: 8px;
+          padding-top: 10px;
         }
 
         #shopify-section-{{ section.id }} .product-card__info .gap-1 {
@@ -169,9 +341,57 @@
         }
 
         #shopify-section-{{ section.id }} .product-card-title {
+          font-size: 13px;
+          line-height: 18px;
+          min-height: 36px;
+        }
+
+        #shopify-section-{{ section.id }} .rating-badge {
+          column-gap: 4px;
+          flex-wrap: nowrap;
+        }
+
+        #shopify-section-{{ section.id }} .rating-badge__stars > svg {
+          width: 11px;
+        }
+
+        #shopify-section-{{ section.id }} .rating-badge .text-xxs {
+          font-size: 11px;
+        }
+
+        #shopify-section-{{ section.id }} .price-list {
           font-size: 14px;
-          line-height: 20px;
-          min-height: 40px;
+          column-gap: 6px;
+        }
+
+        #shopify-section-{{ section.id }} .price-list .text-on-sale {
+          font-size: 14px;
+        }
+
+        #shopify-section-{{ section.id }} .price-list :is(s, .text-subdued) {
+          font-size: 12px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__media-control--prev {
+          inset-inline-start: 8px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__media-control--next {
+          inset-inline-end: 8px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__media-control .circle-button {
+          --circle-button-size: 1.375rem; /* 22px */
+        }
+
+        #shopify-section-{{ section.id }} .product-card__media-control .circle-button > svg {
+          width: 0.5rem;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__quick-add-button {
+          padding: 6px;
+          inset-block-end: 8px;
+          inset-inline-end: 8px;
         }
 
         #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center {
@@ -183,9 +403,9 @@
           padding-block: 6px;
         }
 
-        /* Prestige hides carousel arrows on touch devices. The Figma shows a
-           next arrow, so re-enable that one only, aligned to the vertical
-           centre of the product image and clear of the title/price. */
+        /* Prestige hides carousel arrows on touch. The Figma shows a compact
+           charcoal next arrow, so re-enable that one only, at the right edge
+           of the visible image area and centred on the image. */
         #shopify-section-{{ section.id }} .floating-controls-container {
           position: relative;
         }
@@ -198,8 +418,16 @@
           z-index: 2;
           display: grid;
           position: absolute;
-          inset-inline-end: 6px;
-          inset-block-start: calc(((100vw - 2.125rem) / 2 * 380 / 313) / 2 - 1.25rem);
+          inset-inline-end: 4px;
+          inset-block-start: calc(((100vw - 2.125rem) / 2 * 380 / 313) / 2 - 0.9375rem);
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+          --circle-button-size: 1.875rem; /* 30px */
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+          width: 0.625rem;
         }
       }
 
@@ -210,9 +438,9 @@
         }
 
         #shopify-section-{{ section.id }} .product-card-title {
-          font-size: 13px;
-          line-height: 18px;
-          min-height: 36px;
+          font-size: 12px;
+          line-height: 17px;
+          min-height: 34px;
         }
       }
     </style>
@@ -265,8 +493,33 @@
                   {%- assign should_reveal = true -%}
                 {%- endif -%}
 
+                {%- comment -%}
+                  Row 06 only. Outside the home_bestselling_rugs guard these stay nil/false,
+                  so this render behaves exactly as before for every other instance.
+                {%- endcomment -%}
+                {%- liquid
+                  assign row06_image_carousel = false
+                  assign row06_show_quick_buy = null
+                  assign row06_quick_buy_icon = null
+
+                  if section.settings.custom_class contains 'home_bestselling_rugs'
+                    assign row06_image_carousel = true
+                    assign row06_show_quick_buy = true
+                    assign row06_quick_buy_icon = 'picto-bag-handle'
+                  endif
+                -%}
+
                 {%- for product in block.settings.collection.products limit: block.settings.products_count -%}
-                  {%- render 'product-card', product: product, reveal: should_reveal, position: forloop.index, hide_product_information: section.settings.hide_product_information, block: block -%}
+                  {%- render 'product-card',
+                    product: product,
+                    reveal: should_reveal,
+                    position: forloop.index,
+                    hide_product_information: section.settings.hide_product_information,
+                    block: block,
+                    image_carousel: row06_image_carousel,
+                    show_quick_buy: row06_show_quick_buy,
+                    quick_buy_icon: row06_quick_buy_icon
+                  -%}
                 {%- else -%}
                   {%- for i in (1..block.settings.products_count) -%}
                     {%- render 'product-card-placeholder', reveal: should_reveal, loop_index: forloop.index0, hide_product_information: section.settings.hide_product_information -%}
