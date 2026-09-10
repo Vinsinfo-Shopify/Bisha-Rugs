@@ -235,10 +235,10 @@
         "collection-1": {
           "type": "collection",
           "settings": {
-            "collection": "oushak-rugs",
-            "products_count": 10,
+            "collection": "",
+            "products_count": 8,
             "title": "Bestselling Oushak Rugs",
-            "link_url": "shopify://collections/oushak-rugs",
+            "link_url": "",
             "link_text": "SHOP BESTSELLING RUGS"
           }
         }
@@ -260,6 +260,20 @@
         "heading_style": "h2",
         "subheading": "FEATURED",
         "hide_collection_title": false
+      }
+    },
+    "color_palette_row07": {
+      "type": "color-palette",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "separate_section_with_border": false,
+        "padding_top": 20,
+        "padding_bottom": 46,
+        "subheading": "COLOR PALETTE",
+        "title": "Shop by Shade",
+        "heading_style": "h2",
+        "menu": "prestige-main-menu",
+        "color_group_title": ""
       }
     },
     "image_with_text_eJwpDm": {
@@ -660,7 +674,6 @@
       ],
       "settings": {
         "color_scheme": "scheme-1",
-        "custom_class": "",
         "separate_section_with_border": true,
         "hide_product_information": false,
         "stack_products": false,
@@ -1282,6 +1295,7 @@
     "trust_bar_MUX4MJ",
     "collection_list_6EFC6y",
     "featured-collections-1",
+    "color_palette_row07",
     "image_with_text_eJwpDm",
     "image_with_text_xnyQHV",
     "image_with_text_nK66R9",
