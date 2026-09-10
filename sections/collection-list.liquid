@@ -131,6 +131,17 @@
         endif
       endfor
 
+      # Menu items with no usable URL. Reported in the editor comment below,
+      # because an empty link.url is the one failure that cannot be seen from
+      # the rendered card alone.
+      assign sbs_missing_urls = ''
+
+      for l in sbs_links
+        if l.url == blank or l.url == '/'
+          assign sbs_missing_urls = sbs_missing_urls | append: l.title | append: ' | '
+        endif
+      endfor
+
       assign sbs_columns = sbs_enabled_count | divided_by: 2.0 | ceil
 
       if sbs_columns < 1
@@ -568,6 +579,21 @@
                 # so it would render an empty card. Skip it there only.
                 assign render_card = false
               endif
+
+              # Liquid has no operator precedence, so the arrow condition is
+              # resolved here rather than inline. Row 08 shows the arrow whenever
+              # its toggle is on, so a menu item with a missing URL no longer
+              # silently changes the card design as well. The default variant keeps
+              # its original rule of only showing an arrow when there is a link.
+              if is_sbs
+                assign show_card_arrow = sbs_show_arrow
+              else
+                assign show_card_arrow = false
+
+                if collection_url != blank
+                  assign show_card_arrow = true
+                endif
+              endif
             -%}
 
             {%- if render_card -%}
@@ -583,7 +609,7 @@
                     <p class="h3 collection-card__title">{{- card_title -}}</p>
                   {%- endif -%}
 
-                  {%- if collection_url != blank and sbs_show_arrow -%}
+                  {%- if show_card_arrow -%}
                     <span class="collection-card__arrow" aria-hidden="true">
                       <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -743,6 +769,7 @@
       item titles ......... {% for l in sbs_links limit: 24 %}{{ l.title }}{% unless forloop.last %} | {% endunless %}{% endfor %}
       image blocks ........ {{ section.blocks.size }}
       cards rendered ...... {{ sbs_enabled_count }}
+      items with NO url ... {{ sbs_missing_urls | default: 'none - every item has a link' }}
 
       Pairing (image block position -> menu item -> url):
       {%- for block in section.blocks -%}
