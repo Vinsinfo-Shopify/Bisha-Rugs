@@ -53,34 +53,55 @@
       assign sbs_show_arrow = section.settings.sbs_show_arrow
       assign sbs_show_nav = section.settings.sbs_show_nav
 
-      # Resolve the menu branch holding the style links. Blank group title means
-      # use the menu's top level.
+      # Resolve the menu branch holding the style links.
+      #
+      # A blank group title used to fall back to the menu's top level, which
+      # silently produced the wrong cards (Shop All / Home / Craftsmanship).
+      # There is no fallback now: without a resolved branch sbs_links stays nil
+      # and each card falls back to its own block data, while the theme editor
+      # comment at the end of this section prints the whole menu tree so the
+      # correct branch title can be copied from it.
       assign sbs_menu = section.settings.sbs_menu
-      assign sbs_links = sbs_menu.links
+      assign sbs_links = null
       assign sbs_group = section.settings.sbs_menu_group_title | downcase | strip
+      assign sbs_group_found = false
 
       if sbs_group != blank
-        assign sbs_found = false
-
         for l1 in sbs_menu.links
-          if sbs_found == false
-            assign t1 = l1.title | downcase | strip
+          if sbs_group_found == false
+            assign k1 = l1.title | downcase | strip
+            assign h1 = l1.handle | downcase | strip
 
-            if t1 == sbs_group
+            if k1 == sbs_group or h1 == sbs_group
               assign sbs_links = l1.links
-              assign sbs_found = true
+              assign sbs_group_found = true
             endif
           endif
 
-          if sbs_found == false
+          if sbs_group_found == false
             for l2 in l1.links
-              if sbs_found == false
-                assign t2 = l2.title | downcase | strip
+              if sbs_group_found == false
+                assign k2 = l2.title | downcase | strip
+                assign h2 = l2.handle | downcase | strip
 
-                if t2 == sbs_group
+                if k2 == sbs_group or h2 == sbs_group
                   assign sbs_links = l2.links
-                  assign sbs_found = true
+                  assign sbs_group_found = true
                 endif
+              endif
+
+              if sbs_group_found == false
+                for l3 in l2.links
+                  if sbs_group_found == false
+                    assign k3 = l3.title | downcase | strip
+                    assign h3 = l3.handle | downcase | strip
+
+                    if k3 == sbs_group or h3 == sbs_group
+                      assign sbs_links = l3.links
+                      assign sbs_group_found = true
+                    endif
+                  endif
+                endfor
               endif
             endfor
           endif
@@ -696,15 +717,33 @@
   {%- endcomment -%}
   {%- if is_sbs and request.design_mode -%}
     <!-- Row 08 (shop_by_style) diagnostics
+
       menu setting ........ {{ section.settings.sbs_menu.handle | default: 'NOT SET' }}
-      menu group title .... {{ section.settings.sbs_menu_group_title | default: '(blank - using top level)' }}
+      group title set ..... {{ section.settings.sbs_menu_group_title | default: 'NOT SET' }}
+      group resolved ...... {% if sbs_group_found %}yes{% else %}NO - cards are using their own block data{% endif %}
       links resolved ...... {{ sbs_links.size | default: 0 }}
-      link titles ......... {% for l in sbs_links limit: 12 %}{{ l.title }}{% unless forloop.last %} | {% endunless %}{% endfor %}
+      link titles ......... {% for l in sbs_links limit: 16 %}{{ l.title }}{% unless forloop.last %} | {% endunless %}{% endfor %}
       blocks .............. {{ section.blocks.size }}{% for block in section.blocks %} [{{ forloop.index }}:{{ block.type }}{% if block.settings.enabled == false %} disabled{% endif %}]{% endfor %}
       cards rendered ...... {{ sbs_enabled_count }}
-      note ................ titles/URLs come from the menu; a blank "links resolved"
-                            means the menu or group title is wrong, and cards will
-                            fall back to their own collection title/link.
+
+      Pairing (block position -> menu link):
+      {%- for block in section.blocks -%}
+        {%- assign diag_link = sbs_links[forloop.index0] -%}
+        block {{ forloop.index }} -> {{ diag_link.title | default: '(no link at this position)' }} -> {{ diag_link.url | default: '-' }}
+      {%- endfor %}
+
+      Available branches in "{{ section.settings.sbs_menu.handle | default: 'NOT SET' }}".
+      Copy the exact title of the branch holding the style links into the
+      "Menu group title" setting. Handles work too.
+      {% for l1 in section.settings.sbs_menu.links %}
+        [1] {{ l1.title }}   handle: {{ l1.handle }}   children: {{ l1.links.size }}
+        {%- for l2 in l1.links %}
+          [2]   {{ l2.title }}   handle: {{ l2.handle }}   children: {{ l2.links.size }}
+          {%- if l2.links.size > 0 %}
+            [3]     {% for l3 in l2.links limit: 12 %}{{ l3.title }}{% unless forloop.last %}, {% endunless %}{% endfor %}
+          {%- endif -%}
+        {%- endfor -%}
+      {% endfor %}
     -->
   {%- endif -%}
 {%- endif -%}
@@ -748,7 +787,7 @@
       "type": "text",
       "id": "sbs_menu_group_title",
       "label": "Menu group title",
-      "info": "Optional. The exact title of the menu item holding the style links. Leave blank to use the menu's top level."
+      "info": "Required. The exact title (or handle) of the menu item whose child links are the styles, for example the \"Shop by style\" column inside \"Shop All\". Searched three levels deep. If it is left blank or does not match, no menu links are used and each card falls back to its own collection title and link. View source in the theme editor to see the full menu tree printed for this section."
     },
     {
       "type": "text",
