@@ -47,7 +47,7 @@
             "mobile_image": "shopify://shop_images/Mobile_-_Design_in_Mind_096f3677-ee0d-4c1b-bd44-7fe88ea31508.png",
             "image_position": "right",
             "subheading": "",
-            "heading": "Have a design in mind?  <br> Let us know.",
+            "heading": "Have a design in mind? <br> Let us know.",
             "heading_width": 520,
             "description": "<p>Create a rug that's uniquely yours. Customize the size, colors and more with guidance from our rug experts.</p>",
             "button_label": "get in touch",
@@ -235,10 +235,10 @@
         "collection-1": {
           "type": "collection",
           "settings": {
-            "collection": "oushak-rugs",
-            "products_count": 10,
+            "collection": "",
+            "products_count": 8,
             "title": "Bestselling Oushak Rugs",
-            "link_url": "shopify://collections/oushak-rugs",
+            "link_url": "",
             "link_text": "SHOP BESTSELLING RUGS"
           }
         }
@@ -689,7 +689,6 @@
       ],
       "settings": {
         "color_scheme": "scheme-1",
-        "custom_class": "",
         "separate_section_with_border": true,
         "hide_product_information": false,
         "stack_products": false,
