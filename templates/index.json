@@ -332,12 +332,12 @@
             "expand_collection": false,
             "content_position": "place-self-end-start text-start",
             "subheading": "",
-            "title": "",
+            "title": "Geometric",
             "button_text": "",
             "button_link": "shopify://collections/all",
             "button_style": "solid",
             "overlay_color": "#000000",
-            "overlay_opacity": 30
+            "overlay_opacity": 20
           }
         }
       },
