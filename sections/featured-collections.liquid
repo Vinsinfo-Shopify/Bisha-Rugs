@@ -68,7 +68,6 @@
         aspect-ratio: 313 / 380;
       }
 
-
       #shopify-section-{{ section.id }} .product-card__figure > .badge-list {
         inset-block-start: 3px;
         inset-inline-start: 3px;
@@ -143,11 +142,13 @@
       }
 
       #shopify-section-{{ section.id }} .product-card__media-control .circle-button {
-        --circle-button-size: 1.75rem; /* 28px, smaller than the outer arrows */
+        --circle-button-size: 1.75rem; /* 28px, smaller than the 33px outer arrows */
+        --circle-button-background: 43 39 36;
         --circle-button-text-color: 255 255 255;
-        background: rgb(43 39 36 / 0.6);
+        background: rgb(43 39 36 / 0.55);
         color: #ffffff;
         box-shadow: none;
+        backdrop-filter: blur(2px);
       }
 
       #shopify-section-{{ section.id }} .product-card__media-control .circle-button > svg {
@@ -161,17 +162,22 @@
         pointer-events: none;
       }
 
-      /* Figma keeps the image clean until hover. Pointer-events follow opacity so
-         an invisible control can never be clicked. */
-      @media screen and (pointer: fine) {
-        #shopify-section-{{ section.id }} .product-card__media-control {
-          opacity: 0;
-          pointer-events: none;
-          transition: opacity 0.2s ease-in-out;
-        }
+      /* Hidden state is unconditional. It was previously inside a
+         (pointer: fine) query, which does not match on touch-capable laptops,
+         device emulation or the theme editor iframe - so the arrows showed on
+         load. Pointer-events follow opacity so an invisible control is never
+         clickable. */
+      #shopify-section-{{ section.id }} .product-card__media-control {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease-in-out;
+      }
 
-        #shopify-section-{{ section.id }} .product-card:hover .product-card__media-control,
-        #shopify-section-{{ section.id }} .product-card:focus-within .product-card__media-control {
+      /* Revealed by hovering that one product's image, not the card and not the
+         section, so only the hovered product's arrows appear. */
+      @media (hover: hover) {
+        #shopify-section-{{ section.id }} .product-card__figure:hover .product-card__media-control,
+        #shopify-section-{{ section.id }} .product-card__figure:focus-within .product-card__media-control {
           opacity: 1;
           pointer-events: auto;
         }
@@ -193,13 +199,14 @@
 
       /* ---------- Quick buy (enabled per-render for this section only) ---------- */
       #shopify-section-{{ section.id }} .product-card__quick-add-button {
-        background: rgb(43 39 36 / 0.6);
+        background: rgb(43 39 36 / 0.55);
         color: #ffffff;
         border-radius: var(--rounded-full);
         padding: 9px;
         inset-block-end: 16px;
         inset-inline-end: 16px;
         box-shadow: none;
+        backdrop-filter: blur(2px);
       }
 
       /* Figma shows it permanently visible; Prestige reveals it on card hover. */
@@ -272,6 +279,16 @@
       /* ---------- Carousel arrows ----------
          Charcoal disc with a white chevron, compact, always visible, and
          vertically centred on the product image rather than the whole card. */
+      /* THE cause of the missing outer arrows: theme.css:773 sets
+         .prev-next-button[disabled] { opacity: 0; visibility: hidden }, and the
+         outer prev button ships with the disabled attribute in its markup, so it
+         was invisible on load and the next button vanished at the last position.
+         A disabled outer arrow is now dimmed but stays in place. */
+      #shopify-section-{{ section.id }} .prev-next-button[disabled] {
+        opacity: 0.35;
+        visibility: visible;
+      }
+
       #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
         --circle-button-size: 2.0625rem; /* 33px, deliberately larger than the 28px inner arrows */
         --circle-button-text-color: 255 255 255;
@@ -296,8 +313,12 @@
           transform: none;
         }
 
-        #shopify-section-{{ section.id }} .floating-controls-container__control:has(button[disabled]) {
-          opacity: 0.35;
+        /* Prestige gates the outer controls behind the carousel having measured
+           itself as scrollable (.floating-controls-container:not(:has(.is-scrollable))
+           sets display: none). The Figma shows them from first paint, so the gate
+           is neutralised here. */
+        #shopify-section-{{ section.id }} .floating-controls-container:not(:has(.is-scrollable)) .floating-controls-container__control {
+          display: grid;
         }
 
         /* Sit on the column edge by default so nothing can overflow at
@@ -467,6 +488,18 @@
 
         #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
           width: 0.5625rem;
+        }
+
+        /* CONTROL B (touch): the arrows are gone on mobile, so the image carousel
+           is driven by swiping the image itself. Making the inner element the
+           scroll container means the browser routes a gesture starting on the
+           image to it rather than to the product row, and overscroll-behavior
+           stops that gesture chaining outward at the ends. Swiping the info area
+           below the image still moves the product cards. */
+        #shopify-section-{{ section.id }} .product-card__media-carousel {
+          overflow: auto hidden;
+          overscroll-behavior-x: contain;
+          scroll-snap-type: x mandatory;
         }
 
         /* CONTROL C: image-position indicator. One continuous 2px line flush with
