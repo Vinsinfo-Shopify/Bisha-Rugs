@@ -81,7 +81,7 @@
           "settings": {
             "icon": "shopify://shop_images/cff864219a3a7f086c67a50e5e7dd58c66657ffe.png",
             "text": "Hand Crafted in India",
-            "icon_size": 26,
+            "icon_size": 20,
             "text_size": 18
           }
         },
@@ -90,7 +90,7 @@
           "settings": {
             "icon": "shopify://shop_images/Group.png",
             "text": "Generational Master Artisans",
-            "icon_size": 26,
+            "icon_size": 20,
             "text_size": 18
           }
         }
@@ -120,8 +120,76 @@
         "reveal_on_scroll": true,
         "image_position": "end",
         "content_width": "lg",
+        "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
+      }
+    },
+    "multiple_media_with_text_xnQQpE": {
+      "type": "multiple-media-with-text",
+      "blocks": {
+        "icon_with_text_xdJgQK": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/cff864219a3a7f086c67a50e5e7dd58c66657ffe_1.png",
+            "text": "Hand Crafted in India"
+          }
+        },
+        "icon_with_text_MnXfKH": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_1.png",
+            "text": "Generational Master Artisans"
+          }
+        },
+        "video_XqQQgQ": {
+          "type": "video",
+          "settings": {
+            "video": "shopify://files/videos/Hey friends! I’m so excited to share this incredible upgrade in our library room. True quality a.mp4",
+            "rotation": 0
+          }
+        }
+      },
+      "block_order": [
+        "icon_with_text_xdJgQK",
+        "icon_with_text_MnXfKH",
+        "video_XqQQgQ"
+      ],
+      "disabled": true,
+      "name": "t:sections.multiple_media_with_text.presets.multiple_media_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "custom_class": "",
+        "reveal_on_scroll": true,
+        "separate_section_with_border": false,
+        "padding_top": 0,
+        "padding_bottom": 72,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 50,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "media_position_desktop": "after_text",
+        "media_position_mobile": "after_text",
+        "media_layout": "separated",
+        "media_width_1": "",
+        "media_width_2": "",
+        "media_gap_width": "",
+        "media_alignment": "start",
+        "media_alignment_offset": 0,
+        "media_mobile_alignment_offset": 0,
+        "text_alignment": "center",
+        "subheading": "Artisanal Craftsmanship",
+        "title": "<p>Crafted by Master Artisans</p>",
+        "heading_style": "h2",
+        "content": "<p>Every Bisha rug begins in the hands of artisans who have inherited their craft through generations. Using time-honoured techniques, each rug is woven entirely by hand, one knot at a time.   </p><p>It's a slow,<strong> meticulous process that cannot be replicated by machines, resulting in exceptional quality, lasting durability,</strong> and craftsmanship that stands the test of time.</p>",
+        "button_1_text": "",
+        "button_1_link": "",
+        "button_1_style": "solid",
+        "button_2_text": "",
+        "button_2_link": "",
+        "button_2_style": "solid"
       }
     },
     "multiple_media_with_text_HFK9yi": {
@@ -163,9 +231,9 @@
         "media_position_desktop": "before_text",
         "media_position_mobile": "after_text",
         "media_layout": "overlap",
-        "media_width_1": "245",
+        "media_width_1": "289",
         "media_width_2": "289",
-        "media_gap_width": "125",
+        "media_gap_width": "81",
         "media_alignment": "end",
         "media_alignment_offset": 100,
         "media_mobile_alignment_offset": 80,
@@ -249,7 +317,7 @@
             "image": "shopify://shop_images/CWP-2.png",
             "title": "<strong>Step 1: Premium New Zealand Wool</strong>",
             "heading_tag": "custom",
-            "custom_heading_size": 20,
+            "custom_heading_size": 24,
             "content": "<p>We begin with carefully selected New Zealand wool, chosen for its softness, durability, and ability to absorb rich natural dyes.</p>",
             "link_url": "",
             "link_text": ""
@@ -261,7 +329,7 @@
             "image": "shopify://shop_images/CWP-3.png",
             "title": "<strong>Step 2: Naturally Dyed</strong>",
             "heading_tag": "custom",
-            "custom_heading_size": 20,
+            "custom_heading_size": 24,
             "content": "<p>Traditional dyeing techniques create the soft, earthy tones that make every Oushak rug unique. Gentle variations in colour are a hallmark of authentic craftsmanship.</p>",
             "link_url": "",
             "link_text": ""
@@ -273,7 +341,7 @@
             "image": "shopify://shop_images/d32ac65c516f1c324c1b42db7699e39b9bfbbe3c_1.png",
             "title": "<strong>Step 3: Hand Knotting</strong>",
             "heading_tag": "custom",
-            "custom_heading_size": 20,
+            "custom_heading_size": 24,
             "content": "<p>Every individual knot is tied entirely by hand on a traditional loom. Depending on the size and complexity, a single rug may require hundreds of thousands of knots.</p>",
             "link_url": "",
             "link_text": ""
@@ -285,7 +353,7 @@
             "image": "shopify://shop_images/ba9b8b83c2da2ba751ce438b650856ff12a2a56c.png",
             "title": "<strong>Step 4: Timeless Motifs</strong>",
             "heading_tag": "custom",
-            "custom_heading_size": 20,
+            "custom_heading_size": 24,
             "content": "<p>Inspired by the historic city of Oushak in Türkiye, these rugs feature large-scale motifs and balanced compositions that bring elegance to any interior.</p>",
             "link_url": "",
             "link_text": ""
@@ -297,7 +365,7 @@
             "image": "shopify://shop_images/9aaa18f2caf9fec11b13037c586fe1a5847951a7.png",
             "title": "<strong>Step 5: Finishing</strong>",
             "heading_tag": "custom",
-            "custom_heading_size": 20,
+            "custom_heading_size": 24,
             "content": "<p>Each rug is carefully washed, trimmed, softened, and inspected to ensure exceptional quality before leaving our workshop.</p>",
             "link_url": "",
             "link_text": ""
@@ -309,7 +377,7 @@
             "image": "shopify://shop_images/2655df5f97946c8fc798be6e840610fabeef002d.png",
             "title": "<strong>Step 6: From Our Loom to Your Home</strong>",
             "heading_tag": "custom",
-            "custom_heading_size": 20,
+            "custom_heading_size": 24,
             "content": "<p>Once complete, your rug is carefully packed and delivered, ready to become a lasting part of your home and a piece to be cherished for generations.</p>",
             "link_url": "",
             "link_text": ""
@@ -408,6 +476,7 @@
         "reveal_on_scroll": true,
         "image_position": "start",
         "content_width": "lg",
+        "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
       }
@@ -425,6 +494,7 @@
   "order": [
     "image_with_text_overlay_QwXF4E",
     "image_with_text_DpGFn4",
+    "multiple_media_with_text_xnQQpE",
     "multiple_media_with_text_HFK9yi",
     "multiple_media_with_text_J3eGF7",
     "multi_column_WmHANY",

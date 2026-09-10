@@ -1604,6 +1604,10 @@ shopify-accelerated-checkout, shopify-accelerated-checkout-cart {
   display: grid;
 }
 
+.section-stack .section-header .h2{
+  font-size: 38px;
+}
+
 .section-header {
   max-width: min(var(--container-xs-max-width), 100%);
   margin-inline-start: var(--container-gutter);
@@ -7209,6 +7213,8 @@ shopify-account::part(signed-out-avatar) {
 
 .shopify-policy__title h1 {
   font: inherit;
+  font-family: 'Forum';
+  font-size: 38px;
 }
 
 .text-with-icons {
@@ -9833,6 +9839,9 @@ ul {
       }
       .recent_products .section-stack{
         gap:16px;
+      }
+      .section-stack .section-header .h2{
+        font-size: 28px;
       }
 }
 .blog-card-img {
