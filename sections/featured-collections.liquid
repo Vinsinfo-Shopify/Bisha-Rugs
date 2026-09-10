@@ -68,7 +68,6 @@
         aspect-ratio: 313 / 380;
       }
 
-
       #shopify-section-{{ section.id }} .product-card__figure > .badge-list {
         inset-block-start: 3px;
         inset-inline-start: 3px;
@@ -160,10 +159,40 @@
         pointer-events: none;
       }
 
+      /* Figma keeps the image clean until hover. Pointer-events follow opacity so
+         an invisible control can never be clicked. */
+      @media screen and (pointer: fine) {
+        #shopify-section-{{ section.id }} .product-card__media-control {
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.2s ease-in-out;
+        }
+
+        #shopify-section-{{ section.id }} .product-card:hover .product-card__media-control,
+        #shopify-section-{{ section.id }} .product-card:focus-within .product-card__media-control {
+          opacity: 1;
+          pointer-events: auto;
+        }
+      }
+
+      /* The image-position indicator is mobile-only */
+      #shopify-section-{{ section.id }} .product-card__media-pagination {
+        display: none;
+      }
+
+      /* Belt and braces: the inner carousel must never expose a native scrollbar */
+      #shopify-section-{{ section.id }} .product-card__media-carousel {
+        scrollbar-width: none;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-carousel::-webkit-scrollbar {
+        display: none;
+      }
+
       /* ---------- Quick buy (enabled per-render for this section only) ---------- */
       #shopify-section-{{ section.id }} .product-card__quick-add-button {
-        background: #ffffff;
-        color: #2b2724;
+        background: #2b2724;
+        color: #ffffff;
         border-radius: var(--rounded-full);
         padding: 8px;
         inset-block-end: 16px;
@@ -209,7 +238,6 @@
         font-size: 16px;
         line-height: 25px;
         font-weight: 600;
-        min-height: 50px;
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
@@ -244,9 +272,19 @@
       }
 
       @media screen and (pointer: fine) {
-        #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control {
+        /* Prestige only reveals a control that contains no disabled button
+           (.floating-controls-container--on-hover:hover > ...:not(:has([disabled]))),
+           which makes an arrow vanish the moment it reaches an edge. The Figma
+           shows both arrows permanently, so both the base and the hover rule are
+           overridden here and a disabled arrow is merely dimmed. */
+        #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control,
+        #shopify-section-{{ section.id }} .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
           opacity: 1;
           transform: none;
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container__control:has(button[disabled]) {
+          opacity: 0.35;
         }
 
         /* Sit on the column edge by default so nothing can overflow at
@@ -343,7 +381,6 @@
         #shopify-section-{{ section.id }} .product-card-title {
           font-size: 13px;
           line-height: 18px;
-          min-height: 36px;
         }
 
         #shopify-section-{{ section.id }} .rating-badge {
@@ -372,22 +409,6 @@
           font-size: 12px;
         }
 
-        #shopify-section-{{ section.id }} .product-card__media-control--prev {
-          inset-inline-start: 8px;
-        }
-
-        #shopify-section-{{ section.id }} .product-card__media-control--next {
-          inset-inline-end: 8px;
-        }
-
-        #shopify-section-{{ section.id }} .product-card__media-control .circle-button {
-          --circle-button-size: 1.375rem; /* 22px */
-        }
-
-        #shopify-section-{{ section.id }} .product-card__media-control .circle-button > svg {
-          width: 0.5rem;
-        }
-
         #shopify-section-{{ section.id }} .product-card__quick-add-button {
           padding: 6px;
           inset-block-end: 8px;
@@ -403,31 +424,49 @@
           padding-block: 6px;
         }
 
-        /* Prestige hides carousel arrows on touch. The Figma shows a compact
-           charcoal next arrow, so re-enable that one only, at the right edge
-           of the visible image area and centred on the image. */
-        #shopify-section-{{ section.id }} .floating-controls-container {
-          position: relative;
-        }
-
-        #shopify-section-{{ section.id }} .floating-controls-container > .floating-controls-container__control {
+        /* The Figma mobile design has no carousel arrows at all. Prestige already
+           hides the outer controls on touch, so nothing is re-enabled here, and the
+           per-product arrows are hidden too. */
+        #shopify-section-{{ section.id }} .product-card__media-control {
           display: none;
         }
 
-        #shopify-section-{{ section.id }} .floating-controls-container > .floating-controls-container__control:last-child {
+        /* Image-position indicator, sitting on the bottom edge of the image.
+           Absolutely positioned so it adds no height to the card, and its
+           segments are also the touch target for changing image. */
+        #shopify-section-{{ section.id }} .product-card__media-pagination {
           z-index: 2;
-          display: grid;
+          display: flex;
           position: absolute;
-          inset-inline-end: 4px;
-          inset-block-start: calc(((100vw - 2.125rem) / 2 * 380 / 313) / 2 - 0.9375rem);
+          inset-inline: 0;
+          inset-block-end: 10px;
+          justify-content: center;
+          gap: 3px;
         }
 
-        #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
-          --circle-button-size: 1.875rem; /* 30px */
+        #shopify-section-{{ section.id }} .product-card__media-pagination > button {
+          width: 18px;
+          height: 12px;
+          display: grid;
+          place-items: center;
+          padding: 0;
+          border: 0;
+          background: none;
         }
 
-        #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
-          width: 0.625rem;
+        /* .tap-area already uses ::before to widen the hit area, so the visible
+           bar is drawn with ::after. */
+        #shopify-section-{{ section.id }} .product-card__media-pagination > button::after {
+          content: '';
+          width: 100%;
+          height: 3px;
+          border-radius: 2px;
+          background: rgb(43 39 36 / 0.3);
+          transition: background 0.2s ease-in-out;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__media-pagination > button[aria-current='true']::after {
+          background: #2b2724;
         }
       }
 
@@ -440,7 +479,6 @@
         #shopify-section-{{ section.id }} .product-card-title {
           font-size: 12px;
           line-height: 17px;
-          min-height: 34px;
         }
       }
     </style>
@@ -501,11 +539,13 @@
                   assign row06_image_carousel = false
                   assign row06_show_quick_buy = null
                   assign row06_quick_buy_icon = null
+                  assign row06_show_swatches = null
 
                   if section.settings.custom_class contains 'home_bestselling_rugs'
                     assign row06_image_carousel = true
                     assign row06_show_quick_buy = true
                     assign row06_quick_buy_icon = 'picto-bag-handle'
+                    assign row06_show_swatches = false
                   endif
                 -%}
 
@@ -518,7 +558,8 @@
                     block: block,
                     image_carousel: row06_image_carousel,
                     show_quick_buy: row06_show_quick_buy,
-                    quick_buy_icon: row06_quick_buy_icon
+                    quick_buy_icon: row06_quick_buy_icon,
+                    show_swatches: row06_show_swatches
                   -%}
                 {%- else -%}
                   {%- for i in (1..block.settings.products_count) -%}
