@@ -68,6 +68,7 @@
         aspect-ratio: 313 / 380;
       }
 
+
       #shopify-section-{{ section.id }} .product-card__figure > .badge-list {
         inset-block-start: 3px;
         inset-inline-start: 3px;
@@ -142,10 +143,11 @@
       }
 
       #shopify-section-{{ section.id }} .product-card__media-control .circle-button {
-        --circle-button-size: 1.75rem; /* 28px */
-        --circle-button-background: 255 255 255;
-        --circle-button-text-color: 43 39 36; /* #2B2724 */
-        box-shadow: 0 1px 4px rgb(0 0 0 / 0.12);
+        --circle-button-size: 1.75rem; /* 28px, smaller than the outer arrows */
+        --circle-button-text-color: 255 255 255;
+        background: rgb(43 39 36 / 0.6);
+        color: #ffffff;
+        box-shadow: none;
       }
 
       #shopify-section-{{ section.id }} .product-card__media-control .circle-button > svg {
@@ -191,13 +193,13 @@
 
       /* ---------- Quick buy (enabled per-render for this section only) ---------- */
       #shopify-section-{{ section.id }} .product-card__quick-add-button {
-        background: #2b2724;
+        background: rgb(43 39 36 / 0.6);
         color: #ffffff;
         border-radius: var(--rounded-full);
-        padding: 8px;
+        padding: 9px;
         inset-block-end: 16px;
         inset-inline-end: 16px;
-        box-shadow: 0 1px 4px rgb(0 0 0 / 0.12);
+        box-shadow: none;
       }
 
       /* Figma shows it permanently visible; Prestige reveals it on card hover. */
@@ -223,6 +225,12 @@
         gap: 8px;
       }
 
+      /* product-card__info is a grid, so an empty optional child would still
+         consume a row plus its gap. Collapse any that render empty. */
+      #shopify-section-{{ section.id }} .product-card__info > *:empty {
+        display: none;
+      }
+
       /* .rating-badge ships with 4px/8px margins that double up on the stack gap */
       #shopify-section-{{ section.id }} .rating-badge {
         margin-top: 0;
@@ -233,11 +241,15 @@
       /* Title uses the body font in the Figma and is clamped to two lines so
          card heights stay level. product_title_max_lines is 0 site-wide, so
          the clamp lives here rather than in the global setting. */
+      /* No fixed or minimum height: a one-line title must not reserve two lines,
+         which is what produced the gap above the rating. min-height is reset
+         explicitly in case anything upstream reintroduces one. */
       #shopify-section-{{ section.id }} .product-card-title {
         font-family: var(--text-font-family);
         font-size: 16px;
         line-height: 25px;
         font-weight: 600;
+        min-height: 0;
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
@@ -261,9 +273,10 @@
          Charcoal disc with a white chevron, compact, always visible, and
          vertically centred on the product image rather than the whole card. */
       #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
-        --circle-button-size: 2.0625rem; /* 33px */
-        --circle-button-background: 43 39 36; /* #2B2724 */
+        --circle-button-size: 2.0625rem; /* 33px, deliberately larger than the 28px inner arrows */
         --circle-button-text-color: 255 255 255;
+        background: rgb(43 39 36 / 0.75);
+        color: #ffffff;
         box-shadow: none;
       }
 
@@ -424,49 +437,78 @@
           padding-block: 6px;
         }
 
-        /* The Figma mobile design has no carousel arrows at all. Prestige already
-           hides the outer controls on touch, so nothing is re-enabled here, and the
-           per-product arrows are hidden too. */
+        /* CONTROL B: the per-product image arrows are desktop-only. */
         #shopify-section-{{ section.id }} .product-card__media-control {
           display: none;
         }
 
-        /* Image-position indicator, sitting on the bottom edge of the image.
-           Absolutely positioned so it adds no height to the card, and its
-           segments are also the touch target for changing image. */
+        /* CONTROL A: the outer product carousel. Prestige hides both controls on
+           touch; the Figma shows the next arrow on the right of the product row,
+           so that one is restored. It drives the product cards, never the images. */
+        #shopify-section-{{ section.id }} .floating-controls-container {
+          position: relative;
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container > .floating-controls-container__control {
+          display: none;
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container > carousel-next-button.floating-controls-container__control {
+          z-index: 3;
+          display: grid;
+          position: absolute;
+          inset-inline-end: 6px;
+          inset-block-start: calc(((100vw - 2.125rem) / 2 * 380 / 313) / 2 - 0.875rem);
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+          --circle-button-size: 1.75rem; /* 28px */
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+          width: 0.5625rem;
+        }
+
+        /* CONTROL C: image-position indicator. One continuous 2px line flush with
+           the bottom edge of the image, not a row of dots and not split by gaps.
+           The track is the inactive state; the active image's segment fills its
+           share of the line. Absolutely positioned, so it adds no card height.
+           Exact inset/thickness/opacity to be confirmed against the mobile frame. */
         #shopify-section-{{ section.id }} .product-card__media-pagination {
           z-index: 2;
           display: flex;
           position: absolute;
-          inset-inline: 0;
-          inset-block-end: 10px;
-          justify-content: center;
-          gap: 3px;
+          inset-inline: 12px;
+          inset-block-end: 0;
+          gap: 0;
+          height: 2px;
+          border-radius: 1px;
+          background: rgb(43 39 36 / 0.22);
         }
 
+        /* No overflow clipping here: .tap-area widens the hit area with ::before,
+           and clipping would swallow it on a 2px-tall control. */
         #shopify-section-{{ section.id }} .product-card__media-pagination > button {
-          width: 18px;
-          height: 12px;
-          display: grid;
-          place-items: center;
+          flex: 1 1 0;
+          min-width: 0;
+          height: 100%;
           padding: 0;
           border: 0;
           background: none;
         }
 
-        /* .tap-area already uses ::before to widen the hit area, so the visible
-           bar is drawn with ::after. */
         #shopify-section-{{ section.id }} .product-card__media-pagination > button::after {
           content: '';
+          display: block;
           width: 100%;
-          height: 3px;
-          border-radius: 2px;
-          background: rgb(43 39 36 / 0.3);
-          transition: background 0.2s ease-in-out;
+          height: 100%;
+          border-radius: inherit;
+          background: rgb(43 39 36 / 0);
+          transition: background 0.25s ease-in-out;
         }
 
         #shopify-section-{{ section.id }} .product-card__media-pagination > button[aria-current='true']::after {
-          background: #2b2724;
+          background: rgb(43 39 36 / 0.9);
         }
       }
 
