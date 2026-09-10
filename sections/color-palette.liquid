@@ -1,0 +1,364 @@
+{%- doc -%}
+  Row 07 - "Shop by Shade".
+
+  This section owns no colour data of its own. It reads from the two places the
+  Mega Menu already reads from:
+
+    Navigation menu  -> colour name, order, and destination URL (incl. filters)
+    shop.metaobjects.color -> swatch colour, matched on label
+
+  The destination URL is emitted verbatim from the menu link, so Row 07 and the
+  menu can never disagree about where a colour goes. No filter parameter is
+  constructed here.
+
+  The colour group is found by data rather than by name: the branch of the
+  selected menu whose child links produce the most matches against the Color
+  metaobject wins. That keeps working if the client renames the column.
+  "Colour group title" narrows the search if a menu ever needs disambiguating.
+
+  Links with no matching Color metaobject are skipped rather than rendered with
+  an empty circle. In the theme editor the skipped titles are emitted as an HTML
+  comment so the configuration can be corrected.
+{%- enddoc -%}
+
+{%- liquid
+  assign menu = section.settings.menu
+  assign colors = shop.metaobjects.color.values
+  assign group_override = section.settings.color_group_title | downcase | strip
+
+  # ---------------------------------------------------------------------------
+  # Pass 1 - locate the colour branch by counting metaobject matches
+  # ---------------------------------------------------------------------------
+  assign best_count = 0
+  assign best_l1 = 0
+  assign best_l2 = 0
+
+  for l1 in menu.links
+    assign l1_index = forloop.index
+
+    for l2 in l1.links
+      assign l2_index = forloop.index
+      assign l2_title = l2.title | downcase | strip
+      assign match_count = 0
+
+      for l3 in l2.links
+        assign leaf_title = l3.title | downcase | strip
+
+        for c in colors
+          assign c_label = c.label | downcase | strip
+
+          if c_label == leaf_title
+            assign match_count = match_count | plus: 1
+            break
+          endif
+        endfor
+      endfor
+
+      if group_override != blank
+        if l2_title == group_override
+          assign best_count = match_count
+          assign best_l1 = l1_index
+          assign best_l2 = l2_index
+        endif
+      elsif match_count > best_count
+        assign best_count = match_count
+        assign best_l1 = l1_index
+        assign best_l2 = l2_index
+      endif
+    endfor
+  endfor
+
+  assign unmatched_titles = ''
+-%}
+
+{%- capture color_items -%}
+  {%- for l1 in menu.links -%}
+    {%- for l2 in l1.links -%}
+      {%- if forloop.parentloop.index == best_l1 and forloop.index == best_l2 -%}
+        {%- for l3 in l2.links -%}
+          {%- liquid
+            assign leaf_title = l3.title | downcase | strip
+            assign swatch_value = ''
+
+            for c in colors
+              assign c_label = c.label | downcase | strip
+
+              if c_label == leaf_title
+                # Works whether "swatch" is a colour field or a Shopify swatch object
+                assign swatch_value = c.swatch.color | default: c.swatch
+                break
+              endif
+            endfor
+          -%}
+
+          {%- if swatch_value != blank -%}
+            <a
+              href="{{ l3.url }}"
+              class="color-palette__item"
+              {% if l3.current %}
+                aria-current="page"
+              {% endif %}
+            >
+              <span class="color-palette__swatch" style="--swatch: {{ swatch_value }};" aria-hidden="true"></span>
+              <span class="color-palette__label">{{- l3.title -}}</span>
+            </a>
+          {%- else -%}
+            {%- assign unmatched_titles = unmatched_titles | append: l3.title | append: ' | ' -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if color_items != blank -%}
+  <style>
+    #shopify-section-{{ section.id }} .section-spacing {
+      padding-block-start: {{ section.settings.padding_top }}px;
+      padding-block-end: {{ section.settings.padding_bottom }}px;
+    }
+
+    /* Content column matches the locked sections above */
+    #shopify-section-{{ section.id }} {
+      --container-max-width: 81.25rem; /* 1300px */
+    }
+
+    /* Header typography mirrors the locked "Explore our Range" header */
+    #shopify-section-{{ section.id }} .section-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    #shopify-section-{{ section.id }} .section-header .section_header_subheading {
+      font-family: var(--text-font-family);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .section-header .section_header_heading {
+      font-family: 'Forum', serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.3;
+      letter-spacing: 0;
+      margin: 0;
+    }
+
+    /* ---------- Desktop grid ----------
+       flex-wrap plus a max width sized to nine items is what produces 9 + 7 for
+       the current data. There are no nth-child rules and no fixed column count,
+       so adding or removing a colour simply reflows. */
+    #shopify-section-{{ section.id }} .color-palette__grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      column-gap: 44px;
+      row-gap: 36px;
+      max-width: 946px; /* 9 x 66 swatch + 8 x 44 gap */
+      margin-inline: auto;
+      margin-block-start: 47px; /* heading -> grid */
+    }
+
+    /* Fixed basis keeps the 110px pitch exact regardless of label length */
+    #shopify-section-{{ section.id }} .color-palette__item {
+      flex: 0 0 66px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    #shopify-section-{{ section.id }} .color-palette__swatch {
+      box-sizing: border-box;
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      background: var(--swatch, transparent);
+      border: 1px solid rgb(0 0 0 / 0.12); /* same hairline the menu uses, so White reads */
+      transition: box-shadow 0.15s ease-in-out;
+    }
+
+    #shopify-section-{{ section.id }} .color-palette__label {
+      font-family: var(--text-font-family);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.4;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    /* ---------- Hover / current ring ----------
+       Two inset shadows: the charcoal one is listed first so it paints on top at
+       the outer 2.5px, leaving a 3px band of the section background showing
+       through beneath it. The element never changes size, so neighbours cannot
+       move and the swatch colour itself is untouched. */
+    #shopify-section-{{ section.id }} .color-palette__item:hover .color-palette__swatch,
+    #shopify-section-{{ section.id }} .color-palette__item:focus-visible .color-palette__swatch,
+    #shopify-section-{{ section.id }} .color-palette__item[aria-current='page'] .color-palette__swatch {
+      box-shadow:
+        inset 0 0 0 2.5px rgb(var(--text-color)),
+        inset 0 0 0 5.5px rgb(var(--background-without-opacity));
+    }
+
+    /* ---------- Mobile: four columns ---------- */
+    @media screen and (max-width: 699px) {
+      #shopify-section-{{ section.id }} .color-palette__grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        column-gap: 0;
+        row-gap: 20px;
+        max-width: none;
+        margin-block-start: 23px;
+      }
+
+      #shopify-section-{{ section.id }} .color-palette__item {
+        flex: none;
+        gap: 10px;
+      }
+
+      /* 56px is the reference's swatch-to-column ratio (0.63) applied to a
+         351px content width divided into four columns. */
+      #shopify-section-{{ section.id }} .color-palette__swatch {
+        width: 56px;
+        height: 56px;
+      }
+
+      #shopify-section-{{ section.id }} .color-palette__label {
+        font-size: 12px;
+      }
+
+      #shopify-section-{{ section.id }} .color-palette__item:hover .color-palette__swatch,
+      #shopify-section-{{ section.id }} .color-palette__item:focus-visible .color-palette__swatch,
+      #shopify-section-{{ section.id }} .color-palette__item[aria-current='page'] .color-palette__swatch {
+        box-shadow:
+          inset 0 0 0 2px rgb(var(--text-color)),
+          inset 0 0 0 4.5px rgb(var(--background-without-opacity));
+      }
+    }
+  </style>
+
+  <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+    <div class="container">
+      <div class="section-stack">
+        {%- render 'section-header',
+          subheading: section.settings.subheading,
+          heading: section.settings.title,
+          heading_style: section.settings.heading_style
+        -%}
+
+        <div class="color-palette__grid">
+          {{- color_items -}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- if request.design_mode and unmatched_titles != blank -%}
+    <!-- Row 07: skipped, no matching Color metaobject for: {{ unmatched_titles }} -->
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Color palette",
+  "class": "shopify-section--color-palette",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "separate_section_with_border",
+      "label": "t:global.section.separate_section_with_border",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 46
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:global.text.subheading",
+      "default": "COLOR PALETTE"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:global.text.heading",
+      "default": "Shop by Shade"
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "t:global.text.heading_size",
+      "options": [
+        { "value": "h1", "label": "t:global.sizes.large" },
+        { "value": "h2", "label": "t:global.sizes.medium" },
+        { "value": "h3", "label": "t:global.sizes.small" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "header",
+      "content": "Colour source"
+    },
+    {
+      "type": "paragraph",
+      "content": "Colours are read from the navigation menu below. Each colour's name and link come from the menu item; the swatch comes from the matching entry in the Color metaobject. Adding or removing a colour in the menu updates this section automatically."
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "color_group_title",
+      "label": "Colour group title",
+      "info": "Optional. Leave blank to detect the colour group automatically. Set it to the exact title of the menu item holding the colours if the menu contains more than one colour group."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Color palette"
+    }
+  ]
+}
+{% endschema %}
