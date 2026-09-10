@@ -291,6 +291,23 @@
     "collection_list_y68EWi": {
       "type": "collection-list",
       "blocks": {
+        "collection_y8pRxJ": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "",
+            "collection": "all",
+            "image": "shopify://shop_images/Shop_by_Style_-_Geometric.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Geometric",
+            "button_text": "",
+            "button_link": "shopify://collections/all",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 20
+          }
+        },
         "collection_AwTYBC": {
           "type": "collection",
           "settings": {
@@ -322,29 +339,12 @@
             "overlay_color": "#000000",
             "overlay_opacity": 30
           }
-        },
-        "collection_y8pRxJ": {
-          "type": "collection",
-          "settings": {
-            "color_scheme": "",
-            "collection": "all",
-            "image": "shopify://shop_images/Shop_by_Style_-_Geometric.png",
-            "expand_collection": false,
-            "content_position": "place-self-end-start text-start",
-            "subheading": "",
-            "title": "Geometric",
-            "button_text": "",
-            "button_link": "shopify://collections/all",
-            "button_style": "solid",
-            "overlay_color": "#000000",
-            "overlay_opacity": 20
-          }
         }
       },
       "block_order": [
+        "collection_y8pRxJ",
         "collection_AwTYBC",
-        "collection_bjdJgJ",
-        "collection_y8pRxJ"
+        "collection_bjdJgJ"
       ],
       "name": "t:sections.collection_list.presets.collection_list.name",
       "settings": {
