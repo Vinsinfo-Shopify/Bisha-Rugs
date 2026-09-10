@@ -291,6 +291,88 @@
     "collection_list_y68EWi": {
       "type": "collection-list",
       "blocks": {
+        "collection_FiwkTb": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "View products",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_L7gRhN": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "collection": "",
+            "image": "shopify://shop_images/Shop_by_Style_-_Minimalist.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "View products",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 20
+          }
+        },
+        "collection_qQKdQW": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "View products",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_TKGACH": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "collection": "all",
+            "image": "shopify://shop_images/Shop_by_Style_-_Abstract.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Abstract",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 20
+          }
+        },
+        "collection_3tjj8R": {
+          "type": "collection",
+          "settings": {
+            "color_scheme": "scheme-4",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "View products",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
         "collection_y8pRxJ": {
           "type": "collection",
           "settings": {
@@ -302,7 +384,7 @@
             "subheading": "",
             "title": "Geometric",
             "button_text": "",
-            "button_link": "shopify://collections/all",
+            "button_link": "",
             "button_style": "solid",
             "overlay_color": "#000000",
             "overlay_opacity": 20
@@ -329,6 +411,7 @@
           "settings": {
             "color_scheme": "",
             "collection": "",
+            "image": "shopify://shop_images/Shop_by_Style_-_Floral.png",
             "expand_collection": false,
             "content_position": "place-self-end-start text-start",
             "subheading": "",
@@ -342,6 +425,11 @@
         }
       },
       "block_order": [
+        "collection_FiwkTb",
+        "collection_L7gRhN",
+        "collection_qQKdQW",
+        "collection_TKGACH",
+        "collection_3tjj8R",
         "collection_y8pRxJ",
         "collection_AwTYBC",
         "collection_bjdJgJ"
@@ -365,7 +453,7 @@
         "image_size": "auto",
         "show_text_outside": false,
         "space_items": true,
-        "stack_collections": true,
+        "stack_collections": false,
         "collections_per_row_desktop": 4,
         "stack_collections_mobile": true,
         "collections_per_row_mobile": "2",
