@@ -237,28 +237,18 @@
           "settings": {
             "collection": "",
             "products_count": 8,
-            "title": "Women",
-            "link_url": "shopify://collections/all",
-            "link_text": "All women's bags"
-          }
-        },
-        "collection-2": {
-          "type": "collection",
-          "settings": {
-            "collection": "",
-            "products_count": 8,
-            "title": "Men",
-            "link_url": "shopify://collections/all",
-            "link_text": "All men's bags"
+            "title": "Bestselling Oushak Rugs",
+            "link_url": "",
+            "link_text": "SHOP BESTSELLING RUGS"
           }
         }
       },
       "block_order": [
-        "collection-1",
-        "collection-2"
+        "collection-1"
       ],
       "settings": {
         "color_scheme": "scheme-1",
+        "custom_class": "home_bestselling_rugs",
         "separate_section_with_border": false,
         "hide_product_information": false,
         "stack_products": false,
@@ -268,7 +258,7 @@
         "vertical_spacing_factor": 1,
         "header_alignment": "center",
         "heading_style": "h2",
-        "subheading": "Our best sellers",
+        "subheading": "FEATURED",
         "hide_collection_title": false
       }
     },
