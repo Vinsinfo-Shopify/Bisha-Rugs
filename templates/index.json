@@ -369,8 +369,8 @@
         "collections_per_row_desktop": 4,
         "stack_collections_mobile": true,
         "collections_per_row_mobile": "2",
-        "subheading": "color palette",
-        "title": "Shop by Shade",
+        "subheading": "collection",
+        "title": "Shop by Style",
         "heading_style": "h1",
         "content": ""
       }
