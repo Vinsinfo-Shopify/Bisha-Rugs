@@ -53,69 +53,17 @@
       assign sbs_show_arrow = section.settings.sbs_show_arrow
       assign sbs_show_nav = section.settings.sbs_show_nav
 
-      # Resolve the links that become the cards.
-      #
-      # Normal case: the merchant selects a dedicated menu whose top-level items
-      # ARE the styles, so the selected menu is used directly and nothing else
-      # needs configuring.
-      #
-      # Optional case: the styles live nested inside a larger menu (for example a
-      # "Shop by style" column inside "Shop All"). Filling in the group title
-      # walks down to that branch instead. Searched three levels deep, by title
-      # or handle.
+      # The selected menu IS the card list. Row 08 iterates that menu's items and
+      # nothing else - there is no traversal of a larger menu and no filtering of
+      # unrelated items, so main-navigation entries can never appear here. Point
+      # the Menu setting at the "Shop by Style" menu and its items become the
+      # cards, in menu order.
       assign sbs_menu = section.settings.sbs_menu
-      assign sbs_links = null
-      assign sbs_group = section.settings.sbs_menu_group_title | downcase | strip
-      assign sbs_group_found = false
+      assign sbs_links = sbs_menu.links
+      assign sbs_menu_selected = false
 
-      if sbs_group == blank
-        assign sbs_links = sbs_menu.links
-
-        if sbs_links.size > 0
-          assign sbs_group_found = true
-        endif
-      endif
-
-      if sbs_group != blank
-        for l1 in sbs_menu.links
-          if sbs_group_found == false
-            assign k1 = l1.title | downcase | strip
-            assign h1 = l1.handle | downcase | strip
-
-            if k1 == sbs_group or h1 == sbs_group
-              assign sbs_links = l1.links
-              assign sbs_group_found = true
-            endif
-          endif
-
-          if sbs_group_found == false
-            for l2 in l1.links
-              if sbs_group_found == false
-                assign k2 = l2.title | downcase | strip
-                assign h2 = l2.handle | downcase | strip
-
-                if k2 == sbs_group or h2 == sbs_group
-                  assign sbs_links = l2.links
-                  assign sbs_group_found = true
-                endif
-              endif
-
-              if sbs_group_found == false
-                for l3 in l2.links
-                  if sbs_group_found == false
-                    assign k3 = l3.title | downcase | strip
-                    assign h3 = l3.handle | downcase | strip
-
-                    if k3 == sbs_group or h3 == sbs_group
-                      assign sbs_links = l3.links
-                      assign sbs_group_found = true
-                    endif
-                  endif
-                endfor
-              endif
-            endfor
-          endif
-        endfor
+      if sbs_links.size > 0
+        assign sbs_menu_selected = true
       endif
 
       # Column count for the row-major mobile fill option. Counts every block
@@ -733,33 +681,22 @@
   {%- if is_sbs and request.design_mode -%}
     <!-- Row 08 (shop_by_style) diagnostics
 
-      menu setting ........ {{ section.settings.sbs_menu.handle | default: 'NOT SET' }}
-      group title set ..... {{ section.settings.sbs_menu_group_title | default: 'NOT SET' }}
-      source used ......... {% if sbs_group_found %}{% if section.settings.sbs_menu_group_title == blank %}the selected menu's own items{% else %}nested branch "{{ section.settings.sbs_menu_group_title }}"{% endif %}{% else %}NONE - no links resolved, so no cards render{% endif %}
-      links resolved ...... {{ sbs_links.size | default: 0 }}
-      link titles ......... {% for l in sbs_links limit: 16 %}{{ l.title }}{% unless forloop.last %} | {% endunless %}{% endfor %}
-      blocks .............. {{ section.blocks.size }}{% for block in section.blocks %} [{{ forloop.index }}:{{ block.type }}{% if block.settings.enabled == false %} disabled{% endif %}]{% endfor %}
+      Shop by Style menu .. {{ section.settings.sbs_menu.handle | default: 'NOT SELECTED' }}
+      menu title .......... {{ section.settings.sbs_menu.title | default: '-' }}
+      items in that menu .. {{ sbs_links.size | default: 0 }}
+      item titles ......... {% for l in sbs_links limit: 24 %}{{ l.title }}{% unless forloop.last %} | {% endunless %}{% endfor %}
+      image blocks ........ {{ section.blocks.size }}
       cards rendered ...... {{ sbs_enabled_count }}
 
-      Pairing (block position -> menu link):
+      Pairing (image block position -> menu item -> url):
       {%- for block in section.blocks -%}
         {%- assign diag_link = sbs_links[forloop.index0] -%}
-        block {{ forloop.index }} -> {{ diag_link.title | default: '(no link at this position)' }} -> {{ diag_link.url | default: '-' }}
+        block {{ forloop.index }} -> {{ diag_link.title | default: '(no menu item at this position)' }} -> {{ diag_link.url | default: '-' }}
       {%- endfor %}
 
-      Tree of "{{ section.settings.sbs_menu.handle | default: 'NOT SET' }}".
-      If the [1] items below are already your styles, leave "Menu group title"
-      empty. If the styles are a [2] or [3] group instead, copy that group's
-      exact title (or handle) into "Menu group title".
-      {% for l1 in section.settings.sbs_menu.links %}
-        [1] {{ l1.title }}   handle: {{ l1.handle }}   children: {{ l1.links.size }}
-        {%- for l2 in l1.links %}
-          [2]   {{ l2.title }}   handle: {{ l2.handle }}   children: {{ l2.links.size }}
-          {%- if l2.links.size > 0 %}
-            [3]     {% for l3 in l2.links limit: 12 %}{{ l3.title }}{% unless forloop.last %}, {% endunless %}{% endfor %}
-          {%- endif -%}
-        {%- endfor -%}
-      {% endfor %}
+      If the item titles above are navigation entries such as Shop All or Home,
+      the wrong menu is selected. Point "Shop by Style menu" at the menu that
+      holds the style values. This section never reads any other menu.
     -->
   {%- endif -%}
 {%- endif -%}
@@ -791,20 +728,13 @@
     },
     {
       "type": "paragraph",
-      "content": "Only used when the layout variant is \"Shop by style\". Select the menu whose items are the styles and the cards build themselves: each menu item supplies one card's title and link, in menu order. The blocks below supply only the images and display options - block 1 takes the image for the first menu item, block 2 for the second, and so on. Never enter a title or link on a block; they are ignored here."
+      "content": "Only used when the layout variant is \"Shop by style\". Select the Shop by Style menu and the cards build themselves: each item in that menu supplies one card's title and link, in menu order. The blocks below supply only images and display options - block 1 takes the image for the first menu item, block 2 for the second, and so on. Titles and links entered on a block are ignored here."
     },
     {
       "type": "link_list",
       "id": "sbs_menu",
-      "label": "Menu",
-      "info": "The menu whose items are the styles. If you have a dedicated \"Shop by style\" menu, select it and leave the group title below empty. Do not select the main navigation menu unless you also set a group title, or the cards will show your top-level nav items.",
-      "default": "main-menu"
-    },
-    {
-      "type": "text",
-      "id": "sbs_menu_group_title",
-      "label": "Menu group title",
-      "info": "Optional. Leave empty when the selected menu's own items are the styles. Only needed when the styles are nested inside a larger menu, for example a \"Shop by style\" column inside \"Shop All\" - then enter that item's exact title or handle. Searched three levels deep. View source in the theme editor to see the full menu tree printed for this section."
+      "label": "Shop by Style menu",
+      "info": "Select the menu that holds the style values. Every item in that menu becomes one card, in menu order, taking its title and link from the menu item. Do not select the main navigation menu: this section reads the selected menu's items directly and does not filter them."
     },
     {
       "type": "text",
