@@ -1,341 +1,914 @@
-{%- doc -%}
-  This component is used in collection and featured collection to render a single product as a card.
-
-  @param {object} [product] - the product to render
-  @param {boolean} [stacked] - define if the product is stacked or not on mobile
-  @param {boolean} [reveal] - if set to true, the card will be revealed on scroll through animation
-  @param {number} [position] - the position of the card in the list. If specified, the theme will eagerly load the first 3 cards images
-  @param {boolean} [show_badges] - show or not the badges (default to true if nothing is set)
-  @param {boolean} [show_rating] - show or not the rating. If nothing is set, the theme uses the default product card setting
-  @param {boolean} [show_vendor] - show or not the vendor. If nothing is set, the theme uses the default product card setting
-  @param {boolean} [show_quick_buy] - show or not the quick buy (which opens a modal if the product contains more than 1 choice)
-  @param {boolean} [show_secondary_image] - show or not the secondary media on hover. If nothing is set, the theme uses the default product card setting
-  @param {boolean} [show_swatches] - show or not the swatches. The swatch type is inferred from setting, and will default to true if nothing is set
-  @param {boolean} [hide_product_information] - if set to true, all content (vendor, badge, title...) are not rendered, to create image-based grid
-  @param {string} [quick_buy_context] - a unique text to dissociate quick buy if the same product is embedded multiple times
-  @param {boolean} [image_carousel] - OPT-IN. If true and the product has more than one image, the product's own images are rendered inside a scroll-carousel with its own prev/next controls. Defaults to false, so any call site that does not pass it keeps the original single-image markup.
-  @param {string} [quick_buy_icon] - OPT-IN. Icon name for the quick buy glyph. Defaults to 'plus'.
-  @param {object} [section]
-  @param {object} [block]
-{%- enddoc -%}
-
 {%- liquid
-  if hide_product_information
-    assign show_badges = false
-    assign show_rating = false
-    assign show_vendor = false
-    assign show_title = false
-    assign show_prices = false
-    assign show_swatches = false
-    assign show_quick_buy = show_quick_buy | default: settings.show_quick_buy, allow_false: true
-    assign show_secondary_image = show_secondary_image | default: settings.show_secondary_image, allow_false: true
-  else
-    assign show_badges = show_badges | default: true, allow_false: true
-    assign show_rating = show_rating | default: settings.show_product_rating, allow_false: true
-    assign show_vendor = show_vendor | default: settings.show_vendor, allow_false: true
-    assign show_quick_buy = show_quick_buy | default: settings.show_quick_buy, allow_false: true
-    assign show_title = true
-    assign show_prices = true
-    assign show_secondary_image = show_secondary_image | default: settings.show_secondary_image, allow_false: true
-    assign show_swatches = show_swatches | default: true, allow_false: true
-  endif
+  # Row 06 guard, evaluated once so it is available to the markup below as well
+  # as to the product-card render call.
+  assign is_row06 = false
 
-  # OPT-IN. Falls back to the original 'plus' glyph when no call site passes quick_buy_icon.
-  assign quick_buy_glyph = quick_buy_icon | default: 'plus'
+  if section.settings.custom_class contains 'home_bestselling_rugs'
+    assign is_row06 = true
+  endif
 -%}
 
-<product-card
-  class="product-card"
-  {% if reveal %}
-    reveal-on-scroll="true"
-  {% endif %}
-  handle="{{ product.handle | escape }}"
->
+{%- if section.blocks.size > 0 -%}
+  <style>
+    #shopify-section-{{ section.id }} {
+      --product-list-items-per-row: {{ section.settings.products_per_row_mobile | times: 1 }};
+      --product-list-horizontal-spacing-factor: {{ section.settings.horizontal_spacing_factor }};
+      --product-list-vertical-spacing-factor: {{ section.settings.vertical_spacing_factor }};
+    }
+
+    @media screen and (min-width: 700px) {
+      #shopify-section-{{ section.id }} {
+        --product-list-items-per-row: {{ section.settings.products_per_row_desktop }};
+      }
+    }
+  </style>
+
   {%- comment -%}
-    --------------------------------------------------------------------------------------------------------------------
-    PRODUCT MEDIA
-    --------------------------------------------------------------------------------------------------------------------
+    Homepage Row 06 - "Bestselling Oushak Rugs".
+    Every rule is guarded by custom_class and prefixed with the section id,
+    so no other instance of this section and no other template is affected.
+
+    Values sampled from the supplied 1440 Figma frame (delivered at 2x):
+      column 1300 | 4 cards x 313 with 16 gaps | image 313 x 380
+      BEST SELLER badge 109 x 38  bg #F3EEE4  text #000
+      NEW badge          59 x 27  bg #B08D4C  text #FFF
+      Hand Knotted pill 117 x 30  bg #F1ECE2  text #000
+      carousel arrow    33 x 33   bg #2B2724  chevron #FFF, ~25px outside the column
+      CTA              232 x 31   bg #55583C  text #FFF
+      rhythm: 65 / eyebrow / 16 / heading / 26 / image / 14 / pill / 18 /
+              title / 12 / rating / 15 / price / 48 / CTA / 65
+
+    Mobile values follow the written 375px specification; the mobile frame
+    was not available, so type sizes are proportional and flagged for QA.
   {%- endcomment -%}
+  {%- if section.settings.custom_class contains 'home_bestselling_rugs' -%}
+    <style>
+      /* ---------- Section frame ---------- */
+      #shopify-section-{{ section.id }} {
+        --container-max-width: 81.25rem; /* 1300px - same column as the locked sections above */
+        --section-vertical-spacing-override: 46px; /* + 19px gutter from locked Row 05 = 65px */
+        --section-stack-gap: 24px;
+      }
 
-  {%- if product.media.size > 0 -%}
-    <div class="product-card__figure">
-      {%- if show_badges -%}
-        {%- render 'product-badges', product: product, vertical: true, context: 'card' -%}
-      {%- endif -%}
+      /* ---------- Header ---------- */
+      #shopify-section-{{ section.id }} .section-stack > .v-stack {
+        gap: 4px;
+      }
 
-      {%- capture sizes -%}
-        {%- assign products_per_row_desktop = section.settings.products_per_row_desktop | default: 3 -%}
+      #shopify-section-{{ section.id }} .section-stack > .v-stack > .h6 {
+        font-family: var(--text-font-family);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.4;
+        letter-spacing: 0;
+        text-transform: uppercase;
+        margin: 0;
+      }
 
-        {%- if stacked -%}
-          (max-width: 699px) calc(100vw / {{ section.settings.products_per_row_mobile | default: 2 }}), (max-width: 999px) calc(100vw / {{ 3 | at_most: products_per_row_desktop }} - 64px), calc((100vw - 96px) / {{ products_per_row_desktop }} - (24px / {{ products_per_row_desktop }} * {{ products_per_row_desktop | minus: 1 }}))
-        {%- else -%}
-          (max-width: 699px) 74vw, (max-width: 999px) 38vw, calc((100vw - 96px) / {{ products_per_row_desktop }} - (24px / {{ products_per_row_desktop }} * {{ products_per_row_desktop | minus: 1 }}))
-        {%- endif -%}
-      {%- endcapture -%}
+      #shopify-section-{{ section.id }} .section-stack > .v-stack > h2 {
+        font-family: 'Forum', serif;
+        font-size: 28px;
+        font-weight: 400;
+        line-height: 1.3;
+        margin: 0;
+      }
 
-      {%- liquid
-        assign main_media_loading_strategy = null
+      /* ---------- Product image ---------- */
+      #shopify-section-{{ section.id }} .product-card__image {
+        aspect-ratio: 313 / 380;
+      }
 
-        if section.index > 3 or position > 3
-          assign main_media_loading_strategy = 'lazy'
-        endif
+      #shopify-section-{{ section.id }} .product-card__figure > .badge-list {
+        inset-block-start: 3px;
+        inset-inline-start: 3px;
+        gap: 3px;
+      }
 
-        # If the "custom.card_image" metafield exists for this product we use this one, otherwise we default as the featured image
-        assign featured_media = product.metafields.custom.card_image.value | default: product.featured_media
-      -%}
+      #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--custom {
+        border-radius: 2px;
+        font-size: 12px;
+        line-height: 140%;
+        font-weight: 500;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
 
-      {%- comment -%}
-        OPT-IN per-product media carousel. `image_carousel` is nil at every call site
-        that does not pass it, so `render_media_carousel` stays false and the original
-        single-image markup in the fallback branch below is used unchanged.
-      {%- endcomment -%}
-      {%- liquid
-        assign render_media_carousel = false
+      #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--best-seller {
+        background: #f3eee4;
+        color: #000000;
+        padding: 10.5px 15px;
+      }
 
-        if image_carousel and product.images.size > 1
-          assign render_media_carousel = true
-        endif
-      -%}
+      #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--new {
+        background: #b08d4c;
+        color: #ffffff;
+        padding: 5px 14px;
+      }
 
-      {%- capture main_image_classes -%}product-card__image product-card__image--primary {% if settings.product_image_aspect_ratio contains 'crop' %}object-cover{% endif %} aspect-{{ settings.product_image_aspect_ratio | split: '_' | first }}{%- endcapture -%}
+      /* ---------- Hand Knotted pill ---------- */
+      #shopify-section-{{ section.id }} .product-card__tag-wrapper {
+        background: #f1ece2;
+        border-radius: 100px;
+        padding: 5px 14px;
+      }
 
-      {%- if render_media_carousel -%}
-        {%- capture media_carousel_id -%}product-card-media-{{ section.id }}-{{ block.id }}-{{ quick_buy_context }}-{{ product.id }}{%- endcapture -%}
+      #shopify-section-{{ section.id }} .product-card__tag {
+        color: #000000;
+        font-size: 14px;
+        line-height: 140%;
+        font-weight: 500;
+      }
 
-        <scroll-carousel id="{{ media_carousel_id }}" class="product-card__media-carousel">
-          {%- for image in product.images limit: 6 -%}
-            <a
-              href="{{ product.url }}"
-              class="product-card__media product-card__media-cell"
-              draggable="false"
-              data-instant
-              {%- unless forloop.first %} tabindex="-1" aria-hidden="true"{% endunless -%}
-            >
-              {{-
-                image
-                | image_url: width: image.width
-                | image_tag:
-                  loading: main_media_loading_strategy,
-                  sizes: sizes,
-                  widths: '200,300,400,500,600,700,800,1000,1200,1400,1600,1800',
-                  draggable: 'false',
-                  class: main_image_classes
-              -}}
-            </a>
-          {%- endfor -%}
-        </scroll-carousel>
+      /* ---------- Per-product image carousel (opt-in via image_carousel) ----------
+         Cells are full-width and paged only by the small controls; the element is
+         not drag-enabled and does not scroll on touch, so it cannot steal gestures
+         from the outer product carousel. */
+      #shopify-section-{{ section.id }} .product-card__media-carousel {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 100%;
+        overflow: hidden;
+        scroll-snap-type: x mandatory;
+      }
 
-        {%- comment -%}
-          aria-controls resolves to this product's carousel id only, so these controls
-          can never move the outer product carousel. No `allow-drag`, so the inner
-          carousel cannot swallow drag gestures from the outer one.
-        {%- endcomment -%}
-        <carousel-prev-button aria-controls="{{ media_carousel_id }}" class="product-card__media-control product-card__media-control--prev">
-          <button type="button" class="circle-button circle-button--sm" aria-label="{{ 'general.accessibility.previous' | t }}" disabled>
-            {%- render 'icon' with 'chevron-left' -%}
-          </button>
-        </carousel-prev-button>
+      #shopify-section-{{ section.id }} .product-card__media-cell {
+        scroll-snap-align: start;
+        width: 100%;
+      }
 
-        <carousel-next-button aria-controls="{{ media_carousel_id }}" class="product-card__media-control product-card__media-control--next">
-          <button type="button" class="circle-button circle-button--sm" aria-label="{{ 'general.accessibility.next' | t }}">
-            {%- render 'icon' with 'chevron-right' -%}
-          </button>
-        </carousel-next-button>
+      #shopify-section-{{ section.id }} .product-card__media-control {
+        z-index: 2;
+        position: absolute;
+        inset-block-start: 50%;
+        transform: translateY(-50%);
+      }
 
-        {%- comment -%}
-          Mobile image indicator. carousel-navigation listens for this carousel's
-          own `carousel:change` event and moves aria-current, so it needs no extra
-          JavaScript and belongs to this product card only. The buttons are also
-          the way images are changed on touch, since the inner arrows are hidden
-          there. Shown only at mobile widths by the section's scoped CSS.
-        {%- endcomment -%}
-        <carousel-navigation aria-controls="{{ media_carousel_id }}" class="product-card__media-pagination">
-          {%- for image in product.images limit: 6 -%}
-            <button type="button" class="tap-area" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
-              <span class="sr-only">{{ 'general.accessibility.go_to_item' | t: index: forloop.index }}</span>
-            </button>
-          {%- endfor -%}
-        </carousel-navigation>
-      {%- else -%}
-        <a href="{{ product.url }}" class="product-card__media" draggable="false" data-instant>
-          {{-
-          featured_media
-          | image_url: width: featured_media.width
-          | image_tag:
-            loading: main_media_loading_strategy,
-            sizes: sizes,
-            widths: '200,300,400,500,600,700,800,1000,1200,1400,1600,1800',
-            draggable: 'false',
-            class: main_image_classes
-        -}}
+      #shopify-section-{{ section.id }} .product-card__media-control--prev {
+        inset-inline-start: 26px;
+      }
 
-          {%- liquid
-          if show_secondary_image and product.media.size > 1
-            assign next_media = product.metafields.custom.card_hover_image.value | default: product.media[product.featured_media.position] | default: product.media[1]
+      #shopify-section-{{ section.id }} .product-card__media-control--next {
+        inset-inline-end: 26px;
+      }
 
-            if next_media != blank
-              echo next_media | image_url: width: next_media.width | image_tag: class: 'product-card__image product-card__image--secondary', loading: 'lazy', fetchpriority: 'low', sizes: sizes, widths: '200,300,400,500,600,700,800,1000,1200,1400,1600,1800', draggable: 'false', aria-hidden: 'true'
-            endif
-          endif
-        -%}
-        </a>
-      {%- endif -%}
+      #shopify-section-{{ section.id }} .product-card__media-control .circle-button {
+        --circle-button-size: 1.75rem; /* 28px, smaller than the 33px outer arrows */
+        --circle-button-background: 43 39 36;
+        --circle-button-text-color: 255 255 255;
+        background: rgb(43 39 36 / 0.55);
+        color: #ffffff;
+        box-shadow: none;
+        backdrop-filter: blur(2px);
+      }
 
-      {%- if show_quick_buy and product.available -%}
-        {%- if product.variants.size == 1 and product.selling_plan_groups.size == 0 -%}
-          <product-form>
-            {%- form 'product', product -%}
-              <input type="hidden" name="on_success" value="force_open_drawer">
-              <input type="hidden" name="quantity" value="1">
-              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-              <button type="submit" class="product-card__quick-add-button">
-                <span class="sr-only">{{ 'product.general.add_to_cart_button' | t }}</span>
-                {%- render 'icon' with quick_buy_glyph -%}
-              </button>
-            {%- endform -%}
-          </product-form>
-        {%- else -%}
-          {%- capture quick_buy_id -%}product-quick-buy-{{ section.id }}-{{ block.id }}-{{ quick_buy_context }}-{{ product.id }}{%- endcapture -%}
+      #shopify-section-{{ section.id }} .product-card__media-control .circle-button > svg {
+        width: 0.625rem;
+      }
 
-          <button type="button" aria-controls="{{ quick_buy_id }}" class="product-card__quick-add-button">
-            <span class="sr-only">{{ 'product.general.choose_options' | t }}</span>
-            {%- render 'icon' with quick_buy_glyph -%}
-          </button>
+      /* Disabled at the first/last image rather than hidden, so the control
+         positions stay stable. */
+      #shopify-section-{{ section.id }} .product-card__media-control button[disabled] {
+        opacity: 0.35;
+        pointer-events: none;
+      }
 
-          <quick-buy-modal
-            handle="{{ product.handle }}?variant={{ product.selected_or_first_available_variant.id }}"
-            class="quick-buy-modal modal"
-            id="{{ quick_buy_id }}"
-            aria-label="{{ 'product.general.choose_options_with_title' | t: title: product.title | escape }}"
-          >
-          </quick-buy-modal>
-        {%- endif -%}
-      {%- endif -%}
-    </div>
+      /* Hidden state is unconditional. It was previously inside a
+         (pointer: fine) query, which does not match on touch-capable laptops,
+         device emulation or the theme editor iframe - so the arrows showed on
+         load. Pointer-events follow opacity so an invisible control is never
+         clickable. */
+      #shopify-section-{{ section.id }} .product-card__media-control {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease-in-out;
+      }
+
+      /* Revealed by hovering that one product's image, not the card and not the
+         section, so only the hovered product's arrows appear. */
+      @media (hover: hover) {
+        #shopify-section-{{ section.id }} .product-card__figure:hover .product-card__media-control,
+        #shopify-section-{{ section.id }} .product-card__figure:focus-within .product-card__media-control {
+          opacity: 1;
+          pointer-events: auto;
+        }
+      }
+
+      /* The image-position indicator is mobile-only */
+      #shopify-section-{{ section.id }} .product-card__media-pagination {
+        display: none;
+      }
+
+      /* Belt and braces: the inner carousel must never expose a native scrollbar */
+      #shopify-section-{{ section.id }} .product-card__media-carousel {
+        scrollbar-width: none;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-carousel::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* ---------- Quick buy (enabled per-render for this section only) ---------- */
+      #shopify-section-{{ section.id }} .product-card__quick-add-button {
+        background: rgb(43 39 36 / 0.55);
+        color: #ffffff;
+        border-radius: var(--rounded-full);
+        padding: 9px;
+        inset-block-end: 16px;
+        inset-inline-end: 16px;
+        box-shadow: none;
+        backdrop-filter: blur(2px);
+      }
+
+      /* Figma shows it permanently visible; Prestige reveals it on card hover. */
+      @media screen and (pointer: fine) {
+        #shopify-section-{{ section.id }} .product-card__quick-add-button {
+          opacity: 1;
+          transform: none;
+        }
+
+        /* The 90deg spin is designed for the plus glyph, not a bag. */
+        #shopify-section-{{ section.id }} .product-card__quick-add-button:is(:hover, :focus) svg {
+          transform: none;
+        }
+      }
+
+      /* ---------- Card information rhythm ---------- */
+      #shopify-section-{{ section.id }} .product-card__info {
+        gap: 12px;
+        padding-top: 14px;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__info .gap-1 {
+        gap: 8px;
+      }
+
+      /* product-card__info is a grid, so an empty optional child would still
+         consume a row plus its gap. Collapse any that render empty. */
+      #shopify-section-{{ section.id }} .product-card__info > *:empty {
+        display: none;
+      }
+
+      /* .rating-badge ships with 4px/8px margins that double up on the stack gap */
+      #shopify-section-{{ section.id }} .rating-badge {
+        margin-top: 0;
+        margin-bottom: 0;
+        column-gap: 6px;
+      }
+
+      /* Title uses the body font in the Figma and is clamped to two lines so
+         card heights stay level. product_title_max_lines is 0 site-wide, so
+         the clamp lives here rather than in the global setting. */
+      /* No fixed or minimum height: a one-line title must not reserve two lines,
+         which is what produced the gap above the rating. min-height is reset
+         explicitly in case anything upstream reintroduces one. */
+      #shopify-section-{{ section.id }} .product-card-title {
+        font-family: var(--text-font-family);
+        font-size: 16px;
+        line-height: 25px;
+        font-weight: 600;
+        min-height: 0;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+      }
+
+      /* ---------- CTA ---------- */
+      #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center {
+        margin-block-start: 48px;
+      }
+
+      #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center .button {
+        --button-background: 85 88 60; /* #55583C */
+        --button-outline-color: 85 88 60;
+        --button-text-color: 255 255 255;
+        min-width: 232px;
+        padding-block: 7px;
+      }
+
+      /* ---------- Carousel arrows ----------
+         Charcoal disc with a white chevron, compact, always visible, and
+         vertically centred on the product image rather than the whole card. */
+      /* THE cause of the missing outer arrows: theme.css:773 sets
+         .prev-next-button[disabled] { opacity: 0; visibility: hidden }, and the
+         outer prev button ships with the disabled attribute in its markup, so it
+         was invisible on load and the next button vanished at the last position.
+         A disabled outer arrow is now dimmed but stays in place. */
+      #shopify-section-{{ section.id }} .prev-next-button[disabled] {
+        opacity: 0.35;
+        visibility: visible;
+      }
+
+      #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+        --circle-button-size: 2.0625rem; /* 33px, deliberately larger than the 28px inner arrows */
+        --circle-button-text-color: 255 255 255;
+        background: rgb(43 39 36 / 0.75);
+        color: #ffffff;
+        box-shadow: none;
+      }
+
+      #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+        width: 0.6875rem; /* 11px chevron */
+      }
+
+      @media screen and (pointer: fine) {
+        /* Prestige only reveals a control that contains no disabled button
+           (.floating-controls-container--on-hover:hover > ...:not(:has([disabled]))),
+           which makes an arrow vanish the moment it reaches an edge. The Figma
+           shows both arrows permanently, so both the base and the hover rule are
+           overridden here and a disabled arrow is merely dimmed. */
+        #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control,
+        #shopify-section-{{ section.id }} .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
+          opacity: 1;
+          transform: none;
+        }
+
+        /* Prestige gates the outer controls behind the carousel having measured
+           itself as scrollable (.floating-controls-container:not(:has(.is-scrollable))
+           sets display: none). The Figma shows them from first paint, so the gate
+           is neutralised here. */
+        #shopify-section-{{ section.id }} .floating-controls-container:not(:has(.is-scrollable)) .floating-controls-container__control {
+          display: grid;
+        }
+
+        /* Sit on the column edge by default so nothing can overflow at
+           mid-size desktop widths, where there is no spare gutter. */
+        #shopify-section-{{ section.id }} .floating-controls-container--inside {
+          --floating-controls-inset-inline: 0rem;
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container__control {
+          inset-block-start: 173px; /* fallback */
+          inset-block-start: calc(((min(81.25rem, 100vw - 2.4rem) - 48px) / 4 * 380 / 313) / 2 - 1.03125rem);
+        }
+      }
+
+      /* Only once the viewport is wide enough to hold them can the arrows sit
+         fully outside the 1300px column, as the Figma shows. */
+      @media screen and (pointer: fine) and (min-width: 1400px) {
+        #shopify-section-{{ section.id }} .floating-controls-container--inside {
+          --floating-controls-inset-inline: -2.625rem; /* 42px: 25px clear + half the disc */
+        }
+      }
+
+      /* ---------- 375px mobile ---------- */
+      @media screen and (max-width: 699px) {
+        #shopify-section-{{ section.id }} {
+          --container-gutter: 0.75rem; /* 12px each side -> 351px content at 375px */
+          --section-vertical-spacing-override: 32px;
+          --section-stack-gap: 16px;
+        }
+
+        /* Prestige forces --product-list-card-width to min(300px, 65%) for
+           carousels below 700px (theme.css), which overrides
+           products_per_row_mobile and leaves the second card clipped.
+           Restore a true two-up width for this section only. */
+        #shopify-section-{{ section.id }} .product-list--carousel {
+          --product-list-default-column-gap: 0.625rem; /* 10px */
+          --product-list-card-width: calc((100% - var(--product-list-calculated-column-gap)) / 2);
+        }
+
+        /* Header is left-aligned on mobile; the section setting stays centred
+           so desktop is unaffected. */
+        #shopify-section-{{ section.id }} .section-stack > .v-stack {
+          justify-self: start;
+          justify-items: start;
+          text-align: start;
+          gap: 2px;
+        }
+
+        #shopify-section-{{ section.id }} .section-stack > .v-stack > .h6 {
+          text-align: start;
+          font-size: 12px;
+        }
+
+        #shopify-section-{{ section.id }} .section-stack > .v-stack > h2 {
+          text-align: start;
+          font-size: 22px;
+          line-height: 1.25;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__figure > .badge-list {
+          inset-block-start: 2px;
+          inset-inline-start: 2px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--custom {
+          font-size: 10px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--best-seller {
+          padding: 5px 8px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--new {
+          padding: 3px 8px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__tag-wrapper {
+          padding: 3px 10px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__tag {
+          font-size: 11px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__info {
+          gap: 8px;
+          padding-top: 10px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__info .gap-1 {
+          gap: 6px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card-title {
+          font-size: 13px;
+          line-height: 18px;
+        }
+
+        #shopify-section-{{ section.id }} .rating-badge {
+          column-gap: 4px;
+          flex-wrap: nowrap;
+        }
+
+        #shopify-section-{{ section.id }} .rating-badge__stars > svg {
+          width: 11px;
+        }
+
+        #shopify-section-{{ section.id }} .rating-badge .text-xxs {
+          font-size: 11px;
+        }
+
+        #shopify-section-{{ section.id }} .price-list {
+          font-size: 14px;
+          column-gap: 6px;
+        }
+
+        #shopify-section-{{ section.id }} .price-list .text-on-sale {
+          font-size: 14px;
+        }
+
+        #shopify-section-{{ section.id }} .price-list :is(s, .text-subdued) {
+          font-size: 12px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__quick-add-button {
+          padding: 6px;
+          inset-block-end: 8px;
+          inset-inline-end: 8px;
+        }
+
+        #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center {
+          margin-block-start: 28px;
+        }
+
+        #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center .button {
+          min-width: 180px;
+          padding-block: 6px;
+        }
+
+        /* CONTROL B: the per-product image arrows are desktop-only. */
+        #shopify-section-{{ section.id }} .product-card__media-control {
+          display: none;
+        }
+
+        /* CONTROL A: the outer product carousel. Prestige hides both controls on
+           touch; the Figma shows the next arrow on the right of the product row,
+           so that one is restored. It drives the product cards, never the images. */
+        #shopify-section-{{ section.id }} .floating-controls-container {
+          position: relative;
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container > .floating-controls-container__control {
+          display: none;
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container > carousel-next-button.floating-controls-container__control {
+          z-index: 3;
+          display: grid;
+          position: absolute;
+          inset-inline-end: 6px;
+          inset-block-start: calc(((100vw - 2.125rem) / 2 * 380 / 313) / 2 - 0.875rem);
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+          --circle-button-size: 1.75rem; /* 28px */
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+          width: 0.5625rem;
+        }
+
+        /* CONTROL B (touch): the arrows are gone on mobile, so the image carousel
+           is driven by swiping the image itself. Making the inner element the
+           scroll container means the browser routes a gesture starting on the
+           image to it rather than to the product row, and overscroll-behavior
+           stops that gesture chaining outward at the ends. Swiping the info area
+           below the image still moves the product cards. */
+        #shopify-section-{{ section.id }} .product-card__media-carousel {
+          overflow: auto hidden;
+          overscroll-behavior-x: contain;
+          scroll-snap-type: x mandatory;
+        }
+
+        /* CONTROL C: image-position indicator. One continuous 2px line flush with
+           the bottom edge of the image, not a row of dots and not split by gaps.
+           The track is the inactive state; the active image's segment fills its
+           share of the line. Absolutely positioned, so it adds no card height.
+           Exact inset/thickness/opacity to be confirmed against the mobile frame. */
+        #shopify-section-{{ section.id }} .product-card__media-pagination {
+          z-index: 2;
+          display: flex;
+          position: absolute;
+          inset-inline: 12px;
+          inset-block-end: 0;
+          gap: 0;
+          height: 2px;
+          border-radius: 1px;
+          background: rgb(43 39 36 / 0.22);
+        }
+
+        /* No overflow clipping here: .tap-area widens the hit area with ::before,
+           and clipping would swallow it on a 2px-tall control. */
+        #shopify-section-{{ section.id }} .product-card__media-pagination > button {
+          flex: 1 1 0;
+          min-width: 0;
+          height: 100%;
+          padding: 0;
+          border: 0;
+          background: none;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__media-pagination > button::after {
+          content: '';
+          display: block;
+          width: 100%;
+          height: 100%;
+          border-radius: inherit;
+          background: rgb(43 39 36 / 0);
+          transition: background 0.25s ease-in-out;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__media-pagination > button[aria-current='true']::after {
+          background: rgb(43 39 36 / 0.9);
+        }
+      }
+
+      /* Below 375px stay fluid rather than overflowing */
+      @media screen and (max-width: 374px) {
+        #shopify-section-{{ section.id }} {
+          --container-gutter: 0.5rem;
+        }
+
+        #shopify-section-{{ section.id }} .product-card-title {
+          font-size: 12px;
+          line-height: 17px;
+        }
+      }
+    </style>
   {%- endif -%}
 
-  {%- comment -%}
-    --------------------------------------------------------------------------------------------------------------------
-    PRODUCT INFO
-    --------------------------------------------------------------------------------------------------------------------
-  {%- endcomment -%}
+  {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 
+  <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_class }}">
+    <div class="container">
+      {%- assign wrapper_carousel_id = 'featured-collections-carousel-' | append: section.id -%}
 
-    {%- comment -%}
-    --------------------------------------------------------------------------------------------------------------------
-    PRODUCT TAG / CATEGORY (below image, above info)
-    --------------------------------------------------------------------------------------------------------------------
-  {%- endcomment -%}
+      <div class="section-stack">
+        {%- liquid
+          assign hide_section_header = false
 
-  {%- liquid
-    assign product_tag = product.metafields.custom.pile_type.value | default: product.type
-  -%}
+          if section.blocks.size <= 1 and section.settings.hide_collection_title and section.settings.subheading == blank
+            assign hide_section_header = true
+          endif
+        -%}
 
-
-  <div class="product-card__info empty:hidden">
-    {%- assign text_class = '' -%}
-
-    {%- if settings.product_card_text_font == 'heading' -%}
-      {%- assign text_class = 'h6' -%}
-    {%- endif -%}
-      {%- if product_tag != blank and hide_product_information != true -%}
-    <div class="product-card__tag-wrapper">
-    <p class="product-card__tag smallcaps text-subdued">{{ product_tag }}</p>
-    </div>
-  {%- endif -%} 
-    {%- if show_title or show_prices or show_vendor and product.vendor != blank -%}
-      <div class="v-stack justify-items-center gap-2">
-        {%- if show_vendor and product.vendor != blank -%}
-          {%- capture vendor_class -%}smallcaps {% if settings.product_card_text_font == 'heading' %}heading{% endif %}{% endcapture %}
-          {%- render 'vendor' with product.vendor, class: vendor_class -%}
-        {%- endif -%}
-
-        {%- if show_title or show_rating or show_prices -%}
-          <div class="v-stack justify-items-start gap-1">
-            {%- if show_title -%}
-              <a
-                href="{{ product.url }}"
-                class="product-title product-card-title {% if text_class != blank %}{{ text_class }}{% endif %} {% if settings.product_title_max_lines > 0 %}line-clamp{% endif %}"
-                {% if settings.product_title_max_lines > 0 %}
-                  style="--line-clamp-count: {{ settings.product_title_max_lines }}"
-                {% endif %}
-                data-instant
-              >
-                {{- product.title -}}
-              </a>
+        {%- unless hide_section_header -%}
+          <div class="v-stack justify-self-{{ section.settings.header_alignment | replace: 'left', 'start' | replace: 'right', 'end' }} gap-4 text-center sm:gap-5">
+            {%- if section.settings.subheading != blank -%}
+              <p class="h6 text-center">{{- section.settings.subheading -}}</p>
             {%- endif -%}
 
-            {%- comment -%} Reviews render before the price, with count {%- endcomment -%}
-            {%- if show_rating -%}
-              {%- render 'product-rating', product: product, show_empty: settings.show_product_rating_if_empty, display_mode: 'rating_with_count' -%}
-            {%- endif -%}
-
-            {%- if show_prices -%}
-              <div class="h-stack gap-2 align-baseline wrap">
-                {%- render 'price-list', product: product, context: 'card' -%}
-
-                {%- comment -%} Save X% tag {%- endcomment -%}
-                {%- liquid
-                  assign compare_price = product.compare_at_price
-                  assign current_price = product.price
-                -%}
-                {%- if compare_price > current_price -%}
-                  {%- assign discount_percentage = compare_price | minus: current_price | times: 100.0 | divided_by: compare_price | round -%}
-                  <span class="badge badge--custom">{{ 'general.product.save' | t: percentage: discount_percentage }}</span>
-                {%- endif -%}
-              </div>
+            {%- if section.blocks.size > 1 -%}
+              <carousel-navigation align-selected class="featured-collections-navigation scroll-area bleed" aria-controls="{{ wrapper_carousel_id }}">
+                {%- for block in section.blocks -%}
+                  <button class="{{ section.settings.heading_style }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+                    {{- block.settings.title | default: block.settings.collection.title | default: 'Collection' -}}
+                  </button>
+                {%- endfor -%}
+              </carousel-navigation>
+            {%- elsif section.settings.hide_collection_title != true -%}
+              <h2 class="{{ section.settings.heading_style }}">
+                {{ section.blocks.first.settings.title | default: section.blocks.first.settings.collection.title | default: 'Collection' }}
+              </h2>
             {%- endif -%}
           </div>
-        {%- endif -%}
+        {%- endunless -%}
+
+        <featured-collections-carousel id="{{ wrapper_carousel_id }}" class="featured-collections-carousel">
+          {%- for block in section.blocks -%}
+            <div class="featured-collections-carousel__item {% if forloop.first %}is-selected{% endif %}" {{ block.shopify_attributes }}>
+              {%- capture product_list -%}
+                {%- assign should_reveal = false -%}
+
+                {%- if settings.stagger_products_apparition and forloop.first -%}
+                  {%- assign should_reveal = true -%}
+                {%- endif -%}
+
+                {%- comment -%}
+                  Row 06 only. Outside the home_bestselling_rugs guard these stay nil/false,
+                  so this render behaves exactly as before for every other instance.
+                {%- endcomment -%}
+                {%- liquid
+                  assign row06_image_carousel = false
+                  assign row06_show_quick_buy = null
+                  assign row06_quick_buy_icon = null
+                  assign row06_show_swatches = null
+
+                  if section.settings.custom_class contains 'home_bestselling_rugs'
+                    assign row06_image_carousel = true
+                    assign row06_show_quick_buy = true
+                    assign row06_quick_buy_icon = 'picto-bag-handle'
+                    assign row06_show_swatches = false
+                  endif
+                -%}
+
+                {%- for product in block.settings.collection.products limit: block.settings.products_count -%}
+                  {%- render 'product-card',
+                    product: product,
+                    reveal: should_reveal,
+                    position: forloop.index,
+                    hide_product_information: section.settings.hide_product_information,
+                    block: block,
+                    image_carousel: row06_image_carousel,
+                    show_quick_buy: row06_show_quick_buy,
+                    quick_buy_icon: row06_quick_buy_icon,
+                    show_swatches: row06_show_swatches
+                  -%}
+                {%- else -%}
+                  {%- for i in (1..block.settings.products_count) -%}
+                    {%- render 'product-card-placeholder', reveal: should_reveal, loop_index: forloop.index0, hide_product_information: section.settings.hide_product_information -%}
+                  {%- endfor -%}
+                {%- endfor -%}
+              {%- endcapture -%}
+
+              {%- if section.settings.stack_products -%}
+                <product-list class="product-list {% if section.settings.hide_product_information %}product-list--compact{% endif %} justify-center">
+                  {{- product_list -}}
+                </product-list>
+              {%- else -%}
+                {%- assign product_carousel_id = 'featured-collections-product-list-carousel-' | append: block.id -%}
+
+                <product-list class="floating-controls-container floating-controls-container--inside floating-controls-container--on-hover">
+                  <carousel-prev-button class="floating-controls-container__control" aria-controls="{{ product_carousel_id }}">
+                    <button type="button" class="prev-next-button prev-next-button--prev circle-button hover:animate-icon-inline" disabled>
+                      <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+                      {%- render 'icon' with 'arrow-left', direction_aware: true -%}
+                    </button>
+                  </carousel-prev-button>
+
+                  {%- comment -%}
+                    `group-cells` with no value makes ScrollCarousel step by
+                    Math.floor(clientWidth / cellWidth) - 4 cards on desktop,
+                    2 on mobile - which pages [1][2][3][4] straight to [5][6][7][8].
+                    Omitting the attribute makes groupCells fall back to 1, so each
+                    click advances exactly one product. Every other instance of this
+                    section keeps the attribute and its existing paging behaviour.
+                  {%- endcomment -%}
+                  <scroll-carousel
+                    id="{{ product_carousel_id }}"
+                    {% unless is_row06 %}group-cells{% endunless %}
+                    allow-drag
+                    class="product-list {% if section.settings.hide_product_information %}product-list--compact{% endif %} product-list--carousel scroll-area bleed md:unbleed"
+                  >
+                    {{- product_list -}}
+                  </scroll-carousel>
+
+                  <carousel-next-button class="floating-controls-container__control" aria-controls="{{ product_carousel_id }}">
+                    <button type="button" class="prev-next-button prev-next-button--next circle-button hover:animate-icon-inline">
+                      <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+                      {%- render 'icon' with 'arrow-right', direction_aware: true -%}
+                    </button>
+                  </carousel-next-button>
+                </product-list>
+              {%- endif -%}
+
+              {%- if block.settings.link_text != blank -%}
+                {%- assign button_link = block.settings.link_url | default: block.settings.collection.url | default: '#' -%}
+
+                <div class="justify-self-center">
+                  {%- render 'button', href: button_link, content: block.settings.link_text -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </featured-collections-carousel>
       </div>
-    {%- endif -%}
-
-    {%- if show_swatches and settings.product_color_display != 'hide' -%}
-      {%- liquid
-        assign matched_product_option = null
-        assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ','
-
-        # First, we try to find an option named explicitly "color" in the store's language
-        for color_label in color_label_list
-          if product.options_by_name[color_label] != blank
-            assign matched_product_option = product.options_by_name[color_label]
-            break
-          endif
-        endfor
-
-        # If we didn't find an option named "color", we try to find an option that has swatches, as this is probably
-        # the color option that the merchant want to use for swatches
-        if matched_product_option == blank
-          for product_option in product.options_with_values
-            assign values_with_swatch = product_option.values | where: 'swatch'
-
-            if values_with_swatch.size > 0
-              assign matched_product_option = product_option
-              break
-            endif
-          endfor
-        endif
-      -%}
-
-      {%- if matched_product_option != blank -%}
-        {%- case settings.product_color_display -%}
-          {%- when 'count' -%}
-            <p class="smallcaps text-subdued">{{- 'product.general.available_colors_count' | t: count: matched_product_option.values.size -}}</p>
-
-          {%- when 'swatch' -%}
-            <fieldset class="h-stack wrap justify-center gap-1">
-              <legend class="sr-only">{{ matched_product_option.name }}</legend>
-
-              {%- capture param_name -%}swatch-{{ quick_buy_context }}-{{ section.id }}-{{ block.id }}-{{ product.id }}-{{ matched_product_option.position }}{%- endcapture -%}
-
-              {%- liquid
-                for option_value in matched_product_option.values
-                  render 'option-value', type: 'swatch', option_value: option_value, param_name: param_name, option_position: matched_product_option.position, output_variant_media: true, size: 'sm'
-                endfor
-              -%}
-            </fieldset>
-        {%- endcase -%}
-      {%- endif -%}
-    {%- endif -%}
+    </div>
   </div>
-</product-card>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.featured_collections.name",
+  "class": "shopify-section--featured-collections",
+  "tag": "section",
+  "disabled_on": {
+    "templates": ["password"],
+    "groups": ["header", "custom.overlay"]
+  },
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class",
+      "info": "Optional. Adds a class to this section so instance-specific CSS can be scoped to it."
+    },
+    {
+      "type": "checkbox",
+      "id": "separate_section_with_border",
+      "label": "t:global.section.separate_section_with_border",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_product_information",
+      "label": "t:global.product_list.hide_product_information",
+      "info": "t:global.product_list.hide_product_information_info"
+    },
+    {
+      "type": "header",
+      "content": "t:global.product_list.product_list_category"
+    },
+    {
+      "type": "checkbox",
+      "id": "stack_products",
+      "label": "t:global.product_list.stack_products",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "products_per_row_mobile",
+      "label": "t:global.product_list.products_per_row_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2",
+      "visible_if": "{{ section.settings.stack_products }}"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_desktop",
+      "min": 2,
+      "max": 6,
+      "label": "t:global.product_list.products_per_row_desktop",
+      "info": "t:global.product_list.products_per_row_desktop_info",
+      "default": 4,
+      "visible_if": "{{ section.settings.stack_products }}"
+    },
+    {
+      "type": "header",
+      "content": "t:global.product_list.spacing_category",
+      "info": "t:global.product_list.spacing_category_info"
+    },
+    {
+      "type": "range",
+      "min": 0.2,
+      "max": 2,
+      "step": 0.1,
+      "id": "horizontal_spacing_factor",
+      "label": "Horizontal spacing factor",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "min": 0.2,
+      "max": 2,
+      "step": 0.1,
+      "id": "vertical_spacing_factor",
+      "label": "Vertical spacing factor",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "t:global.section.header_category"
+    },
+    {
+      "type": "text_alignment",
+      "id": "header_alignment",
+      "label": "t:global.text.alignment",
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "t:global.text.heading_style",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        },
+        {
+          "value": "h6",
+          "label": "H6"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "t:global.text.subheading",
+      "default": "Featured collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_collection_title",
+      "label": "t:sections.featured_collections.hide_collection_title",
+      "info": "t:sections.featured_collections.hide_collection_title_info",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "t:sections.featured_collections.blocks.collection.name",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "t:sections.featured_collections.blocks.collection.collection"
+        },
+        {
+          "type": "range",
+          "id": "products_count",
+          "min": 2,
+          "max": 50,
+          "label": "t:global.product_list.products_to_show",
+          "default": 8
+        },
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "t:global.text.heading",
+          "info": "t:sections.featured_collections.blocks.collection.title_info"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "t:global.text.link_url",
+          "info": "t:sections.featured_collections.blocks.collection.default_link_url"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "t:global.text.link_text",
+          "default": "View all"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.featured_collections.presets.featured_collections.name",
+      "category": "t:global.categories.collections",
+      "blocks": [
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
