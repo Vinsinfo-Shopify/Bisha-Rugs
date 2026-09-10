@@ -53,17 +53,72 @@
       assign sbs_show_arrow = section.settings.sbs_show_arrow
       assign sbs_show_nav = section.settings.sbs_show_nav
 
-      # The selected menu IS the card list. Row 08 iterates that menu's items and
-      # nothing else - there is no traversal of a larger menu and no filtering of
-      # unrelated items, so main-navigation entries can never appear here. Point
-      # the Menu setting at the "Shop by Style" menu and its items become the
-      # cards, in menu order.
+      # Which links become the cards.
+      #
+      # Shopify's menu picker only ever lists whole menus, never individual items,
+      # so when the styles are child items of a "Shop by Style" entry the section
+      # has to be told which entry to open. That is what sbs_parent_item does.
+      #
+      #   parent item blank -> the selected menu's own top-level items are cards
+      #   parent item set   -> that item is found, and ITS CHILDREN are the cards
+      #
+      # Matching is on title or handle, case and space insensitive, searched three
+      # levels deep. A name that matches nothing yields no cards rather than
+      # quietly falling back to the whole menu, and the editor comment at the foot
+      # of this section prints the menu tree so the exact name can be copied.
       assign sbs_menu = section.settings.sbs_menu
-      assign sbs_links = sbs_menu.links
-      assign sbs_menu_selected = false
+      assign sbs_parent = section.settings.sbs_parent_item | downcase | strip
+      assign sbs_links = null
+      assign sbs_source = 'none'
 
-      if sbs_links.size > 0
-        assign sbs_menu_selected = true
+      if sbs_parent == blank
+        assign sbs_links = sbs_menu.links
+        assign sbs_source = 'top level of the selected menu'
+      else
+        assign sbs_parent_found = false
+
+        for l1 in sbs_menu.links
+          if sbs_parent_found == false
+            assign t1 = l1.title | downcase | strip
+            assign h1 = l1.handle | downcase | strip
+
+            if t1 == sbs_parent or h1 == sbs_parent
+              assign sbs_links = l1.links
+              assign sbs_source = l1.title
+              assign sbs_parent_found = true
+            endif
+          endif
+
+          if sbs_parent_found == false
+            for l2 in l1.links
+              if sbs_parent_found == false
+                assign t2 = l2.title | downcase | strip
+                assign h2 = l2.handle | downcase | strip
+
+                if t2 == sbs_parent or h2 == sbs_parent
+                  assign sbs_links = l2.links
+                  assign sbs_source = l2.title
+                  assign sbs_parent_found = true
+                endif
+              endif
+
+              if sbs_parent_found == false
+                for l3 in l2.links
+                  if sbs_parent_found == false
+                    assign t3 = l3.title | downcase | strip
+                    assign h3 = l3.handle | downcase | strip
+
+                    if t3 == sbs_parent or h3 == sbs_parent
+                      assign sbs_links = l3.links
+                      assign sbs_source = l3.title
+                      assign sbs_parent_found = true
+                    endif
+                  endif
+                endfor
+              endif
+            endfor
+          endif
+        endfor
       endif
 
       # Column count for the row-major mobile fill option. Counts every block
@@ -681,9 +736,10 @@
   {%- if is_sbs and request.design_mode -%}
     <!-- Row 08 (shop_by_style) diagnostics
 
-      Shop by Style menu .. {{ section.settings.sbs_menu.handle | default: 'NOT SELECTED' }}
-      menu title .......... {{ section.settings.sbs_menu.title | default: '-' }}
-      items in that menu .. {{ sbs_links.size | default: 0 }}
+      menu selected ....... {{ section.settings.sbs_menu.handle | default: 'NOT SELECTED' }}
+      parent item set ..... {{ section.settings.sbs_parent_item | default: '(empty - using the menu top level)' }}
+      cards taken from .... {{ sbs_source }}
+      items found ......... {{ sbs_links.size | default: 0 }}
       item titles ......... {% for l in sbs_links limit: 24 %}{{ l.title }}{% unless forloop.last %} | {% endunless %}{% endfor %}
       image blocks ........ {{ section.blocks.size }}
       cards rendered ...... {{ sbs_enabled_count }}
@@ -694,9 +750,18 @@
         block {{ forloop.index }} -> {{ diag_link.title | default: '(no menu item at this position)' }} -> {{ diag_link.url | default: '-' }}
       {%- endfor %}
 
-      If the item titles above are navigation entries such as Shop All or Home,
-      the wrong menu is selected. Point "Shop by Style menu" at the menu that
-      holds the style values. This section never reads any other menu.
+      Tree of "{{ section.settings.sbs_menu.handle | default: 'NOT SELECTED' }}".
+      Find the entry whose children are your styles and copy its title into
+      "Parent menu item". The number in brackets is how many children it has.
+      {% for l1 in section.settings.sbs_menu.links %}
+        [1] {{ l1.title }}  ({{ l1.links.size }} children)  handle: {{ l1.handle }}
+        {%- for l2 in l1.links %}
+          [2]   {{ l2.title }}  ({{ l2.links.size }} children)  handle: {{ l2.handle }}
+          {%- if l2.links.size > 0 %}
+            [3]     {% for l3 in l2.links limit: 16 %}{{ l3.title }}{% unless forloop.last %}, {% endunless %}{% endfor %}
+          {%- endif -%}
+        {%- endfor -%}
+      {% endfor %}
     -->
   {%- endif -%}
 {%- endif -%}
@@ -734,7 +799,13 @@
       "type": "link_list",
       "id": "sbs_menu",
       "label": "Shop by Style menu",
-      "info": "Select the menu that holds the style values. Every item in that menu becomes one card, in menu order, taking its title and link from the menu item. Do not select the main navigation menu: this section reads the selected menu's items directly and does not filter them."
+      "info": "The menu containing the style values. If they are child items of a parent entry such as \"Shop by Style\", select the menu that entry lives in and name the entry in the next setting."
+    },
+    {
+      "type": "text",
+      "id": "sbs_parent_item",
+      "label": "Parent menu item",
+      "info": "Leave empty if the selected menu's own items are the styles. If the styles are children of a menu entry, type that entry's exact title or handle, for example Shop by Style or shop-by-style, and its child items become the cards. Searched three levels deep. View source in the theme editor to see the menu tree printed for this section, with the child count next to each entry."
     },
     {
       "type": "text",
