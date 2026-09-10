@@ -15,6 +15,102 @@
     endif
   -%}
 
+  {%- comment -%}
+    ------------------------------------------------------------------------------------------------------------------------
+    ROW 08 VARIANT - "Shop by Style / Shop by Pattern"
+    ------------------------------------------------------------------------------------------------------------------------
+    Everything below is gated on layout_variant == 'shop_by_style'. Instances that
+    do not set it (Explore Our Range, and the collection template) fall through
+    with is_sbs = false and behave exactly as before.
+
+    Data split for this variant:
+      Menu  -> card title + card URL (nothing else)
+      Block -> image, enabled, presentation
+
+    Pairing is by BLOCK POSITION, not by enabled position: style item 1 always
+    pairs with menu link 1, so disabling an item removes only that card instead
+    of shifting the rest onto the wrong links. Menu order therefore determines
+    Row 08 item order.
+  {%- endcomment -%}
+
+  {%- liquid
+    assign is_sbs = false
+
+    if section.settings.layout_variant == 'shop_by_style'
+      assign is_sbs = true
+    endif
+
+    assign sbs_show_image = true
+    assign sbs_show_title = true
+    assign sbs_show_arrow = true
+    assign sbs_show_nav = true
+    assign sbs_links = null
+    assign sbs_columns = 1
+
+    if is_sbs
+      assign sbs_show_image = section.settings.sbs_show_image
+      assign sbs_show_title = section.settings.sbs_show_title
+      assign sbs_show_arrow = section.settings.sbs_show_arrow
+      assign sbs_show_nav = section.settings.sbs_show_nav
+
+      # Resolve the menu branch holding the style links. Blank group title means
+      # use the menu's top level.
+      assign sbs_menu = section.settings.sbs_menu
+      assign sbs_links = sbs_menu.links
+      assign sbs_group = section.settings.sbs_menu_group_title | downcase | strip
+
+      if sbs_group != blank
+        assign sbs_found = false
+
+        for l1 in sbs_menu.links
+          if sbs_found == false
+            assign t1 = l1.title | downcase | strip
+
+            if t1 == sbs_group
+              assign sbs_links = l1.links
+              assign sbs_found = true
+            endif
+          endif
+
+          if sbs_found == false
+            for l2 in l1.links
+              if sbs_found == false
+                assign t2 = l2.title | downcase | strip
+
+                if t2 == sbs_group
+                  assign sbs_links = l2.links
+                  assign sbs_found = true
+                endif
+              endif
+            endfor
+          endif
+        endfor
+      endif
+
+      # Column count for the row-major mobile fill option
+      assign sbs_enabled_count = 0
+      assign sbs_scan_index = 0
+
+      for block in section.blocks
+        if block.type == 'style_item'
+          assign scan_link = sbs_links[sbs_scan_index]
+
+          if block.settings.enabled != false and scan_link != blank
+            assign sbs_enabled_count = sbs_enabled_count | plus: 1
+          endif
+
+          assign sbs_scan_index = sbs_scan_index | plus: 1
+        endif
+      endfor
+
+      assign sbs_columns = sbs_enabled_count | divided_by: 2.0 | ceil
+
+      if sbs_columns < 1
+        assign sbs_columns = 1
+      endif
+    endif
+  -%}
+
   <style>
     #shopify-section-{{ section.id }} {
       {%- if stack_mobile or stack_mobile_and_desktop -%}
@@ -219,6 +315,132 @@
   }
   </style>
 
+  {%- if is_sbs -%}
+    <style>
+      /* ---------------------------------------------------------------------
+         ROW 08 only. Every selector carries .collection-list--sbs, which is
+         only ever output by this variant, so these rules cannot reach an
+         Explore Our Range instance even though both share this file. The extra
+         class also out-specifies the base rules above without !important. */
+
+      /* Responsive header text: one heading element, one eyebrow element */
+      #shopify-section-{{ section.id }} .collection-list--sbs .sbs-text--mobile {
+        display: none;
+      }
+
+      /* Filled white card arrow with a charcoal chevron (base variant is outlined) */
+      #shopify-section-{{ section.id }} .collection-list--sbs .collection-card__arrow {
+        background-color: #ffffff;
+        border-color: #ffffff;
+        color: #2b2724;
+      }
+
+      #shopify-section-{{ section.id }} .collection-list--sbs .collection-card:hover .collection-card__arrow {
+        background-color: #ffffff !important;
+        border-color: #ffffff !important;
+        color: #2b2724 !important;
+      }
+
+      /* Main carousel control: charcoal disc, white chevron, on the right edge,
+         vertically centred on the cards. Prestige's disabled prev/next stays
+         hidden, which matches the Figma showing only the next arrow at the start. */
+      #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container__control .circle-button {
+        --circle-button-size: 2.375rem; /* 38px */
+        --circle-button-text-color: 255 255 255;
+        background: #2b2724;
+        color: #ffffff;
+        box-shadow: none;
+      }
+
+      #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container__control .circle-button > svg {
+        width: 0.875rem;
+        stroke-width: 1.75;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      @media screen and (pointer: fine) {
+        #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container--on-hover > .floating-controls-container__control,
+        #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
+          opacity: 1;
+          transform: none;
+        }
+
+        #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container:not(:has(.is-scrollable)) .floating-controls-container__control {
+          display: grid;
+        }
+
+        /* Centred on the card, which is 313 x 400 inside the 1300px column */
+        #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container__control {
+          inset-block-start: calc(((min(1300px, 100vw - 2.4rem) - 48px) / 4 * 400 / 313) / 2 - 1.1875rem);
+        }
+      }
+
+      /* ---------- Mobile: two-row horizontal carousel ---------- */
+      @media screen and (max-width: 699px) {
+        #shopify-section-{{ section.id }} .collection-list--sbs .sbs-text--desktop {
+          display: none;
+        }
+
+        #shopify-section-{{ section.id }} .collection-list--sbs .sbs-text--mobile {
+          display: inline;
+        }
+
+        /* The base rules put one 84vw card per view. Two columns over two rows
+           instead, scrolling horizontally. */
+        #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area {
+          display: grid;
+          gap: {{ section.settings.sbs_mobile_gap }}px;
+          {%- if section.settings.sbs_mobile_fill == 'row' -%}
+            grid-auto-flow: row;
+            grid-template-rows: repeat(2, auto);
+            grid-template-columns: repeat({{ sbs_columns }}, calc((100% - {{ section.settings.sbs_mobile_gap }}px) / 2));
+          {%- else -%}
+            grid-auto-flow: column;
+            grid-template-rows: repeat(2, auto);
+            grid-auto-columns: calc((100% - {{ section.settings.sbs_mobile_gap }}px) / 2);
+          {%- endif -%}
+        }
+
+        #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area .collection-card {
+          flex-basis: auto;
+          width: auto;
+          scroll-snap-align: start;
+        }
+
+        /* No carousel arrows on mobile in the Figma; swipe drives it */
+        #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container__control {
+          display: none;
+        }
+      }
+
+      /* ---------- Mobile progress indicator ---------- */
+      #shopify-section-{{ section.id }} .collection-list--sbs .sbs-progress {
+        display: none;
+      }
+
+      @media screen and (max-width: 699px) {
+        #shopify-section-{{ section.id }} .collection-list--sbs .sbs-progress {
+          display: block;
+          position: relative;
+          height: 3px;
+          margin-block-start: 16px;
+          border-radius: 2px;
+          background: rgb(var(--text-color) / 0.14);
+        }
+
+        #shopify-section-{{ section.id }} .collection-list--sbs .sbs-progress__thumb {
+          position: absolute;
+          inset-block: 0;
+          border-radius: inherit;
+          background: rgb(var(--text-color) / 0.85);
+          width: calc(var(--sbs-progress-size, 0.4) * 100%);
+          inset-inline-start: calc(var(--sbs-progress-position, 0) * (100% - var(--sbs-progress-size, 0.4) * 100%));
+        }
+      }
+    </style>
+  {%- endif -%}
+
   {%- comment -%}
     ------------------------------------------------------------------------------------------------------------------------
     LIQUID
@@ -237,21 +459,81 @@
 
   {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 
-  <div class="{% unless remove_vertical_spacing %}section-spacing {% if reduce_vertical_spacing %}section-spacing--tight{% endif %}{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+  <div class="{% unless remove_vertical_spacing %}section-spacing {% if reduce_vertical_spacing %}section-spacing--tight{% endif %}{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {% if is_sbs %}collection-list--sbs{% endif %}">
     <div class="{% if section.settings.space_items %}container{% endif %}">
       <div class="section-stack">
-        {%- render 'section-header',
-          subheading: section.settings.subheading,
-          heading: section.settings.title,
-          heading_style: section.settings.heading_style,
-          content: section.settings.content,
-          text_alignment: 'center'
-        -%}
+        {%- if is_sbs -%}
+          {%- comment -%}
+            section-header.liquid always emits an <h1>; this variant needs an <h2>
+            plus responsive text, so it renders the same classes inline instead.
+            Only one string is ever displayed, and display:none keeps the other
+            out of the accessibility tree.
+          {%- endcomment -%}
+          {%- if section.settings.subheading != blank or section.settings.title != blank -%}
+            <div class="section-header justify-self-center text-center">
+              <div class="prose">
+                {%- if section.settings.subheading != blank -%}
+                  <p class="h6 section_header_subheading">
+                    {%- if section.settings.sbs_subheading_mobile != blank -%}
+                      <span class="sbs-text sbs-text--desktop">{{- section.settings.subheading -}}</span>
+                      <span class="sbs-text sbs-text--mobile">{{- section.settings.sbs_subheading_mobile -}}</span>
+                    {%- else -%}
+                      {{- section.settings.subheading -}}
+                    {%- endif -%}
+                  </p>
+                {%- endif -%}
+
+                {%- if section.settings.title != blank -%}
+                  <h2 class="{{ section.settings.heading_style | default: 'h2' }} section_header_heading">
+                    {%- if section.settings.sbs_title_mobile != blank -%}
+                      <span class="sbs-text sbs-text--desktop">{{- section.settings.title -}}</span>
+                      <span class="sbs-text sbs-text--mobile">{{- section.settings.sbs_title_mobile -}}</span>
+                    {%- else -%}
+                      {{- section.settings.title -}}
+                    {%- endif -%}
+                  </h2>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- else -%}
+          {%- render 'section-header',
+            subheading: section.settings.subheading,
+            heading: section.settings.title,
+            heading_style: section.settings.heading_style,
+            content: section.settings.content,
+            text_alignment: 'center'
+          -%}
+        {%- endif -%}
 
         {% capture collection_list %}
+          {%- assign sbs_index = 0 -%}
           {%- for block in section.blocks -%}
             {%- assign collection = block.settings.collection -%}
             {%- assign collection_url = block.settings.button_link | default: collection.url -%}
+            {%- assign card_title = block.settings.title -%}
+            {%- assign render_card = true -%}
+
+            {%- liquid
+              if is_sbs
+                if block.type == 'style_item'
+                  assign paired_link = sbs_links[sbs_index]
+                  assign sbs_index = sbs_index | plus: 1
+                  assign card_title = paired_link.title
+                  assign collection_url = paired_link.url
+
+                  if block.settings.enabled == false or paired_link == blank
+                    assign render_card = false
+                  endif
+                else
+                  assign render_card = false
+                endif
+              elsif block.type == 'style_item'
+                assign render_card = false
+              endif
+            -%}
+
+            {%- if render_card -%}
 
             {%- capture collection_card_info -%}
               <div class="collection-card__content color-scheme color-scheme--{{ block.settings.color_scheme.id }} prose prose--tight {{ block.settings.content_position }}">
@@ -260,11 +542,11 @@
                 {%- endif -%}
 
                 <div class="collection-card__row">
-                  {%- if block.settings.title != blank -%}
-                    <p class="h3 collection-card__title">{{- block.settings.title -}}</p>
+                  {%- if card_title != blank and sbs_show_title -%}
+                    <p class="h3 collection-card__title">{{- card_title -}}</p>
                   {%- endif -%}
 
-                  {%- if collection_url != blank -%}
+                  {%- if collection_url != blank and sbs_show_arrow -%}
                     <span class="collection-card__arrow" aria-hidden="true">
                       <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -284,9 +566,9 @@
                 {%- assign image = block.settings.image | default: collection.featured_image -%}
                 {%- capture sizes -%}(max-width: 699px) 100vw, {% if block.settings.expand_collection %}100vw{% else %}(max-width: 1149px) {{ 100 | divided_by: section.settings.collections_per_row_desktop | at_least: 50 }}vw, {{ 100 | divided_by: section.settings.collections_per_row_desktop }}vw{% endif %}{%- endcapture -%}
 
-                {%- if image != blank -%}
+                {%- if image != blank and sbs_show_image -%}
                   {{- image | image_url: width: image.width | image_tag: sizes: sizes, widths: '200,300,400,500,600,800,1000,1200,1400,1600,1800,2000,2200,2400', class: 'zoom-image group-hover:zoom', draggable: 'false' -}}
-                {%- else -%}
+                {%- elsif sbs_show_image -%}
                   {%- capture collection_placeholder -%}{%- cycle 'collection-1', 'collection-2', 'collection-3' -%}{%- endcapture -%}
                   {{- collection_placeholder | placeholder_svg_tag: 'placeholder zoom-image group-hover:zoom' | replace: '<svg', '<svg preserveAspectRatio="xMinYMin slice"' -}}
                 {%- endif -%}
@@ -310,6 +592,7 @@
                 {{- collection_card_content -}}
               </div>
             {%- endif -%}
+            {%- endif -%}
           {%- endfor -%}
         {% endcapture %}
 
@@ -327,6 +610,7 @@
           <div class="floating-controls-container floating-controls-container--inside floating-controls-container--on-hover {% if stack_desktop and stack_mobile == false %}lg:hidden{% elsif stack_desktop == false and stack_mobile %}lg-max:hidden{% endif %}">
             {%- assign carousel_id = 'carousel-' | append: section.id -%}
 
+            {%- if sbs_show_nav -%}
             <carousel-prev-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
               <button type="button" class="prev-next-button prev-next-button--prev circle-button circle-button--lg hover:animate-icon-inline" disabled>
                 <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
@@ -334,9 +618,15 @@
               </button>
             </carousel-prev-button>
 
+            {%- comment -%}
+              group-cells with no value makes ScrollCarousel step by
+              floor(clientWidth / cellWidth), i.e. four cards at a time. Omitting
+              it falls back to groupCells = 1, which is the one-card-per-click
+              movement Row 08 needs. Explore Our Range keeps the attribute.
+            {%- endcomment -%}
             <scroll-carousel
               id="{{ carousel_id }}"
-              group-cells
+              {% unless is_sbs %}group-cells{% endunless %}
               allow-drag
               class="collection-list scroll-area {% if section.settings.show_text_outside %}collection-list--text-outside{% endif %} bleed lg:unbleed"
             >
@@ -349,7 +639,48 @@
                 {%- render 'icon' with 'arrow-right', direction_aware: true -%}
               </button>
             </carousel-next-button>
+            {%- endif -%}
           </div>
+
+          {%- comment -%}
+            Row 08 mobile progress indicator. Proportional thumb driven by the
+            carousel's own scroll position. The custom element is defined once
+            and guarded, matching how the theme registers its own elements.
+          {%- endcomment -%}
+          {%- if is_sbs and section.settings.sbs_show_progress -%}
+            <sbs-scroll-progress class="sbs-progress" aria-hidden="true" data-carousel="{{ carousel_id }}">
+              <span class="sbs-progress__thumb"></span>
+            </sbs-scroll-progress>
+
+            <script>
+              if (!customElements.get('sbs-scroll-progress')) {
+                customElements.define(
+                  'sbs-scroll-progress',
+                  class extends HTMLElement {
+                    connectedCallback() {
+                      this.carousel = document.getElementById(this.dataset.carousel);
+                      if (!this.carousel) return;
+                      this.update = () => {
+                        const el = this.carousel;
+                        const travel = el.scrollWidth - el.clientWidth;
+                        const size = el.scrollWidth > 0 ? el.clientWidth / el.scrollWidth : 1;
+                        this.style.setProperty('--sbs-progress-size', Math.min(1, size));
+                        this.style.setProperty('--sbs-progress-position', travel > 0 ? el.scrollLeft / travel : 0);
+                      };
+                      this.carousel.addEventListener('scroll', this.update, { passive: true });
+                      window.addEventListener('resize', this.update, { passive: true });
+                      this.update();
+                    }
+                    disconnectedCallback() {
+                      if (!this.carousel) return;
+                      this.carousel.removeEventListener('scroll', this.update);
+                      window.removeEventListener('resize', this.update);
+                    }
+                  }
+                );
+              }
+            </script>
+          {%- endif -%}
         {% endif %}
       </div>
     </div>
@@ -366,6 +697,104 @@
     "groups": ["header", "custom.overlay"]
   },
   "settings": [
+    {
+      "type": "select",
+      "id": "layout_variant",
+      "label": "Layout variant",
+      "info": "\"Collection list\" is the original behaviour. \"Shop by style\" takes card titles and links from a navigation menu instead of the collection pickers.",
+      "options": [
+        { "value": "", "label": "Collection list (default)" },
+        { "value": "shop_by_style", "label": "Shop by style (menu driven)" }
+      ],
+      "default": ""
+    },
+    {
+      "type": "header",
+      "content": "Shop by style"
+    },
+    {
+      "type": "paragraph",
+      "content": "Only used when the layout variant is \"Shop by style\". Titles and links come from the menu below; images and display options come from the Style item blocks. Style item 1 pairs with the first link in the menu, item 2 with the second, and so on, so menu order determines the order here."
+    },
+    {
+      "type": "link_list",
+      "id": "sbs_menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "sbs_menu_group_title",
+      "label": "Menu group title",
+      "info": "Optional. The exact title of the menu item holding the style links. Leave blank to use the menu's top level."
+    },
+    {
+      "type": "text",
+      "id": "sbs_subheading_mobile",
+      "label": "Mobile eyebrow",
+      "info": "Optional. Replaces the eyebrow below 700px."
+    },
+    {
+      "type": "text",
+      "id": "sbs_title_mobile",
+      "label": "Mobile heading",
+      "info": "Optional. Replaces the heading below 700px."
+    },
+    {
+      "type": "select",
+      "id": "sbs_mobile_fill",
+      "label": "Mobile fill order",
+      "info": "Column keeps each pair of consecutive items in one column. Row runs items across the top row first, then the second row.",
+      "options": [
+        { "value": "column", "label": "Column (pairs of consecutive items)" },
+        { "value": "row", "label": "Row (across, then down)" }
+      ],
+      "default": "column"
+    },
+    {
+      "type": "range",
+      "id": "sbs_mobile_gap",
+      "label": "Mobile card gap",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "sbs_show_image",
+      "label": "Show image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sbs_show_title",
+      "label": "Show title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sbs_show_arrow",
+      "label": "Show card arrow",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sbs_show_nav",
+      "label": "Show desktop carousel arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sbs_show_progress",
+      "label": "Show mobile progress indicator",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:global.colors.scheme"
+    },
     {
       "type": "color_scheme",
       "id": "color_scheme",
@@ -508,6 +937,62 @@
     }
   ],
   "blocks": [
+    {
+      "type": "style_item",
+      "name": "Style item",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Used only by the \"Shop by style\" layout variant. The title and link come from the matching menu item; only the image and display options are set here."
+        },
+        {
+          "type": "checkbox",
+          "id": "enabled",
+          "label": "Show this item",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:global.image.image"
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "t:global.colors.scheme",
+          "default": "scheme-4"
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "t:global.position.content_position",
+          "options": [
+            { "value": "place-self-start text-start", "label": "t:global.position.top_left" },
+            { "value": "place-self-center text-center", "label": "t:global.position.center" },
+            { "value": "place-self-end-start text-start", "label": "t:global.position.bottom_left" },
+            { "value": "place-self-end-center text-center", "label": "t:global.position.bottom_center" },
+            { "value": "place-self-end text-end", "label": "t:global.position.bottom_right" }
+          ],
+          "default": "place-self-end-start text-start"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "t:global.colors.overlay",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "t:global.colors.overlay_opacity",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 0
+        }
+      ]
+    },
     {
       "type": "collection",
       "name": "t:sections.collection_list.blocks.collection.name",
