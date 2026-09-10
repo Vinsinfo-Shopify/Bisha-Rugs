@@ -235,10 +235,10 @@
         "collection-1": {
           "type": "collection",
           "settings": {
-            "collection": "oushak-rugs",
+            "collection": "",
             "products_count": 8,
             "title": "Bestselling Oushak Rugs",
-            "link_url": "shopify://collections/oushak-rugs",
+            "link_url": "",
             "link_text": "SHOP BESTSELLING RUGS"
           }
         }
@@ -689,7 +689,6 @@
       ],
       "settings": {
         "color_scheme": "scheme-1",
-        "custom_class": "",
         "separate_section_with_border": true,
         "hide_product_information": false,
         "stack_products": false,
