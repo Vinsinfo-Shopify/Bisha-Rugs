@@ -383,11 +383,23 @@
       /* Main carousel control: charcoal disc, white chevron, on the right edge,
          vertically centred on the cards. Prestige's disabled prev/next stays
          hidden, which matches the Figma showing only the next arrow at the start. */
+      /* Row 08 background, scoped to this section only. Global colour schemes
+         and every other section are untouched. */
+      #shopify-section-{{ section.id }} .collection-list--sbs {
+        background: {{ section.settings.sbs_background }};
+      }
+
+      /* MAIN carousel control. The shared component is left alone; only its
+         appearance is overridden under the Row 08 wrapper class.
+         .circle-button's default box-shadow is tinted with the text colour, so a
+         white chevron produces the white ring - hence box-shadow: none. */
       #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container__control .circle-button {
         --circle-button-size: 2.375rem; /* 38px */
+        --circle-button-background: 43 39 36;
         --circle-button-text-color: 255 255 255;
         background: #2b2724;
         color: #ffffff;
+        border: 0;
         box-shadow: none;
       }
 
@@ -409,10 +421,33 @@
           display: grid;
         }
 
+        /* theme.css puts the control 1.5rem INSIDE the container, which lands it
+           on top of the last card. Half the disc width pushes it back out so it
+           straddles the outer edge of the carousel viewport instead. */
+        #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container--inside {
+          --floating-controls-inset-inline: -1.1875rem; /* half of 38px */
+        }
+
         /* Centred on the card, which is 313 x 400 inside the 1300px column */
         #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container__control {
           inset-block-start: calc(((min(1300px, 100vw - 2.4rem) - 48px) / 4 * 400 / 313) / 2 - 1.1875rem);
         }
+      }
+
+      /* Partial fifth card. Card width is pinned to the 1300px column so the
+         cards stay 313px, then the scrollport is widened to the right by the
+         page gutter so the next card peeks through instead of being clipped
+         exactly at the column edge. */
+      @media screen and (min-width: 1150px) {
+        #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area {
+          --collection-list-item-size: calc((min(81.25rem, 100vw - 2.4rem) - 48px) / 4);
+          margin-inline-end: calc(-1 * max(1.2rem, (100vw - 81.25rem) / 2));
+        }
+      }
+
+      /* Mobile page wrapper is inert on desktop */
+      #shopify-section-{{ section.id }} .collection-list--sbs .sbs-page {
+        display: contents;
       }
 
       /* ---------- Mobile: two-row horizontal carousel ---------- */
@@ -425,26 +460,33 @@
           display: inline;
         }
 
-        /* The base rules put one 84vw card per view. Two columns over two rows
-           instead, scrolling horizontally. */
+        /* Four cards per page. The scroll area becomes a row of full-width
+           pages, each page a 2 x 2 grid, so a swipe moves a whole group of four
+           rather than nudging past cards that are already on screen. */
         #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area {
+          display: flex;
+          gap: 0;
+          scroll-snap-type: x mandatory;
+        }
+
+        #shopify-section-{{ section.id }} .collection-list--sbs .sbs-page {
+          flex: 0 0 100%;
           display: grid;
           gap: {{ section.settings.sbs_mobile_gap }}px;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-rows: repeat(2, auto);
           {%- if section.settings.sbs_mobile_fill == 'row' -%}
             grid-auto-flow: row;
-            grid-template-rows: repeat(2, auto);
-            grid-template-columns: repeat({{ sbs_columns }}, calc((100% - {{ section.settings.sbs_mobile_gap }}px) / 2));
           {%- else -%}
             grid-auto-flow: column;
-            grid-template-rows: repeat(2, auto);
-            grid-auto-columns: calc((100% - {{ section.settings.sbs_mobile_gap }}px) / 2);
           {%- endif -%}
+          scroll-snap-align: start;
         }
 
         #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area .collection-card {
           flex-basis: auto;
           width: auto;
-          scroll-snap-align: start;
+          scroll-snap-align: none;
         }
 
         /* No carousel arrows on mobile in the Figma; swipe drives it */
@@ -547,6 +589,8 @@
 
         {% capture collection_list %}
           {%- assign sbs_index = 0 -%}
+          {%- assign sbs_rendered = 0 -%}
+          {%- assign sbs_page_pos = 0 -%}
           {%- for block in section.blocks -%}
             {%- assign collection = block.settings.collection -%}
             {%- assign collection_url = block.settings.button_link | default: collection.url -%}
@@ -597,6 +641,18 @@
             -%}
 
             {%- if render_card -%}
+
+            {%- comment -%}
+              Mobile pages. Every four rendered cards are wrapped so the mobile
+              carousel has real slides to move between. The wrapper is
+              display:contents on desktop, so it disappears from layout there and
+              the cards remain direct flex children exactly as before.
+            {%- endcomment -%}
+            {%- liquid
+              assign sbs_rendered = sbs_rendered | plus: 1
+              assign sbs_page_pos = sbs_rendered | modulo: 4
+            -%}
+            {%- if is_sbs and sbs_page_pos == 1 -%}<div class="sbs-page">{%- endif -%}
 
             {%- capture collection_card_info -%}
               <div class="collection-card__content color-scheme color-scheme--{{ block.settings.color_scheme.id }} prose prose--tight {{ block.settings.content_position }}">
@@ -660,8 +716,13 @@
                 {{- collection_card_content -}}
               </div>
             {%- endif -%}
+
+            {%- if is_sbs and sbs_page_pos == 0 -%}</div>{%- endif -%}
             {%- endif -%}
           {%- endfor -%}
+
+          {%- comment -%} Close a trailing page that has fewer than four cards {%- endcomment -%}
+          {%- if is_sbs and sbs_rendered > 0 and sbs_page_pos != 0 -%}</div>{%- endif -%}
         {% endcapture %}
 
         {% if stack_mobile_and_desktop or section.blocks.size <= 1 %}
@@ -692,9 +753,16 @@
               it falls back to groupCells = 1, which is the one-card-per-click
               movement Row 08 needs. Explore Our Range keeps the attribute.
             {%- endcomment -%}
+            {%- comment -%}
+              cell-selector keeps the carousel counting individual cards rather
+              than the mobile page wrappers, so the desktop arrows still advance
+              one card at a time. On mobile the arrows are hidden and scroll-snap
+              on each page drives the swipe instead.
+            {%- endcomment -%}
             <scroll-carousel
               id="{{ carousel_id }}"
               {% unless is_sbs %}group-cells{% endunless %}
+              {% if is_sbs %}cell-selector=".collection-card"{% endif %}
               allow-drag
               class="collection-list scroll-area {% if section.settings.show_text_outside %}collection-list--text-outside{% endif %} bleed lg:unbleed"
             >
@@ -827,6 +895,13 @@
       "id": "sbs_menu",
       "label": "Shop by Style menu",
       "info": "The menu containing the style values. If they are child items of a parent entry such as \"Shop by Style\", select the menu that entry lives in and name the entry in the next setting."
+    },
+    {
+      "type": "color",
+      "id": "sbs_background",
+      "label": "Section background",
+      "info": "Applied only to this section. Global colour schemes are not affected.",
+      "default": "#f3eee4"
     },
     {
       "type": "text",
