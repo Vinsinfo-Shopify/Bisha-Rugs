@@ -329,7 +329,8 @@
         "media_position_mobile": "before_text",
         "reveal_on_scroll": true,
         "image_position": "start",
-        "content_width": "sm",
+        "content_width": "lg",
+        "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
       }
@@ -341,14 +342,18 @@
           "type": "icon_with_text",
           "settings": {
             "icon": "shopify://shop_images/Vector_2_268ff39a-54cc-47bc-be01-4aec8508fa9e.png",
-            "text": "Colored with Natural Dyes"
+            "text": "Colored with Natural Dyes",
+            "icon_size": 20,
+            "text_size": 16
           }
         },
         "icon_with_text_iYF9gq": {
           "type": "icon_with_text",
           "settings": {
             "icon": "shopify://shop_images/Vector_1.png",
-            "text": "Premium New Zealand Wool"
+            "text": "Premium New Zealand Wool",
+            "icon_size": 20,
+            "text_size": 16
           }
         },
         "subheading_Ay9Gn7": {
@@ -385,7 +390,7 @@
         "separate_section_with_border": true,
         "padding_top": 0,
         "padding_bottom": 0,
-        "padding_left": 0,
+        "padding_left": 70,
         "padding_right": 0,
         "padding_top_mobile": 50,
         "padding_bottom_mobile": 50,
@@ -396,7 +401,101 @@
         "media_position_mobile": "before_text",
         "reveal_on_scroll": true,
         "image_position": "end",
-        "content_width": "sm",
+        "content_width": "lg",
+        "layout_variant": "the-craft",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
+    "image_with_text_nK66R9": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_WhVRtt": {
+          "type": "subheading",
+          "settings": {
+            "text": "trade program"
+          }
+        },
+        "heading_iaHzfW": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Special Offers for Interior Designers & Architects</p>",
+            "heading_tag": "h2"
+          }
+        },
+        "richtext_KnNaGT": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Join Bisha's Trade Program, designed to help bring your design vision to life.</p>"
+          }
+        },
+        "icon_with_text_zFGGHM": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/icon-park-solid_check-one.png",
+            "text": "Trade Discounts",
+            "icon_size": 20,
+            "text_size": 18
+          }
+        },
+        "icon_with_text_Gw8ypY": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/icon-park-solid_check-one.png",
+            "text": "Fully customizable rugs",
+            "icon_size": 20,
+            "text_size": 18
+          }
+        },
+        "icon_with_text_UrLjm7": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/icon-park-solid_check-one.png",
+            "text": "Dedicated project support",
+            "icon_size": 20,
+            "text_size": 18
+          }
+        },
+        "button_PdBjpz": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "learn more",
+            "url": "",
+            "background": "#55583c",
+            "text_color": "#ffffff"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_WhVRtt",
+        "heading_iaHzfW",
+        "richtext_KnNaGT",
+        "icon_with_text_zFGGHM",
+        "icon_with_text_Gw8ypY",
+        "icon_with_text_UrLjm7",
+        "button_PdBjpz"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "",
+        "custom_class": "crafted_in_india",
+        "separate_section_with_border": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 20,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "image": "shopify://shop_images/Trade_Program_-_Desktop.png",
+        "mobile_image": "shopify://shop_images/Trade_Program_-_Mobile.png",
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "start",
+        "content_width": "lg",
+        "layout_variant": "trade",
         "remove_vertical_spacing": true,
         "show_features": false
       }
@@ -445,44 +544,6 @@
         "desktop_text_position": "sm:place-self-end-start sm:text-start",
         "overlay_color": "#000000",
         "overlay_opacity": 20
-      }
-    },
-    "rich-text": {
-      "type": "rich-text",
-      "blocks": {
-        "heading-1": {
-          "type": "heading",
-          "settings": {
-            "text": "Our aim: offer elegant, timeless & functional products",
-            "heading_tag": "h1"
-          }
-        },
-        "link-1": {
-          "type": "link",
-          "settings": {
-            "text": "Our story",
-            "url": ""
-          }
-        },
-        "link-2": {
-          "type": "link",
-          "settings": {
-            "text": "Commitments",
-            "url": ""
-          }
-        }
-      },
-      "block_order": [
-        "heading-1",
-        "link-1",
-        "link-2"
-      ],
-      "settings": {
-        "color_scheme": "scheme-1",
-        "separate_section_with_border": true,
-        "content_width": "xs",
-        "text_position": "center",
-        "remove_vertical_spacing": false
       }
     },
     "media-grid": {
@@ -764,6 +825,9 @@
         "media_position_desktop": "after_text",
         "media_position_mobile": "before_text",
         "media_layout": "overlap",
+        "media_width_1": "289",
+        "media_width_2": "289",
+        "media_gap_width": "81",
         "media_alignment": "end",
         "media_alignment_offset": 80,
         "media_mobile_alignment_offset": 40,
@@ -1175,6 +1239,7 @@
           "settings": {
             "title": "The design",
             "heading_tag": "h4",
+            "custom_heading_size": 24,
             "content": "<p>Every product is imagined and developed in our studio, with a focus on both form and function.</p>",
             "link_url": "",
             "link_text": ""
@@ -1185,6 +1250,7 @@
           "settings": {
             "title": "Materials",
             "heading_tag": "h4",
+            "custom_heading_size": 24,
             "content": "<p>Our materials come from hides sourced as byproducts of the food industry. We collaborate exclusively with trusted tanneries based in Italy, France, and Spain.</p>",
             "link_url": "",
             "link_text": ""
@@ -1195,6 +1261,7 @@
           "settings": {
             "title": "The know-how",
             "heading_tag": "h4",
+            "custom_heading_size": 24,
             "content": "<p>Every step of the process follows the rigorous standards of traditional leatherworking—ensuring durability, precision, and lasting quality.</p>",
             "link_url": "",
             "link_text": ""
@@ -1255,8 +1322,8 @@
     "featured-collections-1",
     "image_with_text_eJwpDm",
     "image_with_text_xnyQHV",
+    "image_with_text_nK66R9",
     "image-with-text-overlay-1",
-    "rich-text",
     "media-grid",
     "scrolling-content-1",
     "scrolling-content-2",
