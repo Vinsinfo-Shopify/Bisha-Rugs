@@ -2913,7 +2913,7 @@ tr[onclick]:hover {
 }
 
 .social-media--list svg {
-  width: var(--social-media-icon-size, 1.25rem);
+  width: var(--social-media-icon-size, 24px);
 }
 
 
@@ -6237,6 +6237,11 @@ shopify-account::part(signed-out-avatar) {
       max-height: 266px;
     }
 }
+@media screen and (min-width: 1500px) {
+  .multiple-media-with-text--overlap .multiple-media-with-text__media-wrapper>:nth-child(2){
+    max-height: none;
+  }
+}
 @media screen and (min-width: 700px) {
   .newsletter-popup {
     width: 23.75rem;
@@ -7435,7 +7440,7 @@ shopify-account::part(signed-out-avatar) {
 .tap-area:before {
   content: "";
   position: absolute;
-  inset: -.5rem;
+  inset: 2px;
 }
 
 @media print {
