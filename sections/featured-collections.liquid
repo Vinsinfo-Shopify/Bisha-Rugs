@@ -30,90 +30,137 @@
   {%- endcomment -%}
   {%- if section.settings.custom_class contains 'home_bestselling_rugs' -%}
     <style>
-      /* ---------- Section frame ---------- */
+      /* ================================================================
+         HOMEPAGE ROW 06 — BESTSELLING OUSHAK RUGS
+         All rules are scoped to this section instance only.
+         ================================================================ */
+
       #shopify-section-{{ section.id }} {
-        --container-max-width: 81.25rem; /* 1300px - same column as the locked sections above */
-        --section-vertical-spacing-override: 46px; /* 46 + 19px gutter from locked Row 05 = 65px measured */
-        --section-stack-gap: 24px; /* heading -> product grid */
+        --container-max-width: 81.25rem; /* 1300px desktop */
+        --section-vertical-spacing-override: 46px;
+        --section-stack-gap: 26px;
       }
 
-      /* ---------- Header: eyebrow + heading ---------- */
+      /* ---------------- Header ---------------- */
       #shopify-section-{{ section.id }} .section-stack > .v-stack {
-        gap: 4px; /* same as the locked Row 05 header */
+        gap: 4px;
       }
 
       #shopify-section-{{ section.id }} .section-stack > .v-stack > .h6 {
+        margin: 0;
         font-family: var(--text-font-family);
         font-size: 14px;
         font-weight: 500;
         line-height: 1.4;
         letter-spacing: 0;
         text-transform: uppercase;
-        margin: 0;
       }
 
       #shopify-section-{{ section.id }} .section-stack > .v-stack > h2 {
+        margin: 0;
         font-family: 'Forum', serif;
         font-size: 28px;
         font-weight: 400;
         line-height: 1.3;
-        margin: 0;
       }
 
-      /* ---------- Product image: 313 x 380 in the Figma (theme default is 4/5) ---------- */
+      /* ---------------- Product grid ---------------- */
+      /* 4 x 313px + 3 x 16px = 1296px inside the 1300px column. */
+      @media screen and (min-width: 1000px) {
+        #shopify-section-{{ section.id }} .product-list--carousel {
+          --product-list-card-width: calc((100% - 48px) / 4);
+        }
+      }
+
       #shopify-section-{{ section.id }} .product-card__image {
+        width: 100%;
         aspect-ratio: 313 / 380;
       }
 
-      /* ---------- Card information rhythm ---------- */
+      /* ---------------- Product information ---------------- */
       #shopify-section-{{ section.id }} .product-card__info {
         gap: 12px;
         padding-top: 14px;
       }
 
       #shopify-section-{{ section.id }} .product-card__tag-wrapper {
-        padding-block: 5px; /* pill measures 30px tall */
+        width: max-content;
+        background: #f1eee7;
+        padding: 5px 10px;
+        border-radius: 999px;
       }
 
-      #shopify-section-{{ section.id }} .product-card__info .gap-1 {
+      #shopify-section-{{ section.id }} .product-card__tag {
+        margin: 0;
+        color: #2a2825;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 20px;
+        text-transform: capitalize;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__info .v-stack.gap-1 {
         gap: 8px;
       }
 
-      /* Title uses the body font in the Figma, clamped to two lines so card
-         heights stay level. product_title_max_lines is 0 site-wide, so the
-         clamp is applied here rather than by changing the global setting. */
       #shopify-section-{{ section.id }} .product-card-title {
+        display: -webkit-box;
+        min-height: 50px;
+        margin: 0;
+        overflow: hidden;
         font-family: var(--text-font-family);
         font-size: 16px;
         font-weight: 600;
         line-height: 25px;
-        min-height: 50px;
-        display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
-        overflow: hidden;
       }
 
-      /* ---------- CTA ---------- */
-      #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center {
-        margin-block-start: 48px;
+      /* Compact discount pill used in the Figma product cards. */
+      #shopify-section-{{ section.id }} .product-card__info .badge.badge--custom {
+        background: #b35642;
+        color: #fff;
+        border-radius: 999px;
+        padding: 1px 10px;
+        font-size: 10px;
+        font-weight: 500;
+        line-height: 17px;
+        text-transform: capitalize;
       }
 
-      #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center .button {
-        --button-background: 85 88 60; /* #55583C */
-        --button-outline-color: 85 88 60;
-        --button-text-color: 255 255 255;
-        min-width: 232px;
-        padding-block: 7px;
+      /* ---------------- Image badges ---------------- */
+      #shopify-section-{{ section.id }} .product-card__figure > .badge-list {
+        gap: 0;
+        top: 10px;
+        left: 10px;
       }
 
-      /* ---------- Carousel arrows ----------
-         Figma puts them on the column edge and vertically centred on the
-         product image, not the whole card, and always visible. The offset is
-         derived from the grid so it holds as the container narrows. */
-      @media screen and (pointer: fine) {
+      #shopify-section-{{ section.id }} .product-card__figure > .badge-list .badge {
+        min-height: 22px;
+        padding: 3px 8px;
+        border-radius: 0;
+        font-family: var(--text-font-family);
+        font-size: 10px;
+        font-weight: 600;
+        line-height: 16px;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__figure > .badge-list .badge--best-seller {
+        background: #fff;
+        color: #2a2825;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__figure > .badge-list .badge--new {
+        background: #b39a68;
+        color: #fff;
+      }
+
+      /* ---------------- Desktop carousel arrows ---------------- */
+      @media screen and (pointer: fine) and (min-width: 700px) {
         #shopify-section-{{ section.id }} .floating-controls-container--inside {
-          --floating-controls-inset-inline: -1.5625rem;
+          --floating-controls-inset-inline: -14px;
         }
 
         #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control {
@@ -122,37 +169,59 @@
         }
 
         #shopify-section-{{ section.id }} .floating-controls-container__control {
-          inset-block-start: 165px; /* fallback */
-          inset-block-start: calc(((min(81.25rem, 100vw - 2.4rem) - 48px) / 4 * 380 / 313) / 2 - 1.5625rem);
+          top: calc((380px / 2) - 14px);
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+          --circle-button-size: 28px;
+          --circle-button-background: 42 40 37;
+          --circle-button-text-color: 255 255 255;
+          box-shadow: none;
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+          width: 9px;
         }
       }
 
-      /* ---------- 375px mobile ---------- */
+      /* ---------------- 375px mobile ---------------- */
       @media screen and (max-width: 699px) {
         #shopify-section-{{ section.id }} {
-          --container-gutter: 0.75rem; /* 12px each side -> 351px content at 375px */
+          --container-gutter: 12px;
           --section-vertical-spacing-override: 32px;
           --section-stack-gap: 16px;
         }
 
-        /* Header is left-aligned on mobile; the section setting stays centred
-           so desktop is unaffected. */
         #shopify-section-{{ section.id }} .section-stack > .v-stack {
           justify-self: start;
           justify-items: start;
-          text-align: start;
           gap: 2px;
+          text-align: start;
         }
 
         #shopify-section-{{ section.id }} .section-stack > .v-stack > .h6 {
           text-align: start;
           font-size: 12px;
+          line-height: 17px;
         }
 
         #shopify-section-{{ section.id }} .section-stack > .v-stack > h2 {
           text-align: start;
           font-size: 22px;
-          line-height: 1.25;
+          line-height: 28px;
+        }
+
+        /* IMPORTANT: Prestige's carousel defaults to min(300px, 65%),
+           which is why the previous implementation showed one oversized
+           card + a clipped second card. Force two cards into the 351px
+           mobile content width for Row 06 only. */
+        #shopify-section-{{ section.id }} .product-list--carousel {
+          --product-list-card-width: calc((100% - var(--product-list-calculated-column-gap)) / 2);
+        }
+
+        #shopify-section-{{ section.id }} .product-card__image {
+          width: 100%;
+          aspect-ratio: 313 / 380;
         }
 
         #shopify-section-{{ section.id }} .product-card__info {
@@ -161,31 +230,54 @@
         }
 
         #shopify-section-{{ section.id }} .product-card__tag-wrapper {
-          padding-block: 3px;
+          padding: 3px 9px;
         }
 
-        #shopify-section-{{ section.id }} .product-card__info .gap-1 {
+        #shopify-section-{{ section.id }} .product-card__tag {
+          font-size: 10px;
+          line-height: 16px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__info .v-stack.gap-1 {
           gap: 6px;
         }
 
         #shopify-section-{{ section.id }} .product-card-title {
+          min-height: 40px;
           font-size: 14px;
           line-height: 20px;
-          min-height: 40px;
         }
 
+        #shopify-section-{{ section.id }} .product-card__figure > .badge-list {
+          top: 8px;
+          left: 8px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__figure > .badge-list .badge {
+          min-height: 20px;
+          padding: 2px 6px;
+          font-size: 9px;
+          line-height: 16px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__info .badge.badge--custom {
+          padding: 1px 7px;
+          font-size: 9px;
+          line-height: 15px;
+        }
+
+        /* Keep the CTA close to the cards, as in the 375px Figma. */
         #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center {
-          margin-block-start: 28px;
+          margin-block-start: 24px;
         }
 
         #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center .button {
-          min-width: 180px;
+          min-width: 165px;
           padding-block: 6px;
         }
 
-        /* Prestige hides carousel arrows on touch devices. The Figma shows a
-           next arrow, so re-enable that one only, aligned to the vertical
-           centre of the product image and clear of the title/price. */
+        /* Prestige hides floating controls on touch. Re-enable ONLY the
+           next control for this homepage section. */
         #shopify-section-{{ section.id }} .floating-controls-container {
           position: relative;
         }
@@ -195,24 +287,33 @@
         }
 
         #shopify-section-{{ section.id }} .floating-controls-container > .floating-controls-container__control:last-child {
-          z-index: 2;
+          z-index: 3;
           display: grid;
           position: absolute;
-          inset-inline-end: 6px;
-          inset-block-start: calc(((100vw - 2.125rem) / 2 * 380 / 313) / 2 - 1.25rem);
+          top: 90px;
+          right: 4px;
+          transform: none;
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container > .floating-controls-container__control:last-child .circle-button {
+          --circle-button-size: 28px;
+          --circle-button-background: 255 255 255;
+          --circle-button-text-color: 42 40 37;
+          box-shadow: 0 1px 5px rgb(42 40 37 / 12%);
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container > .floating-controls-container__control:last-child .circle-button > svg {
+          width: 9px;
         }
       }
 
-      /* Below 375px stay fluid rather than overflowing */
       @media screen and (max-width: 374px) {
         #shopify-section-{{ section.id }} {
-          --container-gutter: 0.5rem;
+          --container-gutter: 10px;
         }
 
-        #shopify-section-{{ section.id }} .product-card-title {
-          font-size: 13px;
-          line-height: 18px;
-          min-height: 36px;
+        #shopify-section-{{ section.id }} .floating-controls-container > .floating-controls-container__control:last-child {
+          top: 86px;
         }
       }
     </style>
