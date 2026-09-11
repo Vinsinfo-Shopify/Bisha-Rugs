@@ -103,9 +103,11 @@
       margin: 0;
       transform: translate(-50%, -50%);
       border-radius: var(--rounded-full);
-      background: #ffffff;
-      border: 1px solid rgb(0 0 0 / 0.28);
-      box-shadow: 0 1px 4px rgb(0 0 0 / 0.28);
+      background: {{ section.settings.hotspot_color }};
+      /* A thin light rim, not decoration: a charcoal dot on a dark rug or a
+         shadowed corner would otherwise disappear. */
+      border: 1px solid rgb(255 255 255 / 0.75);
+      box-shadow: 0 1px 4px rgb(0 0 0 / 0.35);
       cursor: pointer;
       transition: transform 0.2s ease-in-out;
       z-index: 2;
@@ -130,7 +132,7 @@
       position: absolute;
       inset: -5px;
       border-radius: var(--rounded-full);
-      border: 1px solid rgb(255 255 255 / 0.85);
+      border: 1px solid {{ section.settings.hotspot_color }};
       animation: fpl-pulse-{{ section.id }} 2.4s ease-out infinite;
       pointer-events: none;
     }
@@ -151,15 +153,19 @@
       transform: translate(-50%, -50%) scale(1.25);
     }
 
+    /* Visible on a pale wall and on a dark rug alike: white ring, dark halo. */
     #shopify-section-{{ section.id }} .fpl__dot:focus-visible {
-      outline: 2px solid #2b2724;
-      outline-offset: 3px;
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 4px rgb(0 0 0 / 0.5);
     }
 
+    /* The dot is charcoal at rest, so the open state inverts rather than
+       darkening further, which would have been no change at all. */
     #shopify-section-{{ section.id }} .fpl__dot[aria-expanded='true'] {
       transform: translate(-50%, -50%) scale(1.25);
-      background: #2b2724;
-      border-color: #2b2724;
+      background: #ffffff;
+      border-color: {{ section.settings.hotspot_color }};
     }
 
     #shopify-section-{{ section.id }} .fpl__dot[aria-expanded='true']::after {
@@ -700,6 +706,13 @@
       "step": 1,
       "unit": "px",
       "default": 14
+    },
+    {
+      "type": "color",
+      "id": "hotspot_color",
+      "label": "Hotspot colour",
+      "info": "The dot and its pulse. A thin light rim keeps it visible on dark images.",
+      "default": "#2b2724"
     },
     {
       "type": "range",
