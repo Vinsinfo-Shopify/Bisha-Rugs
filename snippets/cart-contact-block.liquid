@@ -1,0 +1,30 @@
+{% comment %} {%- doc -%}
+  Renders a small contact prompt in the cart drawer, encouraging customers to reach out
+  with questions before checking out.
+{%- enddoc -%}
+
+<div class="cart-contact-block v-stack gap-1 justify-items-start">
+  {%- if section.settings.contact_heading != blank -%}
+    <p class="h6">{{ section.settings.contact_heading }}</p>
+  {%- endif -%}
+
+  {%- if section.settings.contact_subtext != blank -%}
+    <p class="text-subdued text-sm">{{ section.settings.contact_subtext }}</p>
+  {%- endif -%}
+
+  {%- if section.settings.contact_phone != blank or section.settings.contact_email != blank -%}
+    <div class="h-stack gap-4">
+      {%- if section.settings.contact_phone != blank -%}
+        <a href="tel:{{ section.settings.contact_phone | strip | remove: ' ' }}" class="link text-xs">
+          {{ section.settings.contact_phone }}
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.contact_email != blank -%}
+        <a href="mailto:{{ section.settings.contact_email }}" class="link text-xs">
+          {{ section.settings.contact_email }}
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div> {% endcomment %}

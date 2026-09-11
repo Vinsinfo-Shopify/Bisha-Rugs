@@ -1,0 +1,151 @@
+{% comment %} {%- doc -%}
+  Renders a row of trust badges (icon + text) sourced from the section's `trust_badge` blocks,
+  filtered to the requested position. Icon/text sizing is controlled per-block.
+
+  @param {string} position - 'top' or 'bottom'
+  @param {string} [style] - 'marquee' (auto-scrolling ticker) or 'grid' (static row). Defaults to 'grid'.
+  @param {number} [speed] - seconds for one full marquee loop. Only used when style is 'marquee'.
+  @param {boolean} [pause_on_hover] - pause the marquee animation on hover. Only used when style is 'marquee'.
+  @param {string} [background_color] - background color for the marquee bar (only used with style 'marquee')
+  @param {string} [text_color] - text/icon color for the marquee bar (only used with style 'marquee')
+{%- enddoc -%}
+
+{%- liquid
+  assign style = style | default: 'grid'
+  assign speed = speed | default: 20
+  assign badge_count = 0
+
+  for block in section.blocks
+    if block.type == 'trust_badge' and block.settings.position == position or block.type == 'trust_badge' and block.settings.position == 'both'
+      assign badge_count = badge_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if badge_count > 0 -%}
+  {%- assign marquee_id = 'trust-badges-marquee-' | append: section.id | append: '-' | append: position -%}
+
+  {%- capture badge_items -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'trust_badge' -%}
+        {%- assign badge_position = block.settings.position -%}
+
+        {%- if badge_position == position or badge_position == 'both' -%}
+          {%- liquid
+            assign item_id = 'trust-badge-item-' | append: block.id
+            assign icon_size_desktop = block.settings.icon_size_desktop | default: 22
+            assign icon_size_mobile = block.settings.icon_size_mobile | default: icon_size_desktop
+            assign text_size_desktop = block.settings.text_size_desktop | default: 12
+            assign text_size_mobile = block.settings.text_size_mobile | default: text_size_desktop
+            assign render_icon_size = icon_size_desktop | at_least: icon_size_mobile
+            assign icon_src_width = render_icon_size | times: 2
+          -%}
+
+          <div id="{{ item_id }}" class="trust-badges__item h-stack align-center gap-1" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon_source == 'custom' and block.settings.custom_icon != blank -%}
+              {{-
+                block.settings.custom_icon
+                | image_url: width: icon_src_width
+                | image_tag: loading: 'lazy', width: render_icon_size, height: render_icon_size, class: 'trust-badges__icon'
+              -}}
+            {%- else -%}
+              {%- render 'icon' with block.settings.icon, width: render_icon_size, class: 'trust-badges__icon' -%}
+            {%- endif -%}
+
+            <span class="text-xs text-subdued trust-badges__text">{{ block.settings.text }}</span>
+          </div>
+
+          {%- style -%}
+            #{{ item_id }} {
+              --trust-badges-icon-size: {{ icon_size_desktop }}px;
+              --trust-badges-text-size: {{ text_size_desktop }}px;
+            }
+
+            #{{ item_id }} .trust-badges__icon {
+              width: var(--trust-badges-icon-size);
+              height: var(--trust-badges-icon-size);
+              flex-shrink: 0;
+            }
+
+            #{{ item_id }} .trust-badges__text {
+              font-size: var(--trust-badges-text-size);
+            }
+
+            @media screen and (max-width: 699px) {
+              #{{ item_id }} {
+                --trust-badges-icon-size: {{ icon_size_mobile }}px;
+                --trust-badges-text-size: {{ text_size_mobile }}px;
+              }
+            }
+          {%- endstyle -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if style == 'marquee' -%}
+    {%- style -%}
+      #{{ marquee_id }} {
+        overflow: hidden;
+        width: 100%;
+        background: var(--trust-badges-background, transparent);
+        color: var(--trust-badges-text-color, inherit);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+      }
+
+      #{{ marquee_id }} .trust-badges__text,
+      #{{ marquee_id }} .trust-badges__icon {
+        color: inherit;
+      }
+
+      #{{ marquee_id }} .trust-badges__track {
+        display: flex;
+        width: max-content;
+        animation: {{ marquee_id }}-scroll {{ speed }}s linear infinite;
+      }
+
+      {%- if pause_on_hover -%}
+        #{{ marquee_id }}:hover .trust-badges__track {
+          animation-play-state: paused;
+        }
+      {%- endif -%}
+
+      @media (prefers-reduced-motion: reduce) {
+        #{{ marquee_id }} .trust-badges__track {
+          animation: none;
+        }
+      }
+
+      @keyframes {{ marquee_id }}-scroll {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+    {%- endstyle -%}
+
+    <div
+      id="{{ marquee_id }}"
+      class="trust-badges trust-badges--{{ position }} trust-badges--marquee"
+      {%- if background_color != blank or text_color != blank %}
+        style="
+          {%- if background_color != blank -%}--trust-badges-background: {{ background_color }};{%- endif -%}
+          {%- if text_color != blank -%}--trust-badges-text-color: {{ text_color }};{%- endif -%}
+        "
+      {%- endif %}
+    >
+      <div class="trust-badges__track">
+        <div class="trust-badges__group h-stack gap-6" role="list">
+          {{- badge_items -}}
+        </div>
+
+        <div class="trust-badges__group h-stack gap-6" aria-hidden="true">
+          {{- badge_items -}}
+        </div>
+      </div>
+    </div>
+  {%- else -%}
+    <div class="trust-badges trust-badges--{{ position }}" role="list">
+      {{- badge_items -}}
+    </div>
+  {%- endif -%}
+{%- endif -%} {% endcomment %}
