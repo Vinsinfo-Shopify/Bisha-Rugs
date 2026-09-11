@@ -479,6 +479,81 @@
         "content": ""
       }
     },
+    "real_homes_pTLTFX": {
+      "type": "real-homes",
+      "blocks": {
+        "card_tFabhH": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "image": "shopify://shop_images/Shop_by_Style_-_Abstract.png",
+            "product": "hand-knotted-oushak-wool-rug-gray-ivory-and-pastel-turkish-carpet",
+            "link": ""
+          }
+        },
+        "card_marr7x": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "image": "shopify://shop_images/Shop_by_Style_-_Minimalist.png",
+            "product": "",
+            "link": ""
+          }
+        },
+        "card_kWamFg": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "image": "shopify://shop_images/Shop_by_Style_-_Floral.png",
+            "product": "",
+            "link": ""
+          }
+        },
+        "card_MqJwEU": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "image": "shopify://shop_images/Shop_by_Style_-_Geometric.png",
+            "product": "",
+            "link": ""
+          }
+        },
+        "card_zUymC3": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "product": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_tFabhH",
+        "card_marr7x",
+        "card_kWamFg",
+        "card_MqJwEU",
+        "card_zUymC3"
+      ],
+      "name": "Real homes",
+      "settings": {
+        "color_scheme": "",
+        "background": "#fffbf3",
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "subheading": "REAL HOMES",
+        "title": "Styled by Bisha",
+        "header_gap": 18,
+        "card_width": 281,
+        "card_gap": 24,
+        "card_width_mobile": 210,
+        "card_gap_mobile": 12,
+        "card_radius": 2,
+        "info_gap": 8,
+        "show_controls": true,
+        "play_button_color": "#2b2724",
+        "play_button_opacity": 60
+      }
+    },
     "image_with_text_eJwpDm": {
       "type": "image-with-text",
       "blocks": {
@@ -1462,77 +1537,6 @@
         "padding_bottom_desktop": 0,
         "padding_left_desktop": 0,
         "padding_right_desktop": 0
-      }
-    },
-    "real_homes_pTLTFX": {
-      "type": "real-homes",
-      "blocks": {
-        "card_tFabhH": {
-          "type": "card",
-          "settings": {
-            "enabled": true,
-            "product": "",
-            "link": ""
-          }
-        },
-        "card_marr7x": {
-          "type": "card",
-          "settings": {
-            "enabled": true,
-            "product": "",
-            "link": ""
-          }
-        },
-        "card_kWamFg": {
-          "type": "card",
-          "settings": {
-            "enabled": true,
-            "product": "",
-            "link": ""
-          }
-        },
-        "card_MqJwEU": {
-          "type": "card",
-          "settings": {
-            "enabled": true,
-            "product": "",
-            "link": ""
-          }
-        },
-        "card_zUymC3": {
-          "type": "card",
-          "settings": {
-            "enabled": true,
-            "product": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "card_tFabhH",
-        "card_marr7x",
-        "card_kWamFg",
-        "card_MqJwEU",
-        "card_zUymC3"
-      ],
-      "name": "Real homes",
-      "settings": {
-        "color_scheme": "",
-        "background": "#fffbf3",
-        "padding_top": 48,
-        "padding_bottom": 48,
-        "subheading": "REAL HOMES",
-        "title": "Styled by Bisha",
-        "header_gap": 18,
-        "card_width": 281,
-        "card_gap": 24,
-        "card_width_mobile": 210,
-        "card_gap_mobile": 12,
-        "card_radius": 2,
-        "info_gap": 8,
-        "show_controls": true,
-        "play_button_color": "#2b2724",
-        "play_button_opacity": 60
       }
     }
   },
