@@ -1,3 +1,28 @@
+{%- doc -%}
+  Row 10 - "Find the Perfect Look".
+
+  An editorial image grid where each image carries up to three product hotspots.
+  Tapping a hotspot opens a compact product card anchored to that dot; the card
+  is a link to the product. The image itself never navigates.
+
+  Reused rather than rebuilt:
+    snippets/section-header.liquid   eyebrow + heading, native typography
+    snippets/price-list.liquid       price, compare-at, sale state, currency
+    snippets/product-rating.liquid   "4.8 (54)" from the reviews metafields
+    snippets/product-badges.liquid   the discount pill, honouring theme settings
+    snippets/button.liquid           the CTA, colour overridden per section
+
+  Not reused, and why:
+    sections/shop-the-look.liquid is a single-image viewer with a product
+    carousel beside it and a full-screen popover on mobile. Different layout,
+    different interaction, and it belongs to another developer.
+    x-popover in theme.js is an overlay/drawer, not a card anchored to a point.
+
+  One block is one image plus all of its hotspots, so the whole configuration
+  travels together when the block is reordered. Nothing global is touched;
+  every selector and the custom element name are namespaced to this section.
+{%- enddoc -%}
+
 {%- liquid
   assign hotspot_count = 3
   assign ns = 'fpl-' | append: section.id
@@ -27,6 +52,23 @@
 
     #shopify-section-{{ section.id }} .fpl__header {
       margin-block-end: {{ section.settings.header_gap }}px;
+    }
+
+    /* section-header.liquid carries the theme's own vertical rhythm, which is
+       looser than this design. Overridden here only, by section id, so every
+       other section that renders the same snippet is untouched. */
+    #shopify-section-{{ section.id }} .fpl__header .section-header {
+      gap: 0;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__header .section_header_subheading {
+      margin-block: 0 {{ section.settings.eyebrow_gap }}px;
+      line-height: 1.3;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__header .section_header_heading {
+      font-weight: {{ section.settings.heading_weight }};
+      margin-block: 0;
     }
 
     /* ---------- Grid ----------
@@ -560,7 +602,7 @@
       "max": 120,
       "step": 2,
       "unit": "px",
-      "default": 84
+      "default": 56
     },
     {
       "type": "header",
@@ -591,13 +633,34 @@
     },
     {
       "type": "range",
+      "id": "eyebrow_gap",
+      "label": "Eyebrow to heading gap",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
       "id": "header_gap",
       "label": "Heading to gallery gap",
       "min": 0,
       "max": 80,
       "step": 1,
       "unit": "px",
-      "default": 28
+      "default": 22
     },
     {
       "type": "header",
@@ -750,7 +813,7 @@
       "max": 80,
       "step": 1,
       "unit": "px",
-      "default": 32
+      "default": 22
     }
   ],
   "blocks": [
