@@ -434,20 +434,23 @@
         }
       }
 
-      /* Partial fifth card. Card width is pinned to the 1300px column so the
-         cards stay 313px, then the scrollport is widened to the right by the
-         page gutter so the next card peeks through instead of being clipped
-         exactly at the column edge. */
-      @media screen and (min-width: 1150px) {
-        #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area {
-          --collection-list-item-size: calc((min(81.25rem, 100vw - 2.4rem) - 48px) / 4);
-          margin-inline-end: calc(-1 * max(1.2rem, (100vw - 81.25rem) / 2));
-        }
-      }
+      /* Partial next card, with no artificial spacing at either end.
+         The section normally applies lg:unbleed above 1150px, which zeroes the
+         bleed margin, padding AND scroll-padding, collapsing the scrollport onto
+         the 1300px column so four cards fill it exactly and the fifth is clipped
+         at the boundary. Keeping .bleed active instead gives, natively:
 
-      /* Mobile page wrapper is inert on desktop */
-      #shopify-section-{{ section.id }} .collection-list--sbs .sbs-page {
-        display: contents;
+           margin-inline    -gutter  -> scrollport spans the window
+           padding-inline   +gutter  -> card 1 starts on the column edge (no left gap)
+           scroll-padding   +gutter  -> snap targets land on the column edge
+
+         Cards still compute to 313px because flex-basis percentages resolve
+         against the content box, which is still the 1300px column. The next card
+         renders into the right padding and peeks; at the end of the scroll the
+         last card lands flush on the column edge with no trailing gap. No
+         negative margins are involved. */
+      #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area .collection-card {
+        scroll-snap-align: start;
       }
 
       /* ---------- Mobile: two-row horizontal carousel ---------- */
@@ -460,33 +463,29 @@
           display: inline;
         }
 
-        /* Four cards per page. The scroll area becomes a row of full-width
-           pages, each page a 2 x 2 grid, so a swipe moves a whole group of four
-           rather than nudging past cards that are already on screen. */
+        /* Two rows, two columns in view, moving one column at a time.
+           Both cards in a column share the same x position, so a start-aligned
+           snap on the cards is effectively a snap on the column. .bleed is still
+           active here, so the first column starts on the content edge with no
+           left gap and the last column ends flush with no trailing gap. */
         #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area {
-          display: flex;
-          gap: 0;
-          scroll-snap-type: x mandatory;
-        }
-
-        #shopify-section-{{ section.id }} .collection-list--sbs .sbs-page {
-          flex: 0 0 100%;
           display: grid;
           gap: {{ section.settings.sbs_mobile_gap }}px;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
           grid-template-rows: repeat(2, auto);
+          scroll-snap-type: x mandatory;
           {%- if section.settings.sbs_mobile_fill == 'row' -%}
             grid-auto-flow: row;
+            grid-template-columns: repeat({{ sbs_columns }}, calc((100% - {{ section.settings.sbs_mobile_gap }}px) / 2));
           {%- else -%}
             grid-auto-flow: column;
+            grid-auto-columns: calc((100% - {{ section.settings.sbs_mobile_gap }}px) / 2);
           {%- endif -%}
-          scroll-snap-align: start;
         }
 
         #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area .collection-card {
           flex-basis: auto;
           width: auto;
-          scroll-snap-align: none;
+          scroll-snap-align: start;
         }
 
         /* No carousel arrows on mobile in the Figma; swipe drives it */
@@ -590,7 +589,6 @@
         {% capture collection_list %}
           {%- assign sbs_index = 0 -%}
           {%- assign sbs_rendered = 0 -%}
-          {%- assign sbs_page_pos = 0 -%}
           {%- for block in section.blocks -%}
             {%- assign collection = block.settings.collection -%}
             {%- assign collection_url = block.settings.button_link | default: collection.url -%}
@@ -642,17 +640,7 @@
 
             {%- if render_card -%}
 
-            {%- comment -%}
-              Mobile pages. Every four rendered cards are wrapped so the mobile
-              carousel has real slides to move between. The wrapper is
-              display:contents on desktop, so it disappears from layout there and
-              the cards remain direct flex children exactly as before.
-            {%- endcomment -%}
-            {%- liquid
-              assign sbs_rendered = sbs_rendered | plus: 1
-              assign sbs_page_pos = sbs_rendered | modulo: 4
-            -%}
-            {%- if is_sbs and sbs_page_pos == 1 -%}<div class="sbs-page">{%- endif -%}
+            {%- assign sbs_rendered = sbs_rendered | plus: 1 -%}
 
             {%- capture collection_card_info -%}
               <div class="collection-card__content color-scheme color-scheme--{{ block.settings.color_scheme.id }} prose prose--tight {{ block.settings.content_position }}">
@@ -716,13 +704,8 @@
                 {{- collection_card_content -}}
               </div>
             {%- endif -%}
-
-            {%- if is_sbs and sbs_page_pos == 0 -%}</div>{%- endif -%}
             {%- endif -%}
           {%- endfor -%}
-
-          {%- comment -%} Close a trailing page that has fewer than four cards {%- endcomment -%}
-          {%- if is_sbs and sbs_rendered > 0 and sbs_page_pos != 0 -%}</div>{%- endif -%}
         {% endcapture %}
 
         {% if stack_mobile_and_desktop or section.blocks.size <= 1 %}
@@ -753,18 +736,11 @@
               it falls back to groupCells = 1, which is the one-card-per-click
               movement Row 08 needs. Explore Our Range keeps the attribute.
             {%- endcomment -%}
-            {%- comment -%}
-              cell-selector keeps the carousel counting individual cards rather
-              than the mobile page wrappers, so the desktop arrows still advance
-              one card at a time. On mobile the arrows are hidden and scroll-snap
-              on each page drives the swipe instead.
-            {%- endcomment -%}
             <scroll-carousel
               id="{{ carousel_id }}"
               {% unless is_sbs %}group-cells{% endunless %}
-              {% if is_sbs %}cell-selector=".collection-card"{% endif %}
               allow-drag
-              class="collection-list scroll-area {% if section.settings.show_text_outside %}collection-list--text-outside{% endif %} bleed lg:unbleed"
+              class="collection-list scroll-area {% if section.settings.show_text_outside %}collection-list--text-outside{% endif %} bleed {% unless is_sbs %}lg:unbleed{% endunless %}"
             >
               {{ collection_list }}
             </scroll-carousel>
