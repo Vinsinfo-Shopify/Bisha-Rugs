@@ -41,6 +41,16 @@
       background: {{ section.settings.background }};
     }
 
+    /* The track is wider than the viewport by design and scrolls internally, but
+       any sub-pixel or scrollbar rounding would still be reported as document
+       width. overflow-x: clip contains it at the section boundary.
+       clip rather than hidden: clip does not create a scroll container, so it
+       cannot capture the page scroll or break position: sticky anywhere else. */
+    #shopify-section-{{ section.id }} .real-homes,
+    #shopify-section-{{ section.id }} .real-homes__inner {
+      overflow-x: clip;
+    }
+
     #shopify-section-{{ section.id }} .real-homes__inner {
       padding-block-start: {{ section.settings.padding_top }}px;
       padding-block-end: {{ section.settings.padding_bottom }}px;
@@ -95,8 +105,6 @@
       flex: 0 0 {{ section.settings.card_width }}px;
       scroll-snap-align: center;
       display: block;
-      color: inherit;
-      text-decoration: none;
       transition: flex-basis 0.35s ease, transform 0.35s ease;
     }
 
@@ -142,6 +150,8 @@
       border: 1px solid {{ section.settings.info_border_color }};
       border-radius: {{ section.settings.card_radius }}px;
       margin-block-start: {{ section.settings.info_gap }}px;
+      color: inherit;
+      text-decoration: none;
     }
 
     #shopify-section-{{ section.id }} .real-homes__thumb {
@@ -192,8 +202,8 @@
 
     /* Active centre card: dark disc with a white chevron. */
     #shopify-section-{{ section.id }} .real-homes__card.is-active .real-homes__arrow,
-    #shopify-section-{{ section.id }} .real-homes__card:hover .real-homes__arrow,
-    #shopify-section-{{ section.id }} .real-homes__card:focus-visible .real-homes__arrow {
+    #shopify-section-{{ section.id }} .real-homes__info:hover .real-homes__arrow,
+    #shopify-section-{{ section.id }} .real-homes__info:focus-visible .real-homes__arrow {
       background: #2b2724;
       border-color: #2b2724;
       color: #ffffff;
@@ -290,11 +300,12 @@
               assign card_url = block.settings.link | default: card_product.url
             -%}
 
-            <a
-              {% if card_url != blank %}href="{{ card_url }}"{% endif %}
-              class="real-homes__card"
-              {{ block.shopify_attributes }}
-            >
+            {%- comment -%}
+              The card is a plain div. Wrapping the media in an anchor made every
+              drag on the video end in a navigation, so only the product panel
+              below is a link.
+            {%- endcomment -%}
+            <div class="real-homes__card" {{ block.shopify_attributes }}>
               <div class="real-homes__media">
                 {%- if card_media != blank -%}
                   {%- comment -%}
@@ -316,7 +327,10 @@
               </div>
 
               {%- if card_product != blank -%}
-                <div class="real-homes__info">
+                <a
+                  {% if card_url != blank %}href="{{ card_url }}"{% endif %}
+                  class="real-homes__info"
+                >
                   {%- if card_product.featured_image != blank -%}
                     {{-
                       card_product.featured_image
@@ -336,9 +350,9 @@
                   <span class="real-homes__arrow" aria-hidden="true">
                     {%- render 'icon' with 'arrow-right', width: 12 -%}
                   </span>
-                </div>
+                </a>
               {%- endif -%}
-            </a>
+            </div>
           {%- endunless -%}
         {%- endfor -%}
       </scroll-carousel>
