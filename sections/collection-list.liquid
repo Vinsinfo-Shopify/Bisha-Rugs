@@ -601,7 +601,35 @@
                 # original 'collection' block have an image setting, and the title
                 # and URL come from the menu either way, so the block type is not
                 # something this variant needs to police.
-                assign paired_link = sbs_links[sbs_index]
+                #
+                # The block is tied to its menu item BY NAME, not by position, so a
+                # card keeps its own title, URL and image when the block is dragged
+                # to a different place in the theme editor. Editor block order is
+                # therefore the card order, and the whole card moves together.
+                #
+                # Blocks with no name set still fall back to position so an existing
+                # setup keeps rendering; the editor comment lists which ones those
+                # are so they can be filled in.
+                assign sbs_want = block.settings.sbs_item | downcase | strip
+                assign paired_link = null
+                assign sbs_match = 'position'
+
+                if sbs_want != blank
+                  assign sbs_match = 'name'
+
+                  for sbs_l in sbs_links
+                    assign sbs_lt = sbs_l.title | downcase | strip
+                    assign sbs_lh = sbs_l.handle | downcase | strip
+
+                    if sbs_lt == sbs_want or sbs_lh == sbs_want
+                      assign paired_link = sbs_l
+                      break
+                    endif
+                  endfor
+                else
+                  assign paired_link = sbs_links[sbs_index]
+                endif
+
                 assign sbs_index = sbs_index | plus: 1
 
                 # The menu is the only source of the title and the URL here. The
@@ -815,10 +843,34 @@
       cards rendered ...... {{ sbs_enabled_count }}
       items with NO url ... {{ sbs_missing_urls | default: 'none - every item has a link' }}
 
-      Pairing (image block position -> menu item -> url):
+      Pairing (block -> "Shop by Style item" -> matched menu item -> url):
       {%- for block in section.blocks -%}
-        {%- assign diag_link = sbs_links[forloop.index0] -%}
-        block {{ forloop.index }} -> {{ diag_link.title | default: '(no menu item at this position)' }} -> {{ diag_link.url | default: '-' }}
+        {%- liquid
+          assign d_want = block.settings.sbs_item | downcase | strip
+          assign d_link = null
+          assign d_mode = 'BY POSITION (set "Shop by Style item" to pin it)'
+
+          if d_want != blank
+            assign d_mode = 'by name'
+
+            for d_l in sbs_links
+              assign d_lt = d_l.title | downcase | strip
+              assign d_lh = d_l.handle | downcase | strip
+
+              if d_lt == d_want or d_lh == d_want
+                assign d_link = d_l
+                break
+              endif
+            endfor
+
+            if d_link == blank
+              assign d_mode = 'NO MATCH for "' | append: block.settings.sbs_item | append: '" - card skipped'
+            endif
+          else
+            assign d_link = sbs_links[forloop.index0]
+          endif
+        -%}
+        block {{ forloop.index }} [{{ d_mode }}] -> {{ d_link.title | default: '(none)' }} -> {{ d_link.url | default: '-' }}
       {%- endfor %}
 
       Tree of "{{ section.settings.sbs_menu.handle | default: 'NOT SELECTED' }}".
@@ -1103,6 +1155,12 @@
           "content": "Used only by the \"Shop by style\" layout variant. The title and link come from the matching menu item; only the image and display options are set here."
         },
         {
+          "type": "text",
+          "id": "sbs_item",
+          "label": "Shop by Style item",
+          "info": "Used only by the \"Shop by style\" layout. Type the exact title or handle of the child menu item this card represents, for example Abstract. The card then takes its title and link from that menu item and keeps them when the block is reordered. Leave blank on Explore Our Range blocks."
+        },
+        {
           "type": "checkbox",
           "id": "enabled",
           "label": "Show this item",
@@ -1154,6 +1212,12 @@
       "type": "collection",
       "name": "t:sections.collection_list.blocks.collection.name",
       "settings": [
+        {
+          "type": "text",
+          "id": "sbs_item",
+          "label": "Shop by Style item",
+          "info": "Used only by the \"Shop by style\" layout. Type the exact title or handle of the child menu item this card represents, for example Abstract. The card then takes its title and link from that menu item and keeps them when the block is reordered. Leave blank on Explore Our Range blocks."
+        },
         {
           "type": "color_scheme",
           "id": "color_scheme",
