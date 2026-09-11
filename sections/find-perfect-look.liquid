@@ -26,6 +26,7 @@
 {%- liquid
   assign hotspot_count = 3
   assign ns = 'fpl-' | append: section.id
+  assign carousel_id = 'fpl-carousel-' | append: section.id
 
   # A select returns a string. Coerced once here so the arithmetic below
   # (column position, image sizes) is done on a number, not on text.
@@ -71,29 +72,67 @@
       margin-block: 0;
     }
 
-    /* ---------- Gallery ----------
-       Three independently flowing columns, not grid rows. A row-based grid ties
-       every cell in a row to one shared baseline, so a short image leaves the
-       cream gap beneath it while the row waits for the tallest image to finish.
-       Each column is its own flex stack instead, so the second image in a
-       column starts directly after the first image in THAT column and nowhere
-       else. No negative margins, no absolute positioning, no forced equal
-       heights: the gap cannot form because there is no shared row to form it in.
+    /* ---------- Gallery carousel ----------
+       The carousel cell is a COLUMN, not an image and not a page. Each column
+       is a flex stack of its two images, so the second image starts directly
+       after the first image in THAT column: no shared row, so no cream gap.
 
-       Blocks are mapped to columns in Liquid, so the mapping is explicit and
-       stable rather than emergent from CSS column flow. */
-    #shopify-section-{{ section.id }} .fpl__grid {
-      display: flex;
-      align-items: flex-start;
-      gap: {{ section.settings.grid_gap }}px;
+       Prestige's own scroll-carousel drives it. With the group-cells attribute
+       omitted its groupCells getter returns 1, so prev/next advance exactly one
+       cell, and a cell is a direct child. One click, one column, both its
+       images. Nothing in theme.js is modified; the component is used as-is. */
+    #shopify-section-{{ section.id }} .fpl__carousel {
+      position: relative;
     }
 
+    #shopify-section-{{ section.id }} .fpl__track {
+      --fpl-visible: {{ section.settings.columns }};
+      --fpl-gap: {{ section.settings.grid_gap }}px;
+      display: flex;
+      align-items: flex-start;
+      gap: var(--fpl-gap);
+      overflow: auto hidden;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Widths are a fraction of the track, never fixed pixels, so the row cannot
+       exceed its container and cannot widen the document. */
     #shopify-section-{{ section.id }} .fpl__column {
-      flex: 1 1 0;
+      flex: 0 0 calc((100% - (var(--fpl-visible) - 1) * var(--fpl-gap)) / var(--fpl-visible));
       min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: {{ section.settings.grid_gap }}px;
+      gap: var(--fpl-gap);
+      scroll-snap-align: start;
+      /* One swipe moves one column. Without this a momentum flick sails past
+         several snap points. */
+      scroll-snap-stop: always;
+    }
+
+    /* ---------- Arrows ----------
+       The theme's own prev-next-button / circle-button classes and the native
+       carousel-prev-button / carousel-next-button elements, so the appearance
+       and the disabled-at-the-end behaviour match Row 08 exactly. Only the
+       placement is scoped here. */
+    #shopify-section-{{ section.id }} .fpl__nav {
+      position: absolute;
+      top: {{ section.settings.arrow_offset }}%;
+      transform: translateY(-50%);
+      z-index: 5;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__nav--prev {
+      inset-inline-start: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__nav--next {
+      inset-inline-end: 12px;
     }
 
     #shopify-section-{{ section.id }} .fpl__item {
@@ -295,44 +334,30 @@
         padding-block-end: {{ section.settings.padding_bottom | divided_by: 2 }}px;
       }
 
-      /* The desktop column wrappers vanish here, so the items become direct
-         grid children again and mobile is exactly what it was: a two-column
-         grid in block order, with the stagger below. */
-      #shopify-section-{{ section.id }} .fpl__column {
-        display: contents;
+      /* Same carousel, same column sequence, fewer columns in view and no
+         arrows: the finger is the control. */
+      #shopify-section-{{ section.id }} .fpl__track {
+        --fpl-visible: {{ mobile_columns }};
+        --fpl-gap: {{ section.settings.grid_gap_mobile }}px;
       }
 
-      #shopify-section-{{ section.id }} .fpl__grid {
-        display: grid;
-        grid-template-columns: repeat({{ mobile_columns }}, minmax(0, 1fr));
-        gap: {{ section.settings.grid_gap_mobile }}px;
+      #shopify-section-{{ section.id }} .fpl__nav {
+        display: none;
       }
 
       #shopify-section-{{ section.id }} .fpl__header {
         margin-block-end: {{ section.settings.header_gap | times: 0.7 | round }}px;
       }
 
-      /* The staggered editorial look, without column-major masonry.
-         Each item carries its own offset as an inline custom property and
-         simply starts lower inside its grid cell. The grid row grows to fit,
-         which is what opens the uneven gaps the Figma shows.
-
-         Why not column-count: multi-column flows top-to-bottom down each
-         column, so a merchant dragging a block in the Theme Editor would see it
-         land somewhere they did not drop it. Block order here stays exactly as
-         the editor shows it.
-
-         Why not transform: translateY: a transform does not affect layout, so a
-         nudged item would overlap the row beneath it instead of pushing it
-         down. margin keeps the flow honest.
-
-         Vertical only, so it cannot introduce horizontal overflow. Not applied
-         outside this query, so desktop never sees it. */
-      #shopify-section-{{ section.id }} .fpl__item {
-        /* The DOM is grouped by desktop column, so order restores the block
-           order the merchant sees in the Theme Editor: 1 2 / 3 4 / 5 6. */
-        order: var(--fpl-order, 0);
+      /* The column stagger. Applied to the whole column, not to individual
+         items, so the two images inside it travel together. Vertical only, so
+         it cannot introduce horizontal overflow. Mobile only. */
+      #shopify-section-{{ section.id }} .fpl__column {
         margin-block-start: var(--fpl-nudge, 0px);
+      }
+
+      #shopify-section-{{ section.id }} .fpl__item {
+        margin-block-start: var(--fpl-offset, 0px);
       }
     }
   </style>
@@ -347,34 +372,73 @@
         -%}
       </div>
 
-      <find-perfect-look class="fpl__grid">
-        {%- for column in (1..section.settings.columns) -%}
-          <div class="fpl__column">
-            {%- for block in section.blocks -%}
-          {%- liquid
-            # Explicit, stable block-to-column mapping. Block 1 goes to column 1,
-            # block 2 to column 2, block 3 to column 3, block 4 back to column 1,
-            # and so on. Deterministic, computed from the block's own position,
-            # no JavaScript and no reshuffling. The block itself is untouched:
-            # image, hotspots and products still travel together.
-            assign desktop_column = forloop.index0 | modulo: section.settings.columns
+      {%- comment -%}
+        Column grouping, derived from Theme Editor block order and nothing else.
 
-            # Which mobile column this block falls into. Column 0 sits flush,
-            # every column after it is stepped down by the section's stagger, so
-            # the default composition arrives without touching a single block.
-            # The block's own offset is added on top for fine tuning.
-            assign mobile_column = forloop.index0 | modulo: mobile_columns
-            assign mobile_nudge = section.settings.stagger_mobile | times: mobile_column | plus: block.settings.mobile_offset
-          -%}
+        A page is one screenful: columns_per_page columns of two images. Inside
+        a page, the column at slot s takes the block at slot s and the block one
+        row down. With three columns that is 1+4, 2+5, 3+6, then the next page
+        gives 7+10, 8+11, 9+12, and so on for as many blocks as exist.
 
-          {%- if desktop_column == forloop.parentloop.index0 -%}
+        Nothing is hardcoded: change the column count and the grouping follows.
+        The block itself is never split -- image, hotspots and products stay in
+        one block and move together when it is reordered.
+      {%- endcomment -%}
+      {%- liquid
+        assign per_page = section.settings.columns | times: 2
+        # Column count comes from the number of PAGES, not from the block count.
+        # Deriving it from blocks/2 loses the last block of a partial page: with
+        # nine blocks and three columns it produced five columns, and block 9
+        # was never rendered. Ceiling division, then columns per page.
+        assign total_pages = section.blocks.size | plus: per_page | minus: 1 | divided_by: per_page
+        assign total_columns = total_pages | times: section.settings.columns
+      -%}
+
+      <div class="fpl__carousel">
+        <carousel-prev-button class="fpl__nav fpl__nav--prev" aria-controls="{{ carousel_id }}">
+          <button type="button" class="prev-next-button prev-next-button--prev circle-button circle-button--lg hover:animate-icon-inline" disabled>
+            <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+            {%- render 'icon' with 'arrow-left', direction_aware: true -%}
+          </button>
+        </carousel-prev-button>
+
+        <find-perfect-look>
           {%- comment -%}
-            --fpl-order carries the block's true position. On mobile the column
-            wrappers collapse with display: contents and this restores the
-            original left-to-right reading order, so the DOM being grouped by
-            column for desktop costs mobile nothing.
+            group-cells is deliberately omitted. ScrollCarousel's groupCells
+            getter returns 1 without it, which is one column per arrow click
+            rather than a whole page of three.
           {%- endcomment -%}
-          <div class="fpl__item" style="--fpl-order: {{ forloop.index }}; --fpl-nudge: {{ mobile_nudge }}px;" {{ block.shopify_attributes }}>
+          <scroll-carousel id="{{ carousel_id }}" allow-drag class="fpl__track" data-fpl-track>
+            {%- for column in (1..total_columns) -%}
+              {%- liquid
+                assign column_index = forloop.index0
+                assign page = column_index | divided_by: section.settings.columns
+                assign slot = column_index | modulo: section.settings.columns
+                assign top_index = page | times: per_page | plus: slot
+                assign bottom_index = top_index | plus: section.settings.columns
+
+                assign stagger_slot = column_index | modulo: 2
+                assign column_nudge = section.settings.stagger_mobile | times: stagger_slot
+
+                assign index_pair = top_index | append: ',' | append: bottom_index | split: ','
+                assign top_block = section.blocks[top_index]
+              -%}
+
+              {%- comment -%}
+                A partial last page leaves trailing columns with no blocks at
+                all. Those are skipped rather than rendered as empty cells the
+                carousel would still scroll to.
+              {%- endcomment -%}
+              {%- if top_block != blank -%}
+              <div class="fpl__column" style="--fpl-nudge: {{ column_nudge }}px;">
+                {%- for index_string in index_pair -%}
+                  {%- liquid
+                    assign block_index = index_string | plus: 0
+                    assign block = section.blocks[block_index]
+                  -%}
+
+                  {%- if block != blank -%}
+          <div class="fpl__item" style="--fpl-offset: {{ block.settings.mobile_offset }}px;" {{ block.shopify_attributes }}>
             <div class="fpl__frame" style="--fpl-ratio: {{ block.settings.ratio }};">
               {%- if block.settings.image != blank -%}
                 {%- capture image_sizes -%}
@@ -480,11 +544,21 @@
               {%- endif -%}
             {%- endfor -%}
           </div>
-          {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              {%- endif -%}
             {%- endfor -%}
-          </div>
-        {%- endfor -%}
-      </find-perfect-look>
+          </scroll-carousel>
+        </find-perfect-look>
+
+        <carousel-next-button class="fpl__nav fpl__nav--next" aria-controls="{{ carousel_id }}">
+          <button type="button" class="prev-next-button prev-next-button--next circle-button circle-button--lg hover:animate-icon-inline">
+            <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+            {%- render 'icon' with 'arrow-right', direction_aware: true -%}
+          </button>
+        </carousel-next-button>
+      </div>
 
       {%- if section.settings.cta_text != blank -%}
         <div class="fpl__cta">
@@ -542,6 +616,9 @@
               if (this.open) this.place(this.open.card);
             };
 
+            const track = this.querySelector('[data-fpl-track]');
+            if (track) track.addEventListener('scroll', this.onReflow, { passive: true });
+
             document.addEventListener('click', this.onClick);
             document.addEventListener('keydown', this.onKeydown);
             window.addEventListener('resize', this.onReflow, { passive: true });
@@ -585,20 +662,32 @@
             card.style.setProperty('--fpl-shift', '0px');
             card.classList.remove('is-below');
 
+            // The track is a scroll container, so it clips its own overflow.
+            // The card has to stay inside BOTH the track and the viewport,
+            // otherwise a dot near the top of an image opens a card that is cut
+            // off by the carousel edge rather than by the screen.
+            const track = this.querySelector('[data-fpl-track]');
+            const bounds = track ? track.getBoundingClientRect() : null;
+
             let rect = card.getBoundingClientRect();
-            const limit = document.documentElement.clientWidth - this.margin;
+            const left = Math.max(this.margin, bounds ? bounds.left + 2 : this.margin);
+            const right = Math.min(
+              document.documentElement.clientWidth - this.margin,
+              bounds ? bounds.right - 2 : Infinity
+            );
 
             let shift = 0;
-            if (rect.left < this.margin) shift = this.margin - rect.left;
-            else if (rect.right > limit) shift = limit - rect.right;
+            if (rect.left < left) shift = left - rect.left;
+            else if (rect.right > right) shift = right - rect.right;
 
             if (shift !== 0) card.style.setProperty('--fpl-shift', shift + 'px');
 
             // Flip below only if there is genuinely no room above, and only if
             // flipping down does not push it off the bottom instead.
             rect = card.getBoundingClientRect();
+            const ceiling = Math.max(this.margin, bounds ? bounds.top : this.margin);
             const spaceBelow = window.innerHeight - rect.bottom - rect.height - 32;
-            if (rect.top < this.margin && spaceBelow > 0) card.classList.add('is-below');
+            if (rect.top < ceiling && spaceBelow > 0) card.classList.add('is-below');
           }
         }
       );
@@ -763,6 +852,17 @@
       "step": 2,
       "unit": "px",
       "default": 32
+    },
+    {
+      "type": "range",
+      "id": "arrow_offset",
+      "label": "Arrow vertical position",
+      "info": "Measured down from the top of the gallery. Desktop only; mobile is swipe.",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 35
     },
     {
       "type": "range",
