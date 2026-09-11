@@ -367,17 +367,15 @@
         display: none;
       }
 
-      /* Filled white card arrow with a charcoal chevron (base variant is outlined) */
-      #shopify-section-{{ section.id }} .collection-list--sbs .collection-card__arrow {
+      /* Card arrow: the base rules above already give a transparent circle with a
+         white chevron, filling white with a dark chevron on :hover, transitioned
+         over 0.2s. Nothing is overridden here so that behaviour stands. Only a
+         keyboard focus state is added, which the base does not cover. Both the
+         hover and focus selectors are per card, so only the card being interacted
+         with changes. */
+      #shopify-section-{{ section.id }} .collection-list--sbs .collection-card:focus-within .collection-card__arrow {
         background-color: #ffffff;
-        border-color: #ffffff;
-        color: #2b2724;
-      }
-
-      #shopify-section-{{ section.id }} .collection-list--sbs .collection-card:hover .collection-card__arrow {
-        background-color: #ffffff !important;
-        border-color: #ffffff !important;
-        color: #2b2724 !important;
+        color: #1a1a1a;
       }
 
       /* Main carousel control: charcoal disc, white chevron, on the right edge,
@@ -387,6 +385,18 @@
          and every other section are untouched. */
       #shopify-section-{{ section.id }} .collection-list--sbs {
         background: {{ section.settings.sbs_background }};
+      }
+
+      /* Heading to cards = 24px measured from the bottom of the lettering.
+         .section-stack is already gap: 24px, but the heading carries
+         line-height: 2 on a 28px font, so a 56px line box sits around roughly
+         28px of glyphs and leaves half of the 28px leading, about 14px, beneath
+         the text. The flex gap is reduced by exactly that much so the visible
+         distance lands on 24px. Typography, card sizes and the gap between cards
+         are untouched, and no negative margins are used. */
+      #shopify-section-{{ section.id }} .collection-list--sbs .section-stack {
+        --sbs-heading-half-leading: calc((2 - 1) * 28px / 2); /* 14px */
+        gap: calc(24px - var(--sbs-heading-half-leading));
       }
 
       /* MAIN carousel control. The shared component is left alone; only its
