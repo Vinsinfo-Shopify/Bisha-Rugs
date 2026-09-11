@@ -274,10 +274,20 @@
       top: var(--fpl-y);
       z-index: 4;
       box-sizing: border-box;
-      /* Measured off the Figma: the card is about 86% of a gallery column, and
-         it never exceeds the viewport less a margin, which is what keeps it
-         from ever causing horizontal page scroll. */
-      width: min({{ section.settings.card_width }}px, calc(100vw - 32px));
+      /* Sized from the lifestyle image it sits on, not from a fixed pixel
+         value, so it keeps the same visual proportion as the columns grow.
+         .fpl__frame is the positioned ancestor, so the percentage is a share of
+         that image. Measured off the 1440 reference: the card spans about 73%
+         of a 479px column, i.e. roughly 352px.
+
+         The floor stops it collapsing on narrow columns, the ceiling stops it
+         dominating a wide one, and the viewport term is a final guard against
+         horizontal page scroll. */
+      width: min(
+        max({{ section.settings.card_min_width }}px, {{ section.settings.card_width_pct }}%),
+        {{ section.settings.card_width }}px,
+        calc(100vw - 32px)
+      );
       transform: translate(calc(-50% + var(--fpl-shift, 0px)), calc(-100% - 16px));
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
@@ -382,7 +392,23 @@
 
     /* ---------- Mobile ---------- */
     @media screen and (max-width: 699px) {
+      /* Full available width on mobile.
+         .fpl__inner carries .container container--xl, and .container sets its
+         own margin-inline from max(--container-gutter, 50% - --container-max-width / 2).
+         Those two together were what inset the whole section and left the unused
+         band on the right. Both are neutralised here and replaced with one
+         explicit gutter.
+
+         --container-gutter is set on the same element on purpose: .bleed on the
+         track derives --distance-to-bleed from it, so the track's negative
+         margin now cancels this padding exactly and the carousel reaches both
+         screen edges while the header stays inset. Desktop is untouched. */
       #shopify-section-{{ section.id }} .fpl__inner {
+        --container-max-width: 100%;
+        --container-gutter: {{ section.settings.gutter_mobile }}px;
+        max-width: none;
+        margin-inline: 0;
+        padding-inline: {{ section.settings.gutter_mobile }}px;
         padding-block-start: {{ section.settings.padding_top | divided_by: 2 }}px;
         padding-block-end: {{ section.settings.padding_bottom | divided_by: 2 }}px;
       }
@@ -1023,12 +1049,34 @@
     {
       "type": "range",
       "id": "card_width",
-      "label": "Product card width",
-      "min": 180,
-      "max": 340,
+      "label": "Product card maximum width",
+      "info": "The card is a share of the lifestyle image, capped here so it never dominates a wide column.",
+      "min": 200,
+      "max": 400,
       "step": 2,
       "unit": "px",
-      "default": 272
+      "default": 352
+    },
+    {
+      "type": "range",
+      "id": "card_width_pct",
+      "label": "Product card width",
+      "info": "As a share of the lifestyle image it sits on. 73 matches the 1440 reference.",
+      "min": 40,
+      "max": 95,
+      "step": 1,
+      "unit": "%",
+      "default": 73
+    },
+    {
+      "type": "range",
+      "id": "card_min_width",
+      "label": "Product card minimum width",
+      "min": 180,
+      "max": 320,
+      "step": 2,
+      "unit": "px",
+      "default": 260
     },
     {
       "type": "range",
@@ -1049,7 +1097,7 @@
       "max": 100,
       "step": 2,
       "unit": "%",
-      "default": 92
+      "default": 82
     },
     {
       "type": "range",
@@ -1067,6 +1115,17 @@
       "id": "card_margin_mobile",
       "label": "Product card side margin (mobile)",
       "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "gutter_mobile",
+      "label": "Mobile side spacing",
+      "info": "Space between the section content and the screen edges. The carousel still reaches the edges.",
+      "min": 0,
       "max": 40,
       "step": 2,
       "unit": "px",
