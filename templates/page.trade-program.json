@@ -18,99 +18,103 @@
         "page_width": "xs"
       }
     },
-    "multi_column_eMfr3c": {
+    "multi_column_6PWCEb": {
       "type": "multi-column",
       "blocks": {
-        "image_with_text_W7iiGm": {
+        "image_with_text_bkcFW8": {
           "type": "image_with_text",
           "settings": {
-            "image": "shopify://shop_images/817d082f4cc3d89cb3701ae684bb8631e8273d60.png",
-            "title": "Hillside Residence",
+            "title": "Apply online",
             "subheading": "",
-            "heading_tag": "h4",
+            "heading_tag": "h3",
             "custom_heading_size": 24,
-            "content": "<p>Custom 12×16 hand-knotted wool, delivered in 9 weeks.</p>",
+            "content": "<p>Share a few details about your studio,takes about a minute.</p>",
             "link_url": "",
             "link_text": "",
             "show_rating": false,
             "rating": 5,
             "rating_color": "#e8b923",
+            "number": "01",
+            "number_color": "#b76e45",
             "review_layout": false
           }
         },
-        "image_with_text_gineQx": {
+        "image_with_text_7AwWV6": {
           "type": "image_with_text",
           "settings": {
-            "image": "shopify://shop_images/fc176fe1653176787ece2333fa47c118f9eb5942.png",
-            "title": "The Warren Hotel",
+            "title": "Get approved",
             "subheading": "",
-            "heading_tag": "h4",
+            "heading_tag": "h3",
             "custom_heading_size": 24,
-            "content": "<p>34 bespoke pieces across lobby and suites.</p>",
+            "content": "<p>Our team reviews and confirms your tradeaccount within 1-2 business days.</p>",
             "link_url": "",
             "link_text": "",
             "show_rating": false,
             "rating": 5,
             "rating_color": "#e8b923",
+            "number": "02",
+            "number_color": "#b76e45",
             "review_layout": false
           }
         },
-        "image_with_text_T3QdAf": {
+        "image_with_text_eVPidb": {
           "type": "image_with_text",
           "settings": {
-            "image": "shopify://shop_images/e8d1c6e2e5a4cc63c5c323d2858aa4191235703f.png",
-            "title": "<strong>Naturally Dyed</strong>",
+            "title": "Access trade pricing",
             "subheading": "",
-            "heading_tag": "h4",
+            "heading_tag": "h3",
             "custom_heading_size": 24,
-            "content": "<p>A standing memo library of40 qualities.</p>",
+            "content": "<p>Unlock the full catalog, custom options,and your dedicated contact.</p>",
             "link_url": "",
             "link_text": "",
             "show_rating": false,
             "rating": 5,
             "rating_color": "#e8b923",
+            "number": "03",
+            "number_color": "#b76e45",
             "review_layout": false
           }
         },
-        "image_with_text_YMJ8C8": {
+        "image_with_text_9WVGcc": {
           "type": "image_with_text",
           "settings": {
-            "image": "shopify://shop_images/408f9e95a1147240fca8c106b0780232af31eed1.png",
-            "title": "Copperfield Townhouse",
+            "title": "Place your order",
             "subheading": "",
-            "heading_tag": "h4",
+            "heading_tag": "h3",
             "custom_heading_size": 24,
-            "content": "<p>Bishop Ray, bespoke runners acrossthree floors.</p>",
+            "content": "<p>Order samples or full pieces, tracked fromloom to install.</p>",
             "link_url": "",
             "link_text": "",
             "show_rating": false,
             "rating": 5,
             "rating_color": "#e8b923",
+            "number": "04",
+            "number_color": "#b76e45",
             "review_layout": false
           }
         }
       },
       "block_order": [
-        "image_with_text_W7iiGm",
-        "image_with_text_gineQx",
-        "image_with_text_T3QdAf",
-        "image_with_text_YMJ8C8"
+        "image_with_text_bkcFW8",
+        "image_with_text_7AwWV6",
+        "image_with_text_eVPidb",
+        "image_with_text_9WVGcc"
       ],
       "name": "t:sections.multi_column.presets.multi_column.name",
       "settings": {
-        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
-        "custom_class": "why_choose_bisha trade_work",
-        "separate_section_with_border": false,
+        "color_scheme": "",
+        "custom_class": "application_process",
+        "separate_section_with_border": true,
         "remove_section_spacing": false,
         "columns_per_row": 4,
-        "stack_on_mobile": false,
+        "stack_on_mobile": true,
         "overlap_image": false,
         "content_alignment": "center",
         "text_alignment": "start",
-        "spacing": "xs",
-        "media_height": "379px",
-        "subheading": "Trade work",
-        "title": "Homes designed with Bisha Rugs",
+        "spacing": "md",
+        "media_height": "",
+        "subheading": "What happens after you apply",
+        "title": "From application to your first order",
         "heading_style": "h2",
         "content": "",
         "padding_top_mobile": 0,
@@ -119,8 +123,8 @@
         "padding_right_mobile": 0,
         "padding_top_desktop": 0,
         "padding_bottom_desktop": 0,
-        "padding_left_desktop": 0,
-        "padding_right_desktop": 0
+        "padding_left_desktop": 46,
+        "padding_right_desktop": 24
       }
     },
     "text_with_icons_zcHVxf": {
@@ -218,6 +222,119 @@
         "custom_class": "trade_partnership"
       }
     },
+    "multi_column_eMfr3c": {
+      "type": "multi-column",
+      "blocks": {
+        "image_with_text_W7iiGm": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/817d082f4cc3d89cb3701ae684bb8631e8273d60.png",
+            "title": "Hillside Residence",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>Custom 12×16 hand-knotted wool, delivered in 9 weeks.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "review_layout": false
+          }
+        },
+        "image_with_text_gineQx": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/fc176fe1653176787ece2333fa47c118f9eb5942.png",
+            "title": "The Warren Hotel",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>34 bespoke pieces across lobby and suites.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "review_layout": false
+          }
+        },
+        "image_with_text_T3QdAf": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/e8d1c6e2e5a4cc63c5c323d2858aa4191235703f.png",
+            "title": "<strong>Naturally Dyed</strong>",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>A standing memo library of40 qualities.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "review_layout": false
+          }
+        },
+        "image_with_text_YMJ8C8": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/408f9e95a1147240fca8c106b0780232af31eed1.png",
+            "title": "Copperfield Townhouse",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>Bishop Ray, bespoke runners acrossthree floors.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "review_layout": false
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_W7iiGm",
+        "image_with_text_gineQx",
+        "image_with_text_T3QdAf",
+        "image_with_text_YMJ8C8"
+      ],
+      "name": "t:sections.multi_column.presets.multi_column.name",
+      "settings": {
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "custom_class": "why_choose_bisha trade_work",
+        "separate_section_with_border": false,
+        "remove_section_spacing": false,
+        "columns_per_row": 4,
+        "stack_on_mobile": false,
+        "overlap_image": false,
+        "content_alignment": "center",
+        "text_alignment": "start",
+        "spacing": "xs",
+        "media_height": "379px",
+        "subheading": "Trade work",
+        "title": "Homes designed with Bisha Rugs",
+        "heading_style": "h2",
+        "content": "",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
+      }
+    },
     "multi_column_cxfyX7": {
       "type": "multi-column",
       "blocks": {
@@ -235,6 +352,8 @@
             "show_rating": true,
             "rating": 5,
             "rating_color": "#b35642",
+            "number": "",
+            "number_color": "#b76e45",
             "review_layout": true
           }
         },
@@ -252,6 +371,8 @@
             "show_rating": true,
             "rating": 5,
             "rating_color": "#b35642",
+            "number": "",
+            "number_color": "#b76e45",
             "review_layout": true
           }
         },
@@ -269,6 +390,8 @@
             "show_rating": true,
             "rating": 5,
             "rating_color": "#b35642",
+            "number": "",
+            "number_color": "#b76e45",
             "review_layout": true
           }
         }
@@ -381,62 +504,6 @@
         "show_image": false
       }
     },
-    "multiple_media_with_text_nhextF": {
-      "type": "multiple-media-with-text",
-      "blocks": {
-        "image_3UgakL": {
-          "type": "image",
-          "settings": {
-            "rotation": 0
-          }
-        },
-        "image_9RQd7g": {
-          "type": "image",
-          "settings": {
-            "rotation": 0
-          }
-        }
-      },
-      "block_order": [
-        "image_3UgakL",
-        "image_9RQd7g"
-      ],
-      "name": "t:sections.multiple_media_with_text.presets.multiple_media_with_text.name",
-      "settings": {
-        "color_scheme": "",
-        "custom_class": "",
-        "reveal_on_scroll": true,
-        "separate_section_with_border": false,
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "padding_left": 0,
-        "padding_right": 0,
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 0,
-        "padding_left_mobile": 12,
-        "padding_right_mobile": 12,
-        "media_position_desktop": "before_text",
-        "media_position_mobile": "before_text",
-        "media_layout": "separated",
-        "media_width_1": "289",
-        "media_width_2": "289",
-        "media_gap_width": "81",
-        "media_alignment": "center",
-        "media_alignment_offset": 0,
-        "media_mobile_alignment_offset": 0,
-        "text_alignment": "center",
-        "subheading": "About",
-        "title": "<p>Showcase your product</p>",
-        "heading_style": "h3",
-        "content": "<p>Write some content about your products, collections or brand. Use image or video to create an impactful layout.</p>",
-        "button_1_text": "",
-        "button_1_link": "",
-        "button_1_style": "solid",
-        "button_2_text": "",
-        "button_2_link": "",
-        "button_2_style": "solid"
-      }
-    },
     "multiimage_with_text_VwdwAf": {
       "type": "multiimage-with-text",
       "name": "Multi-image with text",
@@ -458,11 +525,11 @@
   },
   "order": [
     "main",
-    "multi_column_eMfr3c",
+    "multi_column_6PWCEb",
     "text_with_icons_zcHVxf",
+    "multi_column_eMfr3c",
     "multi_column_cxfyX7",
     "faq_eE47fj",
-    "multiple_media_with_text_nhextF",
     "multiimage_with_text_VwdwAf"
   ]
 }
