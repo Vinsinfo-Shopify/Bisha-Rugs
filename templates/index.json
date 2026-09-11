@@ -1464,19 +1464,75 @@
         "padding_right_desktop": 0
       }
     },
-    "newsletter": {
-      "type": "newsletter",
-      "disabled": true,
+    "real_homes_pTLTFX": {
+      "type": "real-homes",
+      "blocks": {
+        "card_tFabhH": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "product": "",
+            "link": ""
+          }
+        },
+        "card_marr7x": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "product": "",
+            "link": ""
+          }
+        },
+        "card_kWamFg": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "product": "",
+            "link": ""
+          }
+        },
+        "card_MqJwEU": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "product": "",
+            "link": ""
+          }
+        },
+        "card_zUymC3": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "product": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_tFabhH",
+        "card_marr7x",
+        "card_kWamFg",
+        "card_MqJwEU",
+        "card_zUymC3"
+      ],
+      "name": "Real homes",
       "settings": {
-        "color_scheme": "scheme-3",
-        "separate_section_with_border": true,
-        "image_position_mobile": "after_text",
-        "subheading": "Keep me updated",
-        "title": "Newsletter",
-        "heading_style": "h2",
-        "content": "<p>Subscribe to get notified about product launches, special offers and company news.</p>",
-        "button_text": "Subscribe",
-        "disclaimer": "<p>You can unsubscribe anytime. For more details, read our Privacy Policy.</p>"
+        "color_scheme": "",
+        "background": "#fffbf3",
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "subheading": "REAL HOMES",
+        "title": "Styled by Bisha",
+        "header_gap": 18,
+        "card_width": 281,
+        "card_gap": 24,
+        "card_width_mobile": 210,
+        "card_gap_mobile": 12,
+        "card_radius": 2,
+        "info_gap": 8,
+        "show_controls": true,
+        "play_button_color": "#2b2724",
+        "play_button_opacity": 60
       }
     }
   },
@@ -1487,6 +1543,7 @@
     "featured-collections-1",
     "color_palette_row07",
     "collection_list_y68EWi",
+    "real_homes_pTLTFX",
     "image_with_text_eJwpDm",
     "image_with_text_xnyQHV",
     "image_with_text_nK66R9",
@@ -1504,7 +1561,6 @@
     "testimonials",
     "timeline",
     "image-with-text-overlay-2",
-    "multi-column",
-    "newsletter"
+    "multi-column"
   ]
 }
