@@ -690,24 +690,7 @@
             "product_3_vertical_position": 25
           }
         },
-        "image_mQVhYe": {
-          "type": "image",
-          "settings": {
-            "image": "shopify://shop_images/Find_the_perfect_look_-_2.png",
-            "ratio": "1 / 1",
-            "mobile_offset": 0,
-            "product_1": "white-color-modern-design-rug-bisha-rugs",
-            "product_1_horizontal_position": 85,
-            "product_1_vertical_position": 92,
-            "product_2": "",
-            "product_2_horizontal_position": 65,
-            "product_2_vertical_position": 45,
-            "product_3": "",
-            "product_3_horizontal_position": 45,
-            "product_3_vertical_position": 25
-          }
-        },
-        "image_xKfy9w": {
+        "image_tRygrD": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/Find_the_perfect_look_-_4.png",
@@ -775,6 +758,23 @@
             "product_3_vertical_position": 25
           }
         },
+        "image_zMNEjb": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_5.png",
+            "ratio": "4 / 5",
+            "mobile_offset": 0,
+            "product_1": "l-010-agatha-hand-knotted-rug",
+            "product_1_horizontal_position": 14,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
         "image_egzVJN": {
           "type": "image",
           "settings": {
@@ -832,11 +832,11 @@
         "image_GexHkn",
         "image_Cxgt4r",
         "image_gFftU4",
-        "image_mQVhYe",
-        "image_xKfy9w",
+        "image_tRygrD",
         "image_hgepPx",
         "image_iBAajk",
         "image_cmiXXG",
+        "image_zMNEjb",
         "image_egzVJN",
         "image_yKLp8Y",
         "image_ybkfYL"
