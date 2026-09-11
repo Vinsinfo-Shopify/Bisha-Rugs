@@ -1554,79 +1554,6 @@
         "content": ""
       }
     },
-    "timeline": {
-      "type": "timeline",
-      "blocks": {
-        "item-1": {
-          "type": "item",
-          "settings": {
-            "label": "2013",
-            "subheading": "",
-            "title": "A story of shared vision",
-            "heading_style": "h2",
-            "content": "<p>This project began with two creative minds, united by both passion and purpose. From day one, the goal was clear: to build something meaningful together. What started as a simple idea turned into a first product launch—and the beginning of a lasting journey.</p>",
-            "link_text": "",
-            "link_url": "",
-            "link_style": "link",
-            "mobile_text_color": "#ffffff"
-          }
-        },
-        "item-2": {
-          "type": "item",
-          "settings": {
-            "label": "2014",
-            "subheading": "",
-            "title": "No middlemen",
-            "heading_style": "h2",
-            "content": "<p>By working directly with you, we eliminate unnecessary markups and focus on what matters: offering thoughtfully designed, high-quality pieces at a fair price. A modern approach to fashion, rooted in transparency.</p>",
-            "link_text": "",
-            "link_url": "",
-            "link_style": "link",
-            "mobile_text_color": "#ffffff"
-          }
-        },
-        "item-3": {
-          "type": "item",
-          "settings": {
-            "label": "2015",
-            "subheading": "",
-            "title": "Crafted in Italy",
-            "heading_style": "h2",
-            "content": "<p>Production takes place in a family-run workshop near Naples, known for its artisanal expertise. The collaboration is close and ongoing, with daily conversations shaping both the process and the products. More than just a manufacturer—true partners in craft.</p>",
-            "link_text": "",
-            "link_url": "",
-            "link_style": "link",
-            "mobile_text_color": "#ffffff"
-          }
-        },
-        "item-4": {
-          "type": "item",
-          "settings": {
-            "label": "2017",
-            "subheading": "Subheading",
-            "title": "Discover our products",
-            "heading_style": "h2",
-            "content": "<p>Located in the heart of the city, our showroom is open throughout the week and offers the ideal place to explore the full range in person.</p>",
-            "link_text": "",
-            "link_url": "",
-            "link_style": "link",
-            "mobile_text_color": "#ffffff"
-          }
-        }
-      },
-      "block_order": [
-        "item-1",
-        "item-2",
-        "item-3",
-        "item-4"
-      ],
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-1",
-        "item_color_scheme": "scheme-2",
-        "separate_section_with_border": false
-      }
-    },
     "image-with-text-overlay-2": {
       "type": "image-with-text-overlay",
       "blocks": {
@@ -1692,7 +1619,7 @@
             "corner_styling": "soft",
             "header_text_color": "#000000",
             "text_color": "#000000",
-            "card_color": "#F9F9F9",
+            "card_color": "#f9f9f9",
             "stars_color": "",
             "arrows_color": "#000000",
             "transition_speed": 5,
@@ -1742,6 +1669,58 @@
         "arrow_color": "#ffffff",
         "arrow_border": "#ffffff"
       }
+    },
+    "contact_options_fnhmgN": {
+      "type": "contact-options",
+      "name": "Contact options",
+      "settings": {
+        "subheading": "CONTACT US",
+        "title": "Still Have Questions?",
+        "heading_style": "h2",
+        "heading_weight": "400",
+        "card_1_image": "shopify://shop_images/call.png",
+        "card_1_icon": "picto-phone",
+        "card_1_title": "Give Us a Call",
+        "card_1_text": "Our experts are just a call away to help you find the perfect rug.",
+        "card_1_cta_label": "+1 (415) 980-7774",
+        "card_1_cta_url": "tel:+14159807774",
+        "card_2_image": "shopify://shop_images/appointment.png",
+        "card_2_icon": "picto-camera",
+        "card_2_title": "Virtual Appointment",
+        "card_2_text": "Schedule a call to explore designs, ask questions and shop online with our experts.",
+        "card_2_cta_label": "Book Now",
+        "card_2_cta_url": "",
+        "card_3_image": "shopify://shop_images/mail.png",
+        "card_3_icon": "picto-envelope",
+        "card_3_title": "Send Us an Email",
+        "card_3_text": "Prefer email? Send your query and our team will respond with all the details you need.",
+        "card_3_cta_label": "love@bisharugs.com",
+        "card_3_cta_url": "mailto:love@bisharugs.com",
+        "color_scheme": "",
+        "background": "#fffbf3",
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "eyebrow_gap": 4,
+        "header_gap": 28,
+        "card_gap": 12,
+        "card_gap_mobile": 8,
+        "cards_tablet": 2.1,
+        "cards_mobile": 1.1,
+        "image_ratio": "4 / 5",
+        "card_padding": 16,
+        "card_radius": 2,
+        "card_background": "#ffffff",
+        "card_border": "#e6e6e6",
+        "icon_size": 22,
+        "icon_color": "#2b2724",
+        "title_size": 18,
+        "title_weight": "400",
+        "text_size": 13,
+        "arrow_offset": 30,
+        "arrow_background": "#2b2724",
+        "arrow_color": "#ffffff",
+        "arrow_border": "#ffffff"
+      }
     }
   },
   "order": [
@@ -1767,8 +1746,8 @@
     "featured-product",
     "image-with-text-block",
     "testimonials",
-    "timeline",
     "image-with-text-overlay-2",
-    "customer_reviews_J4BbaT"
+    "customer_reviews_J4BbaT",
+    "contact_options_fnhmgN"
   ]
 }
