@@ -627,7 +627,6 @@
           "settings": {
             "image": "shopify://shop_images/Find_the_perfect_look_-_1.png",
             "ratio": "4 / 5",
-            "mobile_offset": 0,
             "product_1": "oushak-rug-9x12-turkish-knot-rug-hand-knotted-vintage-antique-oushak-wool-area-rug-for-living-room-and-dining-room-quick-ship",
             "product_1_horizontal_position": 30,
             "product_1_vertical_position": 85,
@@ -644,7 +643,6 @@
           "settings": {
             "image": "shopify://shop_images/Find_the_perfect_look_-_3_c0c747f8-418d-4c40-86b0-b255956c95d4.png",
             "ratio": "1 / 1",
-            "mobile_offset": 0,
             "product_1": "handmade-oushak-wool-rug-muted-pink-brown-vintage-turkish-design",
             "product_1_horizontal_position": 72,
             "product_1_vertical_position": 92,
@@ -661,7 +659,6 @@
           "settings": {
             "image": "shopify://shop_images/Find_the_perfect_look_-_5.png",
             "ratio": "4 / 5",
-            "mobile_offset": 0,
             "product_1": "l-010-agatha-hand-knotted-rug",
             "product_1_horizontal_position": 14,
             "product_1_vertical_position": 92,
@@ -678,7 +675,6 @@
           "settings": {
             "image": "shopify://shop_images/Find_the_perfect_look_-_2.png",
             "ratio": "1 / 1",
-            "mobile_offset": 0,
             "product_1": "white-color-modern-design-rug-bisha-rugs",
             "product_1_horizontal_position": 85,
             "product_1_vertical_position": 92,
@@ -695,7 +691,6 @@
           "settings": {
             "image": "shopify://shop_images/Find_the_perfect_look_-_4.png",
             "ratio": "4 / 5",
-            "mobile_offset": 0,
             "product_1": "handmade-oushak-wool-rug-peach-ivory-brown-floral-medallion",
             "product_1_horizontal_position": 68,
             "product_1_vertical_position": 77,
@@ -712,7 +707,6 @@
           "settings": {
             "image": "shopify://shop_images/Find_the_perfect_look_-_6.png",
             "ratio": "1 / 1",
-            "mobile_offset": 0,
             "product_1": "l-023-beth-mini-hand-knotted-rug",
             "product_1_horizontal_position": 48,
             "product_1_vertical_position": 85,
@@ -729,7 +723,6 @@
           "settings": {
             "image": "shopify://shop_images/Find_the_perfect_look_-_1.png",
             "ratio": "4 / 5",
-            "mobile_offset": 0,
             "product_1": "oushak-rug-9x12-turkish-knot-rug-hand-knotted-vintage-antique-oushak-wool-area-rug-for-living-room-and-dining-room-quick-ship",
             "product_1_horizontal_position": 30,
             "product_1_vertical_position": 85,
@@ -746,7 +739,6 @@
           "settings": {
             "image": "shopify://shop_images/Find_the_perfect_look_-_3_c0c747f8-418d-4c40-86b0-b255956c95d4.png",
             "ratio": "1 / 1",
-            "mobile_offset": 0,
             "product_1": "handmade-oushak-wool-rug-muted-pink-brown-vintage-turkish-design",
             "product_1_horizontal_position": 72,
             "product_1_vertical_position": 92,
@@ -763,7 +755,6 @@
           "settings": {
             "image": "shopify://shop_images/Find_the_perfect_look_-_5.png",
             "ratio": "4 / 5",
-            "mobile_offset": 0,
             "product_1": "l-010-agatha-hand-knotted-rug",
             "product_1_horizontal_position": 14,
             "product_1_vertical_position": 92,
@@ -780,7 +771,6 @@
           "settings": {
             "image": "shopify://shop_images/Find_the_perfect_look_-_2.png",
             "ratio": "1 / 1",
-            "mobile_offset": 0,
             "product_1": "white-color-modern-design-rug-bisha-rugs",
             "product_1_horizontal_position": 85,
             "product_1_vertical_position": 92,
@@ -797,7 +787,6 @@
           "settings": {
             "image": "shopify://shop_images/Find_the_perfect_look_-_4.png",
             "ratio": "4 / 5",
-            "mobile_offset": 0,
             "product_1": "handmade-oushak-wool-rug-peach-ivory-brown-floral-medallion",
             "product_1_horizontal_position": 68,
             "product_1_vertical_position": 77,
@@ -814,7 +803,6 @@
           "settings": {
             "image": "shopify://shop_images/Find_the_perfect_look_-_6.png",
             "ratio": "1 / 1",
-            "mobile_offset": 0,
             "product_1": "l-023-beth-mini-hand-knotted-rug",
             "product_1_horizontal_position": 48,
             "product_1_vertical_position": 85,
@@ -857,11 +845,17 @@
         "columns_mobile": "2",
         "grid_gap": 12,
         "grid_gap_mobile": 8,
-        "stagger_mobile": 32,
         "image_radius": 2,
         "hotspot_size": 14,
         "hotspot_color": "#ffffff",
-        "card_width": 250,
+        "card_width_max": 344,
+        "card_width_share": 78,
+        "card_min_width": 260,
+        "card_width_mobile_px": 344,
+        "card_opacity_pct": 82,
+        "thumb_width": 56,
+        "card_margin_mobile_px": 16,
+        "gutter_mobile": 16,
         "card_radius": 2,
         "card_border_color": "#e6e6e6",
         "cta_text": "SEE ALL INSPIRATION",
@@ -1669,73 +1663,53 @@
         "overlay_opacity": 30
       }
     },
-    "multi-column": {
-      "type": "multi-column",
+    "17891259690c261594": {
+      "type": "apps",
       "blocks": {
-        "image-with-text-1": {
-          "type": "image_with_text",
+        "judge_me_reviews_cards_carousel_hDhqRg": {
+          "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
-            "title": "The design",
-            "heading_tag": "h4",
-            "custom_heading_size": 24,
-            "content": "<p>Every product is imagined and developed in our studio, with a focus on both form and function.</p>",
-            "link_url": "",
-            "link_text": ""
-          }
-        },
-        "image-with-text-2": {
-          "type": "image_with_text",
-          "settings": {
-            "title": "Materials",
-            "heading_tag": "h4",
-            "custom_heading_size": 24,
-            "content": "<p>Our materials come from hides sourced as byproducts of the food industry. We collaborate exclusively with trusted tanneries based in Italy, France, and Spain.</p>",
-            "link_url": "",
-            "link_text": ""
-          }
-        },
-        "image-with-text-3": {
-          "type": "image_with_text",
-          "settings": {
-            "title": "The know-how",
-            "heading_tag": "h4",
-            "custom_heading_size": 24,
-            "content": "<p>Every step of the process follows the rigorous standards of traditional leatherworking—ensuring durability, precision, and lasting quality.</p>",
-            "link_url": "",
-            "link_text": ""
+            "show_sample_reviews": true,
+            "reviews_selection": "all",
+            "products": [],
+            "filter_pinned": false,
+            "filter_featured": false,
+            "filter_custom_tags": "",
+            "star_rating": "all",
+            "show_review_media": true,
+            "display_order": "media_first",
+            "no_image_fallback": "review_text_only",
+            "max_reviews": 20,
+            "review_length": "medium",
+            "text_size": "medium",
+            "image_ratio": "1",
+            "reviews_shown": 4,
+            "show_reviewer_name": true,
+            "show_product_name": true,
+            "hide_arrows_mobile": true,
+            "arrows_position": "sides",
+            "max_width": 1100,
+            "corner_styling": "soft",
+            "header_text_color": "#000000",
+            "text_color": "#000000",
+            "card_color": "#F9F9F9",
+            "stars_color": "",
+            "arrows_color": "#000000",
+            "transition_speed": 5,
+            "header_text": "Customers are saying",
+            "show_average_rating": true,
+            "rating_display": "default"
           }
         }
       },
       "block_order": [
-        "image-with-text-1",
-        "image-with-text-2",
-        "image-with-text-3"
+        "judge_me_reviews_cards_carousel_hDhqRg"
       ],
-      "disabled": true,
       "settings": {
-        "color_scheme": "scheme-1",
-        "custom_class": "",
+        "color_scheme": "",
         "separate_section_with_border": true,
-        "remove_section_spacing": false,
-        "columns_per_row": 3,
-        "stack_on_mobile": false,
-        "overlap_image": false,
-        "content_alignment": "center",
-        "text_alignment": "center",
-        "spacing": "md",
-        "media_height": "379px",
-        "subheading": "About us",
-        "title": "From A to Z",
-        "heading_style": "h2",
-        "content": "",
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 0,
-        "padding_left_mobile": 0,
-        "padding_right_mobile": 0,
-        "padding_top_desktop": 0,
-        "padding_bottom_desktop": 0,
-        "padding_left_desktop": 0,
-        "padding_right_desktop": 0
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false
       }
     }
   },
@@ -1764,6 +1738,6 @@
     "testimonials",
     "timeline",
     "image-with-text-overlay-2",
-    "multi-column"
+    "17891259690c261594"
   ]
 }
