@@ -1604,9 +1604,9 @@ shopify-accelerated-checkout, shopify-accelerated-checkout-cart {
   display: grid;
 }
 
-.section-stack .section-header .h2{
+/* .section-stack .section-header .h2{
   font-size: 38px;
-}
+} */
 
 .section-header {
   max-width: min(var(--container-xs-max-width), 100%);
@@ -8666,6 +8666,9 @@ ul {
   font-weight: 500;
   text-transform: uppercase;
 }
+.trade_work .section_header_heading{
+  text-transform: none;
+}
 
 .why_choose_bisha .section-stack,
 .our_impact .section-stack {
@@ -9158,7 +9161,9 @@ ul {
 .faq_section_header .section-header{
   max-width: 100%;
 }
-
+.trade_program .faq_section_header{
+  margin-bottom: 0px;
+}
 .header_flex{
   display: flex;
   align-items: self-start;
@@ -9788,6 +9793,54 @@ ul {
   font-weight: 600;
   line-height: 140%;
 }
+.member_stories .multi-column__item--review{
+  padding: 33px 42px 27px 31px;
+  background: #FFFFFF;
+}
+.member_stories .section_header_subheading{
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19.2px;
+  letter-spacing: 2.16px;
+  text-transform: uppercase;
+}
+.member_stories .section_header_heading{
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 41.4px;
+  letter-spacing: -0.72px;
+  margin-top: 4px;
+}
+.member_stories .section-stack{
+  gap: 24px;
+}
+.member_stories .section_header_content{
+  margin: 0px;
+}
+.member_stories .multi-column{
+  gap: 37px;
+}
+.member_stories .multi-column-card_content{
+  line-height: 24.8px;
+}
+.member_stories .heading_class_wrapper{
+  margin: 0;
+}
+.member_stories .multi-column-card_heading{
+  font-size: 14px;
+  line-height: 22.4px;
+  font-weight: 600;
+}
+.member_stories .multi-column-card_subheading{
+  font-size: 12px;
+  line-height: 20.8px;
+  font-weight: 400;
+  margin-top: 4px;
+}
+.member_stories{
+  padding-top: 51px;
+  padding-bottom: 51px;
+}
 .recent_products .container{
   padding-top: 45px;
   padding-bottom: 44px;
@@ -9845,9 +9898,9 @@ ul {
       .recent_products .section-stack{
         gap:16px;
       }
-      .section-stack .section-header .h2{
+      /* .section-stack .section-header .h2{
         font-size: 28px;
-      }
+      } */
 }
 .blog-card-img {
   aspect-ratio: 4 / 3; 
@@ -9860,4 +9913,98 @@ ul {
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+.trade_partnership .prose{
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 140%;
+}
+.trade_partnership .icon_with_text_title{
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 140%;
+}
+.trade_partnership .inner_container{
+  padding-right: 127px;
+  padding-left: 125px;
+}
+.trade_partnership .section_header_heading{
+  font-size: 28px;
+  line-height: 120%;
+  font-weight: 400;
+  margin: 0;
+}
+.trade_partnership .section_header_content{
+  margin: 0px;
+}
+.trade_partnership .section_header_subheading{
+  display: none;
+}
+@media screen and (max-width: 1024px){
+  .trade_partnership .inner_container{
+    padding-right: 30px;
+    padding-left: 30px;
+    gap: 40px;
+  }
+}
+@media screen and (max-width: 768px){
+    .trade_partnership .inner_container{
+        padding-right: 6px;
+        padding-left: 6px;
+      }
+  .trade_partnership .section_header_heading{
+    font-size: 24px;
+    margin-top: 4px;
+  }
+   .trade_partnership .prose{
+    padding: 0px 10px ;
+   }
+  .trade_partnership .section_header_subheading{
+    display: block;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 140%;
+  }
+  .trade_partnership .prose{
+      font-size: 12px;
+      line-height: 18.4px;
+    }
+    .trade_partnership .icon_with_text_title{
+      font-size: 16px;
+      font-weight: 500; 
+      line-height: 17.5px;
+    }
+    .trade_partnership .icon_with_text_inner_container{
+      gap:6px;
+    }
+    .trade_partnership .icon_with_text_container{
+      gap:12px;
+    }
+    .member_stories .section_header_subheading{
+      font-weight: 500;
+      line-height: 140%;
+    }
+    .member_stories .section_header_heading{
+      font-size: 24px;
+      line-height: 120%;
+    }
+    .member_stories .section_header_heading{
+      padding: 0px 15px;
+    }
+    .member_stories .multi-column__item--review{
+      padding: 21px 21px 21px 21px;
+    }
+    .member_stories .multi-column-card_subheading{
+      font-size: 10px;
+      line-height: 15px;
+      font-weight: 400;
+      letter-spacing: 0%;
+      margin: 0;
+    }
+    .member_stories .multi-column-card_heading{
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 15px;
+    }
 }

@@ -1,0 +1,468 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_title": true,
+        "page_width": "xs"
+      }
+    },
+    "multi_column_eMfr3c": {
+      "type": "multi-column",
+      "blocks": {
+        "image_with_text_W7iiGm": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/817d082f4cc3d89cb3701ae684bb8631e8273d60.png",
+            "title": "Hillside Residence",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>Custom 12×16 hand-knotted wool, delivered in 9 weeks.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "review_layout": false
+          }
+        },
+        "image_with_text_gineQx": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/fc176fe1653176787ece2333fa47c118f9eb5942.png",
+            "title": "The Warren Hotel",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>34 bespoke pieces across lobby and suites.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "review_layout": false
+          }
+        },
+        "image_with_text_T3QdAf": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/e8d1c6e2e5a4cc63c5c323d2858aa4191235703f.png",
+            "title": "<strong>Naturally Dyed</strong>",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>A standing memo library of40 qualities.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "review_layout": false
+          }
+        },
+        "image_with_text_YMJ8C8": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/408f9e95a1147240fca8c106b0780232af31eed1.png",
+            "title": "Copperfield Townhouse",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>Bishop Ray, bespoke runners acrossthree floors.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "review_layout": false
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_W7iiGm",
+        "image_with_text_gineQx",
+        "image_with_text_T3QdAf",
+        "image_with_text_YMJ8C8"
+      ],
+      "name": "t:sections.multi_column.presets.multi_column.name",
+      "settings": {
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "custom_class": "why_choose_bisha trade_work",
+        "separate_section_with_border": false,
+        "remove_section_spacing": false,
+        "columns_per_row": 4,
+        "stack_on_mobile": false,
+        "overlap_image": false,
+        "content_alignment": "center",
+        "text_alignment": "start",
+        "spacing": "xs",
+        "media_height": "379px",
+        "subheading": "Trade work",
+        "title": "Homes designed with Bisha Rugs",
+        "heading_style": "h2",
+        "content": "",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
+      }
+    },
+    "text_with_icons_zcHVxf": {
+      "type": "text-with-icons",
+      "blocks": {
+        "item_NEjkFr": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-delivery-truck",
+            "custom_icon": "shopify://shop_images/Star-1--Streamline-Core_4x_f3b27f7b-62af-4dc7-b25f-7cc1a73248f5.png",
+            "icon_width": 34,
+            "mobile_icon_width": 16,
+            "title": "Authentic craftsmanship",
+            "content": "<p>Every rug is hand-knotted by weavers we've partnered with for over a decade, not mass produced.</p>"
+          }
+        },
+        "item_DpgwPy": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-delivery-truck",
+            "custom_icon": "shopify://shop_images/view_comfy_alt_34dp_E3E3E3_FILL0_wght300_GRAD0_opsz40_1.png",
+            "icon_width": 34,
+            "mobile_icon_width": 16,
+            "title": "Custom design capability",
+            "content": "<p>Any size, shape, or pile height, built around your floor plan rather than a standard catalog listing.</p>"
+          }
+        },
+        "item_rJ8Aqe": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-delivery-truck",
+            "custom_icon": "shopify://shop_images/Circle--Streamline-Core.png",
+            "icon_width": 34,
+            "mobile_icon_width": 16,
+            "title": "Designer color palette",
+            "content": "<p>Match any Pantone or fabric swatch, our dye team builds custom color ways for project-specific runs.</p>"
+          }
+        },
+        "item_Xgficd": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-delivery-truck",
+            "custom_icon": "shopify://shop_images/Browser-Check--Streamline-Core.png",
+            "icon_width": 34,
+            "mobile_icon_width": 16,
+            "title": "Reliable production",
+            "content": "<p>Transparent lead times and proactive updates, so your install date is never a surprise.</p>"
+          }
+        },
+        "item_kdQpKi": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-customer-support",
+            "custom_icon": "shopify://shop_images/Heart--Streamline-Core.png",
+            "icon_width": 34,
+            "mobile_icon_width": 16,
+            "title": "Dedicated account support",
+            "content": "<p>One point of contact who knows your projects, not a rotating support queue.</p>"
+          }
+        },
+        "item_3ABPdE": {
+          "type": "item",
+          "settings": {
+            "icon": "picto-shield",
+            "custom_icon": "shopify://shop_images/SVG.png",
+            "icon_width": 34,
+            "mobile_icon_width": 16,
+            "title": "Fast sample turnaround",
+            "content": "<p>Physical swatches shipped free, usually within 3 business days of your request.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_NEjkFr",
+        "item_DpgwPy",
+        "item_rJ8Aqe",
+        "item_Xgficd",
+        "item_kdQpKi",
+        "item_3ABPdE"
+      ],
+      "name": "t:sections.text_with_icons.presets.text_with_icons.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "subheading": "Features",
+        "heading": "What the trade partnership gives you",
+        "heading_style": "h2",
+        "stack_on_mobile": false,
+        "desktop_layout": "grid",
+        "items_per_row": 3,
+        "mobile_columns": "2",
+        "icon_color": "#ff1010",
+        "text_color": "",
+        "text_alignment": "center",
+        "custom_class": "trade_partnership"
+      }
+    },
+    "multi_column_cxfyX7": {
+      "type": "multi-column",
+      "blocks": {
+        "image_with_text_qwmAFP": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/aae7c36aeae5ff8e136a2015aa3f601e1ff8c72c.png",
+            "title": "Amara Whitfield",
+            "subheading": "Principal, Studio Hale",
+            "heading_tag": "h3",
+            "custom_heading_size": 24,
+            "content": "<p>\"The samples arrived in two days and thecustom strike-off saved a clientpresentation. I've specified them on sixprojects since.\"</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": true,
+            "rating": 5,
+            "rating_color": "#b35642",
+            "review_layout": true
+          }
+        },
+        "image_with_text_pEkJdL": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/cedd512a1d28153a937767e882210b80d6bc097a.png",
+            "title": "Daniel Reyes",
+            "subheading": "Founder, Norr Interiors",
+            "heading_tag": "h3",
+            "custom_heading_size": 24,
+            "content": "<p>\"Having one person who knows everyopen project is the difference. Nothinggets re-explained, nothing slips past theinstall date.\"<br/></p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": true,
+            "rating": 5,
+            "rating_color": "#b35642",
+            "review_layout": true
+          }
+        },
+        "image_with_text_zmbP7f": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/5eb592482c1f67a57305383884710fd4d749812f.png",
+            "title": "Priya Menon",
+            "subheading": "Senior Designer, Bishop Ray",
+            "heading_tag": "h3",
+            "custom_heading_size": 24,
+            "content": "<p>\"The trade discount paid for itself on thefirst order, and the 14-day hold means Ican present without pressure.\"</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": true,
+            "rating": 5,
+            "rating_color": "#b35642",
+            "review_layout": true
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_qwmAFP",
+        "image_with_text_pEkJdL",
+        "image_with_text_zmbP7f"
+      ],
+      "name": "t:sections.multi_column.presets.multi_column.name",
+      "settings": {
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "custom_class": "member_stories",
+        "separate_section_with_border": true,
+        "remove_section_spacing": true,
+        "columns_per_row": 3,
+        "stack_on_mobile": true,
+        "overlap_image": false,
+        "content_alignment": "center",
+        "text_alignment": "start",
+        "spacing": "md",
+        "media_height": "",
+        "subheading": "Member stories",
+        "title": "Hear from other Interior Designers & Architects",
+        "heading_style": "h3",
+        "content": "",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
+      }
+    },
+    "faq_eE47fj": {
+      "type": "faq",
+      "blocks": {
+        "question_PXWDcf": {
+          "type": "question",
+          "settings": {
+            "question": "Who can apply to the trade program?",
+            "answer": "<p>Interior designers, architects, contractors, and retail partners actively working on residential orcommercial projects.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_zHmUy7": {
+          "type": "question",
+          "settings": {
+            "question": "Is there a minimum order?",
+            "answer": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_H7ge6T": {
+          "type": "question",
+          "settings": {
+            "question": "How long does approval take?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_Mr886j": {
+          "type": "question",
+          "settings": {
+            "question": "What's the typical lead time for custom rugs?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_EbyrGh": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer free samples?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "custom_class": ""
+          }
+        }
+      },
+      "block_order": [
+        "question_PXWDcf",
+        "question_zHmUy7",
+        "question_H7ge6T",
+        "question_Mr886j",
+        "question_EbyrGh"
+      ],
+      "name": "t:sections.faq.presets.faq.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "show_categories": false,
+        "custom_class": "trade_program",
+        "faq_custom_class": "",
+        "show_breadcrumb": false,
+        "breadcrumb_home_label": "Home",
+        "breadcrumb_current_label": "FAQs",
+        "subheading": "Questions",
+        "title": "Frequently asked questions",
+        "heading_style": "h2",
+        "content": "",
+        "show_sidebar": false,
+        "sidebar_heading": "Contact Us",
+        "sidebar_text": "<p>If you have an issue or question that requires immediate assistance, you can mail us on love@example.com</p><p>We will reply as soon as possible with solution.</p>",
+        "sidebar_button_1_label": "Contact Us",
+        "sidebar_button_1_link": "",
+        "sidebar_button_2_label": "About Us",
+        "sidebar_button_2_link": "",
+        "sidebar_custom_class": "",
+        "show_image": false
+      }
+    },
+    "multiple_media_with_text_nhextF": {
+      "type": "multiple-media-with-text",
+      "blocks": {
+        "image_3UgakL": {
+          "type": "image",
+          "settings": {
+            "rotation": 0
+          }
+        },
+        "image_9RQd7g": {
+          "type": "image",
+          "settings": {
+            "rotation": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_3UgakL",
+        "image_9RQd7g"
+      ],
+      "name": "t:sections.multiple_media_with_text.presets.multiple_media_with_text.name",
+      "settings": {
+        "color_scheme": "",
+        "custom_class": "",
+        "reveal_on_scroll": true,
+        "separate_section_with_border": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "media_position_desktop": "before_text",
+        "media_position_mobile": "before_text",
+        "media_layout": "separated",
+        "media_width_1": "289",
+        "media_width_2": "289",
+        "media_gap_width": "81",
+        "media_alignment": "center",
+        "media_alignment_offset": 0,
+        "media_mobile_alignment_offset": 0,
+        "text_alignment": "center",
+        "subheading": "About",
+        "title": "<p>Showcase your product</p>",
+        "heading_style": "h3",
+        "content": "<p>Write some content about your products, collections or brand. Use image or video to create an impactful layout.</p>",
+        "button_1_text": "",
+        "button_1_link": "",
+        "button_1_style": "solid",
+        "button_2_text": "",
+        "button_2_link": "",
+        "button_2_style": "solid"
+      }
+    },
+    "multiimage_with_text_VwdwAf": {
+      "type": "multiimage-with-text",
+      "name": "Multi-image with text",
+      "settings": {
+        "color_scheme": "scheme-8eec0b30-7dd6-40f7-bdf8-3f2aa3b45117",
+        "separate_section_with_border": true,
+        "image_1": "shopify://shop_images/a236605228afe6e32b915f8384054fd462c4c2cf.png",
+        "image_2": "shopify://shop_images/5f3585e7983f7863d92ca8a0fc7eb2b9397ea946.png",
+        "image_position_mobile": "after_text",
+        "eyebrow": "Ready when you are",
+        "title": "Apply today and get trade pricing",
+        "heading_style": "h2",
+        "content": "<p>Free to join, approved in 48 hours, with trade pricing on your first order.</p>",
+        "button_text": "Apply now",
+        "button_link": "",
+        "button_style": "button-solid"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "multi_column_eMfr3c",
+    "text_with_icons_zcHVxf",
+    "multi_column_cxfyX7",
+    "faq_eE47fj",
+    "multiple_media_with_text_nhextF",
+    "multiimage_with_text_VwdwAf"
+  ]
+}

@@ -76,6 +76,52 @@
       object-fit: cover;
       display: block;
     }
+
+    /* --- Review card layout (opt-in via block setting, does not affect existing blocks) --- */
+    #shopify-section-{{ section.id }} .multi-column__item--review {
+      border: 1px solid rgba(var(--color-foreground), 0.08);
+      border-radius: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column-card_rating {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin-bottom: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column-card_star {
+      flex-shrink: 0;
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column-card_heading-wrapper--review {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column-card_icon--avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+        @media screen and (max-width: 768px){
+          #shopify-section-{{ section.id }} .multi-column-card_icon--avatar {
+                width: 34px;
+                height: 34px;
+              }
+                  #shopify-section-{{ section.id }} .multi-column-card_heading-wrapper--review {
+                      gap: 12px;
+                      margin-top: 14.5px;
+                    }
+                        #shopify-section-{{ section.id }} .multi-column-card_rating {
+                    margin-bottom: 6px;
+                  }
+        }
   </style>
 
   {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
@@ -94,7 +140,7 @@
         <multi-column class="multi-column {% if section.settings.stack_on_mobile %}multi-column--stack-mobile{% endif %}">
           {%- for block in section.blocks -%}
             <div
-              class="multi-column__item {% if section.settings.overlap_image and block.settings.title != blank %}multi-column__item--overlap{% endif %} group"
+              class="multi-column__item {% if section.settings.overlap_image and block.settings.title != blank %}multi-column__item--overlap{% endif %} {% if block.settings.review_layout %}multi-column__item--review{% endif %} group"
               {{ block.shopify_attributes }}
             >
               {%- capture sizes_attribute -%}
@@ -145,33 +191,72 @@
                 {%- endif -%}
               {%- endif -%}
 
-              {%- if block.settings.title != blank or block.settings.content != blank or block.settings.link_text != blank -%}
+              {%- if block.settings.title != blank or block.settings.content != blank or block.settings.link_text != blank or block.settings.show_rating -%}
                 <div class="prose text-{{ section.settings.text_alignment }}">
-                  {%- if block.settings.title != blank -%}
-                    {%- liquid
-                      if block.settings.heading_tag == 'custom'
-                        assign heading_class = 'multi-column-card_heading'
-                        assign heading_font_size = block.settings.custom_heading_size | default: 24
-                      else
-                        assign heading_class = block.settings.heading_tag | append: ' multi-column-card_heading'
-                        assign heading_font_size = nil
-                      endif
-                    -%}
-                    <div class="multi-column-card_heading-wrapper">
-                      {%- if block.settings.icon != blank -%}
-                        {{ block.settings.icon | image_url: width: 48 | image_tag: class: 'multi-column-card_icon', widths: '24,32,48', loading: 'lazy' }}
-                      {%- endif -%}
-                      <p
-                        class="{{ heading_class }}"
-                        {% if heading_font_size %}
-                          style="font-size: {{ heading_font_size }}px;"
-                        {% endif %}
-                      >{{ block.settings.title }}</p>
+                  {%- liquid
+                    if block.settings.heading_tag == 'custom'
+                      assign heading_class = 'multi-column-card_heading'
+                      assign heading_font_size = block.settings.custom_heading_size | default: 24
+                    else
+                      assign heading_class = block.settings.heading_tag | append: ' multi-column-card_heading'
+                      assign heading_font_size = nil
+                    endif
+                  -%}
+
+                  {%- if block.settings.show_rating -%}
+                    <div class="multi-column-card_rating" style="color: {{ block.settings.rating_color }};" role="img" aria-label="Rated {{ block.settings.rating }} out of 5 stars">
+                      {%- for i in (1..5) -%}
+                        {%- if i <= block.settings.rating -%}
+                          <svg class="multi-column-card_star" viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+                        {%- else -%}
+                          <svg class="multi-column-card_star multi-column-card_star--empty" viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+                        {%- endif -%}
+                      {%- endfor -%}
                     </div>
                   {%- endif -%}
+
+                  {%- unless block.settings.review_layout -%}
+                    {%- if block.settings.title != blank -%}
+                      <div class="multi-column-card_heading-wrapper">
+                        {%- if block.settings.icon != blank -%}
+                          {{ block.settings.icon | image_url: width: 48 | image_tag: class: 'multi-column-card_icon', widths: '24,32,48', loading: 'lazy' }}
+                        {%- endif -%}
+                        <p
+                          class="{{ heading_class }}"
+                          {% if heading_font_size %}
+                            style="font-size: {{ heading_font_size }}px;"
+                          {% endif %}
+                        >{{ block.settings.title }}</p>
+                      </div>
+                      {%- if block.settings.subheading != blank -%}
+                        <p class="multi-column-card_subheading">{{ block.settings.subheading }}</p>
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endunless -%}
+
                   <div class="multi-column-card_content">
                   {{- block.settings.content -}}
                   </div>
+
+                  {%- if block.settings.review_layout and block.settings.title != blank -%}
+                    <div class="multi-column-card_heading-wrapper multi-column-card_heading-wrapper--review">
+                      {%- if block.settings.icon != blank -%}
+                        {{ block.settings.icon | image_url: width: 96 | image_tag: class: 'multi-column-card_icon multi-column-card_icon--avatar', widths: '48,64,96', loading: 'lazy' }}
+                      {%- endif -%}
+                      <div class="heading_class_wrapper">
+                        <p
+                          class="{{ heading_class }}"
+                          {% if heading_font_size %}
+                            style="font-size: {{ heading_font_size }}px;"
+                          {% endif %}
+                        >{{ block.settings.title }}</p>
+                        {%- if block.settings.subheading != blank -%}
+                          <p class="multi-column-card_subheading">{{ block.settings.subheading }}</p>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
+
                   {%- if block.settings.link_text != blank -%}
                     <a href="{{ block.settings.link_url }}" class="link">{{ block.settings.link_text | escape }}</a>
                   {%- endif -%}
@@ -422,13 +507,19 @@
           "type": "image_picker",
           "id": "icon",
           "label": "Icon",
-          "info": "Small icon shown next to the column title"
+          "info": "Small icon shown next to the column title. Also used as the avatar photo when Review card layout is enabled below."
         },
         {
           "type": "inline_richtext",
           "id": "title",
           "label": "t:global.text.heading",
           "default": "Column title"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "info": "Optional line shown under the title, e.g. a role or job title."
         },
         {
           "type": "select",
@@ -463,7 +554,45 @@
           "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
         },
         { "type": "url", "id": "link_url", "label": "t:global.text.link_url" },
-        { "type": "text", "id": "link_text", "label": "t:global.text.link_text" }
+        { "type": "text", "id": "link_text", "label": "t:global.text.link_text" },
+        {
+          "type": "header",
+          "content": "Review rating"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Show star rating",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star rating",
+          "default": 5,
+          "visible_if": "{{ block.settings.show_rating }}"
+        },
+        {
+          "type": "color",
+          "id": "rating_color",
+          "label": "Star color",
+          "default": "#E8B923",
+          "visible_if": "{{ block.settings.show_rating }}"
+        },
+        {
+          "type": "header",
+          "content": "Review card layout"
+        },
+        {
+          "type": "checkbox",
+          "id": "review_layout",
+          "label": "Use review card layout",
+          "info": "Wraps the block in a bordered card and moves the icon/title/subheading below the content, styled as an avatar + name, matching a testimonial layout.",
+          "default": false
+        }
       ]
     },
     {
@@ -491,10 +620,22 @@
           "default": "#ffffff"
         },
         {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon",
+          "info": "Small icon shown next to the column title. Also used as the avatar photo when Review card layout is enabled below."
+        },
+        {
           "type": "inline_richtext",
           "id": "title",
           "label": "t:global.text.heading",
           "default": "Column title"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "info": "Optional line shown under the title, e.g. a role or job title."
         },
         {
           "type": "select",
@@ -529,7 +670,45 @@
           "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
         },
         { "type": "url", "id": "link_url", "label": "t:global.text.link_url" },
-        { "type": "text", "id": "link_text", "label": "t:global.text.link_text" }
+        { "type": "text", "id": "link_text", "label": "t:global.text.link_text" },
+        {
+          "type": "header",
+          "content": "Review rating"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Show star rating",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star rating",
+          "default": 5,
+          "visible_if": "{{ block.settings.show_rating }}"
+        },
+        {
+          "type": "color",
+          "id": "rating_color",
+          "label": "Star color",
+          "default": "#E8B923",
+          "visible_if": "{{ block.settings.show_rating }}"
+        },
+        {
+          "type": "header",
+          "content": "Review card layout"
+        },
+        {
+          "type": "checkbox",
+          "id": "review_layout",
+          "label": "Use review card layout",
+          "info": "Wraps the block in a bordered card and moves the icon/title/subheading below the content, styled as an avatar + name, matching a testimonial layout.",
+          "default": false
+        }
       ]
     }
   ],

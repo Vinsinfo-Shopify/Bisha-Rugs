@@ -1,0 +1,340 @@
+{%- comment -%}
+  ------------------------------------------------------------------------------------------------------------------------
+  CSS
+  ------------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- liquid
+  assign has_media = false
+  if section.settings.image_1 != blank or section.settings.image_2 != blank
+    assign has_media = true
+  endif
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    {%- unless has_media -%}
+      --content-over-media-row-gap: 0px;
+    {%- endunless -%}
+
+    --cta-media-grid: {% if section.settings.image_position_mobile == 'before_text' %}"media-wrapper" "content-wrapper"{% else %}"content-wrapper" "media-wrapper"{% endif %} / minmax(0, 1fr);
+  }
+
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} {
+      --cta-media-grid: "media-wrapper content-wrapper" / minmax(0, 1fr) minmax(0, 1fr);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .multiimage-with-text {
+    display: grid;
+    grid: var(--cta-media-grid);
+    min-height: 100%;
+    margin-bottom: 60px;
+  }
+
+  #shopify-section-{{ section.id }} .multiimage-with-text__media-wrapper {
+    grid-area: media-wrapper;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .multiimage-with-text__media-wrapper img,
+  #shopify-section-{{ section.id }} .multiimage-with-text__media-wrapper .placeholder-svg {
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    max-height: 329px;
+    height: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .multiimage-with-text__content-wrapper {
+    grid-area: content-wrapper;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+  }
+
+  #shopify-section-{{ section.id }} .multiimage-with-text__content-wrapper > * {
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .multiimage-with-text__content-wrapper .section-header,
+  #shopify-section-{{ section.id }} .multiimage-with-text__content-wrapper .prose {
+    max-width: 100%;
+    margin-inline: 0;
+  }
+
+  #shopify-section-{{ section.id }} .multiimage-with-text__content-wrapper .text-center {
+    text-align: start;
+  }
+
+  #shopify-section-{{ section.id }} .multiimage-with-text__content-wrapper .justify-self-center {
+    justify-self: start;
+  }
+
+  #shopify-section-{{ section.id }} .multiimage-with-text__eyebrow {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 12px;
+    margin: 0 0 12px;
+    opacity: 0.85;
+  }
+
+  #shopify-section-{{ section.id }} .multiimage-with-text__button-row {
+    margin-top: 28px;
+  }
+
+  @media screen and (min-width: 1600px) {
+    #shopify-section-{{ section.id }} .multiimage-with-text__media-wrapper img,
+    #shopify-section-{{ section.id }} .multiimage-with-text__media-wrapper .placeholder-svg {
+      max-height: 650px;
+    }
+  }
+
+  @media screen and (max-width: 1120px) {
+    #shopify-section-{{ section.id }} .multiimage-with-text__content-wrapper {
+      padding: 37px 38px 38px 28px;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    #shopify-section-{{ section.id }} .multiimage-with-text__media-wrapper img,
+    #shopify-section-{{ section.id }} .multiimage-with-text__media-wrapper .placeholder-svg {
+      max-height: 190px;
+    }
+    #shopify-section-{{ section.id }} .multiimage-with-text__content-wrapper {
+      padding: 20px 12px;
+    }
+    #shopify-section-{{ section.id }} .multiimage-with-text {
+      margin-bottom: 50px;
+    }
+  }
+</style>
+
+{%- comment -%}
+  ------------------------------------------------------------------------------------------------------------------------
+  LIQUID
+  ------------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
+
+{%- capture cta_content -%}
+  {%- if section.settings.eyebrow != blank -%}
+    <p class="multiimage-with-text__eyebrow">{{ section.settings.eyebrow }}</p>
+  {%- endif -%}
+
+  {%- render 'section-header',
+    heading: section.settings.title,
+    heading_style: section.settings.heading_style,
+    content: section.settings.content
+  -%}
+
+  {%- if section.settings.button_text != blank -%}
+    <div class="multiimage-with-text__button-row">
+      {%- render 'button',
+        type: 'link',
+        content: section.settings.button_text,
+        link: section.settings.button_link,
+        style_class: section.settings.button_style
+      -%}
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
+
+<div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if has_media %}color-scheme--with-image-overlay{% else %}section-spacing {% if section.settings.separate_section_with_border %}bordered-section{% endif %}{% endif %}">
+  {%- if has_media -%}
+    <div class="multiimage-with-text">
+      <div class="multiimage-with-text__media-wrapper">
+        {%- if section.settings.image_1 != blank -%}
+          {{-
+            section.settings.image_1
+            | image_url: width: section.settings.image_1.width
+            | image_tag: loading: 'lazy', sizes: '(max-width: 999px) 50vw, 25vw', widths: '200,300,400,500,600,700,800,900,1000'
+          -}}
+        {%- else -%}
+          {{- 'collection-1' | placeholder_svg_tag: 'placeholder' -}}
+        {%- endif -%}
+
+        {%- if section.settings.image_2 != blank -%}
+          {{-
+            section.settings.image_2
+            | image_url: width: section.settings.image_2.width
+            | image_tag: loading: 'lazy', sizes: '(max-width: 999px) 50vw, 25vw', widths: '200,300,400,500,600,700,800,900,1000'
+          -}}
+        {%- else -%}
+          {{- 'collection-2' | placeholder_svg_tag: 'placeholder placeholder--invert' -}}
+        {%- endif -%}
+      </div>
+
+      <div class="multiimage-with-text__content-wrapper">
+        <div class="multiimage-with-text__content section-stack gap-8 text-start">
+          {{- cta_content -}}
+        </div>
+      </div>
+    </div>
+  {%- else -%}
+    <div class="cta content-over-media">
+      <div class="content section-stack gap-8 text-start">
+        {{- cta_content -}}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Multi-image with text",
+  "class": "shopify-section--multiimage-with-text",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "A two-column call-to-action section with two images and a heading, text and button. No email signup form."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "checkbox",
+      "id": "separate_section_with_border",
+      "label": "t:global.section.separate_section_with_border",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.newsletter.image_category"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "t:sections.newsletter.image_1",
+      "info": "t:sections.newsletter.image_size_recommendation"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "t:sections.newsletter.image_2",
+      "info": "t:sections.newsletter.image_size_recommendation"
+    },
+    {
+      "type": "select",
+      "id": "image_position_mobile",
+      "label": "t:sections.newsletter.image_position_mobile",
+      "options": [
+        {
+          "value": "before_text",
+          "label": "t:sections.newsletter.image_position_mobile_options.before_text"
+        },
+        {
+          "value": "after_text",
+          "label": "t:sections.newsletter.image_position_mobile_options.after_text"
+        }
+      ],
+      "default": "before_text"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Ready when you are"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "t:global.text.heading",
+      "default": "Apply today and get trade pricing"
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "t:global.text.style",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        },
+        {
+          "value": "h6",
+          "label": "H6"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "t:global.text.content",
+      "default": "<p>Free to join, approved in 48 hours, with trade pricing on your first order.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "t:global.text.button_text",
+      "default": "Apply now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "button-solid",
+          "label": "Solid"
+        },
+        {
+          "value": "button-outline",
+          "label": "Outline"
+        }
+      ],
+      "default": "button-solid"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Multi-image with text",
+      "category": "t:global.categories.call_to_action",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}
