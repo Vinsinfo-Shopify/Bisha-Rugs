@@ -116,30 +116,15 @@
     }
 
     /* ---------- Arrows ----------
-       The theme's own prev-next-button / circle-button classes and the native
-       carousel-prev-button / carousel-next-button elements, so the appearance
-       and the disabled-at-the-end behaviour match Row 08 exactly. Only the
-       placement is scoped here. */
-    #shopify-section-{{ section.id }} .fpl__nav {
-      position: absolute;
-      top: {{ section.settings.arrow_offset }}%;
-      transform: translateY(-50%);
-      z-index: 5;
-    }
+       Row 08's own pattern: the theme's floating-controls-container positions
+       the buttons, so size, inset, vertical centring, hover reveal and the
+       hide-when-not-scrollable behaviour all come from theme.css rather than
+       from numbers invented here. Only the colours are reassigned, under this
+       section's id. collection-list.liquid is untouched.
 
-    #shopify-section-{{ section.id }} .fpl__nav--prev {
-      inset-inline-start: 12px;
-    }
-
-    #shopify-section-{{ section.id }} .fpl__nav--next {
-      inset-inline-end: 12px;
-    }
-
-    /* Row 08's appearance, reproduced under this section's id. The shared
-       circle-button component is not touched; only its custom properties are
-       reassigned here. Its default box-shadow is tinted with the text colour,
-       so a white chevron would otherwise draw a white halo - hence none. */
-    #shopify-section-{{ section.id }} .fpl__nav .circle-button {
+       .circle-button's default box-shadow is tinted with the text colour, so a
+       white chevron would draw a white halo - hence none, exactly as Row 08. */
+    #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
       --circle-button-size: 2.375rem; /* 38px, same as Row 08 */
       --circle-button-background: 43 39 36;
       --circle-button-text-color: 255 255 255;
@@ -150,18 +135,26 @@
       box-shadow: none;
     }
 
-    #shopify-section-{{ section.id }} .fpl__nav .circle-button > svg {
+    #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
       width: 0.875rem;
       stroke-width: 1.75;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
 
-    /* The theme hides a prev/next button at the end of the track with
-       [disabled] { opacity: 0 }. Kept, so the end behaviour matches Row 08. */
-    #shopify-section-{{ section.id }} .fpl__nav:has([disabled]) {
-      opacity: 0;
-      pointer-events: none;
+    /* The custom element is inline by default, which would break the bleed
+       margins on the carousel inside it. */
+    #shopify-section-{{ section.id }} find-perfect-look {
+      display: block;
+    }
+
+    /* ---------- Mobile progress bar ----------
+       Row 08's proportional thumb, reproduced here rather than borrowed: its
+       element is defined inside collection-list.liquid, so depending on it would
+       mean this section silently loses its indicator if Row 08 is ever removed
+       from the page. Same markup, same maths, own element name. */
+    #shopify-section-{{ section.id }} .fpl__progress {
+      display: none;
     }
 
     #shopify-section-{{ section.id }} .fpl__item {
@@ -370,10 +363,6 @@
         --fpl-gap: {{ section.settings.grid_gap_mobile }}px;
       }
 
-      #shopify-section-{{ section.id }} .fpl__nav {
-        display: none;
-      }
-
       #shopify-section-{{ section.id }} .fpl__header {
         margin-block-end: {{ section.settings.header_gap | times: 0.7 | round }}px;
       }
@@ -402,17 +391,32 @@
         min-height: 0;
       }
 
-      /* The track runs to the right edge of the viewport instead of stopping at
-         the container gutter, so there is no dead cream strip beside it. The
-         left gutter is untouched. A negative margin on the scroller only moves
-         where its own clipping edge is; .fpl has overflow-x: clip, so the
-         document width is unaffected. */
-      #shopify-section-{{ section.id }} .fpl__carousel {
-        margin-inline-end: calc(-1 * var(--container-gutter));
+      /* Edge behaviour is now the theme's own bleed class on the track, so no
+         section-specific margin correction is needed on either side. */
+
+      #shopify-section-{{ section.id }} .fpl__progress {
+        display: block;
+        position: relative;
+        height: 3px;
+        margin-block-start: 16px;
+        border-radius: 2px;
+        background: rgb(var(--text-color) / 0.14);
       }
 
-      #shopify-section-{{ section.id }} .fpl__track {
-        padding-inline-end: var(--container-gutter);
+      #shopify-section-{{ section.id }} .fpl__progress__thumb {
+        position: absolute;
+        inset-block: 0;
+        border-radius: inherit;
+        background: rgb(var(--text-color) / 0.85);
+        width: calc(var(--fpl-progress-size, 0.4) * 100%);
+        inset-inline-start: calc(var(--fpl-progress-position, 0) * (100% - var(--fpl-progress-size, 0.4) * 100%));
+      }
+
+      /* No arrows on mobile. The theme only positions these under
+         (pointer: fine), so they are hidden outright here rather than left to
+         render in normal flow on a touch device. */
+      #shopify-section-{{ section.id }} .floating-controls-container__control {
+        display: none;
       }
     }
   </style>
@@ -449,8 +453,8 @@
         assign total_columns = total_pages | times: section.settings.columns
       -%}
 
-      <div class="fpl__carousel">
-        <carousel-prev-button class="fpl__nav fpl__nav--prev" aria-controls="{{ carousel_id }}">
+      <div class="fpl__carousel floating-controls-container floating-controls-container--inside floating-controls-container--on-hover">
+        <carousel-prev-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
           <button type="button" class="prev-next-button prev-next-button--prev circle-button circle-button--lg hover:animate-icon-inline" disabled>
             <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
             {%- render 'icon' with 'arrow-left', direction_aware: true -%}
@@ -463,7 +467,7 @@
             getter returns 1 without it, which is one column per arrow click
             rather than a whole page of three.
           {%- endcomment -%}
-          <scroll-carousel id="{{ carousel_id }}" allow-drag class="fpl__track" data-fpl-track>
+          <scroll-carousel id="{{ carousel_id }}" allow-drag class="fpl__track bleed" data-fpl-track>
             {%- for column in (1..total_columns) -%}
               {%- liquid
                 assign column_index = forloop.index0
@@ -604,13 +608,17 @@
           </scroll-carousel>
         </find-perfect-look>
 
-        <carousel-next-button class="fpl__nav fpl__nav--next" aria-controls="{{ carousel_id }}">
+        <carousel-next-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
           <button type="button" class="prev-next-button prev-next-button--next circle-button circle-button--lg hover:animate-icon-inline">
             <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
             {%- render 'icon' with 'arrow-right', direction_aware: true -%}
           </button>
         </carousel-next-button>
       </div>
+
+      <fpl-scroll-progress class="fpl__progress" aria-hidden="true" data-carousel="{{ carousel_id }}">
+        <span class="fpl__progress__thumb"></span>
+      </fpl-scroll-progress>
 
       {%- if section.settings.cta_text != blank -%}
         <div class="fpl__cta">
@@ -637,6 +645,36 @@
     document listeners, which are removed on disconnect.
   {%- endcomment -%}
   <script>
+    if (!customElements.get('fpl-scroll-progress')) {
+      customElements.define(
+        'fpl-scroll-progress',
+        class extends HTMLElement {
+          connectedCallback() {
+            this.carousel = document.getElementById(this.dataset.carousel);
+            if (!this.carousel) return;
+
+            this.update = () => {
+              const el = this.carousel;
+              const travel = el.scrollWidth - el.clientWidth;
+              const size = el.scrollWidth > 0 ? el.clientWidth / el.scrollWidth : 1;
+              this.style.setProperty('--fpl-progress-size', Math.min(1, size));
+              this.style.setProperty('--fpl-progress-position', travel > 0 ? el.scrollLeft / travel : 0);
+            };
+
+            this.carousel.addEventListener('scroll', this.update, { passive: true });
+            window.addEventListener('resize', this.update, { passive: true });
+            this.update();
+          }
+
+          disconnectedCallback() {
+            if (!this.carousel) return;
+            this.carousel.removeEventListener('scroll', this.update);
+            window.removeEventListener('resize', this.update);
+          }
+        }
+      );
+    }
+
     if (!customElements.get('find-perfect-look')) {
       customElements.define(
         'find-perfect-look',
@@ -893,17 +931,6 @@
       "step": 1,
       "unit": "px",
       "default": 8
-    },
-    {
-      "type": "range",
-      "id": "arrow_offset",
-      "label": "Arrow vertical position",
-      "info": "Measured down from the top of the gallery. Desktop only; mobile is swipe.",
-      "min": 10,
-      "max": 90,
-      "step": 5,
-      "unit": "%",
-      "default": 35
     },
     {
       "type": "range",
