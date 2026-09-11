@@ -130,6 +130,35 @@
         endfor
       endif
 
+      # Which menu items are pinned to a particular block.
+      #
+      # A block declares its style through "Shop by Style item", or failing that
+      # through its own Title, which is what Shopify already prints as the block's
+      # label in the editor. Anything pinned here is
+      # reserved, so the unnamed blocks below skip over it and pick up the
+      # remaining menu items in menu order instead. That way a fresh section needs
+      # no configuration at all - the cards simply follow the menu - while any
+      # block that has been named keeps its own style, image and link wherever it
+      # is dragged to.
+      assign sbs_claimed = '|'
+
+      for block in section.blocks
+        assign claim_key = block.settings.sbs_item | default: block.settings.title
+        assign claim_key = claim_key | downcase | strip
+
+        if claim_key != blank
+          for claim_l in sbs_links
+            assign claim_lt = claim_l.title | downcase | strip
+            assign claim_lh = claim_l.handle | downcase | strip
+
+            if claim_lt == claim_key or claim_lh == claim_key
+              assign sbs_claimed = sbs_claimed | append: claim_lt | append: '|'
+              break
+            endif
+          endfor
+        endif
+      endfor
+
       # Column count for the row-major mobile fill option. Counts every block
       # that is not explicitly disabled, matching the render rule below.
       assign sbs_enabled_count = 0
@@ -614,6 +643,7 @@
         {% capture collection_list %}
           {%- assign sbs_index = 0 -%}
           {%- assign sbs_rendered = 0 -%}
+          {%- assign sbs_taken = '|' -%}
           {%- for block in section.blocks -%}
             {%- assign collection = block.settings.collection -%}
             {%- assign collection_url = block.settings.button_link | default: collection.url -%}
@@ -635,12 +665,13 @@
                 # Blocks with no name set still fall back to position so an existing
                 # setup keeps rendering; the editor comment lists which ones those
                 # are so they can be filled in.
-                assign sbs_want = block.settings.sbs_item | downcase | strip
+                assign sbs_want = block.settings.sbs_item | default: block.settings.title
+                assign sbs_want = sbs_want | downcase | strip
                 assign paired_link = null
-                assign sbs_match = 'position'
+                assign sbs_match = 'auto'
 
                 if sbs_want != blank
-                  assign sbs_match = 'name'
+                  assign sbs_match = 'pinned'
 
                   for sbs_l in sbs_links
                     assign sbs_lt = sbs_l.title | downcase | strip
@@ -652,7 +683,26 @@
                     endif
                   endfor
                 else
-                  assign paired_link = sbs_links[sbs_index]
+                  # Take the next menu item that no block has pinned and that no
+                  # earlier unnamed block has already taken. Menu order therefore
+                  # supplies the default, while block order decides where each
+                  # card is drawn.
+                  for sbs_l in sbs_links
+                    assign sbs_lt = sbs_l.title | downcase | strip
+                    assign sbs_needle = '|' | append: sbs_lt | append: '|'
+
+                    if sbs_claimed contains sbs_needle
+                      continue
+                    endif
+
+                    if sbs_taken contains sbs_needle
+                      continue
+                    endif
+
+                    assign paired_link = sbs_l
+                    assign sbs_taken = sbs_taken | append: sbs_lt | append: '|'
+                    break
+                  endfor
                 endif
 
                 assign sbs_index = sbs_index | plus: 1
@@ -888,34 +938,57 @@
       cards rendered ...... {{ sbs_enabled_count }}
       items with NO url ... {{ sbs_missing_urls | default: 'none - every item has a link' }}
 
-      Pairing (block -> "Shop by Style item" -> matched menu item -> url):
+      Pairing (block -> how it resolved -> menu item -> url):
+      {%- assign d_taken = '|' -%}
       {%- for block in section.blocks -%}
         {%- liquid
-          assign d_want = block.settings.sbs_item | downcase | strip
+          assign d_key = block.settings.sbs_item | default: block.settings.title
+          assign d_key = d_key | downcase | strip
           assign d_link = null
-          assign d_mode = 'BY POSITION (set "Shop by Style item" to pin it)'
+          assign d_mode = 'auto (next free menu item)'
 
-          if d_want != blank
-            assign d_mode = 'by name'
+          if d_key != blank
+            assign d_mode = 'pinned to "' | append: d_key | append: '"'
 
             for d_l in sbs_links
               assign d_lt = d_l.title | downcase | strip
               assign d_lh = d_l.handle | downcase | strip
 
-              if d_lt == d_want or d_lh == d_want
+              if d_lt == d_key or d_lh == d_key
                 assign d_link = d_l
                 break
               endif
             endfor
 
             if d_link == blank
-              assign d_mode = 'NO MATCH for "' | append: block.settings.sbs_item | append: '" - card skipped'
+              assign d_mode = 'NO MATCH for "' | append: d_key | append: '" - card skipped'
             endif
           else
-            assign d_link = sbs_links[forloop.index0]
+            for d_l in sbs_links
+              assign d_lt = d_l.title | downcase | strip
+              assign d_needle = '|' | append: d_lt | append: '|'
+
+              if sbs_claimed contains d_needle
+                continue
+              endif
+
+              if d_taken contains d_needle
+                continue
+              endif
+
+              assign d_link = d_l
+              assign d_taken = d_taken | append: d_lt | append: '|'
+              break
+            endfor
           endif
         -%}
         block {{ forloop.index }} [{{ d_mode }}] -> {{ d_link.title | default: '(none)' }} -> {{ d_link.url | default: '-' }}
+      {%- endfor %}
+
+      Menu items with no block (add a block to give them an image):
+      {%- for l in sbs_links -%}
+        {%- assign l_needle = '|' | append: l.title | downcase | strip | append: '|' -%}
+        {%- unless sbs_claimed contains l_needle or d_taken contains l_needle -%}{{ l.title }} {% endunless -%}
       {%- endfor %}
 
       Tree of "{{ section.settings.sbs_menu.handle | default: 'NOT SELECTED' }}".
@@ -1213,7 +1286,7 @@
           "type": "text",
           "id": "sbs_item",
           "label": "Shop by Style item",
-          "info": "Used only by the \"Shop by style\" layout. Type the exact title or handle of the child menu item this card represents, for example Abstract. The card then takes its title and link from that menu item and keeps them when the block is reordered. Leave blank on Explore Our Range blocks."
+          "info": "Optional, and only used by the \"Shop by style\" layout. Leave it empty and this card simply takes the next unused item from the menu, so a new section needs no setup. Fill it in with a child item's exact title or handle to pin this card to that style, and the card then keeps its title, link and image wherever you drag the block. The block's own Title field works as a pin too. Leave blank on Explore Our Range blocks."
         },
         {
           "type": "checkbox",
@@ -1271,7 +1344,7 @@
           "type": "text",
           "id": "sbs_item",
           "label": "Shop by Style item",
-          "info": "Used only by the \"Shop by style\" layout. Type the exact title or handle of the child menu item this card represents, for example Abstract. The card then takes its title and link from that menu item and keeps them when the block is reordered. Leave blank on Explore Our Range blocks."
+          "info": "Optional, and only used by the \"Shop by style\" layout. Leave it empty and this card simply takes the next unused item from the menu, so a new section needs no setup. Fill it in with a child item's exact title or handle to pin this card to that style, and the card then keeps its title, link and image wherever you drag the block. The block's own Title field works as a pin too. Leave blank on Explore Our Range blocks."
         },
         {
           "type": "color_scheme",
