@@ -140,6 +140,7 @@
         "collection_UEdCyy": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "scheme-4",
             "collection": "oushak-rugs",
             "image": "shopify://shop_images/Oushak_Rugs_bdb6cd46-c650-45b2-9254-35779a65dfcc.png",
@@ -157,6 +158,7 @@
         "collection_kk7GLD": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "scheme-4",
             "collection": "new-arrivals",
             "image": "shopify://shop_images/Best_Sellers.png",
@@ -174,6 +176,7 @@
         "collection_6Dzxdj": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "",
             "collection": "new-arrivals",
             "image": "shopify://shop_images/New_Arrivals.png",
@@ -191,6 +194,7 @@
         "collection_kRWH6f": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "",
             "collection": "all",
             "image": "shopify://shop_images/Shop_All.png",
@@ -216,6 +220,7 @@
       "settings": {
         "layout_variant": "",
         "sbs_menu": "main-menu",
+        "sbs_background": "#f3eee4",
         "sbs_parent_item": "",
         "sbs_subheading_mobile": "",
         "sbs_title_mobile": "",
@@ -291,9 +296,28 @@
     "collection_list_y68EWi": {
       "type": "collection-list",
       "blocks": {
+        "collection_y8pRxJ": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "",
+            "collection": "all",
+            "image": "shopify://shop_images/Shop_by_Style_-_Geometric.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Geometric",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 20
+          }
+        },
         "collection_FiwkTb": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "scheme-4",
             "collection": "",
             "expand_collection": false,
@@ -310,6 +334,7 @@
         "collection_L7gRhN": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "scheme-4",
             "collection": "",
             "image": "shopify://shop_images/Shop_by_Style_-_Minimalist.png",
@@ -327,6 +352,7 @@
         "collection_qQKdQW": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "scheme-4",
             "collection": "",
             "expand_collection": false,
@@ -343,6 +369,7 @@
         "collection_TKGACH": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "scheme-4",
             "collection": "all",
             "image": "shopify://shop_images/Shop_by_Style_-_Abstract.png",
@@ -360,6 +387,7 @@
         "collection_3tjj8R": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "scheme-4",
             "collection": "",
             "expand_collection": false,
@@ -373,26 +401,10 @@
             "overlay_opacity": 30
           }
         },
-        "collection_y8pRxJ": {
-          "type": "collection",
-          "settings": {
-            "color_scheme": "",
-            "collection": "all",
-            "image": "shopify://shop_images/Shop_by_Style_-_Geometric.png",
-            "expand_collection": false,
-            "content_position": "place-self-end-start text-start",
-            "subheading": "",
-            "title": "Geometric",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "solid",
-            "overlay_color": "#000000",
-            "overlay_opacity": 20
-          }
-        },
         "collection_AwTYBC": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "",
             "collection": "",
             "expand_collection": false,
@@ -409,6 +421,7 @@
         "collection_bjdJgJ": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "",
             "collection": "",
             "image": "shopify://shop_images/Shop_by_Style_-_Floral.png",
@@ -425,12 +438,12 @@
         }
       },
       "block_order": [
+        "collection_y8pRxJ",
         "collection_FiwkTb",
         "collection_L7gRhN",
         "collection_qQKdQW",
         "collection_TKGACH",
         "collection_3tjj8R",
-        "collection_y8pRxJ",
         "collection_AwTYBC",
         "collection_bjdJgJ"
       ],
@@ -438,6 +451,7 @@
       "settings": {
         "layout_variant": "shop_by_style",
         "sbs_menu": "prestige-main-menu",
+        "sbs_background": "#f3eee4",
         "sbs_parent_item": "Shop by Style",
         "sbs_subheading_mobile": "",
         "sbs_title_mobile": "",
