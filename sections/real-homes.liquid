@@ -247,13 +247,36 @@
         font-size: 12px;
       }
 
+      /* One full centre card with its neighbours peeking, not three equal
+         thirds. Dividing the viewport into thirds left a 117px card at 375px,
+         and after the panel padding, thumbnail, arrow and gaps the title column
+         was about 5px wide, which is what forced one character per line.
+
+         The card is now the viewport minus one peek and one gap on each side, so
+         the row still fills the width exactly and the centre card takes what is
+         left. Desktop is untouched: this only overrides --rh-card inside the
+         mobile query. */
       #shopify-section-{{ section.id }} .real-homes__carousel {
         --rh-gap: {{ section.settings.card_gap_mobile }}px;
-        --rh-visible: 3;
+        --rh-peek: {{ section.settings.card_peek_mobile }}px;
+        --rh-card: calc(100% - 2 * (var(--rh-peek) + var(--rh-gap)));
+      }
+
+      /* The centre card is prominent by being the only fully visible one, so it
+         does not also grow. Growing it here would push the neighbours out and
+         narrow the readable area again. */
+      #shopify-section-{{ section.id }} .real-homes__card.is-active {
+        flex-basis: var(--rh-card);
       }
 
       #shopify-section-{{ section.id }} .real-homes__title {
         font-size: 12px;
+      }
+
+      /* Guard against the price ever splitting across lines */
+      #shopify-section-{{ section.id }} .real-homes__price,
+      #shopify-section-{{ section.id }} .real-homes__price .price-list {
+        white-space: nowrap;
       }
     }
   </style>
@@ -639,6 +662,17 @@
       "default": 24
     },
 
+    {
+      "type": "range",
+      "id": "card_peek_mobile",
+      "label": "Neighbour peek (mobile)",
+      "info": "How much of the previous and next card shows at each edge.",
+      "min": 12,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 34
+    },
     {
       "type": "range",
       "id": "card_gap_mobile",
