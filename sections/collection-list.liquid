@@ -36,9 +36,10 @@
       Menu  -> card title + card URL (nothing else)
       Block -> image, enabled, presentation
 
-    Blocks are matched to their Shop by Style menu item when a stable item key is
-    available; older/unmatched blocks fall back to the same menu position so they
-    still render in the Theme Editor.
+    Pairing is by BLOCK POSITION, not by enabled position: style item 1 always
+    pairs with menu link 1, so disabling an item removes only that card instead
+    of shifting the rest onto the wrong links. Menu order therefore determines
+    Row 08 item order.
   {%- endcomment -%}
 
   {%- liquid
@@ -144,8 +145,9 @@
       for block in section.blocks
         assign claim_key = block.settings.sbs_item | default: block.settings.title
         assign claim_key = claim_key | downcase | strip
+        assign claim_key_size = claim_key | size
 
-        if claim_key != blank
+        if claim_key_size > 0
           for claim_l in sbs_links
             assign claim_lt = claim_l.title | downcase | strip
             assign claim_lh = claim_l.handle | downcase | strip
@@ -666,32 +668,34 @@
                 # are so they can be filled in.
                 assign sbs_want = block.settings.sbs_item | default: block.settings.title
                 assign sbs_want = sbs_want | downcase | strip
+                assign sbs_want_size = sbs_want | size
                 assign paired_link = null
                 assign sbs_match = 'auto'
 
-                if sbs_want != blank
+                # A size check rather than "!= blank": an empty string was taking
+                # the pinned branch, so every unnamed block reported no match and
+                # every card was skipped.
+                if sbs_want_size > 0
                   assign sbs_match = 'pinned'
 
                   for sbs_l in sbs_links
                     assign sbs_lt = sbs_l.title | downcase | strip
-                    assign sbs_lh = sbs_l.handle | default: sbs_l.title | handleize
-                    assign sbs_wh = sbs_want | handleize
+                    assign sbs_lh = sbs_l.handle | downcase | strip
 
-                    if sbs_lt == sbs_want or sbs_lh == sbs_wh
+                    if sbs_lt == sbs_want or sbs_lh == sbs_want
                       assign paired_link = sbs_l
                       break
                     endif
                   endfor
 
-                  # If an older block has an invalid/stale sbs_item value, do not
-                  # let that block disappear from the Theme Editor. Fall back to
-                  # the menu item at the same block position so the configured card
-                  # remains visible while its stored image/settings stay with it.
+                  # A name that matches nothing must not blank the card. Fall back
+                  # to the next free menu item so the section keeps rendering.
                   if paired_link == blank
-                    assign paired_link = sbs_links[forloop.index0]
-                    assign sbs_match = 'position-fallback'
+                    assign sbs_match = 'pinned-but-unmatched'
                   endif
-                else
+                endif
+
+                if paired_link == blank
                   # Take the next menu item that no block has pinned and that no
                   # earlier unnamed block has already taken. Menu order therefore
                   # supplies the default, while block order decides where each
@@ -930,6 +934,79 @@
     </div>
   </div>
 
+  {%- comment -%}
+    Theme-editor-only diagnostics for the Shop by Style variant. Emitted as an
+    HTML comment, so it never affects the storefront. View source in the editor
+    to see whether the menu resolved and how many cards were produced.
+  {%- endcomment -%}
+  {%- comment -%}
+    Theme-editor diagnostics. Emitted as an inert JSON script rather than an HTML
+    comment: the pairing data is full of "->" arrows built from merchant data, and
+    an HTML comment terminates at the first closing sequence, which was leaking the whole
+    block onto the page as visible text. A script element has no such hazard.
+    Find it in the Elements panel as #row08-diagnostics.
+  {%- endcomment -%}
+  {%- if is_sbs and request.design_mode -%}
+    {%- capture row08_pairs -%}
+      {%- assign d_taken = '|' -%}
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign d_key = block.settings.sbs_item | default: block.settings.title
+          assign d_key = d_key | downcase | strip
+          assign d_key_size = d_key | size
+          assign d_link = null
+          assign d_mode = 'auto'
+
+          if d_key_size > 0
+            assign d_mode = 'pinned'
+
+            for d_l in sbs_links
+              assign d_lt = d_l.title | downcase | strip
+
+              if d_lt == d_key
+                assign d_link = d_l
+                break
+              endif
+            endfor
+
+            if d_link == blank
+              assign d_mode = 'pinned-but-unmatched'
+            endif
+          else
+            for d_l in sbs_links
+              assign d_lt = d_l.title | downcase | strip
+              assign d_needle = '|' | append: d_lt | append: '|'
+
+              if sbs_claimed contains d_needle
+                continue
+              endif
+
+              if d_taken contains d_needle
+                continue
+              endif
+
+              assign d_link = d_l
+              assign d_taken = d_taken | append: d_lt | append: '|'
+              break
+            endfor
+          endif
+        -%}
+        {"block": {{ forloop.index }}, "key": {{ d_key | json }}, "mode": {{ d_mode | json }}, "title": {{ d_link.title | default: '' | json }}, "url": {{ d_link.url | default: '' | json }}}{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    <script type="application/json" id="row08-diagnostics">
+      {
+        "menu": {{ section.settings.sbs_menu.handle | default: '' | json }},
+        "parentItem": {{ section.settings.sbs_parent_item | default: '' | json }},
+        "itemsFound": {{ sbs_links.size | default: 0 }},
+        "itemTitles": [{% for l in sbs_links %}{{ l.title | json }}{% unless forloop.last %},{% endunless %}{% endfor %}],
+        "blocks": {{ section.blocks.size }},
+        "cardsRendered": {{ sbs_enabled_count }},
+        "pairing": [{{ row08_pairs }}]
+      }
+    </script>
+  {%- endif -%}
 {%- endif -%}
 
 {% schema %}
