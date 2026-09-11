@@ -297,24 +297,6 @@
     "collection_list_y68EWi": {
       "type": "collection-list",
       "blocks": {
-        "collection_y8pRxJ": {
-          "type": "collection",
-          "settings": {
-            "sbs_item": "",
-            "color_scheme": "",
-            "collection": "all",
-            "image": "shopify://shop_images/Shop_by_Style_-_Geometric.png",
-            "expand_collection": false,
-            "content_position": "place-self-end-start text-start",
-            "subheading": "",
-            "title": "Geometric",
-            "button_text": "",
-            "button_link": "",
-            "button_style": "solid",
-            "overlay_color": "#000000",
-            "overlay_opacity": 20
-          }
-        },
         "collection_FiwkTb": {
           "type": "collection",
           "settings": {
@@ -402,6 +384,24 @@
             "overlay_opacity": 30
           }
         },
+        "collection_y8pRxJ": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "",
+            "collection": "all",
+            "image": "shopify://shop_images/Shop_by_Style_-_Geometric.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Geometric",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 20
+          }
+        },
         "collection_AwTYBC": {
           "type": "collection",
           "settings": {
@@ -439,12 +439,12 @@
         }
       },
       "block_order": [
-        "collection_y8pRxJ",
         "collection_FiwkTb",
         "collection_L7gRhN",
         "collection_qQKdQW",
         "collection_TKGACH",
         "collection_3tjj8R",
+        "collection_y8pRxJ",
         "collection_AwTYBC",
         "collection_bjdJgJ"
       ],
