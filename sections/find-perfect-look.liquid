@@ -1,15 +1,47 @@
+{%- doc -%}
+  Row 10 - "Find the Perfect Look".
+
+  An editorial image grid where each image carries up to three product hotspots.
+  Tapping a hotspot opens a compact product card anchored to that dot; the card
+  is a link to the product. The image itself never navigates.
+
+  Reused rather than rebuilt:
+    snippets/section-header.liquid   eyebrow + heading, native typography
+    snippets/price-list.liquid       price, compare-at, sale state, currency
+    snippets/product-rating.liquid   "4.8 (54)" from the reviews metafields
+    snippets/product-badges.liquid   the discount pill, honouring theme settings
+    snippets/button.liquid           the CTA, colour overridden per section
+
+  Not reused, and why:
+    sections/shop-the-look.liquid is a single-image viewer with a product
+    carousel beside it and a full-screen popover on mobile. Different layout,
+    different interaction, and it belongs to another developer.
+    x-popover in theme.js is an overlay/drawer, not a card anchored to a point.
+
+  One block is one image plus all of its hotspots, so the whole configuration
+  travels together when the block is reordered. Nothing global is touched;
+  every selector and the custom element name are namespaced to this section.
+{%- enddoc -%}
 
 {%- liquid
   assign hotspot_count = 3
   assign ns = 'fpl-' | append: section.id
+
+  # A select returns a string. Coerced once here so the arithmetic below
+  # (column position, image sizes) is done on a number, not on text.
   assign mobile_columns = section.settings.columns_mobile | plus: 0
 -%}
 
 {%- if section.blocks.size > 0 -%}
   <style>
+    /* Every rule is prefixed with this section's id. No other section, product
+       card or popover can be reached from here. */
     #shopify-section-{{ section.id }} .fpl {
       background: {{ section.settings.background }};
-
+      /* The anchored card is nudged back inside the viewport by JS, but clip
+         guarantees that nothing here can ever widen the document. clip rather
+         than hidden: it does not create a scroll container, so it cannot
+         capture page scroll or break position: sticky elsewhere. */
       overflow-x: clip;
     }
 
@@ -22,6 +54,9 @@
       margin-block-end: {{ section.settings.header_gap }}px;
     }
 
+    /* section-header.liquid carries the theme's own vertical rhythm, which is
+       looser than this design. Overridden here only, by section id, so every
+       other section that renders the same snippet is untouched. */
     #shopify-section-{{ section.id }} .fpl__header .section-header {
       gap: 0;
     }
@@ -36,9 +71,28 @@
       margin-block: 0;
     }
 
+    /* ---------- Gallery ----------
+       Three independently flowing columns, not grid rows. A row-based grid ties
+       every cell in a row to one shared baseline, so a short image leaves the
+       cream gap beneath it while the row waits for the tallest image to finish.
+       Each column is its own flex stack instead, so the second image in a
+       column starts directly after the first image in THAT column and nowhere
+       else. No negative margins, no absolute positioning, no forced equal
+       heights: the gap cannot form because there is no shared row to form it in.
+
+       Blocks are mapped to columns in Liquid, so the mapping is explicit and
+       stable rather than emergent from CSS column flow. */
     #shopify-section-{{ section.id }} .fpl__grid {
-      display: grid;
-      grid-template-columns: repeat({{ section.settings.columns }}, minmax(0, 1fr));
+      display: flex;
+      align-items: flex-start;
+      gap: {{ section.settings.grid_gap }}px;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__column {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
       gap: {{ section.settings.grid_gap }}px;
     }
 
@@ -81,13 +135,18 @@
       transform: translate(-50%, -50%);
       border-radius: var(--rounded-full);
       background: {{ section.settings.hotspot_color }};
-      border: 1px solid rgb(255 255 255 / 0.75);
-      box-shadow: 0 1px 4px rgb(0 0 0 / 0.35);
+      /* No outer ring. The only dark element is a soft drop shadow, which is
+         what keeps a white dot readable on a pale wall or a cream rug without
+         turning into a glow. */
+      border: 0;
+      box-shadow: 0 1px 5px rgb(0 0 0 / 0.45);
       cursor: pointer;
       transition: transform 0.2s ease-in-out;
       z-index: 2;
     }
 
+    /* The dot stays visually small to match the design, but the pressable area
+       is 44px so it is not a fiddly target on a phone. */
     #shopify-section-{{ section.id }} .fpl__dot::before {
       content: '';
       position: absolute;
@@ -98,6 +157,8 @@
       transform: translate(-50%, -50%);
     }
 
+    /* A single expanding ring. Subtle enough to read as a cue rather than an
+       animation, and it keeps the dot legible on both light and dark images. */
     #shopify-section-{{ section.id }} .fpl__dot::after {
       content: '';
       position: absolute;
@@ -131,19 +192,21 @@
       box-shadow: 0 0 0 4px rgb(0 0 0 / 0.5);
     }
 
-    /* The dot is charcoal at rest, so the open state inverts rather than
-       darkening further, which would have been no change at all. */
+    /* The dot is white at rest, so the open state reads through size and a
+       firmer shadow rather than a colour change. */
     #shopify-section-{{ section.id }} .fpl__dot[aria-expanded='true'] {
-      transform: translate(-50%, -50%) scale(1.25);
-      background: #ffffff;
-      border-color: {{ section.settings.hotspot_color }};
+      transform: translate(-50%, -50%) scale(1.3);
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.55);
     }
 
     #shopify-section-{{ section.id }} .fpl__dot[aria-expanded='true']::after {
       animation: none;
     }
 
-
+    /* ---------- Product card ----------
+       Anchored to the dot's own percentage position, so it follows the hotspot
+       at every width without any JS on resize. JS only nudges it back inside
+       the viewport via --fpl-shift when a dot sits near an edge. */
     #shopify-section-{{ section.id }} .fpl__card {
       position: absolute;
       left: var(--fpl-x);
@@ -198,6 +261,8 @@
       margin-block-start: 2px;
     }
 
+    /* price-list.liquid still renders and formats the prices. Only size and
+       weight are restated, and only inside this section. */
     #shopify-section-{{ section.id }} .fpl__card-prices {
       display: flex;
       align-items: center;
@@ -230,7 +295,15 @@
         padding-block-end: {{ section.settings.padding_bottom | divided_by: 2 }}px;
       }
 
+      /* The desktop column wrappers vanish here, so the items become direct
+         grid children again and mobile is exactly what it was: a two-column
+         grid in block order, with the stagger below. */
+      #shopify-section-{{ section.id }} .fpl__column {
+        display: contents;
+      }
+
       #shopify-section-{{ section.id }} .fpl__grid {
+        display: grid;
         grid-template-columns: repeat({{ mobile_columns }}, minmax(0, 1fr));
         gap: {{ section.settings.grid_gap_mobile }}px;
       }
@@ -238,7 +311,27 @@
       #shopify-section-{{ section.id }} .fpl__header {
         margin-block-end: {{ section.settings.header_gap | times: 0.7 | round }}px;
       }
+
+      /* The staggered editorial look, without column-major masonry.
+         Each item carries its own offset as an inline custom property and
+         simply starts lower inside its grid cell. The grid row grows to fit,
+         which is what opens the uneven gaps the Figma shows.
+
+         Why not column-count: multi-column flows top-to-bottom down each
+         column, so a merchant dragging a block in the Theme Editor would see it
+         land somewhere they did not drop it. Block order here stays exactly as
+         the editor shows it.
+
+         Why not transform: translateY: a transform does not affect layout, so a
+         nudged item would overlap the row beneath it instead of pushing it
+         down. margin keeps the flow honest.
+
+         Vertical only, so it cannot introduce horizontal overflow. Not applied
+         outside this query, so desktop never sees it. */
       #shopify-section-{{ section.id }} .fpl__item {
+        /* The DOM is grouped by desktop column, so order restores the block
+           order the merchant sees in the Theme Editor: 1 2 / 3 4 / 5 6. */
+        order: var(--fpl-order, 0);
         margin-block-start: var(--fpl-nudge, 0px);
       }
     }
@@ -255,8 +348,17 @@
       </div>
 
       <find-perfect-look class="fpl__grid">
-        {%- for block in section.blocks -%}
+        {%- for column in (1..section.settings.columns) -%}
+          <div class="fpl__column">
+            {%- for block in section.blocks -%}
           {%- liquid
+            # Explicit, stable block-to-column mapping. Block 1 goes to column 1,
+            # block 2 to column 2, block 3 to column 3, block 4 back to column 1,
+            # and so on. Deterministic, computed from the block's own position,
+            # no JavaScript and no reshuffling. The block itself is untouched:
+            # image, hotspots and products still travel together.
+            assign desktop_column = forloop.index0 | modulo: section.settings.columns
+
             # Which mobile column this block falls into. Column 0 sits flush,
             # every column after it is stepped down by the section's stagger, so
             # the default composition arrives without touching a single block.
@@ -265,7 +367,14 @@
             assign mobile_nudge = section.settings.stagger_mobile | times: mobile_column | plus: block.settings.mobile_offset
           -%}
 
-          <div class="fpl__item" style="--fpl-nudge: {{ mobile_nudge }}px;" {{ block.shopify_attributes }}>
+          {%- if desktop_column == forloop.parentloop.index0 -%}
+          {%- comment -%}
+            --fpl-order carries the block's true position. On mobile the column
+            wrappers collapse with display: contents and this restores the
+            original left-to-right reading order, so the DOM being grouped by
+            column for desktop costs mobile nothing.
+          {%- endcomment -%}
+          <div class="fpl__item" style="--fpl-order: {{ forloop.index }}; --fpl-nudge: {{ mobile_nudge }}px;" {{ block.shopify_attributes }}>
             <div class="fpl__frame" style="--fpl-ratio: {{ block.settings.ratio }};">
               {%- if block.settings.image != blank -%}
                 {%- capture image_sizes -%}
@@ -369,6 +478,9 @@
                   </div>
                 </a>
               {%- endif -%}
+            {%- endfor -%}
+          </div>
+          {%- endif -%}
             {%- endfor -%}
           </div>
         {%- endfor -%}
@@ -681,8 +793,8 @@
       "type": "color",
       "id": "hotspot_color",
       "label": "Hotspot colour",
-      "info": "The dot and its pulse. A thin light rim keeps it visible on dark images.",
-      "default": "#2b2724"
+      "info": "The dot and its pulse ripple.",
+      "default": "#ffffff"
     },
     {
       "type": "range",
