@@ -122,6 +122,61 @@
                     margin-bottom: 6px;
                   }
         }
+        /* --- Step number: base (safe everywhere) --- */
+#shopify-section-{{ section.id }} .multi-column-card_number {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* --- Scoped to application_process only; other section instances unaffected --- */
+#shopify-section-{{ section.id }} .application_process .multi-column-card_heading-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 12px;
+}
+
+#shopify-section-{{ section.id }} .application_process .multi-column-card_number,
+#shopify-section-{{ section.id }} .application_process .multi-column-card_heading-wrapper {
+  margin: 0;
+}
+
+#shopify-section-{{ section.id }} .application_process .multi-column-card_subheading {
+  flex-basis: 100%;
+}
+
+#shopify-section-{{ section.id }} .application_process .multi-column__item {
+  padding: 20px 0;
+  border-top: 1px solid rgba(var(--color-foreground), 0.12);
+}
+
+#shopify-section-{{ section.id }} .application_process .multi-column__item:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+@media screen and (min-width: 999px) {
+  #shopify-section-{{ section.id }} .application_process .multi-column-card_heading-group {
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .application_process .multi-column__item {
+    padding: 0;
+    border-top: 0;
+    position: relative;
+  }
+
+  #shopify-section-{{ section.id }} .application_process .multi-column__item:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -24px;
+    border-left: 1px dashed rgba(var(--color-foreground), 0.35);
+  }
+}
   </style>
 
   {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
@@ -217,20 +272,25 @@
 
                   {%- unless block.settings.review_layout -%}
                     {%- if block.settings.title != blank -%}
-                      <div class="multi-column-card_heading-wrapper">
-                        {%- if block.settings.icon != blank -%}
-                          {{ block.settings.icon | image_url: width: 48 | image_tag: class: 'multi-column-card_icon', widths: '24,32,48', loading: 'lazy' }}
+                      <div class="multi-column-card_heading-group">
+                        {%- if block.settings.number != blank -%}
+                          <p class="multi-column-card_number" style="color: {{ block.settings.number_color }};">{{ block.settings.number }}</p>
                         {%- endif -%}
-                        <p
-                          class="{{ heading_class }}"
-                          {% if heading_font_size %}
-                            style="font-size: {{ heading_font_size }}px;"
-                          {% endif %}
-                        >{{ block.settings.title }}</p>
+                        <div class="multi-column-card_heading-wrapper">
+                          {%- if block.settings.icon != blank -%}
+                            {{ block.settings.icon | image_url: width: 48 | image_tag: class: 'multi-column-card_icon', widths: '24,32,48', loading: 'lazy' }}
+                          {%- endif -%}
+                          <p
+                            class="{{ heading_class }}"
+                            {% if heading_font_size %}
+                              style="font-size: {{ heading_font_size }}px;"
+                            {% endif %}
+                          >{{ block.settings.title }}</p>
+                        </div>
+                        {%- if block.settings.subheading != blank -%}
+                          <p class="multi-column-card_subheading">{{ block.settings.subheading }}</p>
+                        {%- endif -%}
                       </div>
-                      {%- if block.settings.subheading != blank -%}
-                        <p class="multi-column-card_subheading">{{ block.settings.subheading }}</p>
-                      {%- endif -%}
                     {%- endif -%}
                   {%- endunless -%}
 
@@ -581,6 +641,22 @@
           "label": "Star color",
           "default": "#E8B923",
           "visible_if": "{{ block.settings.show_rating }}"
+        },
+                {
+          "type": "header",
+          "content": "Step number"
+        },
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "info": "Optional. E.g. 01 — shown above the heading on desktop, and beside it on mobile."
+        },
+        {
+          "type": "color",
+          "id": "number_color",
+          "label": "Number color",
+          "default": "#B76E45"
         },
         {
           "type": "header",
