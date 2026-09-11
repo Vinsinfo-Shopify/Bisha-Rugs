@@ -135,6 +135,35 @@
       inset-inline-end: 12px;
     }
 
+    /* Row 08's appearance, reproduced under this section's id. The shared
+       circle-button component is not touched; only its custom properties are
+       reassigned here. Its default box-shadow is tinted with the text colour,
+       so a white chevron would otherwise draw a white halo - hence none. */
+    #shopify-section-{{ section.id }} .fpl__nav .circle-button {
+      --circle-button-size: 2.375rem; /* 38px, same as Row 08 */
+      --circle-button-background: 43 39 36;
+      --circle-button-text-color: 255 255 255;
+      box-sizing: border-box;
+      background: #2b2724;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      box-shadow: none;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__nav .circle-button > svg {
+      width: 0.875rem;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* The theme hides a prev/next button at the end of the track with
+       [disabled] { opacity: 0 }. Kept, so the end behaviour matches Row 08. */
+    #shopify-section-{{ section.id }} .fpl__nav:has([disabled]) {
+      opacity: 0;
+      pointer-events: none;
+    }
+
     #shopify-section-{{ section.id }} .fpl__item {
       position: relative;
       min-width: 0;
@@ -349,15 +378,41 @@
         margin-block-end: {{ section.settings.header_gap | times: 0.7 | round }}px;
       }
 
-      /* The column stagger. Applied to the whole column, not to individual
-         items, so the two images inside it travel together. Vertical only, so
-         it cannot introduce horizontal overflow. Mobile only. */
-      #shopify-section-{{ section.id }} .fpl__column {
-        margin-block-start: var(--fpl-nudge, 0px);
+      /* Every column the same overall height: same top edge, same bottom edge,
+         no stagger and no leftover blank space.
+
+         stretch makes the columns match the tallest one. The top image keeps
+         its own aspect ratio from its block; the bottom image gives up its
+         ratio and takes whatever height is left, so the column fills exactly
+         rather than ending short. object-fit: cover means it crops instead of
+         distorting. No nudge and no per-item offset are applied here. */
+      #shopify-section-{{ section.id }} .fpl__track {
+        align-items: stretch;
       }
 
-      #shopify-section-{{ section.id }} .fpl__item {
-        margin-block-start: var(--fpl-offset, 0px);
+      #shopify-section-{{ section.id }} .fpl__item:last-child {
+        flex: 1 1 auto;
+        display: flex;
+        min-height: 0;
+      }
+
+      #shopify-section-{{ section.id }} .fpl__item:last-child .fpl__frame {
+        aspect-ratio: auto;
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+
+      /* The track runs to the right edge of the viewport instead of stopping at
+         the container gutter, so there is no dead cream strip beside it. The
+         left gutter is untouched. A negative margin on the scroller only moves
+         where its own clipping edge is; .fpl has overflow-x: clip, so the
+         document width is unaffected. */
+      #shopify-section-{{ section.id }} .fpl__carousel {
+        margin-inline-end: calc(-1 * var(--container-gutter));
+      }
+
+      #shopify-section-{{ section.id }} .fpl__track {
+        padding-inline-end: var(--container-gutter);
       }
     }
   </style>
@@ -417,9 +472,6 @@
                 assign top_index = page | times: per_page | plus: slot
                 assign bottom_index = top_index | plus: section.settings.columns
 
-                assign stagger_slot = column_index | modulo: 2
-                assign column_nudge = section.settings.stagger_mobile | times: stagger_slot
-
                 assign index_pair = top_index | append: ',' | append: bottom_index | split: ','
                 assign top_block = section.blocks[top_index]
               -%}
@@ -430,7 +482,7 @@
                 carousel would still scroll to.
               {%- endcomment -%}
               {%- if top_block != blank -%}
-              <div class="fpl__column" style="--fpl-nudge: {{ column_nudge }}px;">
+              <div class="fpl__column">
                 {%- for index_string in index_pair -%}
                   {%- liquid
                     assign block_index = index_string | plus: 0
@@ -438,7 +490,7 @@
                   -%}
 
                   {%- if block != blank -%}
-          <div class="fpl__item" style="--fpl-offset: {{ block.settings.mobile_offset }}px;" {{ block.shopify_attributes }}>
+          <div class="fpl__item" {{ block.shopify_attributes }}>
             <div class="fpl__frame" style="--fpl-ratio: {{ block.settings.ratio }};">
               {%- if block.settings.image != blank -%}
                 {%- capture image_sizes -%}
@@ -725,7 +777,7 @@
       "max": 120,
       "step": 2,
       "unit": "px",
-      "default": 84
+      "default": 48
     },
     {
       "type": "range",
@@ -772,7 +824,7 @@
       "max": 24,
       "step": 1,
       "unit": "px",
-      "default": 4
+      "default": 2
     },
     {
       "type": "select",
@@ -841,17 +893,6 @@
       "step": 1,
       "unit": "px",
       "default": 8
-    },
-    {
-      "type": "range",
-      "id": "stagger_mobile",
-      "label": "Mobile stagger",
-      "info": "Steps each mobile column down from the one before it, for the staggered editorial look. Mobile only; set to 0 for even rows.",
-      "min": 0,
-      "max": 120,
-      "step": 2,
-      "unit": "px",
-      "default": 32
     },
     {
       "type": "range",
@@ -982,17 +1023,6 @@
             { "value": "5 / 4", "label": "Landscape" }
           ],
           "default": "4 / 5"
-        },
-        {
-          "type": "range",
-          "id": "mobile_offset",
-          "label": "Extra mobile offset",
-          "info": "Added to the section's mobile stagger for this image only. Leave at 0 unless one image needs nudging down.",
-          "min": 0,
-          "max": 80,
-          "step": 2,
-          "unit": "px",
-          "default": 0
         },
         {
           "type": "header",
