@@ -276,9 +276,10 @@
       box-sizing: border-box;
       /* Sized from the lifestyle image it sits on, not from a fixed pixel
          value, so it keeps the same visual proportion as the columns grow.
-         .fpl__frame is the positioned ancestor, so the percentage is a share of
-         that image. Measured off the 1440 reference: the card spans about 73%
-         of a 479px column, i.e. roughly 352px.
+         .fpl__item is the positioned ancestor -- the card is its child, not the
+         frame's -- so the percentage is a share of the column, which is the same
+         width as the image. Measured off the 1440 reference: 78% of a 440px
+         column, i.e. about 343px.
 
          The floor stops it collapsing on narrow columns, the ceiling stops it
          dominating a wide one, and the viewport term is a final guard against
@@ -411,6 +412,25 @@
         padding-inline: {{ section.settings.gutter_mobile }}px;
         padding-block-start: {{ section.settings.padding_top | divided_by: 2 }}px;
         padding-block-end: {{ section.settings.padding_bottom | divided_by: 2 }}px;
+      }
+
+      /* Nothing between the section root and the track may impose a width.
+         .fpl__inner is already neutralised above, but .fpl__carousel also
+         carries .floating-controls-container, and find-perfect-look is a custom
+         element with no default width. Any of them sitting at less than 100%
+         narrows everything inside it. All of them are pinned here. */
+      #shopify-section-{{ section.id }} .fpl,
+      #shopify-section-{{ section.id }} .fpl__carousel,
+      #shopify-section-{{ section.id }} find-perfect-look,
+      #shopify-section-{{ section.id }} .fpl__track {
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+      }
+
+      #shopify-section-{{ section.id }} .fpl__carousel {
+        padding-inline: 0;
+        margin-inline: 0;
       }
 
       /* Same carousel, same column sequence, fewer columns in view and no
@@ -1055,18 +1075,18 @@
       "max": 400,
       "step": 2,
       "unit": "px",
-      "default": 352
+      "default": 344
     },
     {
       "type": "range",
       "id": "card_width_pct",
       "label": "Product card width",
-      "info": "As a share of the lifestyle image it sits on. 73 matches the 1440 reference.",
+      "info": "As a share of the lifestyle image it sits on. 78 matches the 1440 reference.",
       "min": 40,
       "max": 95,
       "step": 1,
       "unit": "%",
-      "default": 73
+      "default": 78
     },
     {
       "type": "range",
@@ -1082,11 +1102,11 @@
       "type": "range",
       "id": "card_width_mobile",
       "label": "Product card width (mobile)",
-      "min": 180,
-      "max": 340,
+      "min": 200,
+      "max": 400,
       "step": 2,
       "unit": "px",
-      "default": 262
+      "default": 344
     },
     {
       "type": "range",
@@ -1118,7 +1138,7 @@
       "max": 40,
       "step": 2,
       "unit": "px",
-      "default": 22
+      "default": 16
     },
     {
       "type": "range",
