@@ -1,109 +1,171 @@
 {%- doc -%}
-  This component renders a single line item product information, and is used on order and cart page.
+  Cart drawer line item.
 
-  @param {object} line_item - the line item to render
-  @param {boolean} [show_quantity_selector] - if set to true, the quantity selector is displayed (useful for instance in mini-cart)
-  @param {object} [section]
+  This is a drawer-only sibling of `line-item.liquid`, NOT a replacement for it.
+  `line-item.liquid` is shared with the cart page and the customer order pages, so
+  changing it would have altered three templates instead of one. Everything that
+  carries behaviour is kept identical to the original:
+
+    <line-item>           - LineItemQuantity does closest('line-item') to fire
+                            `line-item:will-change` / `line-item:change`.
+    <line-item-quantity>  - delegates `change` on [data-line-key] and `click` on
+                            [href*="/cart/change"], which is what makes +/- and
+                            Remove run through AJAX instead of a page load.
+    quantity-selector     - reused as-is; it already emits the cart/change links
+                            and the data-line-key input.
+    url_to_remove         - reused as-is.
+
+  What differs from the original is presentation only, plus the compare-at price
+  and the Save X% badge, which `price-list` cannot output in the `line_item`
+  context (it compares original_price against final_price, i.e. cart discounts,
+  not variant.compare_at_price).
+
+  Prices are LINE totals (unit x quantity) so they add up to the subtotal shown
+  in the drawer summary.
+
+  @param {object} line_item - the cart line item to render
+  @param {object} [section] - passed through so discount removal buttons can read
+                              section.settings.allow_discount_application
 {%- enddoc -%}
 
-<line-item class="line-item">
+{%- liquid
+  assign variant = line_item.variant
+  assign show_compare_at = false
+
+  if variant.compare_at_price > variant.price
+    assign show_compare_at = true
+    assign line_compare_at_price = variant.compare_at_price | times: line_item.quantity
+    assign saving_percentage = variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price | round
+  endif
+-%}
+
+<line-item class="cart-drawer-line">
   {%- if line_item.image != blank -%}
-    {{-
-      line_item.image
-      | image_url: width: line_item.image.width
-      | image_tag: loading: 'lazy', sizes: '(max-width: 699px) 70px, 120px', widths: '70,120,140,210,240,360', class: 'line-item__media'
-    -}}
+    <a
+      href="{{ line_item.url }}"
+      class="cart-drawer-line__media"
+      tabindex="-1"
+      aria-hidden="true"
+      data-no-instant
+    >
+      {{-
+        line_item.image
+        | image_url: width: line_item.image.width
+        | image_tag:
+          loading: 'lazy',
+          sizes: '80px',
+          widths: '80,160,240',
+          class: 'cart-drawer-line__image',
+          alt: ''
+      -}}
+    </a>
   {%- endif -%}
 
-  <div class="line-item-info">
-    {%- assign text_class = '' -%}
-
-    {%- if settings.product_card_text_font == 'heading' -%}
-      {%- assign text_class = 'h6' -%}
+  <div class="cart-drawer-line__info">
+    {%- if line_item.url != blank -%}
+      <a href="{{ line_item.url }}" class="cart-drawer-line__title">
+        {{- line_item.product.title | default: line_item.title -}}
+      </a>
+    {%- else -%}
+      <p class="cart-drawer-line__title">{{ line_item.product.title | default: line_item.title }}</p>
     {%- endif -%}
 
-    <div class="v-stack justify-items-start gap-2">
-      {%- if settings.show_vendor and line_item.vendor != blank -%}
-        {%- capture vendor_class -%}smallcaps {% if settings.product_card_text_font == 'heading' %}heading{% endif %}{% endcapture %}
-        {%- render 'vendor' with line_item.vendor, class: vendor_class -%}
-      {%- endif -%}
-
-      <div class="v-stack justify-items-start gap-1">
-        {%- if line_item.url != blank -%}
-          <a href="{{ line_item.url }}" class="{{ text_class }}">{{ line_item.product.title | default: line_item.title }}</a>
-        {%- else -%}
-          <p class="{{ text_class }}">{{ line_item.product.title | default: line_item.title }}</p>
-        {%- endif -%}
-
-        {%- render 'price-list', line_item: line_item, context: 'line_item' -%}
+    {%- comment -%}
+      Rendered as "Size: 4 x 6 ft" rather than just the variant title, to match
+      the reference. options_with_values gives the option name and value pairs.
+    {%- endcomment -%}
+    {%- unless line_item.product.has_only_default_variant or line_item.gift_card -%}
+      <div class="cart-drawer-line__options">
+        {%- for option in line_item.options_with_values -%}
+          <p class="cart-drawer-line__option">{{ option.name }}: {{ option.value }}</p>
+        {%- endfor -%}
       </div>
+    {%- endunless -%}
 
-      {%- capture secondary_information -%}
-        {%- unless line_item.product.has_only_default_variant or line_item.gift_card -%}
-          <p class="smallcaps text-subdued">{{ line_item.variant.title }}</p>
-        {%- endunless -%}
+    {%- if line_item.selling_plan_allocation -%}
+      <p class="cart-drawer-line__option">{{ line_item.selling_plan_allocation.selling_plan.name }}</p>
+    {%- endif -%}
 
-        {%- if line_item.selling_plan_allocation -%}
-          <p class="text-subdued">{{ line_item.selling_plan_allocation.selling_plan.name }}</p>
+    {%- unless line_item.properties == empty -%}
+      <ul class="cart-drawer-line__properties unstyled-list" role="list">
+        {%- for property in line_item.properties -%}
+          {%- assign first_character_in_key = property.first | truncate: 1, '' -%}
+
+          {%- if property.last == blank or first_character_in_key == '_' -%}
+            {%- continue -%}
+          {%- endif -%}
+
+          <li>
+            {%- if property.last contains '/uploads/' or property.last contains '/files/' -%}
+              <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
+            {%- else -%}
+              {{ property.first }}: {{ property.last }}
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endunless -%}
+
+    {%- render 'cart-disclosures', product: line_item.product -%}
+
+    <div class="cart-drawer-line__prices">
+      <span class="cart-drawer-line__price">
+        <span class="sr-only">{{ 'product.price.sale_price' | t }}</span>
+        {%- if settings.currency_code_enabled -%}
+          {{- line_item.final_line_price | money_with_currency -}}
+        {%- else -%}
+          {{- line_item.final_line_price | money -}}
         {%- endif -%}
+      </span>
 
-        {%- unless line_item.properties == empty -%}
-          <ul class="text-subdued">
-            {%- for property in line_item.properties -%}
-              {%- assign first_character_in_key = property.first | truncate: 1, '' -%}
+      {%- if show_compare_at -%}
+        <s class="cart-drawer-line__compare-at">
+          <span class="sr-only">{{ 'product.price.regular_price' | t }}</span>
+          {%- if settings.currency_code_enabled -%}
+            {{- line_compare_at_price | money_with_currency -}}
+          {%- else -%}
+            {{- line_compare_at_price | money -}}
+          {%- endif -%}
+        </s>
 
-              {%- if property.last == blank or first_character_in_key == '_' -%}
-                {%- continue -%}
-              {%- endif -%}
-
-              <li>
-                {%- if property.last contains '/uploads/' or property.last contains '/files/' -%}
-                  <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
-                {%- else -%}
-                  {{ property.first }}: {{ property.last }}
-                {%- endif -%}
-              </li>
-            {%- endfor -%}
-          </ul>
-        {%- endunless -%}
-      {%- endcapture -%}
-
-      {%- if secondary_information != blank -%}
-        <div class="v-stack justify-items-start gap-1">
-          {{- secondary_information -}}
-        </div>
-      {%- endif -%}
-
-      {%- render 'cart-disclosures', product: line_item.product -%}
-
-      {%- if show_quantity_selector -%}
-        <line-item-quantity class="h-stack gap-4 {% if request.page_type == 'cart' %}sm:hidden{% endif %}">
-          {%- render 'quantity-selector', line_item: line_item, size: 'sm' -%}
-
-          <a href="{{ line_item.url_to_remove }}" class="link text-xs" aria-label="{{ 'cart.order.remove_with_title' | t: title: line_item.title | escape }}">
-            {{- 'cart.order.remove' | t -}}
-          </a>
-        </line-item-quantity>
-      {%- else -%}
-        <p class="text-subdued text-sm sm:hidden">{{ 'customer.order.quantity' | t }}: {{ line_item.quantity }}</p>
-      {%- endif -%}
-
-      {%- if line_item.line_level_discount_allocations != blank -%}
-        <ul class="v-stack justify-items-start gap-1 unstyled-list" role="list">
-          {%- for discount_allocation in line_item.line_level_discount_allocations -%}
-            <li class="discount-badge text-xs">
-              {%- render 'icon' with 'discount', width: 12 -%}
-              {{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})
-
-              {%- if section.settings.allow_discount_application and discount_allocation.discount_application.type != '' -%}
-                <cart-discount-remove-button discount-code="{{ discount_allocation.discount_application.title }}" class="h-stack align-center">
-                  <button type="button">{%- render 'icon' with 'close', width: 8 -%}</button>
-                </cart-discount-remove-button>
-              {%- endif -%}
-            </li>
-          {%- endfor -%}
-        </ul>
+        <span class="cart-drawer-line__saving-badge">
+          {{- 'general.product.save' | t: percentage: saving_percentage -}}
+        </span>
       {%- endif -%}
     </div>
+
+    <line-item-quantity class="cart-drawer-line__actions">
+      {%- render 'quantity-selector', line_item: line_item, size: 'sm' -%}
+
+      <a
+        href="{{ line_item.url_to_remove }}"
+        class="cart-drawer-line__remove"
+        aria-label="{{ 'cart.order.remove_with_title' | t: title: line_item.title | escape }}"
+      >
+        {{- 'cart.order.remove' | t -}}
+      </a>
+    </line-item-quantity>
+
+    {%- if line_item.line_level_discount_allocations != blank -%}
+      <ul class="cart-drawer-line__discounts unstyled-list" role="list">
+        {%- for discount_allocation in line_item.line_level_discount_allocations -%}
+          <li class="discount-badge cart-drawer__discount-badge">
+            {%- render 'icon' with 'discount', width: 11 -%}
+            {{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})
+
+            {%- if section.settings.allow_discount_application and discount_allocation.discount_application.type != '' -%}
+              <cart-discount-remove-button
+                discount-code="{{ discount_allocation.discount_application.title | escape }}"
+                class="h-stack align-center"
+              >
+                <button type="button" aria-label="{{ 'cart.order.remove' | t | escape }}">
+                  {%- render 'icon' with 'close', width: 7 -%}
+                </button>
+              </cart-discount-remove-button>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
   </div>
 </line-item>

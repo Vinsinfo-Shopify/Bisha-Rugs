@@ -1,3 +1,163 @@
+{%- comment -%}
+  ============================================================================
+  CART DRAWER — BISHA RUGS
+
+  Modified from the stock Prestige 11.4.0 cart drawer. Every behavioural hook
+  from the original is still in place:
+
+    <cart-drawer>                  drawer open/close, section re-render, focus trap
+    slot="header" / slot="footer"  drawer shadow DOM parts
+    form action=routes.cart_url    checkout submission
+    render 'button' name="checkout" real Shopify checkout, not a dummy button
+    render 'quantity-selector'     AJAX +/- via /cart/change links
+    <cart-discount-field>          real discount application
+    <cart-note-dialog> / <cart-note>  order note
+    cross_sell_products            existing drawer cross-sell
+
+  WHY THERE IS ALMOST NO NEW JAVASCRIPT
+  ------------------------------------
+  CartDrawer#onCartChange in theme.js re-renders this whole section from the
+  server on every cart change (it registers itself in
+  `cart:prepare-bundled-sections`, and the bundled section HTML comes back on
+  the /cart/change.js and /cart/add.js responses). So every number below —
+  progress bar, subtotal, shipping, total, savings, badges — is plain Liquid and
+  stays in sync for free. The only script added is a handler for the APPLY
+  button and the Enter key, because Prestige's CartDiscountField only listens
+  for a `change` event on its input.
+
+  SCOPING NOTE
+  ------------
+  All CSS is scoped to `.cart-drawer`, never to `#shopify-section-…`, because
+  DialogElement moves this element to <body> when it opens (shouldAppendToBody),
+  which takes it out of the section wrapper.
+{%- endcomment -%}
+
+{%- liquid
+  # ---------------------------------------------------------------------------
+  # PROMOTION PROGRESS
+  # Thresholds are entered in the editor in whole currency units; cart prices are
+  # in cents, hence the x100.
+  # ---------------------------------------------------------------------------
+  assign tier_1_amount = 0
+  assign tier_2_amount = 0
+
+  if section.settings.promo_tier_1_threshold > 0
+    assign tier_1_amount = section.settings.promo_tier_1_threshold | times: 100
+  endif
+
+  if section.settings.promo_tier_2_threshold > 0
+    assign tier_2_amount = section.settings.promo_tier_2_threshold | times: 100
+  endif
+
+  assign promo_goal = tier_2_amount
+  if promo_goal == 0
+    assign promo_goal = tier_1_amount
+  endif
+
+  assign promo_progress = 0
+  assign tier_1_position = 100
+
+  if promo_goal > 0
+    assign promo_progress = cart.total_price | times: 100 | divided_by: promo_goal
+    if promo_progress > 100
+      assign promo_progress = 100
+    endif
+
+    if tier_2_amount > 0
+      assign tier_1_position = tier_1_amount | times: 100 | divided_by: promo_goal
+    endif
+  endif
+
+  assign tier_1_reached = false
+  assign tier_2_reached = false
+
+  if tier_1_amount > 0 and cart.total_price >= tier_1_amount
+    assign tier_1_reached = true
+  endif
+
+  if tier_2_amount > 0 and cart.total_price >= tier_2_amount
+    assign tier_2_reached = true
+  endif
+
+  # Which reward are we talking about, and how far away is it
+  assign promo_remaining = 0
+  assign promo_reward = section.settings.promo_tier_2_label
+  assign promo_all_unlocked = false
+
+  if tier_1_amount > 0 and tier_1_reached == false
+    assign promo_remaining = tier_1_amount | minus: cart.total_price
+    assign promo_reward = section.settings.promo_tier_1_label
+  elsif tier_2_amount > 0 and tier_2_reached == false
+    assign promo_remaining = tier_2_amount | minus: cart.total_price
+    assign promo_reward = section.settings.promo_tier_2_label
+  else
+    assign promo_all_unlocked = true
+    if tier_2_amount > 0
+      assign promo_reward = section.settings.promo_tier_2_label
+    else
+      assign promo_reward = section.settings.promo_tier_1_label
+    endif
+  endif
+
+  if promo_all_unlocked
+    assign promo_message = section.settings.promo_unlocked_text | replace: '[reward]', promo_reward
+  else
+    assign promo_remaining_money = promo_remaining | money
+    assign promo_message = section.settings.promo_locked_text | replace: '[amount]', promo_remaining_money | replace: '[reward]', promo_reward
+  endif
+
+  # ---------------------------------------------------------------------------
+  # SAVINGS
+  # Compare-at savings (product on sale) + every discount Shopify has applied.
+  # original_total_price - total_price covers both line and cart level discounts.
+  # ---------------------------------------------------------------------------
+  assign compare_at_savings = 0
+
+  for item in cart.items
+    if item.variant.compare_at_price > item.variant.price
+      assign line_compare_at = item.variant.compare_at_price | times: item.quantity
+      assign line_saving = line_compare_at | minus: item.original_line_price
+      assign compare_at_savings = compare_at_savings | plus: line_saving
+    endif
+  endfor
+
+  assign discount_savings = cart.original_total_price | minus: cart.total_price
+  assign total_savings = compare_at_savings | plus: discount_savings
+
+  # ---------------------------------------------------------------------------
+  # SHIPPING ROW
+  # Liquid has no access to shipping rates — they only exist at checkout — so
+  # this row is presentational and driven by a setting. Leave the setting at 0
+  # to show "calculated at checkout" instead of an amount.
+  # ---------------------------------------------------------------------------
+  assign standard_shipping = 0
+  if section.settings.shipping_standard_amount > 0
+    assign standard_shipping = section.settings.shipping_standard_amount | times: 100
+  endif
+
+  # ---------------------------------------------------------------------------
+  # LAYOUT DECISIONS
+  # ---------------------------------------------------------------------------
+  assign sticky_style = section.settings.sticky_cta_style
+  assign summary_in_footer = false
+
+  if sticky_style == 'total' or sticky_style == 'shipping_total'
+    assign summary_in_footer = true
+  endif
+
+  assign cart_form_id = 'cart-drawer-form-' | append: section.id
+
+  assign item_word = section.settings.item_label_plural
+  if cart.item_count == 1
+    assign item_word = section.settings.item_label_singular
+  endif
+
+  assign drawer_heading = section.settings.heading_text
+  if drawer_heading == blank
+    assign drawer_heading = 'cart.general.title' | t
+  endif
+-%}
+
 <cart-drawer
   id="cart-drawer"
   aria-label="{{ 'cart.general.title' | t | escape_once }}"
@@ -5,21 +165,132 @@
   initial-focus="false"
   handle-editor-events
 >
-  <p class="h4" slot="header">{{ 'cart.general.title' | t }}</p>
+  <p class="cart-drawer__heading" slot="header">
+    {{- drawer_heading }}
+    {%- unless cart.empty? %} <span class="cart-drawer__heading-count">({{ cart.item_count }} {{ item_word }})</span>{% endunless -%}
+  </p>
 
   {%- if cart.empty? -%}
-    <p class="h5 text-center">{{ 'cart.general.empty' | t }}</p>
+    <div class="cart-drawer__empty">
+      <p class="h5 text-center">{{ 'cart.general.empty' | t }}</p>
+
+      {%- assign continue_shopping = 'cart.general.continue_shopping' | t -%}
+      {%- render 'button', content: continue_shopping, href: settings.cart_empty_cart_link -%}
+    </div>
   {%- else -%}
-    {%- if settings.cart_show_free_shipping_bar -%}
-      {%- render 'free-shipping-bar' -%}
+    {%- comment -%}
+      ------------------------------------------------------------------------
+      SERVICE STRIP — sits directly under the heading
+      ------------------------------------------------------------------------
+    {%- endcomment -%}
+    {%- capture service_strip -%}
+      {%- for i in (1..3) -%}
+        {%- liquid
+          case i
+            when 1
+              assign usp_text = section.settings.usp_1_text
+              assign usp_icon = section.settings.usp_1_icon
+            when 2
+              assign usp_text = section.settings.usp_2_text
+              assign usp_icon = section.settings.usp_2_icon
+            when 3
+              assign usp_text = section.settings.usp_3_text
+              assign usp_icon = section.settings.usp_3_icon
+          endcase
+        -%}
+
+        {%- if usp_text != blank -%}
+          <span class="cart-drawer__service-item">
+            {%- render 'icon' with usp_icon, width: 13 -%}
+            {{ usp_text }}
+          </span>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- if service_strip != blank -%}
+      <div class="cart-drawer__service-strip">{{ service_strip }}</div>
     {%- endif -%}
 
+    {%- comment -%}
+      ------------------------------------------------------------------------
+      PROMOTION / FREE SHIPPING PROGRESS
+      ------------------------------------------------------------------------
+    {%- endcomment -%}
+    {%- if section.settings.show_promo_bar and promo_goal > 0 -%}
+      <div class="cart-drawer__promo">
+        <p class="cart-drawer__promo-message">
+          {%- if promo_all_unlocked -%}
+            {%- render 'icon' with 'success', width: 12 -%}
+          {%- endif -%}
+          <span>{{ promo_message }}</span>
+        </p>
+
+        <div class="cart-drawer__promo-meter">
+          <div
+            class="cart-drawer__promo-track"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="{{ promo_progress }}"
+            aria-label="{{ promo_message | strip_html | escape }}"
+            style="--cd-progress: {{ promo_progress }}%;"
+          >
+            <span class="cart-drawer__promo-fill"></span>
+
+            {%- if tier_1_amount > 0 -%}
+              <span
+                class="cart-drawer__promo-node {% if tier_1_reached %}is-reached{% endif %}"
+                style="--cd-node-position: {{ tier_1_position }}%;"
+              ></span>
+            {%- endif -%}
+
+            {%- if tier_2_amount > 0 -%}
+              <span
+                class="cart-drawer__promo-node {% if tier_2_reached %}is-reached{% endif %}"
+                style="--cd-node-position: 100%;"
+              ></span>
+            {%- endif -%}
+          </div>
+
+          <div class="cart-drawer__promo-labels">
+            {%- if tier_1_amount > 0 and section.settings.promo_tier_1_label != blank -%}
+              <span class="cart-drawer__promo-label" style="--cd-node-position: {{ tier_1_position }}%;">
+                {{- section.settings.promo_tier_1_label -}}
+              </span>
+            {%- endif -%}
+
+            {%- if tier_2_amount > 0 and section.settings.promo_tier_2_label != blank -%}
+              <span class="cart-drawer__promo-label cart-drawer__promo-label--end">
+                {{- section.settings.promo_tier_2_label -}}
+              </span>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- comment -%}
+      ------------------------------------------------------------------------
+      LINE ITEMS
+      ------------------------------------------------------------------------
+    {%- endcomment -%}
     <div class="cart-drawer__items">
       {%- for line_item in cart.items -%}
-        {%- render 'line-item', line_item: line_item, show_quantity_selector: true -%}
+        {%- render 'line-item', line_item: line_item, section: section -%}
       {%- endfor -%}
     </div>
 
+    {%- comment -%}
+      ------------------------------------------------------------------------
+      CROSS-SELL — "Customers Also Bought"
+
+      Unchanged logic: it reads the `cross_sell_products` product list from the
+      section settings, skips anything already in the cart, and skips anything
+      unavailable. See the notes I sent about wiring this to Shopify's
+      recommendations API instead.
+      ------------------------------------------------------------------------
+    {%- endcomment -%}
     {%- liquid
       assign cross_sell_products_count = 0
 
@@ -38,7 +309,7 @@
 
         {%- if section.settings.cross_sell_title != blank or section.settings.cross_sell_stack_products == false and cross_sell_products_count > 1 -%}
           <div class="complementary-products__header complementary-products__header--align-start">
-            <p class="h6">{{ section.settings.cross_sell_title }}</p>
+            <p class="cart-drawer__section-title">{{ section.settings.cross_sell_title }}</p>
 
             {%- if section.settings.cross_sell_stack_products == false and cross_sell_products_count > 1 -%}
               <carousel-navigation aria-controls="{{ carousel_id }}" class="page-dots page-dots--narrow">
@@ -69,79 +340,270 @@
             {{- complementary_products -}}
           </div>
         {%- else -%}
-          <scroll-carousel id="{{ carousel_id }}" class="complementary-products__product-list complementary-products__product-list--carousel scroll-area bleed snap-x">
+          <scroll-carousel
+            id="{{ carousel_id }}"
+            class="complementary-products__product-list complementary-products__product-list--carousel scroll-area bleed snap-x"
+          >
             {{- complementary_products -}}
           </scroll-carousel>
         {%- endif -%}
       </div>
     {%- endif -%}
 
+    {%- comment -%}
+      ------------------------------------------------------------------------
+      CONTACT BLOCK
+      ------------------------------------------------------------------------
+    {%- endcomment -%}
+    {%- if section.settings.contact_heading != blank
+        or section.settings.contact_text != blank
+        or section.settings.contact_phone != blank
+        or section.settings.contact_email != blank
+    -%}
+      <div class="cart-drawer__contact">
+        {%- if section.settings.contact_heading != blank -%}
+          <p class="cart-drawer__section-title">{{ section.settings.contact_heading }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.contact_text != blank -%}
+          <p class="cart-drawer__contact-text">{{ section.settings.contact_text }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.contact_phone != blank or section.settings.contact_email != blank -%}
+          <div class="cart-drawer__contact-links">
+            {%- if section.settings.contact_phone != blank -%}
+              <a
+                class="cart-drawer__contact-link"
+                href="tel:{{ section.settings.contact_phone | replace: ' ', '' | replace: '-', '' | replace: '(', '' | replace: ')', '' }}"
+              >
+                {%- render 'icon' with 'picto-phone', width: 14 -%}
+                <span>{{ section.settings.contact_phone }}</span>
+              </a>
+            {%- endif -%}
+
+            {%- if section.settings.contact_email != blank -%}
+              <a class="cart-drawer__contact-link" href="mailto:{{ section.settings.contact_email }}">
+                {%- render 'icon' with 'picto-envelope', width: 14 -%}
+                <span>{{ section.settings.contact_email }}</span>
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment -%}
+      ------------------------------------------------------------------------
+      DISCOUNT CODE
+
+      The hidden [name="discount"] input is what Prestige's CartDiscountField
+      keeps in sync and what carries the code through to checkout, so it must be
+      part of the cart form. The block lives in the scrollable body rather than
+      the footer, so it uses the HTML `form` attribute to associate with the
+      footer form by id.
+      ------------------------------------------------------------------------
+    {%- endcomment -%}
+    {%- if section.settings.show_discount_field -%}
+      {%- assign discount_input_id = 'cart-drawer-discount-' | append: section.id -%}
+
+      <cart-drawer-discount class="cart-drawer__discount">
+        <label class="cart-drawer__section-title" for="{{ discount_input_id }}">
+          {{- section.settings.discount_heading -}}
+        </label>
+
+        <cart-discount-field class="cart-discount-field cart-drawer__discount-field">
+          <input
+            type="hidden"
+            name="discount"
+            form="{{ cart_form_id }}"
+            value="{{ cart.discount_codes | map: 'code' | join: ',' | escape }}"
+          >
+
+          <input
+            id="{{ discount_input_id }}"
+            class="cart-drawer__discount-input"
+            type="text"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            enterkeyhint="done"
+            placeholder="{{ section.settings.discount_placeholder | escape }}"
+          >
+
+          <button type="button" class="cart-drawer__discount-apply" data-discount-apply>
+            {{- section.settings.discount_button_label -}}
+          </button>
+
+          {%- render 'icon' with 'loader', width: 12, class: 'cart-discount-field__loader' -%}
+        </cart-discount-field>
+
+        <cart-discount-banner class="cart-drawer__discount-error" role="alert" hidden>
+          {{- section.settings.discount_error_text -}}
+        </cart-discount-banner>
+      </cart-drawer-discount>
+    {%- endif -%}
+
+    {%- comment -%}
+      ------------------------------------------------------------------------
+      APPLIED DISCOUNT BADGES
+      ------------------------------------------------------------------------
+    {%- endcomment -%}
+    {%- if cart.cart_level_discount_applications.size > 0 -%}
+      <ul class="cart-drawer__discount-list unstyled-list" role="list">
+        {%- for discount_application in cart.cart_level_discount_applications -%}
+          <li class="discount-badge cart-drawer__discount-badge">
+            {%- render 'icon' with 'discount', width: 11 -%}
+            {{ discount_application.title }} (-{{ discount_application.total_allocated_amount | money }})
+
+            {%- if section.settings.allow_discount_application and discount_application.type != '' -%}
+              <cart-discount-remove-button
+                discount-code="{{ discount_application.title | escape }}"
+                class="h-stack align-center"
+              >
+                <button type="button" aria-label="{{ 'cart.order.remove' | t | escape }}">
+                  {%- render 'icon' with 'close', width: 7 -%}
+                </button>
+              </cart-discount-remove-button>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- comment -%}
+      ------------------------------------------------------------------------
+      ORDER SUMMARY — reused by both the body and the compact sticky bar
+      ------------------------------------------------------------------------
+    {%- endcomment -%}
+    {%- capture summary_subtotal_row -%}
+      <div class="cart-drawer__summary-row">
+        <span>{{ 'cart.general.subtotal' | t }} ({{ cart.item_count }} {{ item_word }})</span>
+        <span>
+          {%- if settings.currency_code_enabled -%}
+            {{- cart.items_subtotal_price | money_with_currency -}}
+          {%- else -%}
+            {{- cart.items_subtotal_price | money -}}
+          {%- endif -%}
+        </span>
+      </div>
+    {%- endcapture -%}
+
+    {%- capture summary_shipping_row -%}
+      <div class="cart-drawer__summary-row">
+        <span>{{ section.settings.shipping_label }}</span>
+        <span class="cart-drawer__summary-shipping">
+          {%- if standard_shipping > 0 -%}
+            {%- if tier_1_reached -%}
+              <s>{{ standard_shipping | money }}</s>
+              <strong>{{ 0 | money }}</strong>
+            {%- else -%}
+              {{ standard_shipping | money }}
+            {%- endif -%}
+          {%- else -%}
+            <span class="cart-drawer__summary-note">{{ 'cart.general.taxes_and_shipping_at_checkout' | t }}</span>
+          {%- endif -%}
+        </span>
+      </div>
+    {%- endcapture -%}
+
+    {%- capture summary_total_row -%}
+      <div class="cart-drawer__summary-row cart-drawer__summary-row--total">
+        <span>{{ 'cart.general.total' | t }}</span>
+        <span>
+          {%- if settings.currency_code_enabled -%}
+            {{- cart.total_price | money_with_currency -}}
+          {%- else -%}
+            {{- cart.total_price | money -}}
+          {%- endif -%}
+        </span>
+      </div>
+    {%- endcapture -%}
+
+    {%- unless summary_in_footer -%}
+      <div class="cart-drawer__summary">
+        {{ summary_subtotal_row }}
+        {{ summary_shipping_row }}
+        {{ summary_total_row }}
+      </div>
+    {%- endunless -%}
+
+    {%- comment -%}
+      ------------------------------------------------------------------------
+      FOOTER / STICKY CHECKOUT BAR
+      ------------------------------------------------------------------------
+    {%- endcomment -%}
     <div slot="footer">
-      <form action="{{ routes.cart_url }}" class="cart-drawer__footer" method="POST">
+      <form action="{{ routes.cart_url }}" id="{{ cart_form_id }}" class="cart-drawer__footer" method="POST">
         <input type="hidden" name="attributes[products_mobile_grid_mode]" value="">
         <input type="hidden" name="attributes[products_desktop_grid_mode]" value="">
 
-        {%- if section.settings.show_cart_note or section.settings.show_shipping_text -%}
-          <div class="v-stack gap-0.5 justify-items-start">
-            {%- if section.settings.show_cart_note -%}
-              {%- assign cart_note_dialog_id = 'cart-note-' | append: section.id -%}
-              <button class="link-faded-reverse" aria-controls="{{ cart_note_dialog_id }}">{{ 'cart.general.add_order_note' | t }}</button>
+        {%- if section.settings.show_cart_note -%}
+          {%- assign cart_note_dialog_id = 'cart-note-' | append: section.id -%}
 
-              <cart-note-dialog id="{{ cart_note_dialog_id }}" class="cart-drawer__order-note">
-                <div class="form">
-                  <cart-note class="form-control">
-                    {%- assign order_note = 'cart.general.order_note' | t -%}
-                    {%- assign placeholder = 'cart.general.note_placeholder' | t -%}
-                    {%- render 'input', name: 'note', multiline: 3, label: order_note, value: cart.note, placeholder: placeholder, show_label_as_block: true -%}
-                  </cart-note>
+          <button type="button" class="cart-drawer__note-toggle" aria-controls="{{ cart_note_dialog_id }}">
+            {{- 'cart.general.add_order_note' | t -}}
+          </button>
 
-                  <dialog-close-button class="contents">
-                    <button type="button" class="button">{{ 'cart.general.save_note' | t }}</button>
-                  </dialog-close-button>
-                </div>
-              </cart-note-dialog>
-            {%- endif -%}
+          <cart-note-dialog id="{{ cart_note_dialog_id }}" class="cart-drawer__order-note">
+            <div class="form">
+              <cart-note class="form-control">
+                {%- assign order_note = 'cart.general.order_note' | t -%}
+                {%- assign placeholder = 'cart.general.note_placeholder' | t -%}
+                {%- render 'input',
+                  name: 'note',
+                  multiline: 3,
+                  label: order_note,
+                  value: cart.note,
+                  placeholder: placeholder,
+                  show_label_as_block: true
+                -%}
+              </cart-note>
 
-            {%- if section.settings.show_shipping_text -%}
-              <p class="text-subdued">{{ 'cart.general.taxes_and_shipping_at_checkout' | t }}</p>
-            {%- endif -%}
+              <dialog-close-button class="contents">
+                <button type="button" class="button">{{ 'cart.general.save_note' | t }}</button>
+              </dialog-close-button>
+            </div>
+          </cart-note-dialog>
+        {%- endif -%}
+
+        {%- comment -%}Compact sticky bar variants reuse the exact same rows{%- endcomment -%}
+        {%- if sticky_style == 'shipping_total' -%}
+          <div class="cart-drawer__summary cart-drawer__summary--compact">
+            {{ summary_shipping_row }}
+            {{ summary_total_row }}
+          </div>
+        {%- elsif sticky_style == 'total' -%}
+          <div class="cart-drawer__summary cart-drawer__summary--compact">
+            {{ summary_total_row }}
           </div>
         {%- endif -%}
 
-        {%- if section.settings.allow_discount_application -%}
-          {%- render 'cart-discount' -%}
+        {%- if section.settings.show_savings and total_savings > 0 -%}
+          {%- assign savings_money = total_savings | money -%}
+          <p class="cart-drawer__savings">
+            {{- section.settings.savings_text | replace: '[amount]', savings_money -}}
+          </p>
         {%- endif -%}
 
-        {%- if cart.cart_level_discount_applications.size > 0 -%}
-          <div class="h-stack gap-3">
-            {%- for discount_application in cart.cart_level_discount_applications -%}
-              <div class="h-stack justify-start gap-4">
-                <span class="discount-badge text-xs">
-                  {%- render 'icon' with 'discount', width: 12 -%}
-                  {{ discount_application.title }} (-{{ discount_application.total_allocated_amount | money }})
-
-                  {%- if section.settings.allow_discount_application and discount_application.type != '' -%}
-                    <cart-discount-remove-button discount-code="{{ discount_application.title | escape }}" class="h-stack align-center">
-                      <button type="button">{%- render 'icon' with 'close', width: 8 -%}</button>
-                    </cart-discount-remove-button>
-                  {%- endif -%}
-                </span>
-              </div>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-
-        <div class="button-group">
+        <div class="button-group cart-drawer__actions">
           {%- if section.settings.show_view_cart_button or section.settings.show_checkout_button == false -%}
             {%- assign view_cart = 'cart.general.view_cart' | t -%}
-            {%- render 'button', href: routes.cart_url, content: view_cart, stretch: true -%}
+            {%- render 'button', href: routes.cart_url, content: view_cart, style: 'outline', stretch: true -%}
           {%- endif -%}
 
           {%- if section.settings.show_checkout_button -%}
+            {%- liquid
+              assign show_price_in_button = section.settings.show_price_in_checkout_button
+
+              if sticky_style == 'savings_price'
+                assign show_price_in_button = true
+              endif
+            -%}
+
             {%- capture checkout_button -%}
               {{- 'cart.general.checkout' | t -}}
 
-              {%- if section.settings.show_price_in_checkout_button -%}
+              {%- if show_price_in_button -%}
                 <span class="cart-drawer__button-price">{{- cart.total_price | money -}}</span>
               {%- endif -%}
             {%- endcapture -%}
@@ -149,10 +611,872 @@
             {%- render 'button', type: 'submit', content: checkout_button, name: 'checkout', stretch: true -%}
           {%- endif -%}
         </div>
+
+        {%- if sticky_style == 'full' -%}
+          {%- capture trust_badges -%}
+            {%- for i in (1..4) -%}
+              {%- liquid
+                case i
+                  when 1
+                    assign benefit_text = section.settings.benefit_1_text
+                    assign benefit_icon = section.settings.benefit_1_icon
+                  when 2
+                    assign benefit_text = section.settings.benefit_2_text
+                    assign benefit_icon = section.settings.benefit_2_icon
+                  when 3
+                    assign benefit_text = section.settings.benefit_3_text
+                    assign benefit_icon = section.settings.benefit_3_icon
+                  when 4
+                    assign benefit_text = section.settings.benefit_4_text
+                    assign benefit_icon = section.settings.benefit_4_icon
+                endcase
+              -%}
+
+              {%- if benefit_text != blank -%}
+                <li class="cart-drawer__benefit">
+                  {%- render 'icon' with benefit_icon, width: 17 -%}
+                  <span>{{ benefit_text }}</span>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endcapture -%}
+
+          {%- if trust_badges != blank -%}
+            <ul class="cart-drawer__benefits unstyled-list" role="list">{{ trust_badges }}</ul>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- if section.settings.show_shipping_text and standard_shipping > 0 -%}
+          <p class="cart-drawer__tax-note">{{ 'cart.general.taxes_and_shipping_at_checkout' | t }}</p>
+        {%- endif -%}
       </form>
     </div>
   {%- endif -%}
 </cart-drawer>
+
+{%- comment -%}
+  Deliberately outside <cart-drawer>: CartDrawer#replaceContent swaps the
+  drawer's children on every cart update, and script nodes inserted that way
+  never execute. Kept here it is parsed once, and the definition guard makes a
+  second parse harmless.
+
+  Prestige's CartDiscountField only reacts to a `change` event on its input, so
+  it has no APPLY button and no Enter handling. This adds both without touching
+  theme.js or duplicating any cart logic — it just fires the event the existing
+  component already listens for.
+{%- endcomment -%}
+<script>
+  if (!window.customElements.get('cart-drawer-discount')) {
+    window.customElements.define(
+      'cart-drawer-discount',
+      class extends HTMLElement {
+        connectedCallback() {
+          this.addEventListener('click', (event) => {
+            if (event.target.closest('[data-discount-apply]')) this.apply();
+          });
+
+          this.addEventListener('keydown', (event) => {
+            if (event.key !== 'Enter') return;
+            // Without this the Enter key submits the cart form and sends the
+            // customer to checkout instead of applying the code.
+            event.preventDefault();
+            this.apply();
+          });
+        }
+
+        apply() {
+          const input = this.querySelector('.cart-drawer__discount-input');
+
+          if (!input || input.value.trim() === '') {
+            input?.focus();
+            return;
+          }
+
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      }
+    );
+  }
+</script>
+
+{% style %}
+  /* ==========================================================================
+     CART DRAWER
+
+     Scoped to .cart-drawer only — the element is moved to <body> when it opens,
+     so a #shopify-section-… scope would stop matching.
+
+     All sizing in px per spec. A handful of rules use .drawer.cart-drawer or
+     !important purely to out-weigh Prestige's own theme.css declarations; each
+     one is commented where it happens.
+
+     0. Tokens and drawer metrics
+     1. Header
+     2. Service strip
+     3. Promotion progress
+     4. Line items
+     5. Cross-sell
+     6. Contact block
+     7. Discount code
+     8. Order summary
+     9. Footer, savings, checkout, trust badges
+     10. Mobile
+     ========================================================================== */
+
+  /* ---------- 0. Tokens and drawer metrics ---------- */
+  /* .drawer.cart-drawer (0,2,0) beats theme.css's .drawer (0,1,0) and its
+     min-width:1000px overrides of the same custom properties. */
+
+  .drawer.cart-drawer {
+    --cd-accent-rgb: {{ section.settings.accent_color.rgb }};
+    --cd-accent-text-rgb: {{ section.settings.accent_text_color.rgb }};
+    --cd-accent: rgb(var(--cd-accent-rgb));
+    --cd-accent-text: rgb(var(--cd-accent-text-rgb));
+    --cd-surface: {{ section.settings.surface_color }};
+    --cd-hairline: rgb(var(--text-color) / 0.14);
+    --cd-rule: rgb(var(--text-color) / 0.22);
+    --cd-muted: rgb(var(--text-color) / 0.62);
+    --cd-gutter: 16px;
+
+    --drawer-max-width: min(92vw, 420px);
+    --drawer-header-padding-block: 13px;
+    --drawer-header-padding-inline: var(--cd-gutter);
+    --drawer-body-padding-block: 0px;
+    --drawer-body-padding-inline: var(--cd-gutter);
+    --drawer-footer-padding-block: 14px;
+    --drawer-footer-padding-inline: var(--cd-gutter);
+  }
+
+  .drawer.cart-drawer::part(body) {
+    padding-block: 0;
+  }
+
+  .cart-drawer__empty {
+    display: grid;
+    justify-items: center;
+    gap: 20px;
+    padding-block: 40px;
+  }
+
+  /* ---------- 1. Header ---------- */
+
+  .drawer.cart-drawer::part(header) {
+    min-height: 0;
+    border-block-end: 1px solid var(--cd-rule);
+  }
+
+  .cart-drawer__heading {
+    font-family: var(--heading-font-family);
+    font-style: var(--heading-font-style);
+    font-weight: var(--heading-font-weight);
+    font-size: 21px;
+    line-height: 28px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .cart-drawer__heading-count {
+    font-size: 15px;
+  }
+
+  .drawer.cart-drawer::part(close-button) > svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  /* Shared small heading used by cross-sell, contact and discount */
+  .cart-drawer__section-title {
+    font-family: var(--text-font-family);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 0;
+  }
+
+  /* ---------- 2. Service strip ---------- */
+
+  .cart-drawer__service-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 4px 14px;
+    margin-inline: calc(-1 * var(--cd-gutter));
+    padding: 8px var(--cd-gutter);
+    border-block-end: 1px solid var(--cd-hairline);
+    font-family: var(--text-font-family);
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .cart-drawer__service-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+
+  .cart-drawer__service-item svg {
+    width: 13px;
+    height: 13px;
+    flex: none;
+  }
+
+  /* ---------- 3. Promotion progress ---------- */
+
+  .cart-drawer__promo {
+    display: grid;
+    gap: 12px;
+    margin-block-start: 14px;
+    padding: 11px 14px 9px;
+    background: var(--cd-surface);
+    border: 1px solid var(--cd-hairline);
+  }
+
+  .cart-drawer__promo-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: var(--text-font-family);
+    font-size: 12px;
+    line-height: 17px;
+    text-align: center;
+  }
+
+  .cart-drawer__promo-message svg {
+    width: 12px;
+    height: 12px;
+    flex: none;
+    color: var(--cd-accent);
+  }
+
+  .cart-drawer__promo-meter {
+    display: grid;
+    gap: 9px;
+    padding-inline: 4px;
+  }
+
+  .cart-drawer__promo-track {
+    position: relative;
+    height: 3px;
+    background: rgb(var(--text-color) / 0.16);
+  }
+
+  .cart-drawer__promo-fill {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: var(--cd-progress, 0%);
+    background: var(--cd-accent);
+    transition: width 0.35s ease;
+  }
+
+  .cart-drawer__promo-node {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: var(--cd-node-position, 0%);
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    border: 1px solid var(--cd-accent);
+    background: rgb(var(--background));
+    transform: translate(-50%, -50%);
+  }
+
+  .cart-drawer__promo-node.is-reached {
+    background: var(--cd-accent);
+  }
+
+  .cart-drawer__promo-labels {
+    position: relative;
+    height: 15px;
+    font-family: var(--text-font-family);
+    font-size: 10px;
+    line-height: 15px;
+  }
+
+  .cart-drawer__promo-label {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: var(--cd-node-position, 0%);
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+
+  .cart-drawer__promo-label--end {
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+    transform: none;
+  }
+
+  /* ---------- 4. Line items ---------- */
+
+  .cart-drawer .cart-drawer__items {
+    display: grid;
+    gap: 0;
+    padding-block: 0;
+  }
+
+  .cart-drawer__items > * + * {
+    border-block-start: 1px solid var(--cd-hairline);
+  }
+
+  .cart-drawer-line {
+    display: grid;
+    grid-template-columns: 80px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    padding-block: 14px;
+  }
+
+  .cart-drawer-line__media {
+    display: block;
+    overflow: hidden;
+  }
+
+  .cart-drawer-line__image {
+    width: 100%;
+    /* Reference thumbnails are slightly taller than wide. Change this one value
+       if the client wants square crops instead. */
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .cart-drawer-line__info {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .cart-drawer-line__title {
+    font-family: var(--heading-font-family);
+    font-style: var(--heading-font-style);
+    font-size: 14px;
+    line-height: 19px;
+    letter-spacing: 0;
+    text-transform: none;
+    overflow-wrap: anywhere;
+  }
+
+  .cart-drawer-line__options,
+  .cart-drawer-line__properties {
+    display: grid;
+    gap: 2px;
+  }
+
+  .cart-drawer-line__option,
+  .cart-drawer-line__properties li {
+    font-family: var(--text-font-family);
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--cd-muted);
+  }
+
+  .cart-drawer-line__prices {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    margin-block-start: 1px;
+  }
+
+  .cart-drawer-line__price {
+    font-family: var(--text-font-family);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+  }
+
+  .cart-drawer-line__compare-at {
+    font-family: var(--text-font-family);
+    font-size: 12px;
+    line-height: 20px;
+    color: var(--cd-muted);
+  }
+
+  .cart-drawer-line__saving-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 8px;
+    border-radius: 84px;
+    background: var(--cd-accent);
+    color: var(--cd-accent-text);
+    font-family: var(--text-font-family);
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 16px;
+    white-space: nowrap;
+  }
+
+  .cart-drawer-line__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-block-start: 4px;
+  }
+
+  /* (0,2,0) so it beats .quantity-selector--sm from theme.css */
+  .cart-drawer .quantity-selector {
+    --quantity-selector-height: 30px;
+    --quantity-selector-input-width: 26px;
+    border-color: var(--cd-rule);
+  }
+
+  .cart-drawer .quantity-selector__input {
+    font-size: 12px;
+  }
+
+  .cart-drawer-line__remove {
+    font-family: var(--text-font-family);
+    font-size: 11px;
+    line-height: 16px;
+    color: var(--cd-muted);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .cart-drawer-line__remove:hover {
+    color: rgb(var(--text-color));
+  }
+
+  .cart-drawer__discount-badge {
+    width: max-content;
+    padding: 2px 8px;
+    font-family: var(--text-font-family);
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .cart-drawer__discount-list {
+    display: grid;
+    justify-items: start;
+    gap: 6px;
+    padding-block-start: 12px;
+  }
+
+  /* ---------- 5. Cross-sell ---------- */
+
+  .cart-drawer .cart-drawer__complementary-products {
+    margin-inline: calc(-1 * var(--cd-gutter));
+    padding: 14px var(--cd-gutter);
+    border-block-start: 1px solid var(--cd-hairline);
+    max-width: none;
+    /* theme.css sets row-gap with !important on this class, so matching it is
+       the only way to change the spacing without editing theme.css. */
+    row-gap: 10px !important;
+  }
+
+  .cart-drawer .complementary-products__product-list {
+    gap: 10px;
+  }
+
+  .cart-drawer .horizontal-product-card {
+    column-gap: 10px;
+    padding: 8px;
+    border: 1px solid var(--cd-hairline);
+    background: rgb(var(--background));
+  }
+
+  .cart-drawer .horizontal-product-card__figure {
+    width: 62px;
+    flex: none;
+  }
+
+  .cart-drawer .horizontal-product-card__info {
+    gap: 4px;
+  }
+
+  .cart-drawer .horizontal-product-card .product-title,
+  .cart-drawer .horizontal-product-card__info > a {
+    font-family: var(--heading-font-family);
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .cart-drawer .horizontal-product-card .price-list {
+    font-size: 13px;
+  }
+
+  .cart-drawer .horizontal-product-card .button {
+    --button-background: var(--cd-accent-rgb);
+    --button-text-color: var(--cd-accent-text-rgb);
+    --button-outline-color: var(--cd-accent-rgb);
+    min-height: 28px;
+    padding: 5px 14px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    border-radius: 0;
+  }
+
+  /* ---------- 6. Contact block ---------- */
+
+  .cart-drawer__contact {
+    display: grid;
+    gap: 6px;
+    padding: 13px var(--cd-gutter);
+    border-block-start: 1px solid var(--cd-hairline);
+    background: var(--cd-surface);
+  }
+
+  .cart-drawer__contact-text {
+    font-family: var(--text-font-family);
+    font-size: 12px;
+    line-height: 17px;
+    color: var(--cd-muted);
+  }
+
+  .cart-drawer__contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 18px;
+    margin-block-start: 2px;
+  }
+
+  .cart-drawer__contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--text-font-family);
+    font-size: 12px;
+    line-height: 17px;
+  }
+
+  .cart-drawer__contact-link svg {
+    width: 14px;
+    height: 14px;
+    flex: none;
+  }
+
+  .cart-drawer__contact-link span {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* ---------- 7. Discount code ---------- */
+
+  .cart-drawer__discount {
+    display: grid;
+    gap: 7px;
+    padding-block-start: 16px;
+  }
+
+  .cart-drawer .cart-drawer__discount-field {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
+    height: 40px;
+    border: 1px solid var(--cd-rule);
+    background: rgb(var(--background));
+    position: relative;
+  }
+
+  .cart-drawer__discount-input {
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    padding-inline: 12px;
+    border: 0;
+    background: none;
+    font-family: var(--text-font-family);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .cart-drawer__discount-input:focus {
+    outline: none;
+  }
+
+  .cart-drawer__discount-input::placeholder {
+    color: var(--cd-muted);
+    text-transform: none;
+  }
+
+  .cart-drawer__discount-apply {
+    height: 100%;
+    padding-inline: 14px;
+    font-family: var(--text-font-family);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cd-muted);
+    background: none;
+  }
+
+  .cart-drawer__discount-apply:hover {
+    color: rgb(var(--text-color));
+  }
+
+  .cart-drawer .cart-drawer__discount-field:focus-within {
+    border-color: rgb(var(--text-color));
+  }
+
+  /* Prestige positions the spinner at the far end, which is where APPLY now is */
+  .cart-drawer .cart-discount-field__loader {
+    inset-inline-end: auto;
+    inset-inline-start: 12px;
+    inset-block-start: calc(50% - 6px);
+  }
+
+  .cart-drawer .cart-discount-field[aria-busy='true'] .cart-drawer__discount-input {
+    padding-inline-start: 30px;
+  }
+
+  .cart-drawer__discount-error {
+    display: block;
+    font-family: var(--text-font-family);
+    font-size: 11px;
+    line-height: 16px;
+    color: rgb(var(--error-text));
+  }
+
+  /* ---------- 8. Order summary ---------- */
+
+  .cart-drawer__summary {
+    display: grid;
+    gap: 8px;
+    margin-block-start: 16px;
+    margin-inline: calc(-1 * var(--cd-gutter));
+    padding: 13px var(--cd-gutter) 16px;
+    border-block-start: 1px solid var(--cd-hairline);
+    font-family: var(--text-font-family);
+  }
+
+  .cart-drawer__summary-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  .cart-drawer__summary-row--total {
+    margin-block-start: 2px;
+    padding-block-start: 10px;
+    border-block-start: 1px solid var(--cd-hairline);
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .cart-drawer__summary-shipping {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 7px;
+  }
+
+  .cart-drawer__summary-shipping s {
+    color: var(--cd-muted);
+  }
+
+  .cart-drawer__summary-note {
+    font-size: 11px;
+    color: var(--cd-muted);
+  }
+
+  .cart-drawer__summary--compact {
+    margin: 0;
+    padding: 0 0 4px;
+    border-block-start: 0;
+  }
+
+  .cart-drawer__summary--compact .cart-drawer__summary-row--total {
+    margin-block-start: 0;
+    padding-block-start: 8px;
+  }
+
+  /* ---------- 9. Footer, savings, checkout, trust badges ---------- */
+
+  .cart-drawer .cart-drawer__footer {
+    display: grid;
+    align-items: start;
+    gap: 10px;
+  }
+
+  .cart-drawer__note-toggle {
+    justify-self: start;
+    font-family: var(--text-font-family);
+    font-size: 12px;
+    line-height: 17px;
+    color: var(--cd-muted);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .cart-drawer__savings {
+    padding: 7px 12px;
+    background: var(--cd-accent);
+    color: var(--cd-accent-text);
+    font-family: var(--text-font-family);
+    font-size: 12px;
+    line-height: 17px;
+    text-align: center;
+  }
+
+  .cart-drawer .cart-drawer__actions {
+    gap: 8px;
+  }
+
+  .cart-drawer .cart-drawer__actions .button {
+    --button-background: var(--cd-accent-rgb);
+    --button-text-color: var(--cd-accent-text-rgb);
+    --button-outline-color: var(--cd-accent-rgb);
+    width: 100%;
+    min-height: 48px;
+    padding: 13px 20px;
+    border-radius: 0;
+    font-family: var(--text-font-family);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    column-gap: 10px;
+  }
+
+  .cart-drawer .cart-drawer__button-price {
+    font-weight: inherit;
+  }
+
+  /* theme.css draws a 3px dot here; the reference uses a dash */
+  .cart-drawer .cart-drawer__button-price::before {
+    content: '–';
+    width: auto;
+    height: auto;
+    margin-inline-end: 8px;
+    background: none;
+    border-radius: 0;
+  }
+
+  .cart-drawer__benefits {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px 12px;
+    margin-block-start: 4px;
+  }
+
+  .cart-drawer__benefit {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--text-font-family);
+    font-size: 11px;
+    line-height: 15px;
+  }
+
+  .cart-drawer__benefit svg {
+    width: 17px;
+    height: 17px;
+    flex: none;
+  }
+
+  .cart-drawer__tax-note {
+    font-family: var(--text-font-family);
+    font-size: 11px;
+    line-height: 15px;
+    color: var(--cd-muted);
+    text-align: center;
+  }
+
+  /* Visible keyboard focus everywhere inside the drawer */
+  .cart-drawer :focus-visible {
+    outline: 2px solid rgb(var(--text-color));
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cart-drawer__promo-fill {
+      transition: none;
+    }
+  }
+
+  /* ---------- 10. Mobile ---------- */
+  /* The drawer is a fixed 92vw below 456px, so these thresholds track the
+     drawer's own width rather than the page's. Prestige's breakpoints
+     (700/1000/1150) are kept for anything that is page-wide. */
+
+  @media screen and (max-width: 699px) {
+    .drawer.cart-drawer {
+      --cd-gutter: 14px;
+      --drawer-max-width: 92vw;
+      --drawer-header-padding-block: 12px;
+      --drawer-footer-padding-block: 12px;
+    }
+
+    .cart-drawer__heading {
+      font-size: 18px;
+      line-height: 25px;
+    }
+
+    .cart-drawer__heading-count {
+      font-size: 13px;
+    }
+
+    .cart-drawer__service-strip {
+      gap: 3px 10px;
+      font-size: 10px;
+    }
+
+    .cart-drawer__service-item svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .cart-drawer-line {
+      grid-template-columns: 68px minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .cart-drawer-line__title {
+      font-size: 13px;
+      line-height: 18px;
+    }
+
+    .cart-drawer-line__price {
+      font-size: 14px;
+    }
+
+    .cart-drawer .cart-drawer__actions .button {
+      min-height: 46px;
+      font-size: 12px;
+    }
+
+    .cart-drawer__benefits {
+      gap: 8px 10px;
+    }
+
+    .cart-drawer__benefit {
+      font-size: 10px;
+      line-height: 14px;
+    }
+
+    .cart-drawer__benefit svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  /* Nothing inside the drawer may push it sideways */
+  .cart-drawer__items,
+  .cart-drawer__summary,
+  .cart-drawer__contact,
+  .cart-drawer__promo,
+  .cart-drawer .cart-drawer__footer {
+    max-width: 100%;
+  }
+
+  .cart-drawer img,
+  .cart-drawer .horizontal-product-card__info {
+    min-width: 0;
+  }
+{% endstyle %}
 
 {% schema %}
 {
@@ -165,54 +1489,195 @@
       "content": "t:sections.cart_drawer.page_info"
     },
     {
-      "type": "paragraph",
-      "content": "t:sections.cart_drawer.free_shipping_bar_info"
-    },
-    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
     },
     {
-      "type": "checkbox",
-      "id": "show_cart_note",
-      "label": "t:sections.cart_drawer.show_cart_note",
-      "default": true
+      "type": "text",
+      "id": "heading_text",
+      "label": "Drawer heading",
+      "default": "My Cart"
     },
     {
-      "type": "checkbox",
-      "id": "allow_discount_application",
-      "label": "t:sections.cart_drawer.allow_discount_application",
-      "default": false
+      "type": "text",
+      "id": "item_label_singular",
+      "label": "Item label (one item)",
+      "default": "Item"
     },
     {
-      "type": "checkbox",
-      "id": "show_shipping_text",
-      "label": "t:sections.cart_drawer.show_shipping_text",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_view_cart_button",
-      "label": "t:sections.cart_drawer.show_view_cart_button",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_checkout_button",
-      "label": "t:sections.cart_drawer.show_checkout_button",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_price_in_checkout_button",
-      "label": "t:sections.cart_drawer.show_price_in_checkout_button",
-      "default": true
+      "type": "text",
+      "id": "item_label_plural",
+      "label": "Item label (multiple items)",
+      "default": "Items"
     },
     {
       "type": "header",
-      "content": "t:sections.cart_drawer.cross_sell_category"
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "info": "Checkout button, savings bar, progress bar and sale badges.",
+      "default": "#55583C"
+    },
+    {
+      "type": "color",
+      "id": "accent_text_color",
+      "label": "Text on accent",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "surface_color",
+      "label": "Panel background",
+      "info": "Promotion bar and contact block.",
+      "default": "#F1F0E4"
+    },
+    {
+      "type": "header",
+      "content": "Service strip"
+    },
+    {
+      "type": "text",
+      "id": "usp_1_text",
+      "label": "Item 1",
+      "default": "Free & Insured Shipping"
+    },
+    {
+      "type": "select",
+      "id": "usp_1_icon",
+      "label": "Item 1 icon",
+      "options": [
+        { "value": "picto-delivery-truck", "label": "Delivery truck" },
+        { "value": "picto-return", "label": "Return" },
+        { "value": "picto-shield", "label": "Shield" },
+        { "value": "picto-timer", "label": "Timer" },
+        { "value": "picto-box", "label": "Box" },
+        { "value": "picto-plane", "label": "Plane" },
+        { "value": "picto-lock", "label": "Lock" },
+        { "value": "picto-secure-profile", "label": "Secure profile" },
+        { "value": "picto-money", "label": "Money" },
+        { "value": "picto-credit-card", "label": "Credit card" },
+        { "value": "picto-percent", "label": "Percent" },
+        { "value": "picto-leaf", "label": "Leaf" },
+        { "value": "picto-star", "label": "Star" },
+        { "value": "picto-success", "label": "Check" }
+      ],
+      "default": "picto-delivery-truck"
+    },
+    {
+      "type": "text",
+      "id": "usp_2_text",
+      "label": "Item 2",
+      "default": "30-Day Easy Returns"
+    },
+    {
+      "type": "select",
+      "id": "usp_2_icon",
+      "label": "Item 2 icon",
+      "options": [
+        { "value": "picto-delivery-truck", "label": "Delivery truck" },
+        { "value": "picto-return", "label": "Return" },
+        { "value": "picto-shield", "label": "Shield" },
+        { "value": "picto-timer", "label": "Timer" },
+        { "value": "picto-box", "label": "Box" },
+        { "value": "picto-plane", "label": "Plane" },
+        { "value": "picto-lock", "label": "Lock" },
+        { "value": "picto-secure-profile", "label": "Secure profile" },
+        { "value": "picto-money", "label": "Money" },
+        { "value": "picto-credit-card", "label": "Credit card" },
+        { "value": "picto-percent", "label": "Percent" },
+        { "value": "picto-leaf", "label": "Leaf" },
+        { "value": "picto-star", "label": "Star" },
+        { "value": "picto-success", "label": "Check" }
+      ],
+      "default": "picto-return"
+    },
+    {
+      "type": "text",
+      "id": "usp_3_text",
+      "label": "Item 3",
+      "default": "Ships in 5-8 weeks"
+    },
+    {
+      "type": "select",
+      "id": "usp_3_icon",
+      "label": "Item 3 icon",
+      "options": [
+        { "value": "picto-delivery-truck", "label": "Delivery truck" },
+        { "value": "picto-return", "label": "Return" },
+        { "value": "picto-shield", "label": "Shield" },
+        { "value": "picto-timer", "label": "Timer" },
+        { "value": "picto-box", "label": "Box" },
+        { "value": "picto-plane", "label": "Plane" },
+        { "value": "picto-lock", "label": "Lock" },
+        { "value": "picto-secure-profile", "label": "Secure profile" },
+        { "value": "picto-money", "label": "Money" },
+        { "value": "picto-credit-card", "label": "Credit card" },
+        { "value": "picto-percent", "label": "Percent" },
+        { "value": "picto-leaf", "label": "Leaf" },
+        { "value": "picto-star", "label": "Star" },
+        { "value": "picto-success", "label": "Check" }
+      ],
+      "default": "picto-timer"
+    },
+    {
+      "type": "header",
+      "content": "Promotion bar",
+      "info": "Thresholds are messaging only. Create matching automatic discounts and shipping rates in Shopify admin for them to apply at checkout."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promo_bar",
+      "label": "Show promotion bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "promo_tier_1_label",
+      "label": "First reward",
+      "default": "Free Shipping"
+    },
+    {
+      "type": "number",
+      "id": "promo_tier_1_threshold",
+      "label": "First reward threshold",
+      "info": "Cart total needed, without the currency symbol.",
+      "default": 500
+    },
+    {
+      "type": "text",
+      "id": "promo_tier_2_label",
+      "label": "Second reward",
+      "default": "Flat 5% OFF"
+    },
+    {
+      "type": "number",
+      "id": "promo_tier_2_threshold",
+      "label": "Second reward threshold",
+      "info": "Leave empty for a single-tier bar.",
+      "default": 1000
+    },
+    {
+      "type": "text",
+      "id": "promo_locked_text",
+      "label": "Message before a reward is reached",
+      "info": "Use [amount] for the amount still needed and [reward] for the reward name.",
+      "default": "Add [amount] more to get [reward]"
+    },
+    {
+      "type": "text",
+      "id": "promo_unlocked_text",
+      "label": "Message once every reward is reached",
+      "info": "Use [reward] for the reward name.",
+      "default": "Congratulations, you've unlocked [reward]"
+    },
+    {
+      "type": "header",
+      "content": "Cross-sell"
     },
     {
       "type": "product_list",
@@ -225,7 +1690,7 @@
       "type": "inline_richtext",
       "id": "cross_sell_title",
       "label": "t:sections.cart_drawer.cross_sell_heading",
-      "default": "Complete with",
+      "default": "Customers Also Bought:",
       "visible_if": "{{ section.settings.cross_sell_products != blank }}"
     },
     {
@@ -234,6 +1699,267 @@
       "label": "t:sections.cart_drawer.cross_sell_stack_products",
       "default": false,
       "visible_if": "{{ section.settings.cross_sell_products != blank }}"
+    },
+    {
+      "type": "header",
+      "content": "Contact block"
+    },
+    {
+      "type": "text",
+      "id": "contact_heading",
+      "label": "Heading",
+      "default": "Got Questions? Reach Out To Us"
+    },
+    {
+      "type": "text",
+      "id": "contact_text",
+      "label": "Text",
+      "default": "We're here to help you pick the perfect rug for your space."
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Phone number"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Email address"
+    },
+    {
+      "type": "header",
+      "content": "Discount code"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_discount_field",
+      "label": "Show discount code field",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "discount_heading",
+      "label": "Heading",
+      "default": "Apply Discount Code:"
+    },
+    {
+      "type": "text",
+      "id": "discount_placeholder",
+      "label": "Placeholder",
+      "default": "Enter Discount Code"
+    },
+    {
+      "type": "text",
+      "id": "discount_button_label",
+      "label": "Button label",
+      "default": "Apply"
+    },
+    {
+      "type": "text",
+      "id": "discount_error_text",
+      "label": "Invalid code message",
+      "default": "That code can't be applied to this cart. Check it and try again."
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_discount_application",
+      "label": "t:sections.cart_drawer.allow_discount_application",
+      "info": "Adds a remove button to applied discount badges.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Order summary"
+    },
+    {
+      "type": "text",
+      "id": "shipping_label",
+      "label": "Shipping row label",
+      "default": "Shipping"
+    },
+    {
+      "type": "number",
+      "id": "shipping_standard_amount",
+      "label": "Standard shipping amount",
+      "info": "Shown struck through once the first promotion threshold is met. Leave empty to show 'calculated at checkout' instead. Real rates are always calculated by Shopify at checkout.",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "show_savings",
+      "label": "Show savings message",
+      "info": "Only appears when the cart actually has savings.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "savings_text",
+      "label": "Savings message",
+      "info": "Use [amount] for the saved amount.",
+      "default": "You saved [amount] on this order"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping_text",
+      "label": "t:sections.cart_drawer.show_shipping_text",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Checkout bar"
+    },
+    {
+      "type": "select",
+      "id": "sticky_cta_style",
+      "label": "Layout",
+      "options": [
+        { "value": "full", "label": "Savings, checkout and trust badges" },
+        { "value": "total", "label": "Total and checkout" },
+        { "value": "shipping_total", "label": "Shipping, total and checkout" },
+        { "value": "savings_price", "label": "Savings and checkout with price" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_checkout_button",
+      "label": "t:sections.cart_drawer.show_checkout_button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price_in_checkout_button",
+      "label": "t:sections.cart_drawer.show_price_in_checkout_button",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_cart_button",
+      "label": "t:sections.cart_drawer.show_view_cart_button",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_note",
+      "label": "t:sections.cart_drawer.show_cart_note",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Trust badges",
+      "info": "Shown below the checkout button when the checkout bar layout is 'Savings, checkout and trust badges'."
+    },
+    {
+      "type": "text",
+      "id": "benefit_1_text",
+      "label": "Badge 1",
+      "default": "Free & Insured Shipping"
+    },
+    {
+      "type": "select",
+      "id": "benefit_1_icon",
+      "label": "Badge 1 icon",
+      "options": [
+        { "value": "picto-delivery-truck", "label": "Delivery truck" },
+        { "value": "picto-return", "label": "Return" },
+        { "value": "picto-shield", "label": "Shield" },
+        { "value": "picto-timer", "label": "Timer" },
+        { "value": "picto-box", "label": "Box" },
+        { "value": "picto-plane", "label": "Plane" },
+        { "value": "picto-lock", "label": "Lock" },
+        { "value": "picto-secure-profile", "label": "Secure profile" },
+        { "value": "picto-money", "label": "Money" },
+        { "value": "picto-credit-card", "label": "Credit card" },
+        { "value": "picto-percent", "label": "Percent" },
+        { "value": "picto-leaf", "label": "Leaf" },
+        { "value": "picto-star", "label": "Star" },
+        { "value": "picto-success", "label": "Check" }
+      ],
+      "default": "picto-delivery-truck"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2_text",
+      "label": "Badge 2",
+      "default": "Ships in 5-8 weeks"
+    },
+    {
+      "type": "select",
+      "id": "benefit_2_icon",
+      "label": "Badge 2 icon",
+      "options": [
+        { "value": "picto-delivery-truck", "label": "Delivery truck" },
+        { "value": "picto-return", "label": "Return" },
+        { "value": "picto-shield", "label": "Shield" },
+        { "value": "picto-timer", "label": "Timer" },
+        { "value": "picto-box", "label": "Box" },
+        { "value": "picto-plane", "label": "Plane" },
+        { "value": "picto-lock", "label": "Lock" },
+        { "value": "picto-secure-profile", "label": "Secure profile" },
+        { "value": "picto-money", "label": "Money" },
+        { "value": "picto-credit-card", "label": "Credit card" },
+        { "value": "picto-percent", "label": "Percent" },
+        { "value": "picto-leaf", "label": "Leaf" },
+        { "value": "picto-star", "label": "Star" },
+        { "value": "picto-success", "label": "Check" }
+      ],
+      "default": "picto-timer"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3_text",
+      "label": "Badge 3",
+      "default": "Risk Free Purchase"
+    },
+    {
+      "type": "select",
+      "id": "benefit_3_icon",
+      "label": "Badge 3 icon",
+      "options": [
+        { "value": "picto-delivery-truck", "label": "Delivery truck" },
+        { "value": "picto-return", "label": "Return" },
+        { "value": "picto-shield", "label": "Shield" },
+        { "value": "picto-timer", "label": "Timer" },
+        { "value": "picto-box", "label": "Box" },
+        { "value": "picto-plane", "label": "Plane" },
+        { "value": "picto-lock", "label": "Lock" },
+        { "value": "picto-secure-profile", "label": "Secure profile" },
+        { "value": "picto-money", "label": "Money" },
+        { "value": "picto-credit-card", "label": "Credit card" },
+        { "value": "picto-percent", "label": "Percent" },
+        { "value": "picto-leaf", "label": "Leaf" },
+        { "value": "picto-star", "label": "Star" },
+        { "value": "picto-success", "label": "Check" }
+      ],
+      "default": "picto-shield"
+    },
+    {
+      "type": "text",
+      "id": "benefit_4_text",
+      "label": "Badge 4",
+      "default": "30-Day Easy Returns"
+    },
+    {
+      "type": "select",
+      "id": "benefit_4_icon",
+      "label": "Badge 4 icon",
+      "options": [
+        { "value": "picto-delivery-truck", "label": "Delivery truck" },
+        { "value": "picto-return", "label": "Return" },
+        { "value": "picto-shield", "label": "Shield" },
+        { "value": "picto-timer", "label": "Timer" },
+        { "value": "picto-box", "label": "Box" },
+        { "value": "picto-plane", "label": "Plane" },
+        { "value": "picto-lock", "label": "Lock" },
+        { "value": "picto-secure-profile", "label": "Secure profile" },
+        { "value": "picto-money", "label": "Money" },
+        { "value": "picto-credit-card", "label": "Credit card" },
+        { "value": "picto-percent", "label": "Percent" },
+        { "value": "picto-leaf", "label": "Leaf" },
+        { "value": "picto-star", "label": "Star" },
+        { "value": "picto-success", "label": "Check" }
+      ],
+      "default": "picto-return"
     }
   ]
 }
