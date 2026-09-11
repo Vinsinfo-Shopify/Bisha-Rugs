@@ -1,0 +1,1018 @@
+{%- doc -%}
+  Row 12 - "Why Our Customers Love Us".
+
+  Judge.me is the data source. This section is the presentation, and the two are
+  joined at exactly one place: the adapter marked ADAPTER BOUNDARY in the script
+  below. Replace that one function if an official Judge.me data source becomes
+  available; nothing else in this file knows where reviews come from.
+
+  How the data arrives, and why this way:
+    Judge.me's Cards Carousel is a Shopify app block, so its review fetch cannot
+    be called from Liquid and its internal buildFunction is undocumented. The
+    block is therefore hosted inside this section (schema accepts @app blocks),
+    parked off-screen, and left to fetch and render its own real reviews. The
+    adapter then reads those rendered cards and normalises them. No endpoint is
+    invented, no token is used, and reviews stay as live as Judge.me makes them.
+
+  Product images are not in Judge.me's card markup, so they come from Shopify's
+  own public /products/{handle}.js, keyed off the handle in the review's product
+  link, and cached per handle.
+
+  Reused rather than rebuilt:
+    snippets/section-header.liquid    eyebrow + heading, native typography
+    scroll-carousel (theme.js)        one-card-per-click, same as Row 08
+    floating-controls-container       the Row 08 arrow, its position and states
+
+  Nothing global is modified. Every selector and both custom element names are
+  namespaced to this section.
+{%- enddoc -%}
+
+{%- liquid
+  assign ns = 'rev-' | append: section.id
+  assign carousel_id = 'rev-carousel-' | append: section.id
+-%}
+
+<style>
+  /* Every rule is prefixed with this section's id. */
+  #shopify-section-{{ section.id }} .rev {
+    background: {{ section.settings.background }};
+    /* Guarantees the off-screen Judge.me host and the carousel can never widen
+       the document. clip, not hidden: it creates no scroll container. */
+    overflow-x: clip;
+  }
+
+  #shopify-section-{{ section.id }} .rev__inner {
+    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+  }
+
+  #shopify-section-{{ section.id }} .rev__header {
+    margin-block-end: {{ section.settings.header_gap }}px;
+  }
+
+  #shopify-section-{{ section.id }} .rev__header .section-header {
+    gap: 0;
+  }
+
+  #shopify-section-{{ section.id }} .rev__header .section_header_subheading {
+    margin-block: 0 {{ section.settings.eyebrow_gap }}px;
+    line-height: 1.3;
+  }
+
+  #shopify-section-{{ section.id }} .rev__header .section_header_heading {
+    font-weight: {{ section.settings.heading_weight }};
+    margin-block: 0;
+  }
+
+  /* ---------- Judge.me host ----------
+     The widget must stay laid out or it will not measure itself and will not
+     fetch. display: none would break it. It is moved off-screen instead, and
+     taken out of the accessibility tree and the tab order. */
+  #shopify-section-{{ section.id }} .rev__source {
+    position: absolute;
+    inset-inline-start: -200vw;
+    inset-block-start: 0;
+    width: 1200px;
+    height: 600px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ---------- Carousel ----------
+     Prestige's scroll-carousel, with group-cells omitted so its groupCells
+     getter returns 1: one card per arrow click, never a page. allCells is a
+     live getter over this.children, so cards injected by the adapter after
+     load are picked up with no re-initialisation. */
+  #shopify-section-{{ section.id }} .rev__carousel {
+    position: relative;
+  }
+
+  #shopify-section-{{ section.id }} .rev__track {
+    --rev-visible: {{ section.settings.cards_desktop }};
+    --rev-gap: {{ section.settings.card_gap }}px;
+    display: flex;
+    align-items: stretch;
+    gap: var(--rev-gap);
+    overflow: auto hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  #shopify-section-{{ section.id }} .rev__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* A fraction of the track, never fixed pixels, so the row cannot exceed its
+     container at any width. 4.5 visible is what leaves the partial fifth card. */
+  #shopify-section-{{ section.id }} .rev__card {
+    flex: 0 0 calc((100% - (var(--rev-visible) - 1) * var(--rev-gap)) / var(--rev-visible));
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background: {{ section.settings.card_background }};
+    border: 1px solid {{ section.settings.card_border }};
+    border-radius: {{ section.settings.card_radius }}px;
+    overflow: hidden;
+    scroll-snap-align: start;
+    /* One swipe moves one card. Without this a momentum flick sails past
+       several snap points. */
+    scroll-snap-stop: always;
+  }
+
+  /* ---------- Card ---------- */
+  #shopify-section-{{ section.id }} .rev__media {
+    aspect-ratio: {{ section.settings.image_ratio }};
+    background: rgb(var(--text-color) / 0.06);
+    flex: none;
+  }
+
+  #shopify-section-{{ section.id }} .rev__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .rev__body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    /* Pushes the product row to the bottom so that row aligns across cards
+       even when a review is shorter than the clamp. */
+    flex: 1 1 auto;
+  }
+
+  #shopify-section-{{ section.id }} .rev__who {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .rev__name {
+    font-family: var(--text-font-family);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #shopify-section-{{ section.id }} .rev__verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    flex: none;
+    font-size: 11px;
+    color: rgb(var(--text-color) / 0.7);
+  }
+
+  #shopify-section-{{ section.id }} .rev__verified svg {
+    width: 13px;
+    height: 13px;
+    fill: {{ section.settings.verified_color }};
+  }
+
+  #shopify-section-{{ section.id }} .rev__text {
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0;
+    color: rgb(var(--text-color) / 0.85);
+    /* Height is held constant by truncating the text to a character budget in
+       the adapter, not by line-clamp: the inline "read more" has to sit at the
+       end of the visible text, which a clamp's ellipsis cannot do. */
+    min-height: calc(3 * 1.5em);
+  }
+
+  #shopify-section-{{ section.id }} .rev__more {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  #shopify-section-{{ section.id }} .rev__product {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    margin-block-start: auto;
+    padding-block-start: 10px;
+    border-block-start: 1px solid {{ section.settings.card_border }};
+    color: inherit;
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .rev__product-image {
+    width: {{ section.settings.thumb_size }}px;
+    height: {{ section.settings.thumb_size }}px;
+    object-fit: cover;
+    border-radius: 2px;
+    display: block;
+    background: rgb(var(--text-color) / 0.06);
+  }
+
+  #shopify-section-{{ section.id }} .rev__product-title {
+    font-size: 12px;
+    line-height: 1.3;
+    text-decoration: underline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #shopify-section-{{ section.id }} .rev__rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-block-start: 3px;
+    font-size: 11px;
+  }
+
+  #shopify-section-{{ section.id }} .rev__stars {
+    display: inline-flex;
+    gap: 1px;
+    color: {{ section.settings.star_color }};
+  }
+
+  #shopify-section-{{ section.id }} .rev__stars svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+  }
+
+  #shopify-section-{{ section.id }} .rev__stars svg.is-off {
+    fill: rgb(var(--text-color) / 0.2);
+  }
+
+  /* ---------- Skeleton ----------
+     Same box as a real card, so the section reserves its height before Judge.me
+     resolves and nothing shifts when the cards arrive. */
+  #shopify-section-{{ section.id }} .rev__skeleton .rev__media,
+  #shopify-section-{{ section.id }} .rev__skeleton .rev__line {
+    background: rgb(var(--text-color) / 0.08);
+  }
+
+  #shopify-section-{{ section.id }} .rev__skeleton .rev__line {
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  #shopify-section-{{ section.id }} .rev__skeleton .rev__line--short {
+    width: 55%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    #shopify-section-{{ section.id }} .rev__skeleton .rev__media,
+    #shopify-section-{{ section.id }} .rev__skeleton .rev__line {
+      animation: rev-pulse-{{ section.id }} 1.4s ease-in-out infinite;
+    }
+  }
+
+  @keyframes rev-pulse-{{ section.id }} {
+    50% { opacity: 0.45; }
+  }
+
+  /* ---------- Arrows ----------
+     Row 08's pattern: the theme's floating-controls-container owns size, inset,
+     vertical centring, hover reveal and the hide-when-not-scrollable rule. Only
+     the colours are reassigned here, and only under this section's id.
+     collection-list.liquid is untouched.
+
+     circle-button's default box-shadow is tinted with the text colour, so a
+     white chevron would otherwise draw a white halo - hence none. */
+  #shopify-section-{{ section.id }} .floating-controls-container__control {
+    z-index: 3;
+  }
+
+  #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+    --circle-button-size: 2.375rem; /* 38px, same as Row 08 */
+    --circle-button-background: 43 39 36;
+    --circle-button-text-color: 255 255 255;
+    box-sizing: border-box;
+    background: {{ section.settings.arrow_background }};
+    color: {{ section.settings.arrow_color }};
+    border: 2px solid {{ section.settings.arrow_border }};
+    box-shadow: none;
+  }
+
+  #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+    width: 0.875rem;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ---------- Mobile ---------- */
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .rev__inner {
+      padding-block: {{ section.settings.padding_top | divided_by: 2 }}px {{ section.settings.padding_bottom | divided_by: 2 }}px;
+    }
+
+    #shopify-section-{{ section.id }} .rev__track {
+      --rev-visible: {{ section.settings.cards_mobile }};
+      --rev-gap: {{ section.settings.card_gap_mobile }}px;
+    }
+
+    #shopify-section-{{ section.id }} .rev__header {
+      margin-block-end: {{ section.settings.header_gap | times: 0.7 | round }}px;
+    }
+
+    /* Swipe is the control on mobile. The theme only positions these under
+       (pointer: fine), so they are hidden outright rather than left to render
+       in normal flow on a touch device. */
+    {%- unless section.settings.show_arrows_mobile -%}
+      #shopify-section-{{ section.id }} .floating-controls-container__control {
+        display: none;
+      }
+    {%- endunless -%}
+  }
+</style>
+
+<div class="rev color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div class="rev__inner container container--xl">
+    <div class="rev__header">
+      {%- render 'section-header',
+        subheading: section.settings.subheading,
+        heading: section.settings.title,
+        heading_style: section.settings.heading_style
+      -%}
+    </div>
+
+    {%- comment -%}
+      The Judge.me app block is added here by the merchant in the Theme Editor.
+      Hosting it inside this section (rather than pointing at one elsewhere on
+      the page) keeps the data source and its presentation in the same place, so
+      removing this section cannot leave an orphan widget behind. The adapter
+      still falls back to a page-wide lookup if the block lives elsewhere.
+    {%- endcomment -%}
+    <div class="rev__source" aria-hidden="true">
+      {%- for block in section.blocks -%}
+        {%- if block.type == '@app' -%}
+          {%- render block -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <customer-reviews
+      class="rev__carousel floating-controls-container floating-controls-container--inside floating-controls-container--on-hover"
+      data-max="{{ section.settings.max_reviews }}"
+      data-chars="{{ section.settings.text_limit }}"
+      data-show-image="{{ section.settings.show_review_image }}"
+      data-show-name="{{ section.settings.show_name }}"
+      data-show-verified="{{ section.settings.show_verified }}"
+      data-show-product="{{ section.settings.show_product }}"
+      data-show-rating="{{ section.settings.show_rating }}"
+      data-read-more="{{ section.settings.read_more_label }}"
+      data-verified-label="{{ section.settings.verified_label }}"
+    >
+      <carousel-prev-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
+        <button type="button" class="prev-next-button prev-next-button--prev circle-button circle-button--lg hover:animate-icon-inline" disabled>
+          <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+          {%- render 'icon' with 'arrow-left', direction_aware: true -%}
+        </button>
+      </carousel-prev-button>
+
+      {%- comment -%}
+        group-cells is deliberately omitted: ScrollCarousel's groupCells getter
+        returns 1 without it, which is one card per click rather than a page.
+      {%- endcomment -%}
+      <scroll-carousel id="{{ carousel_id }}" allow-drag class="rev__track" cell-selector=".rev__card" data-rev-track>
+        {%- comment -%}
+          Skeleton cards, replaced wholesale the moment the adapter resolves.
+          They exist to reserve the section's height so nothing shifts.
+        {%- endcomment -%}
+        {%- assign skeleton_count = section.settings.cards_desktop | plus: 1 -%}
+        {%- for i in (1..skeleton_count) -%}
+          <div class="rev__card rev__skeleton" aria-hidden="true">
+            <div class="rev__media"></div>
+            <div class="rev__body">
+              <div class="rev__line rev__line--short"></div>
+              <div class="rev__line"></div>
+              <div class="rev__line"></div>
+              <div class="rev__line rev__line--short"></div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </scroll-carousel>
+
+      <carousel-next-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
+        <button type="button" class="prev-next-button prev-next-button--next circle-button circle-button--lg hover:animate-icon-inline">
+          <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+          {%- render 'icon' with 'arrow-right', direction_aware: true -%}
+        </button>
+      </carousel-next-button>
+    </customer-reviews>
+  </div>
+</div>
+
+<script>
+  if (!customElements.get('customer-reviews')) {
+    customElements.define(
+      'customer-reviews',
+      class extends HTMLElement {
+        connectedCallback() {
+          this.track = this.querySelector('[data-rev-track]');
+          this.section = this.closest('.shopify-section') || document;
+          this.products = new Map();
+          this.settled = false;
+
+          // Judge.me renders its real cards asynchronously. Watch the host for
+          // them, and give up after a timeout rather than spinning forever.
+          const source = this.findSource();
+          if (!source) return this.giveUp();
+
+          this.observer = new MutationObserver(() => this.attempt(source));
+          this.observer.observe(source, { childList: true, subtree: true });
+          this.timer = setTimeout(() => this.giveUp(), 12000);
+          this.attempt(source);
+        }
+
+        disconnectedCallback() {
+          if (this.observer) this.observer.disconnect();
+          clearTimeout(this.timer);
+        }
+
+        findSource() {
+          return (
+            this.section.querySelector('.jdgm-cards-carousel') ||
+            document.querySelector('.jdgm-cards-carousel')
+          );
+        }
+
+        attempt(source) {
+          if (this.settled) return;
+          const reviews = this.read(source);
+          if (!reviews.length) return;
+
+          this.settled = true;
+          if (this.observer) this.observer.disconnect();
+          clearTimeout(this.timer);
+          this.render(reviews);
+        }
+
+        // ===================================================================
+        // ADAPTER BOUNDARY
+        //
+        // The ONLY place that knows anything about Judge.me. It takes the
+        // widget's rendered output and returns plain review objects:
+        //
+        //   { reviewer_name, verified, review_text, rating,
+        //     review_image, product_title, product_url, product_handle }
+        //
+        // If an official Judge.me data source becomes available later, replace
+        // this one method with a fetch that returns the same shape. Nothing
+        // below it refers to a jdgm- class, and nothing above it does either.
+        //
+        // Reading the DOM is deliberate: the widget's fetch is internal to the
+        // app block, its buildFunction is undocumented, and no endpoint may be
+        // guessed. This keeps Judge.me the single source of truth without
+        // inventing an API or handling a token.
+        // ===================================================================
+        read(source) {
+          // The Theme Editor's sample cards must never reach the storefront.
+          // Judge.me flags them with its own notice block; sample product links
+          // are also bare "#" anchors, checked per card as a second guard.
+          if (source.parentElement && source.parentElement.querySelector('.jdgm-block-error')) return [];
+
+          const out = [];
+          source.querySelectorAll('.jdgm-card').forEach((card) => {
+            const link = card.querySelector('.jdgm-product-name a');
+            const href = link ? link.getAttribute('href') : '';
+            const isSample = !href || href === '#';
+
+            const stars = card.querySelector('.jdgm-stars');
+            const label = stars ? stars.getAttribute('aria-label') || '' : '';
+            const parsed = parseFloat(label);
+            const rating = isNaN(parsed)
+              ? card.querySelectorAll('.jdgm-star.jdgm--on').length
+              : parsed;
+
+            const media = card.querySelector('img');
+            const text = card.querySelector('.jdgm-text');
+            const name = card.querySelector('.jdgm-reviewer-name');
+
+            out.push({
+              reviewer_name: name ? name.textContent.trim() : '',
+              verified: !!card.querySelector('.jdgm-reviewer-verified-icon'),
+              review_text: text ? text.textContent.trim() : '',
+              rating: rating,
+              review_image: media ? media.getAttribute('src') : '',
+              // A store review has no product at all; so does a sample card.
+              product_title: isSample || !link ? '' : link.textContent.trim(),
+              product_url: isSample ? '' : href,
+              product_handle: isSample ? '' : this.handleFrom(href)
+            });
+          });
+
+          return out.filter((r) => r.review_text || r.review_image);
+        }
+        // =================== END ADAPTER BOUNDARY ==========================
+
+        handleFrom(url) {
+          const match = /\/products\/([^/?#]+)/.exec(url || '');
+          return match ? match[1] : '';
+        }
+
+        // Shopify's own public product JSON. Not an invented endpoint and not a
+        // Judge.me one: it is how the storefront exposes a product client-side.
+        // Cached per handle so ten reviews of one rug cost one request.
+        async product(handle) {
+          if (!handle) return null;
+          if (this.products.has(handle)) return this.products.get(handle);
+
+          const request = fetch(window.Shopify.routes.root + 'products/' + handle + '.js')
+            .then((response) => (response.ok ? response.json() : null))
+            .catch(() => null);
+
+          this.products.set(handle, request);
+          return request;
+        }
+
+        async render(reviews) {
+          const max = parseInt(this.dataset.max, 10) || 12;
+          const list = reviews.slice(0, max);
+
+          // Resolve every distinct product once, in parallel.
+          const products = await Promise.all(list.map((r) => this.product(r.product_handle)));
+
+          const fragment = document.createDocumentFragment();
+          list.forEach((review, index) => fragment.appendChild(this.card(review, products[index])));
+
+          this.track.replaceChildren(fragment);
+
+          // allCells is a live getter over this.children, so the carousel sees
+          // the new cards. A resize nudges it to recompute scrollability so the
+          // arrows enable or hide correctly.
+          window.dispatchEvent(new Event('resize'));
+        }
+
+        card(review, product) {
+          const on = (key) => this.dataset[key] === 'true';
+          const card = document.createElement('article');
+          card.className = 'rev__card';
+
+          if (on('showImage') && review.review_image) {
+            const media = document.createElement('div');
+            media.className = 'rev__media';
+            const img = document.createElement('img');
+            img.src = review.review_image;
+            img.loading = 'lazy';
+            img.alt = review.reviewer_name
+              ? 'Review photo from ' + review.reviewer_name
+              : 'Customer review photo';
+            media.appendChild(img);
+            card.appendChild(media);
+          }
+
+          const body = document.createElement('div');
+          body.className = 'rev__body';
+
+          if (on('showName') && review.reviewer_name) {
+            const who = document.createElement('div');
+            who.className = 'rev__who';
+
+            const name = document.createElement('p');
+            name.className = 'rev__name';
+            name.textContent = review.reviewer_name;
+            who.appendChild(name);
+
+            // Only where Judge.me actually says the review is verified.
+            if (on('showVerified') && review.verified) {
+              const badge = document.createElement('span');
+              badge.className = 'rev__verified';
+              badge.innerHTML =
+                '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm-1.06 10.71L6.65 10.4a.75.75 0 1 1 1.06-1.06l1.23 1.23 3.35-3.35a.75.75 0 1 1 1.06 1.06l-3.9 3.9a.75.75 0 0 1-1.06 0Z"/></svg>';
+              badge.appendChild(document.createTextNode(this.dataset.verifiedLabel || 'Verified'));
+              who.appendChild(badge);
+            }
+
+            body.appendChild(who);
+          }
+
+          if (review.review_text) body.appendChild(this.text(review.review_text));
+
+          if (on('showProduct') && review.product_url) {
+            const link = document.createElement('a');
+            link.className = 'rev__product';
+            link.href = review.product_url;
+
+            const thumb = document.createElement('img');
+            thumb.className = 'rev__product-image';
+            thumb.loading = 'lazy';
+            thumb.alt = '';
+            // Missing product JSON is not an error: the row simply renders
+            // without a thumbnail rather than with a broken image.
+            if (product && product.featured_image) {
+              thumb.src = product.featured_image;
+            } else {
+              thumb.removeAttribute('src');
+              thumb.style.visibility = 'hidden';
+            }
+            link.appendChild(thumb);
+
+            const meta = document.createElement('div');
+            const title = document.createElement('span');
+            title.className = 'rev__product-title';
+            title.textContent = (product && product.title) || review.product_title;
+            meta.appendChild(title);
+
+            if (on('showRating') && review.rating) meta.appendChild(this.rating(review.rating));
+
+            link.appendChild(meta);
+            body.appendChild(link);
+          }
+
+          card.appendChild(body);
+          return card;
+        }
+
+        text(value) {
+          const limit = parseInt(this.dataset.chars, 10) || 120;
+          const p = document.createElement('p');
+          p.className = 'rev__text';
+
+          if (value.length <= limit) {
+            p.textContent = value;
+            return p;
+          }
+
+          // Cut on a word boundary so the truncation never splits a word.
+          const cut = value.slice(0, limit);
+          const short = cut.slice(0, Math.max(cut.lastIndexOf(' '), 1));
+
+          const visible = document.createTextNode(short + '... ');
+          p.appendChild(visible);
+
+          const more = document.createElement('button');
+          more.type = 'button';
+          more.className = 'rev__more';
+          more.textContent = this.dataset.readMore || 'read more';
+          more.addEventListener('click', () => {
+            p.textContent = value;
+          });
+          p.appendChild(more);
+
+          return p;
+        }
+
+        rating(value) {
+          const wrap = document.createElement('span');
+          wrap.className = 'rev__rating';
+
+          const stars = document.createElement('span');
+          stars.className = 'rev__stars';
+          stars.setAttribute('role', 'img');
+          stars.setAttribute('aria-label', value.toFixed(1) + ' out of 5 stars');
+
+          for (let i = 1; i <= 5; i++) {
+            stars.insertAdjacentHTML(
+              'beforeend',
+              '<svg viewBox="0 0 20 20" aria-hidden="true"' +
+                (i <= Math.round(value) ? '' : ' class="is-off"') +
+                '><path d="M10 1.6l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L1.6 7.7l5.8-.8L10 1.6Z"/></svg>'
+            );
+          }
+
+          wrap.appendChild(stars);
+
+          const figure = document.createElement('span');
+          figure.textContent = value.toFixed(1);
+          wrap.appendChild(figure);
+
+          return wrap;
+        }
+
+        // No reviews, or Judge.me never resolved. The section removes itself
+        // rather than leaving an empty cream band or a skeleton that never
+        // fills. In the Theme Editor it stays, so the merchant can see it.
+        giveUp() {
+          if (this.settled) return;
+          this.settled = true;
+          if (this.observer) this.observer.disconnect();
+          clearTimeout(this.timer);
+          if (!window.Shopify || !window.Shopify.designMode) {
+            const section = this.closest('.shopify-section');
+            if (section) section.hidden = true;
+          }
+        }
+      }
+    );
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Customer reviews",
+  "class": "shopify-section--customer-reviews",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Add the Judge.me Cards Carousel app block below. It stays hidden and is used only as the review source; the cards you see are this section's own design."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Section background",
+      "default": "#fffbf3"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:global.text.subheading",
+      "default": "REVIEWS"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:global.text.heading",
+      "default": "Why Our Customers Love Us"
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "Large" },
+        { "value": "h2", "label": "Medium" },
+        { "value": "h3", "label": "Small" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_gap",
+      "label": "Eyebrow to heading gap",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "header_gap",
+      "label": "Heading to cards gap",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Carousel"
+    },
+    {
+      "type": "range",
+      "id": "max_reviews",
+      "label": "Maximum reviews shown",
+      "info": "Judge.me decides which reviews and in what order; this only caps how many are rendered.",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "cards_desktop",
+      "label": "Cards visible (desktop)",
+      "info": "4.5 leaves the partial fifth card from the design.",
+      "min": 2,
+      "max": 6,
+      "step": 0.5,
+      "default": 4.5
+    },
+    {
+      "type": "range",
+      "id": "cards_mobile",
+      "label": "Cards visible (mobile)",
+      "min": 1,
+      "max": 3.5,
+      "step": 0.1,
+      "default": 2.3
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Card gap (desktop)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "card_gap_mobile",
+      "label": "Card gap (mobile)",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows_mobile",
+      "label": "Show arrows on mobile",
+      "info": "Off by default: the design uses swipe.",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Card"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Review image shape",
+      "options": [
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 5", "label": "Portrait" },
+        { "value": "5 / 4", "label": "Landscape" }
+      ],
+      "default": "1 / 1"
+    },
+    {
+      "type": "range",
+      "id": "text_limit",
+      "label": "Review text length",
+      "info": "Characters before 'read more'. Holds every card to the same height.",
+      "min": 60,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "text",
+      "id": "read_more_label",
+      "label": "Read more label",
+      "default": "read more"
+    },
+    {
+      "type": "text",
+      "id": "verified_label",
+      "label": "Verified label",
+      "default": "Verified"
+    },
+    {
+      "type": "range",
+      "id": "thumb_size",
+      "label": "Product thumbnail size",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Card border",
+      "default": "#e6e6e6"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star colour",
+      "default": "#2b2724"
+    },
+    {
+      "type": "color",
+      "id": "verified_color",
+      "label": "Verified badge colour",
+      "default": "#3d8168"
+    },
+    {
+      "type": "header",
+      "content": "Show or hide"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_review_image",
+      "label": "Review image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_name",
+      "label": "Reviewer name",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_verified",
+      "label": "Verified badge",
+      "info": "Only shows on reviews Judge.me has marked verified.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product",
+      "label": "Product information",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Star rating",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Arrows"
+    },
+    {
+      "type": "color",
+      "id": "arrow_background",
+      "label": "Arrow background",
+      "default": "#2b2724"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow chevron",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_border",
+      "label": "Arrow ring",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [{ "type": "@app" }],
+  "presets": [{ "name": "Customer reviews" }]
+}
+{% endschema %}
