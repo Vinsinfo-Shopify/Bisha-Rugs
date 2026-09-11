@@ -6,7 +6,7 @@
   card-level setting travel together when the block is reordered.
 
   Reused rather than rebuilt:
-    scroll-carousel / carousel-prev-button / carousel-next-button  native carousel
+    snippets/media.liquid, price-list.liquid, icon.liquid    reused as-is
     snippets/media.liquid    video or image, centred play button, one-at-a-time group
     snippets/price-list.liquid   price and compare-at, card context
     snippets/icon.liquid     the circular arrow
@@ -85,14 +85,24 @@
     }
 
     /* ---------- Carousel ----------
-       Cards snap to centre, so the middle card is always the active one. The
-       track is padded by half the viewport minus half a card, which lets the
-       first and last cards reach the centre without any artificial gap. */
+       Card widths are percentages of the track, never fixed pixels, so the row
+       can never be wider than its container and cannot push the document out.
+       The counts are always odd so there is exactly one true centre card:
+       five on large desktop, three below that and on mobile. */
+    #shopify-section-{{ section.id }} .real-homes__carousel {
+      --rh-gap: {{ section.settings.card_gap }}px;
+      --rh-visible: 5;
+      --rh-card: calc((100% - (var(--rh-visible) - 1) * var(--rh-gap)) / var(--rh-visible));
+      display: block;
+    }
+
     #shopify-section-{{ section.id }} .real-homes__track {
+      position: relative;
       display: flex;
       align-items: center;
-      gap: {{ section.settings.card_gap }}px;
+      gap: var(--rh-gap);
       overflow: auto hidden;
+      overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
     }
@@ -102,16 +112,23 @@
     }
 
     #shopify-section-{{ section.id }} .real-homes__card {
-      flex: 0 0 {{ section.settings.card_width }}px;
+      flex: 0 0 var(--rh-card);
       scroll-snap-align: center;
       display: block;
-      transition: flex-basis 0.35s ease, transform 0.35s ease;
+      transition: flex-basis 0.35s ease;
     }
 
     /* The centre card is larger. Measured at 1.166x on both axes about a shared
-       midpoint, which is what align-items: center on the track reproduces. */
+       midpoint, which align-items: center on the track reproduces. */
     #shopify-section-{{ section.id }} .real-homes__card.is-active {
-      flex-basis: {{ section.settings.card_width | times: 1.166 | round }}px;
+      flex-basis: calc(var(--rh-card) * {{ section.settings.active_scale | divided_by: 100.0 }});
+    }
+
+    /* Three across below large desktop, so the centre card is never ambiguous */
+    @media screen and (max-width: 1199px) {
+      #shopify-section-{{ section.id }} .real-homes__carousel {
+        --rh-visible: 3;
+      }
     }
 
     #shopify-section-{{ section.id }} .real-homes__media {
@@ -209,35 +226,6 @@
       color: #ffffff;
     }
 
-    /* ---------- Carousel controls ---------- */
-    #shopify-section-{{ section.id }} .real-homes__controls {
-      display: none;
-    }
-
-    @media screen and (pointer: fine) {
-      #shopify-section-{{ section.id }} .real-homes__controls {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        margin-block-start: 24px;
-      }
-
-      #shopify-section-{{ section.id }} .real-homes__controls .circle-button {
-        --circle-button-size: 2.375rem;
-        --circle-button-text-color: 255 255 255;
-        box-sizing: border-box;
-        background: #2b2724;
-        color: #ffffff;
-        border: 2px solid #ffffff;
-        box-shadow: none;
-      }
-
-      #shopify-section-{{ section.id }} .real-homes__controls .prev-next-button[disabled] {
-        opacity: 0.35;
-        visibility: visible;
-      }
-    }
-
     /* ---------- Mobile ----------
        Same markup and the same block order. Only the card size changes, so the
        active card stays centred with its neighbours peeking either side. */
@@ -259,16 +247,9 @@
         font-size: 12px;
       }
 
-      #shopify-section-{{ section.id }} .real-homes__track {
-        gap: {{ section.settings.card_gap_mobile }}px;
-      }
-
-      #shopify-section-{{ section.id }} .real-homes__card {
-        flex-basis: {{ section.settings.card_width_mobile }}px;
-      }
-
-      #shopify-section-{{ section.id }} .real-homes__card.is-active {
-        flex-basis: {{ section.settings.card_width_mobile | times: 1.166 | round }}px;
+      #shopify-section-{{ section.id }} .real-homes__carousel {
+        --rh-gap: {{ section.settings.card_gap_mobile }}px;
+        --rh-visible: 3;
       }
 
       #shopify-section-{{ section.id }} .real-homes__title {
@@ -291,7 +272,11 @@
         </div>
       {%- endif -%}
 
-      <scroll-carousel id="{{ carousel_id }}" class="real-homes__track">
+      <real-homes-carousel
+        class="real-homes__carousel"
+        data-loop="{% if section.settings.loop and card_count > 2 %}true{% else %}false{% endif %}"
+      >
+        <div class="real-homes__track" data-rh-track>
         {%- for block in section.blocks -%}
           {%- unless block.settings.enabled == false -%}
             {%- liquid
@@ -355,76 +340,197 @@
             </div>
           {%- endunless -%}
         {%- endfor -%}
-      </scroll-carousel>
-
-      {%- if section.settings.show_controls and card_count > 1 -%}
-        <div class="real-homes__controls">
-          <carousel-prev-button aria-controls="{{ carousel_id }}">
-            <button type="button" class="prev-next-button prev-next-button--prev circle-button" disabled>
-              <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
-              {%- render 'icon' with 'arrow-left', direction_aware: true -%}
-            </button>
-          </carousel-prev-button>
-
-          <carousel-next-button aria-controls="{{ carousel_id }}">
-            <button type="button" class="prev-next-button prev-next-button--next circle-button">
-              <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
-              {%- render 'icon' with 'arrow-right', direction_aware: true -%}
-            </button>
-          </carousel-next-button>
         </div>
-      {%- endif -%}
+      </real-homes-carousel>
+
+
     </div>
   </div>
 
   {%- comment -%}
-    ScrollCarousel tracks selectedIndex but does not mark the active cell, so
-    this marks it. The class is applied on carousel:settle rather than
-    carousel:change, so the card grows once scrolling has stopped instead of
-    resizing mid-gesture and dragging the snap position with it.
+    Carousel behaviour, scoped to this section.
+
+    Prestige's ScrollCarousel clamps at both ends (next() does
+    Math.min(index + 1, cells.length - 1)) and has no loop, wrap or infinite
+    option, so continuous looping has to live here. Nothing global is touched.
+
+    Approach: the real cards are cloned once before and once after, so scrolling
+    past either end lands on an identical run of cards. When scrolling stops, if
+    the centred card is a clone, scrollLeft jumps by the measured distance to its
+    real counterpart. The jump is invisible because the two look identical and it
+    happens with scroll-behavior forced to auto.
+
+    Offsets are measured live rather than assumed, because the centre card grows
+    and shifts the positions of everything after it.
   {%- endcomment -%}
   <script>
-    if (!customElements.get('real-homes-active-card')) {
+    if (!customElements.get('real-homes-carousel')) {
       customElements.define(
-        'real-homes-active-card',
+        'real-homes-carousel',
         class extends HTMLElement {
           connectedCallback() {
-            this.carousel = document.getElementById(this.dataset.carousel);
-            if (!this.carousel) return;
+            this.track = this.querySelector('[data-rh-track]');
+            if (!this.track) return;
 
-            this.sync = () => {
-              const cells = Array.from(this.carousel.children);
-              const index = this.carousel.selectedIndex || 0;
-              cells.forEach((cell, i) => cell.classList.toggle('is-active', i === index));
+            this.loop = this.dataset.loop === 'true';
+            this.originals = Array.from(this.track.children);
+            this.count = this.originals.length;
+            if (!this.count) return;
+
+            this.originals.forEach((card, i) => (card.dataset.rhIndex = String(i)));
+
+            if (this.loop && this.count > 2) {
+              this.originals
+                .map((card) => this.makeClone(card))
+                .reverse()
+                .forEach((clone) => this.track.prepend(clone));
+              this.originals.forEach((card) => this.track.append(this.makeClone(card)));
+            }
+
+            this.cards = Array.from(this.track.children);
+            this.settleTimer = null;
+
+            this.onScroll = () => {
+              clearTimeout(this.settleTimer);
+              this.settleTimer = setTimeout(() => this.settle(), 130);
             };
 
-            this.carousel.addEventListener('carousel:settle', this.sync);
-            this.carousel.addEventListener('carousel:change', this.sync);
+            this.track.addEventListener('scroll', this.onScroll, { passive: true });
+            window.addEventListener('resize', this.onScroll, { passive: true });
+            this.enableDrag();
 
-            // Open on the middle card rather than the first, so the whole run of
-            // cards is visible straight away with the centre one active. The
-            // track has no leading padding, so the outer cards sit partly beyond
-            // the viewport exactly as the design shows.
             requestAnimationFrame(() => {
-              const cells = Array.from(this.carousel.children);
-              if (cells.length > 2 && typeof this.carousel.select === 'function') {
-                this.carousel.select(Math.floor((cells.length - 1) / 2), { instant: true });
-              }
-              this.sync();
+              this.centre(this.originals[Math.floor((this.count - 1) / 2)], true);
+              this.mark();
             });
           }
 
           disconnectedCallback() {
-            if (!this.carousel) return;
-            this.carousel.removeEventListener('carousel:settle', this.sync);
-            this.carousel.removeEventListener('carousel:change', this.sync);
+            if (!this.track) return;
+            this.track.removeEventListener('scroll', this.onScroll);
+            window.removeEventListener('resize', this.onScroll);
+          }
+
+          makeClone(card) {
+            const clone = card.cloneNode(true);
+            clone.dataset.rhClone = 'true';
+            clone.setAttribute('aria-hidden', 'true');
+            // Clones must not look like real blocks to the theme editor, and must
+            // not be reachable by keyboard.
+            clone.removeAttribute('data-shopify-editor-block');
+            clone.querySelectorAll('[data-shopify-editor-block]').forEach((el) =>
+              el.removeAttribute('data-shopify-editor-block')
+            );
+            clone.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
+            clone.querySelectorAll('a, button').forEach((el) => el.setAttribute('tabindex', '-1'));
+            return clone;
+          }
+
+          centreOffset(card) {
+            return card.offsetLeft + card.offsetWidth / 2 - this.track.clientWidth / 2;
+          }
+
+          centre(card, instant) {
+            if (!card) return;
+            this.track.scrollTo({ left: this.centreOffset(card), behavior: instant ? 'auto' : 'smooth' });
+          }
+
+          nearest() {
+            const middle = this.track.scrollLeft + this.track.clientWidth / 2;
+            let best = null;
+            let bestDistance = Infinity;
+            this.cards.forEach((card) => {
+              const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - middle);
+              if (distance < bestDistance) {
+                bestDistance = distance;
+                best = card;
+              }
+            });
+            return best;
+          }
+
+          mark() {
+            const active = this.nearest();
+            this.cards.forEach((card) => card.classList.toggle('is-active', card === active));
+            return active;
+          }
+
+          settle() {
+            if (this.busy) return;
+
+            let active = this.nearest();
+            if (!active) return;
+
+            if (this.loop && active.dataset.rhClone) {
+              const real = this.originals[Number(active.dataset.rhIndex)];
+              if (real) {
+                const previous = this.track.style.scrollBehavior;
+                this.track.style.scrollBehavior = 'auto';
+                this.track.scrollLeft += real.offsetLeft - active.offsetLeft;
+                this.track.style.scrollBehavior = previous;
+                active = real;
+              }
+            }
+
+            this.mark();
+
+            // Marking changes the centre card's width, which shifts every card
+            // after it, so re-centre once and ignore the scroll that causes.
+            this.busy = true;
+            requestAnimationFrame(() => {
+              this.centre(this.track.querySelector('.is-active'), false);
+              setTimeout(() => {
+                this.busy = false;
+              }, 420);
+            });
+          }
+
+          enableDrag() {
+            let dragging = false;
+            let startX = 0;
+            let startScroll = 0;
+            let moved = 0;
+
+            this.track.addEventListener('pointerdown', (event) => {
+              if (event.pointerType !== 'mouse') return;
+              dragging = true;
+              moved = 0;
+              startX = event.clientX;
+              startScroll = this.track.scrollLeft;
+              this.track.style.scrollSnapType = 'none';
+            });
+
+            window.addEventListener('pointermove', (event) => {
+              if (!dragging) return;
+              const delta = event.clientX - startX;
+              moved = Math.max(moved, Math.abs(delta));
+              this.track.scrollLeft = startScroll - delta;
+            });
+
+            window.addEventListener('pointerup', () => {
+              if (!dragging) return;
+              dragging = false;
+              this.track.style.scrollSnapType = '';
+              this.onScroll();
+            });
+
+            // A drag that ends on the product link must not navigate.
+            this.track.addEventListener(
+              'click',
+              (event) => {
+                if (moved > 5) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  moved = 0;
+                }
+              },
+              true
+            );
           }
         }
       );
     }
   </script>
-
-  <real-homes-active-card data-carousel="{{ carousel_id }}" hidden></real-homes-active-card>
 {%- endif -%}
 
 {% schema %}
@@ -503,16 +609,24 @@
       "type": "paragraph",
       "content": "Each block is one complete card. The centre card is enlarged automatically; these are the sizes for the smaller cards either side of it."
     },
+
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop continuously",
+      "info": "Swiping past the last card continues from the first, and back past the first continues from the last.",
+      "default": true
+    },
     {
       "type": "range",
-      "id": "card_width",
-      "label": "Card width (desktop)",
-      "info": "The smaller cards either side. The centre card is 1.166 times this.",
-      "min": 220,
-      "max": 320,
+      "id": "active_scale",
+      "label": "Centre card size",
+      "info": "How much larger the centre card is than its neighbours. 117 matches the design.",
+      "min": 100,
+      "max": 140,
       "step": 1,
-      "unit": "px",
-      "default": 281
+      "unit": "%",
+      "default": 117
     },
     {
       "type": "range",
@@ -524,16 +638,7 @@
       "unit": "px",
       "default": 24
     },
-    {
-      "type": "range",
-      "id": "card_width_mobile",
-      "label": "Card width (mobile)",
-      "min": 140,
-      "max": 240,
-      "step": 1,
-      "unit": "px",
-      "default": 210
-    },
+
     {
       "type": "range",
       "id": "card_gap_mobile",
@@ -571,13 +676,7 @@
       "unit": "px",
       "default": 11
     },
-    {
-      "type": "checkbox",
-      "id": "show_controls",
-      "label": "Show carousel arrows",
-      "info": "Off by default. The design has no navigation arrows over the media; the carousel is driven by dragging on desktop and swiping on mobile.",
-      "default": false
-    },
+
     {
       "type": "color",
       "id": "play_button_color",
