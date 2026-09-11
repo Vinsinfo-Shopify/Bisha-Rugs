@@ -1663,10 +1663,10 @@
         "overlay_opacity": 30
       }
     },
-    "17891259690c261594": {
-      "type": "apps",
+    "customer_reviews_J4BbaT": {
+      "type": "customer-reviews",
       "blocks": {
-        "judge_me_reviews_cards_carousel_hDhqRg": {
+        "judge_me_reviews_cards_carousel_9PcHaX": {
           "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
             "show_sample_reviews": true,
@@ -1703,13 +1703,44 @@
         }
       },
       "block_order": [
-        "judge_me_reviews_cards_carousel_hDhqRg"
+        "judge_me_reviews_cards_carousel_9PcHaX"
       ],
+      "name": "Customer reviews",
       "settings": {
         "color_scheme": "",
-        "separate_section_with_border": true,
-        "remove_vertical_spacing": false,
-        "remove_horizontal_spacing": false
+        "background": "#fffbf3",
+        "padding_top": 48,
+        "padding_bottom": 56,
+        "subheading": "REVIEWS",
+        "title": "Why Our Customers Love Us",
+        "heading_style": "h2",
+        "heading_weight": "400",
+        "eyebrow_gap": 4,
+        "header_gap": 24,
+        "max_reviews": 12,
+        "cards_desktop": 4.5,
+        "cards_mobile": 2.3,
+        "card_gap": 12,
+        "card_gap_mobile": 8,
+        "show_arrows_mobile": false,
+        "image_ratio": "1 / 1",
+        "text_limit": 120,
+        "read_more_label": "read more",
+        "verified_label": "Verified",
+        "thumb_size": 36,
+        "card_background": "#ffffff",
+        "card_border": "#e6e6e6",
+        "card_radius": 2,
+        "star_color": "#2b2724",
+        "verified_color": "#3d8168",
+        "show_review_image": true,
+        "show_name": true,
+        "show_verified": true,
+        "show_product": true,
+        "show_rating": true,
+        "arrow_background": "#2b2724",
+        "arrow_color": "#ffffff",
+        "arrow_border": "#ffffff"
       }
     }
   },
@@ -1738,6 +1769,6 @@
     "testimonials",
     "timeline",
     "image-with-text-overlay-2",
-    "17891259690c261594"
+    "customer_reviews_J4BbaT"
   ]
 }
