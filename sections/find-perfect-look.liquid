@@ -124,6 +124,14 @@
 
        .circle-button's default box-shadow is tinted with the text colour, so a
        white chevron would draw a white halo - hence none, exactly as Row 08. */
+    /* The arrow outranks everything inside the track. The dots sit at z-index 2
+       and the open item at 3, all in the same stacking context as the controls
+       (nothing between them sets a z-index), so without this a hotspot painted
+       over the arrow and the two read as one merged blob. */
+    #shopify-section-{{ section.id }} .floating-controls-container__control {
+      z-index: 5;
+    }
+
     #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
       --circle-button-size: 2.375rem; /* 38px, same as Row 08 */
       --circle-button-background: 43 39 36;
@@ -456,10 +464,31 @@
       #shopify-section-{{ section.id }} .fpl__track {
         --fpl-visible: {{ mobile_columns }};
         --fpl-gap: {{ section.settings.grid_gap_mobile }}px;
+        /* Column width is stated in vw here, not as a share of the track. The
+           track needs asymmetric padding below, and a percentage flex-basis
+           resolves against the track's CONTENT box, so padding would shrink the
+           columns and the padding depends on the column width: circular. vw
+           breaks the loop. */
+        --fpl-colw: calc(
+          (100vw - 2 * {{ section.settings.gutter_mobile }}px - (var(--fpl-visible) - 1) * var(--fpl-gap))
+          / var(--fpl-visible)
+        );
         width: auto;
         margin-inline: calc(-1 * {{ section.settings.gutter_mobile }}px);
-        padding-inline: 0;
-        scroll-padding-inline: 0;
+        /* Left: the designed gutter, so column 1 starts where the Figma puts it
+           rather than hard against the glass.
+           Right: enough trailing room that the LAST column can come to rest at
+           the left with the remainder of the screen empty behind it, instead of
+           the scroller stopping with the last two columns filling the view.
+           Nothing is centred; the asymmetry is the point. */
+        padding-inline-start: {{ section.settings.gutter_mobile }}px;
+        padding-inline-end: calc(100vw - var(--fpl-colw) - var(--fpl-gap) - {{ section.settings.gutter_mobile }}px);
+        scroll-padding-inline-start: {{ section.settings.gutter_mobile }}px;
+        scroll-padding-inline-end: 0;
+      }
+
+      #shopify-section-{{ section.id }} .fpl__column {
+        flex-basis: var(--fpl-colw);
       }
 
       #shopify-section-{{ section.id }} .fpl__header {
