@@ -544,13 +544,14 @@
         "subheading": "REAL HOMES",
         "title": "Styled by Bisha",
         "header_gap": 18,
-        "card_width": 281,
+        "loop": true,
+        "active_scale": 117,
         "card_gap": 24,
-        "card_width_mobile": 210,
+        "card_peek_mobile": 34,
         "card_gap_mobile": 12,
         "card_radius": 2,
+        "info_border_color": "#e6e6e6",
         "info_gap": 8,
-        "show_controls": true,
         "play_button_color": "#2b2724",
         "play_button_opacity": 60
       }
@@ -939,61 +940,6 @@
         "heading_style": "h2",
         "subheading": "Be classy",
         "hide_collection_title": false
-      }
-    },
-    "shop-the-look": {
-      "type": "shop-the-look",
-      "blocks": {
-        "look-1": {
-          "type": "look",
-          "settings": {
-            "hot_spots_background": "#ffffff",
-            "product_1": "",
-            "product_1_horizontal_position": 24,
-            "product_1_vertical_position": 35,
-            "product_2": "",
-            "product_2_horizontal_position": 67,
-            "product_2_vertical_position": 51,
-            "product_3": "",
-            "product_3_horizontal_position": 30,
-            "product_3_vertical_position": 65,
-            "product_4": "",
-            "product_4_horizontal_position": 85,
-            "product_4_vertical_position": 85
-          }
-        },
-        "look-2": {
-          "type": "look",
-          "settings": {
-            "hot_spots_background": "#ffffff",
-            "product_1": "",
-            "product_1_horizontal_position": 35,
-            "product_1_vertical_position": 58,
-            "product_2": "",
-            "product_2_horizontal_position": 69,
-            "product_2_vertical_position": 75,
-            "product_3": "",
-            "product_3_horizontal_position": 75,
-            "product_3_vertical_position": 30,
-            "product_4": "",
-            "product_4_horizontal_position": 85,
-            "product_4_vertical_position": 85
-          }
-        }
-      },
-      "block_order": [
-        "look-1",
-        "look-2"
-      ],
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-1",
-        "separate_section_with_border": true,
-        "subheading": "Shop",
-        "title": "Our looks",
-        "heading_style": "h2",
-        "content": "",
-        "popover_title": "Shop the look"
       }
     },
     "countdown": {
@@ -1539,6 +1485,141 @@
         "padding_left_desktop": 0,
         "padding_right_desktop": 0
       }
+    },
+    "find_perfect_look_8htECx": {
+      "type": "find-perfect-look",
+      "blocks": {
+        "image_PNyyyV": {
+          "type": "image",
+          "settings": {
+            "ratio": "4 / 5",
+            "mobile_offset": 0,
+            "product_1": "",
+            "product_1_horizontal_position": 30,
+            "product_1_vertical_position": 70,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_GexHkn": {
+          "type": "image",
+          "settings": {
+            "ratio": "4 / 5",
+            "mobile_offset": 0,
+            "product_1": "",
+            "product_1_horizontal_position": 30,
+            "product_1_vertical_position": 70,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_Cxgt4r": {
+          "type": "image",
+          "settings": {
+            "ratio": "4 / 5",
+            "mobile_offset": 0,
+            "product_1": "",
+            "product_1_horizontal_position": 30,
+            "product_1_vertical_position": 70,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_gFftU4": {
+          "type": "image",
+          "settings": {
+            "ratio": "1 / 1",
+            "mobile_offset": 0,
+            "product_1": "",
+            "product_1_horizontal_position": 30,
+            "product_1_vertical_position": 70,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_xKfy9w": {
+          "type": "image",
+          "settings": {
+            "ratio": "1 / 1",
+            "mobile_offset": 0,
+            "product_1": "",
+            "product_1_horizontal_position": 30,
+            "product_1_vertical_position": 70,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_hgepPx": {
+          "type": "image",
+          "settings": {
+            "ratio": "1 / 1",
+            "mobile_offset": 0,
+            "product_1": "",
+            "product_1_horizontal_position": 30,
+            "product_1_vertical_position": 70,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        }
+      },
+      "block_order": [
+        "image_PNyyyV",
+        "image_GexHkn",
+        "image_Cxgt4r",
+        "image_gFftU4",
+        "image_xKfy9w",
+        "image_hgepPx"
+      ],
+      "name": "Find the perfect look",
+      "settings": {
+        "color_scheme": "",
+        "background": "#fffbf3",
+        "padding_top": 84,
+        "padding_bottom": 84,
+        "subheading": "GET INSPIRED",
+        "title": "Find the Perfect Look",
+        "heading_style": "h2",
+        "header_gap": 28,
+        "columns": 3,
+        "columns_mobile": "2",
+        "grid_gap": 12,
+        "grid_gap_mobile": 8,
+        "stagger_mobile": 32,
+        "image_radius": 2,
+        "hotspot_size": 14,
+        "card_width": 250,
+        "card_radius": 2,
+        "card_border_color": "#e6e6e6",
+        "cta_text": "SEE ALL INSPIRATION",
+        "cta_link": "",
+        "cta_background": "#4f5b3f",
+        "cta_text_color": "#ffffff",
+        "cta_gap": 32
+      }
     }
   },
   "order": [
@@ -1550,12 +1631,12 @@
     "collection_list_y68EWi",
     "real_homes_pTLTFX",
     "image_with_text_eJwpDm",
+    "find_perfect_look_8htECx",
     "image_with_text_xnyQHV",
     "image_with_text_nK66R9",
     "image-with-text-overlay-1",
     "media-grid",
     "featured-collections-2",
-    "shop-the-look",
     "countdown",
     "multiple-media-with-text",
     "before-after",
