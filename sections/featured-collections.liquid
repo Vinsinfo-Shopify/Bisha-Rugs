@@ -1,3 +1,13 @@
+{%- liquid
+  # Row 06 guard, evaluated once so it is available to the markup below as well
+  # as to the product-card render call.
+  assign is_row06 = false
+
+  if section.settings.custom_class contains 'home_bestselling_rugs'
+    assign is_row06 = true
+  endif
+-%}
+
 {%- if section.blocks.size > 0 -%}
   <style>
     #shopify-section-{{ section.id }} {
@@ -13,9 +23,582 @@
     }
   </style>
 
+  {%- comment -%}
+    Homepage Row 06 - "Bestselling Oushak Rugs".
+    Every rule is guarded by custom_class and prefixed with the section id,
+    so no other instance of this section and no other template is affected.
+
+    Values sampled from the supplied 1440 Figma frame (delivered at 2x):
+      column 1300 | 4 cards x 313 with 16 gaps | image 313 x 380
+      BEST SELLER badge 109 x 38  bg #F3EEE4  text #000
+      NEW badge          59 x 27  bg #B08D4C  text #FFF
+      Hand Knotted pill 117 x 30  bg #F1ECE2  text #000
+      carousel arrow    33 x 33   bg #2B2724  chevron #FFF, ~25px outside the column
+      CTA              232 x 31   bg #55583C  text #FFF
+      rhythm: 65 / eyebrow / 16 / heading / 26 / image / 14 / pill / 18 /
+              title / 12 / rating / 15 / price / 48 / CTA / 65
+
+    Mobile values follow the written 375px specification; the mobile frame
+    was not available, so type sizes are proportional and flagged for QA.
+  {%- endcomment -%}
+  {%- if section.settings.custom_class contains 'home_bestselling_rugs' -%}
+    <style>
+      /* ---------- Section frame ---------- */
+      #shopify-section-{{ section.id }} {
+        --container-max-width: 81.25rem; /* 1300px - same column as the locked sections above */
+        --section-vertical-spacing-override: 46px; /* + 19px gutter from locked Row 05 = 65px */
+        --section-stack-gap: 24px;
+      }
+
+      /* ---------- Header ---------- */
+      #shopify-section-{{ section.id }} .section-stack > .v-stack {
+        gap: 4px;
+      }
+
+      #shopify-section-{{ section.id }} .section-stack > .v-stack > .h6 {
+        font-family: var(--text-font-family);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.4;
+        letter-spacing: 0;
+        text-transform: uppercase;
+        margin: 0;
+      }
+
+      #shopify-section-{{ section.id }} .section-stack > .v-stack > h2 {
+        font-family: 'Forum', serif;
+        font-size: 28px;
+        font-weight: 400;
+        line-height: 1.3;
+        margin: 0;
+      }
+
+      /* ---------- Product image ---------- */
+      #shopify-section-{{ section.id }} .product-card__image {
+        aspect-ratio: 313 / 380;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__figure > .badge-list {
+        inset-block-start: 3px;
+        inset-inline-start: 3px;
+        gap: 3px;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--custom {
+        border-radius: 2px;
+        font-size: 12px;
+        line-height: 140%;
+        font-weight: 500;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--best-seller {
+        background: #f3eee4;
+        color: #000000;
+        padding: 10.5px 15px;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--new {
+        background: #b08d4c;
+        color: #ffffff;
+        padding: 5px 14px;
+      }
+
+      /* ---------- Hand Knotted pill ---------- */
+      #shopify-section-{{ section.id }} .product-card__tag-wrapper {
+        background: #f1ece2;
+        border-radius: 100px;
+        padding: 5px 14px;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__tag {
+        color: #000000;
+        font-size: 14px;
+        line-height: 140%;
+        font-weight: 500;
+      }
+
+      /* ---------- Per-product image carousel (opt-in via image_carousel) ----------
+         Cells are full-width and paged only by the small controls; the element is
+         not drag-enabled and does not scroll on touch, so it cannot steal gestures
+         from the outer product carousel. */
+      #shopify-section-{{ section.id }} .product-card__media-carousel {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 100%;
+        overflow: hidden;
+        scroll-snap-type: x mandatory;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-cell {
+        scroll-snap-align: start;
+        width: 100%;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-control {
+        z-index: 2;
+        position: absolute;
+        inset-block-start: 50%;
+        transform: translateY(-50%);
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-control--prev {
+        inset-inline-start: 26px;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-control--next {
+        inset-inline-end: 26px;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-control .circle-button {
+        --circle-button-size: 1.75rem; /* 28px, smaller than the 33px outer arrows */
+        --circle-button-background: 43 39 36;
+        --circle-button-text-color: 255 255 255;
+        background: rgb(43 39 36 / 0.55);
+        color: #ffffff;
+        box-shadow: none;
+        backdrop-filter: blur(2px);
+      }
+
+      /* The chevron glyphs carry no stroke-width attribute, so they default to
+         1 unit in a 10-unit viewBox - about 1.1px on screen, which is what made
+         them look dull. Thickened here and given a faint white halo so they hold
+         up over both light and dark rug photography. */
+      #shopify-section-{{ section.id }} .product-card__media-control .circle-button > svg {
+        width: 0.6875rem; /* 11px */
+        color: #ffffff;
+        stroke-width: 1.75;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        filter: drop-shadow(0 0 1px rgb(255 255 255 / 0.55));
+      }
+
+      /* Disabled at the first/last image rather than hidden, so the control
+         positions stay stable. */
+      #shopify-section-{{ section.id }} .product-card__media-control button[disabled] {
+        opacity: 0.35;
+        pointer-events: none;
+      }
+
+      /* Hidden state is unconditional. It was previously inside a
+         (pointer: fine) query, which does not match on touch-capable laptops,
+         device emulation or the theme editor iframe - so the arrows showed on
+         load. Pointer-events follow opacity so an invisible control is never
+         clickable. */
+      #shopify-section-{{ section.id }} .product-card__media-control {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease-in-out;
+      }
+
+      /* Revealed by hovering that one product's image, not the card and not the
+         section, so only the hovered product's arrows appear. */
+      @media (hover: hover) {
+        #shopify-section-{{ section.id }} .product-card__figure:hover .product-card__media-control,
+        #shopify-section-{{ section.id }} .product-card__figure:focus-within .product-card__media-control {
+          opacity: 1;
+          pointer-events: auto;
+        }
+      }
+
+      /* The image-position indicator is mobile-only */
+      #shopify-section-{{ section.id }} .product-card__media-pagination {
+        display: none;
+      }
+
+      /* Belt and braces: the inner carousel must never expose a native scrollbar */
+      #shopify-section-{{ section.id }} .product-card__media-carousel {
+        scrollbar-width: none;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__media-carousel::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* ---------- Quick buy (enabled per-render for this section only) ---------- */
+      #shopify-section-{{ section.id }} .product-card__quick-add-button {
+        background: rgb(43 39 36 / 0.55);
+        color: #ffffff;
+        border-radius: var(--rounded-full);
+        padding: 9px;
+        inset-block-end: 16px;
+        inset-inline-end: 16px;
+        box-shadow: none;
+        backdrop-filter: blur(2px);
+      }
+
+      #shopify-section-{{ section.id }} .product-card__quick-add-button > svg {
+        color: #ffffff;
+        stroke-width: 1.75;
+      }
+
+      /* Figma shows it permanently visible; Prestige reveals it on card hover. */
+      @media screen and (pointer: fine) {
+        #shopify-section-{{ section.id }} .product-card__quick-add-button {
+          opacity: 1;
+          transform: none;
+        }
+
+        /* The 90deg spin is designed for the plus glyph, not a bag. */
+        #shopify-section-{{ section.id }} .product-card__quick-add-button:is(:hover, :focus) svg {
+          transform: none;
+        }
+      }
+
+      /* ---------- Card information rhythm ---------- */
+      #shopify-section-{{ section.id }} .product-card__info {
+        gap: 12px;
+        padding-top: 14px;
+      }
+
+      #shopify-section-{{ section.id }} .product-card__info .gap-1 {
+        gap: 8px;
+      }
+
+      /* product-card__info is a grid, so an empty optional child would still
+         consume a row plus its gap. Collapse any that render empty. */
+      #shopify-section-{{ section.id }} .product-card__info > *:empty {
+        display: none;
+      }
+
+      /* .rating-badge ships with 4px/8px margins that double up on the stack gap */
+      #shopify-section-{{ section.id }} .rating-badge {
+        margin-top: 0;
+        margin-bottom: 0;
+        column-gap: 6px;
+      }
+
+      /* Title uses the body font in the Figma and is clamped to two lines so
+         card heights stay level. product_title_max_lines is 0 site-wide, so
+         the clamp lives here rather than in the global setting. */
+      /* No fixed or minimum height: a one-line title must not reserve two lines,
+         which is what produced the gap above the rating. min-height is reset
+         explicitly in case anything upstream reintroduces one. */
+      #shopify-section-{{ section.id }} .product-card-title {
+        font-family: var(--text-font-family);
+        font-size: 16px;
+        line-height: 25px;
+        font-weight: 600;
+        min-height: 0;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+      }
+
+      /* ---------- CTA ---------- */
+      #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center {
+        margin-block-start: 24px; /* halved from 48px */
+      }
+
+      /* .button sets typography with the `font` shorthand, so the weight is
+         overridden with the longhand at higher specificity. Size, radius,
+         colour and centring are untouched. */
+      #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center .button {
+        --button-background: 85 88 60; /* #55583C */
+        --button-outline-color: 85 88 60;
+        --button-text-color: 255 255 255;
+        min-width: 232px;
+        padding-block: 7px;
+        font-weight: 700;
+      }
+
+      /* ---------- Carousel arrows ----------
+         Charcoal disc with a white chevron, compact, always visible, and
+         vertically centred on the product image rather than the whole card. */
+      /* THE cause of the missing outer arrows: theme.css:773 sets
+         .prev-next-button[disabled] { opacity: 0; visibility: hidden }, and the
+         outer prev button ships with the disabled attribute in its markup, so it
+         was invisible on load and the next button vanished at the last position.
+         A disabled outer arrow is now dimmed but stays in place. */
+      #shopify-section-{{ section.id }} .prev-next-button[disabled] {
+        opacity: 0.35;
+        visibility: visible;
+      }
+
+      #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+        --circle-button-size: 2.0625rem; /* 33px, deliberately larger than the 28px inner arrows */
+        --circle-button-text-color: 255 255 255;
+        background: rgb(43 39 36 / 0.75);
+        color: #ffffff;
+        box-shadow: none;
+      }
+
+      #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+        width: 0.875rem; /* 14px, in a 16x18 viewBox */
+        color: #ffffff;
+        stroke-width: 1.75;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      @media screen and (pointer: fine) {
+        /* Prestige only reveals a control that contains no disabled button
+           (.floating-controls-container--on-hover:hover > ...:not(:has([disabled]))),
+           which makes an arrow vanish the moment it reaches an edge. The Figma
+           shows both arrows permanently, so both the base and the hover rule are
+           overridden here and a disabled arrow is merely dimmed. */
+        #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control,
+        #shopify-section-{{ section.id }} .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
+          opacity: 1;
+          transform: none;
+        }
+
+        /* Prestige gates the outer controls behind the carousel having measured
+           itself as scrollable (.floating-controls-container:not(:has(.is-scrollable))
+           sets display: none). The Figma shows them from first paint, so the gate
+           is neutralised here. */
+        #shopify-section-{{ section.id }} .floating-controls-container:not(:has(.is-scrollable)) .floating-controls-container__control {
+          display: grid;
+        }
+
+        /* Push the arrows out of the product row and into the page gutter, as the
+           Figma shows, using however much gutter actually exists so they can
+           never be pushed off-screen.
+
+             gutter        = max(1.2rem, (100vw - 1300px) / 2)
+             ideal offset  = 42px  (25px clear of the column + half a 33px disc)
+             applied       = -min(42px, gutter - 8px)
+
+           At 1440 the gutter is 70px, so the full -42px applies and the discs sit
+           entirely outside the cards. On narrower desktops the offset shrinks
+           rather than overflowing. Nothing in the ancestor chain clips them:
+           .featured-collections-carousel is position:relative with no overflow. */
+        #shopify-section-{{ section.id }} .floating-controls-container--inside {
+          --row06-outer-gutter: max(1.2rem, (100vw - 81.25rem) / 2);
+          --floating-controls-inset-inline: calc(-1 * min(2.625rem, var(--row06-outer-gutter) - 0.5rem));
+        }
+
+        /* Vertically centred on the product image. This belongs to the outer
+           carousel container, not to any individual card. */
+        #shopify-section-{{ section.id }} .floating-controls-container__control {
+          inset-block-start: 173px; /* fallback */
+          inset-block-start: calc(((min(81.25rem, 100vw - 2.4rem) - 48px) / 4 * 380 / 313) / 2 - 1.03125rem);
+        }
+      }
+
+      /* ---------- 375px mobile ---------- */
+      @media screen and (max-width: 699px) {
+        #shopify-section-{{ section.id }} {
+          --container-gutter: 0.75rem; /* 12px each side -> 351px content at 375px */
+          --section-vertical-spacing-override: 32px;
+          --section-stack-gap: 16px;
+        }
+
+        /* Prestige forces --product-list-card-width to min(300px, 65%) for
+           carousels below 700px (theme.css), which overrides
+           products_per_row_mobile and leaves the second card clipped.
+           Restore a true two-up width for this section only. */
+        #shopify-section-{{ section.id }} .product-list--carousel {
+          --product-list-default-column-gap: 0.625rem; /* 10px */
+          --product-list-card-width: calc((100% - var(--product-list-calculated-column-gap)) / 2);
+        }
+
+        /* Header is left-aligned on mobile; the section setting stays centred
+           so desktop is unaffected. */
+        #shopify-section-{{ section.id }} .section-stack > .v-stack {
+          justify-self: start;
+          justify-items: start;
+          text-align: start;
+          gap: 2px;
+        }
+
+        #shopify-section-{{ section.id }} .section-stack > .v-stack > .h6 {
+          text-align: start;
+          font-size: 12px;
+        }
+
+        #shopify-section-{{ section.id }} .section-stack > .v-stack > h2 {
+          text-align: start;
+          font-size: 22px;
+          line-height: 1.25;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__figure > .badge-list {
+          inset-block-start: 2px;
+          inset-inline-start: 2px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--custom {
+          font-size: 10px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--best-seller {
+          padding: 5px 8px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--new {
+          padding: 3px 8px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__tag-wrapper {
+          padding: 3px 10px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__tag {
+          font-size: 11px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__info {
+          gap: 8px;
+          padding-top: 10px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__info .gap-1 {
+          gap: 6px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card-title {
+          font-size: 13px;
+          line-height: 18px;
+        }
+
+        #shopify-section-{{ section.id }} .rating-badge {
+          column-gap: 4px;
+          flex-wrap: nowrap;
+        }
+
+        #shopify-section-{{ section.id }} .rating-badge__stars > svg {
+          width: 11px;
+        }
+
+        #shopify-section-{{ section.id }} .rating-badge .text-xxs {
+          font-size: 11px;
+        }
+
+        #shopify-section-{{ section.id }} .price-list {
+          font-size: 14px;
+          column-gap: 6px;
+        }
+
+        #shopify-section-{{ section.id }} .price-list .text-on-sale {
+          font-size: 14px;
+        }
+
+        #shopify-section-{{ section.id }} .price-list :is(s, .text-subdued) {
+          font-size: 12px;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__quick-add-button {
+          padding: 6px;
+          inset-block-end: 8px;
+          inset-inline-end: 8px;
+        }
+
+        #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center {
+          margin-block-start: 14px; /* halved from 28px */
+        }
+
+        #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center .button {
+          min-width: 180px;
+          padding-block: 6px;
+        }
+
+        /* CONTROL B: the per-product image arrows are desktop-only. */
+        #shopify-section-{{ section.id }} .product-card__media-control {
+          display: none;
+        }
+
+        /* CONTROL A: the outer product carousel. Prestige hides both controls on
+           touch; the Figma shows the next arrow on the right of the product row,
+           so that one is restored. It drives the product cards, never the images. */
+        #shopify-section-{{ section.id }} .floating-controls-container {
+          position: relative;
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container > .floating-controls-container__control {
+          display: none;
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container > carousel-next-button.floating-controls-container__control {
+          z-index: 3;
+          display: grid;
+          position: absolute;
+          inset-inline-end: 6px;
+          inset-block-start: calc(((100vw - 2.125rem) / 2 * 380 / 313) / 2 - 0.875rem);
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+          --circle-button-size: 1.75rem; /* 28px */
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+          width: 0.5625rem;
+        }
+
+        /* CONTROL B (touch): the arrows are gone on mobile, so the image carousel
+           is driven by swiping the image itself. Making the inner element the
+           scroll container means the browser routes a gesture starting on the
+           image to it rather than to the product row, and overscroll-behavior
+           stops that gesture chaining outward at the ends. Swiping the info area
+           below the image still moves the product cards. */
+        #shopify-section-{{ section.id }} .product-card__media-carousel {
+          overflow: auto hidden;
+          overscroll-behavior-x: contain;
+          scroll-snap-type: x mandatory;
+        }
+
+        /* CONTROL C: image-position indicator. One continuous 2px line flush with
+           the bottom edge of the image, not a row of dots and not split by gaps.
+           The track is the inactive state; the active image's segment fills its
+           share of the line. Absolutely positioned, so it adds no card height.
+           Exact inset/thickness/opacity to be confirmed against the mobile frame. */
+        #shopify-section-{{ section.id }} .product-card__media-pagination {
+          z-index: 2;
+          display: flex;
+          position: absolute;
+          inset-inline: 12px;
+          inset-block-end: 0;
+          gap: 0;
+          height: 2px;
+          border-radius: 1px;
+          background: rgb(43 39 36 / 0.22);
+        }
+
+        /* No overflow clipping here: .tap-area widens the hit area with ::before,
+           and clipping would swallow it on a 2px-tall control. */
+        #shopify-section-{{ section.id }} .product-card__media-pagination > button {
+          flex: 1 1 0;
+          min-width: 0;
+          height: 100%;
+          padding: 0;
+          border: 0;
+          background: none;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__media-pagination > button::after {
+          content: '';
+          display: block;
+          width: 100%;
+          height: 100%;
+          border-radius: inherit;
+          background: rgb(43 39 36 / 0);
+          transition: background 0.25s ease-in-out;
+        }
+
+        #shopify-section-{{ section.id }} .product-card__media-pagination > button[aria-current='true']::after {
+          background: rgb(43 39 36 / 0.9);
+        }
+      }
+
+      /* Below 375px stay fluid rather than overflowing */
+      @media screen and (max-width: 374px) {
+        #shopify-section-{{ section.id }} {
+          --container-gutter: 0.5rem;
+        }
+
+        #shopify-section-{{ section.id }} .product-card-title {
+          font-size: 12px;
+          line-height: 17px;
+        }
+      }
+    </style>
+  {%- endif -%}
+
   {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 
-  <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+  <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_class }}">
     <div class="container">
       {%- assign wrapper_carousel_id = 'featured-collections-carousel-' | append: section.id -%}
 
@@ -60,8 +643,36 @@
                   {%- assign should_reveal = true -%}
                 {%- endif -%}
 
+                {%- comment -%}
+                  Row 06 only. Outside the home_bestselling_rugs guard these stay nil/false,
+                  so this render behaves exactly as before for every other instance.
+                {%- endcomment -%}
+                {%- liquid
+                  assign row06_image_carousel = false
+                  assign row06_show_quick_buy = null
+                  assign row06_quick_buy_icon = null
+                  assign row06_show_swatches = null
+
+                  if section.settings.custom_class contains 'home_bestselling_rugs'
+                    assign row06_image_carousel = true
+                    assign row06_show_quick_buy = true
+                    assign row06_quick_buy_icon = 'picto-bag-handle'
+                    assign row06_show_swatches = false
+                  endif
+                -%}
+
                 {%- for product in block.settings.collection.products limit: block.settings.products_count -%}
-                  {%- render 'product-card', product: product, reveal: should_reveal, position: forloop.index, hide_product_information: section.settings.hide_product_information, block: block -%}
+                  {%- render 'product-card',
+                    product: product,
+                    reveal: should_reveal,
+                    position: forloop.index,
+                    hide_product_information: section.settings.hide_product_information,
+                    block: block,
+                    image_carousel: row06_image_carousel,
+                    show_quick_buy: row06_show_quick_buy,
+                    quick_buy_icon: row06_quick_buy_icon,
+                    show_swatches: row06_show_swatches
+                  -%}
                 {%- else -%}
                   {%- for i in (1..block.settings.products_count) -%}
                     {%- render 'product-card-placeholder', reveal: should_reveal, loop_index: forloop.index0, hide_product_information: section.settings.hide_product_information -%}
@@ -84,9 +695,17 @@
                     </button>
                   </carousel-prev-button>
 
+                  {%- comment -%}
+                    `group-cells` with no value makes ScrollCarousel step by
+                    Math.floor(clientWidth / cellWidth) - 4 cards on desktop,
+                    2 on mobile - which pages [1][2][3][4] straight to [5][6][7][8].
+                    Omitting the attribute makes groupCells fall back to 1, so each
+                    click advances exactly one product. Every other instance of this
+                    section keeps the attribute and its existing paging behaviour.
+                  {%- endcomment -%}
                   <scroll-carousel
                     id="{{ product_carousel_id }}"
-                    group-cells
+                    {% unless is_row06 %}group-cells{% endunless %}
                     allow-drag
                     class="product-list {% if section.settings.hide_product_information %}product-list--compact{% endif %} product-list--carousel scroll-area bleed md:unbleed"
                   >
@@ -133,6 +752,12 @@
       "id": "color_scheme",
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom class",
+      "info": "Optional. Adds a class to this section so instance-specific CSS can be scoped to it."
     },
     {
       "type": "checkbox",

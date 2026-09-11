@@ -47,7 +47,7 @@
             "mobile_image": "shopify://shop_images/Mobile_-_Design_in_Mind_096f3677-ee0d-4c1b-bd44-7fe88ea31508.png",
             "image_position": "right",
             "subheading": "",
-            "heading": "Have a design in mind?  <br> Let us know.",
+            "heading": "Have a design in mind? <br> Let us know.",
             "heading_width": 520,
             "description": "<p>Create a rug that's uniquely yours. Customize the size, colors and more with guidance from our rug experts.</p>",
             "button_label": "get in touch",
@@ -140,6 +140,7 @@
         "collection_UEdCyy": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "scheme-4",
             "collection": "oushak-rugs",
             "image": "shopify://shop_images/Oushak_Rugs_bdb6cd46-c650-45b2-9254-35779a65dfcc.png",
@@ -157,6 +158,7 @@
         "collection_kk7GLD": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "scheme-4",
             "collection": "new-arrivals",
             "image": "shopify://shop_images/Best_Sellers.png",
@@ -174,6 +176,7 @@
         "collection_6Dzxdj": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "",
             "collection": "new-arrivals",
             "image": "shopify://shop_images/New_Arrivals.png",
@@ -191,6 +194,7 @@
         "collection_kRWH6f": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "",
             "collection": "all",
             "image": "shopify://shop_images/Shop_All.png",
@@ -214,6 +218,19 @@
       ],
       "name": "t:sections.collection_list.presets.collection_list.name",
       "settings": {
+        "layout_variant": "",
+        "sbs_menu": "main-menu",
+        "sbs_background": "#f3eee4",
+        "sbs_parent_item": "",
+        "sbs_subheading_mobile": "",
+        "sbs_title_mobile": "",
+        "sbs_mobile_fill": "column",
+        "sbs_mobile_gap": 5,
+        "sbs_show_image": true,
+        "sbs_show_title": true,
+        "sbs_show_arrow": true,
+        "sbs_show_nav": true,
+        "sbs_show_progress": true,
         "color_scheme": "scheme-1",
         "separate_section_with_border": true,
         "image_size": "auto",
@@ -235,30 +252,20 @@
         "collection-1": {
           "type": "collection",
           "settings": {
-            "collection": "",
+            "collection": "oushak-rugs",
             "products_count": 8,
-            "title": "Women",
-            "link_url": "shopify://collections/all",
-            "link_text": "All women's bags"
-          }
-        },
-        "collection-2": {
-          "type": "collection",
-          "settings": {
-            "collection": "",
-            "products_count": 8,
-            "title": "Men",
-            "link_url": "shopify://collections/all",
-            "link_text": "All men's bags"
+            "title": "Bestselling Oushak Rugs",
+            "link_url": "shopify://collections/oushak-rugs",
+            "link_text": "SHOP BESTSELLING RUGS"
           }
         }
       },
       "block_order": [
-        "collection-1",
-        "collection-2"
+        "collection-1"
       ],
       "settings": {
         "color_scheme": "scheme-1",
+        "custom_class": "home_bestselling_rugs",
         "separate_section_with_border": false,
         "hide_product_information": false,
         "stack_products": false,
@@ -268,8 +275,206 @@
         "vertical_spacing_factor": 1,
         "header_alignment": "center",
         "heading_style": "h2",
-        "subheading": "Our best sellers",
+        "subheading": "FEATURED",
         "hide_collection_title": false
+      }
+    },
+    "color_palette_row07": {
+      "type": "color-palette",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "separate_section_with_border": false,
+        "padding_top": 20,
+        "padding_bottom": 46,
+        "subheading": "COLOR PALETTE",
+        "title": "Shop by Shade",
+        "heading_style": "h2",
+        "menu": "prestige-main-menu",
+        "color_group_title": ""
+      }
+    },
+    "collection_list_y68EWi": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_y8pRxJ": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "",
+            "collection": "all",
+            "image": "shopify://shop_images/Shop_by_Style_-_Geometric.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Geometric",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 20
+          }
+        },
+        "collection_FiwkTb": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "scheme-4",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "View products",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_L7gRhN": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "scheme-4",
+            "collection": "",
+            "image": "shopify://shop_images/Shop_by_Style_-_Minimalist.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "View products",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 20
+          }
+        },
+        "collection_qQKdQW": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "scheme-4",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "View products",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_TKGACH": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "scheme-4",
+            "collection": "all",
+            "image": "shopify://shop_images/Shop_by_Style_-_Abstract.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Abstract",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 20
+          }
+        },
+        "collection_3tjj8R": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "scheme-4",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "View products",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_AwTYBC": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "",
+            "collection": "",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "View products",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        },
+        "collection_bjdJgJ": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "",
+            "collection": "",
+            "image": "shopify://shop_images/Shop_by_Style_-_Floral.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "",
+            "button_text": "View products",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 30
+          }
+        }
+      },
+      "block_order": [
+        "collection_y8pRxJ",
+        "collection_FiwkTb",
+        "collection_L7gRhN",
+        "collection_qQKdQW",
+        "collection_TKGACH",
+        "collection_3tjj8R",
+        "collection_AwTYBC",
+        "collection_bjdJgJ"
+      ],
+      "name": "t:sections.collection_list.presets.collection_list.name",
+      "settings": {
+        "layout_variant": "shop_by_style",
+        "sbs_menu": "prestige-main-menu",
+        "sbs_background": "#f3eee4",
+        "sbs_parent_item": "Shop by Style",
+        "sbs_subheading_mobile": "",
+        "sbs_title_mobile": "",
+        "sbs_mobile_fill": "row",
+        "sbs_mobile_gap": 5,
+        "sbs_show_image": true,
+        "sbs_show_title": true,
+        "sbs_show_arrow": true,
+        "sbs_show_nav": true,
+        "sbs_show_progress": true,
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "image_size": "auto",
+        "show_text_outside": false,
+        "space_items": true,
+        "stack_collections": false,
+        "collections_per_row_desktop": 4,
+        "stack_collections_mobile": true,
+        "collections_per_row_mobile": "2",
+        "subheading": "collection",
+        "title": "Shop by Style",
+        "heading_style": "h1",
+        "content": ""
       }
     },
     "image_with_text_eJwpDm": {
@@ -622,64 +827,6 @@
         "content": ""
       }
     },
-    "scrolling-content-1": {
-      "type": "scrolling-content",
-      "blocks": {
-        "text-1": {
-          "type": "text",
-          "settings": {
-            "text": "New: our bag"
-          }
-        }
-      },
-      "block_order": [
-        "text-1"
-      ],
-      "settings": {
-        "separate_section_with_border": true,
-        "scrolling_speed": 0.3,
-        "scroll_direction": "left",
-        "pause_on_hover": false,
-        "text_font": "heading",
-        "text_font_size_mobile": 32,
-        "text_font_size_desktop": 64,
-        "section_vertical_spacing_mobile": 20,
-        "section_vertical_spacing_desktop": 40,
-        "item_horizontal_spacing_mobile": 25,
-        "item_horizontal_spacing_desktop": 50,
-        "background": "",
-        "text_color": "#b3b3b3"
-      }
-    },
-    "scrolling-content-2": {
-      "type": "scrolling-content",
-      "blocks": {
-        "text-1": {
-          "type": "text",
-          "settings": {
-            "text": "Show new arrivals"
-          }
-        }
-      },
-      "block_order": [
-        "text-1"
-      ],
-      "settings": {
-        "separate_section_with_border": true,
-        "scrolling_speed": 0.3,
-        "scroll_direction": "right",
-        "pause_on_hover": false,
-        "text_font": "heading",
-        "text_font_size_mobile": 32,
-        "text_font_size_desktop": 64,
-        "section_vertical_spacing_mobile": 20,
-        "section_vertical_spacing_desktop": 40,
-        "item_horizontal_spacing_mobile": 25,
-        "item_horizontal_spacing_desktop": 50,
-        "background": "",
-        "text_color": "#b3b3b3"
-      }
-    },
     "featured-collections-2": {
       "type": "featured-collections",
       "blocks": {
@@ -699,6 +846,7 @@
       ],
       "settings": {
         "color_scheme": "scheme-1",
+        "custom_class": "",
         "separate_section_with_border": true,
         "hide_product_information": false,
         "stack_products": false,
@@ -1320,13 +1468,13 @@
     "trust_bar_MUX4MJ",
     "collection_list_6EFC6y",
     "featured-collections-1",
+    "color_palette_row07",
+    "collection_list_y68EWi",
     "image_with_text_eJwpDm",
     "image_with_text_xnyQHV",
     "image_with_text_nK66R9",
     "image-with-text-overlay-1",
     "media-grid",
-    "scrolling-content-1",
-    "scrolling-content-2",
     "featured-collections-2",
     "shop-the-look",
     "countdown",

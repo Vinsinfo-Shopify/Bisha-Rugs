@@ -8,10 +8,182 @@
   {%- liquid
     assign stack_mobile = section.settings.stack_collections_mobile
     assign stack_desktop = section.settings.stack_collections
+
+    # Row 08 is always a carousel at both breakpoints. Leaving this to the two
+    # stack settings meant a single mis-set toggle rendered the wrapping grid
+    # instead, which is what put eight cards on screen at once on mobile.
+    if section.settings.layout_variant == 'shop_by_style'
+      assign stack_mobile = false
+      assign stack_desktop = false
+    endif
+
     assign stack_mobile_and_desktop = false
 
     if stack_desktop and stack_mobile
       assign stack_mobile_and_desktop = true
+    endif
+  -%}
+
+  {%- comment -%}
+    ------------------------------------------------------------------------------------------------------------------------
+    ROW 08 VARIANT - "Shop by Style / Shop by Pattern"
+    ------------------------------------------------------------------------------------------------------------------------
+    Everything below is gated on layout_variant == 'shop_by_style'. Instances that
+    do not set it (Explore Our Range, and the collection template) fall through
+    with is_sbs = false and behave exactly as before.
+
+    Data split for this variant:
+      Menu  -> card title + card URL (nothing else)
+      Block -> image, enabled, presentation
+
+    Blocks are matched to their Shop by Style menu item when a stable item key is
+    available; older/unmatched blocks fall back to the same menu position so they
+    still render in the Theme Editor.
+  {%- endcomment -%}
+
+  {%- liquid
+    assign is_sbs = false
+
+    if section.settings.layout_variant == 'shop_by_style'
+      assign is_sbs = true
+    endif
+
+    assign sbs_show_image = true
+    assign sbs_show_title = true
+    assign sbs_show_arrow = true
+    assign sbs_show_nav = true
+    assign sbs_links = null
+    assign sbs_columns = 1
+
+    if is_sbs
+      assign sbs_show_image = section.settings.sbs_show_image
+      assign sbs_show_title = section.settings.sbs_show_title
+      assign sbs_show_arrow = section.settings.sbs_show_arrow
+      assign sbs_show_nav = section.settings.sbs_show_nav
+
+      # Which links become the cards.
+      #
+      # Shopify's menu picker only ever lists whole menus, never individual items,
+      # so when the styles are child items of a "Shop by Style" entry the section
+      # has to be told which entry to open. That is what sbs_parent_item does.
+      #
+      #   parent item blank -> the selected menu's own top-level items are cards
+      #   parent item set   -> that item is found, and ITS CHILDREN are the cards
+      #
+      # Matching is on title or handle, case and space insensitive, searched three
+      # levels deep. A name that matches nothing yields no cards rather than
+      # quietly falling back to the whole menu, and the editor comment at the foot
+      # of this section prints the menu tree so the exact name can be copied.
+      assign sbs_menu = section.settings.sbs_menu
+      assign sbs_parent = section.settings.sbs_parent_item | downcase | strip
+      assign sbs_links = null
+      assign sbs_source = 'none'
+
+      if sbs_parent == blank
+        assign sbs_links = sbs_menu.links
+        assign sbs_source = 'top level of the selected menu'
+      else
+        assign sbs_parent_found = false
+
+        for l1 in sbs_menu.links
+          if sbs_parent_found == false
+            assign t1 = l1.title | downcase | strip
+            assign h1 = l1.handle | downcase | strip
+
+            if t1 == sbs_parent or h1 == sbs_parent
+              assign sbs_links = l1.links
+              assign sbs_source = l1.title
+              assign sbs_parent_found = true
+            endif
+          endif
+
+          if sbs_parent_found == false
+            for l2 in l1.links
+              if sbs_parent_found == false
+                assign t2 = l2.title | downcase | strip
+                assign h2 = l2.handle | downcase | strip
+
+                if t2 == sbs_parent or h2 == sbs_parent
+                  assign sbs_links = l2.links
+                  assign sbs_source = l2.title
+                  assign sbs_parent_found = true
+                endif
+              endif
+
+              if sbs_parent_found == false
+                for l3 in l2.links
+                  if sbs_parent_found == false
+                    assign t3 = l3.title | downcase | strip
+                    assign h3 = l3.handle | downcase | strip
+
+                    if t3 == sbs_parent or h3 == sbs_parent
+                      assign sbs_links = l3.links
+                      assign sbs_source = l3.title
+                      assign sbs_parent_found = true
+                    endif
+                  endif
+                endfor
+              endif
+            endfor
+          endif
+        endfor
+      endif
+
+      # Which menu items are pinned to a particular block.
+      #
+      # A block declares its style through "Shop by Style item", or failing that
+      # through its own Title, which is what Shopify already prints as the block's
+      # label in the editor. Anything pinned here is
+      # reserved, so the unnamed blocks below skip over it and pick up the
+      # remaining menu items in menu order instead. That way a fresh section needs
+      # no configuration at all - the cards simply follow the menu - while any
+      # block that has been named keeps its own style, image and link wherever it
+      # is dragged to.
+      assign sbs_claimed = '|'
+
+      for block in section.blocks
+        assign claim_key = block.settings.sbs_item | default: block.settings.title
+        assign claim_key = claim_key | downcase | strip
+
+        if claim_key != blank
+          for claim_l in sbs_links
+            assign claim_lt = claim_l.title | downcase | strip
+            assign claim_lh = claim_l.handle | downcase | strip
+
+            if claim_lt == claim_key or claim_lh == claim_key
+              assign sbs_claimed = sbs_claimed | append: claim_lt | append: '|'
+              break
+            endif
+          endfor
+        endif
+      endfor
+
+      # Column count for the row-major mobile fill option. Counts every block
+      # that is not explicitly disabled, matching the render rule below.
+      assign sbs_enabled_count = 0
+
+      for block in section.blocks
+        if block.settings.enabled != false
+          assign sbs_enabled_count = sbs_enabled_count | plus: 1
+        endif
+      endfor
+
+      # Menu items with no usable URL. Reported in the editor comment below,
+      # because an empty link.url is the one failure that cannot be seen from
+      # the rendered card alone.
+      assign sbs_missing_urls = ''
+
+      for l in sbs_links
+        if l.url == blank or l.url == '/'
+          assign sbs_missing_urls = sbs_missing_urls | append: l.title | append: ' | '
+        endif
+      endfor
+
+      assign sbs_columns = sbs_enabled_count | divided_by: 2.0 | ceil
+
+      if sbs_columns < 1
+        assign sbs_columns = 1
+      endif
     endif
   -%}
 
@@ -219,6 +391,189 @@
   }
   </style>
 
+  {%- if is_sbs -%}
+    <style>
+      /* ---------------------------------------------------------------------
+         ROW 08 only. Every selector carries .collection-list--sbs, which is
+         only ever output by this variant, so these rules cannot reach an
+         Explore Our Range instance even though both share this file. The extra
+         class also out-specifies the base rules above without !important. */
+
+      /* Responsive header text: one heading element, one eyebrow element */
+      #shopify-section-{{ section.id }} .collection-list--sbs .sbs-text--mobile {
+        display: none;
+      }
+
+      /* Card arrow: the base rules above already give a transparent circle with a
+         white chevron, filling white with a dark chevron on :hover, transitioned
+         over 0.2s. Nothing is overridden here so that behaviour stands. Only a
+         keyboard focus state is added, which the base does not cover. Both the
+         hover and focus selectors are per card, so only the card being interacted
+         with changes. */
+      #shopify-section-{{ section.id }} .collection-list--sbs .collection-card:focus-within .collection-card__arrow {
+        background-color: #ffffff;
+        color: #1a1a1a;
+      }
+
+      /* Main carousel control: charcoal disc, white chevron, on the right edge,
+         vertically centred on the cards. Prestige's disabled prev/next stays
+         hidden, which matches the Figma showing only the next arrow at the start. */
+      /* Row 08 background, scoped to this section only. Global colour schemes
+         and every other section are untouched. */
+      #shopify-section-{{ section.id }} .collection-list--sbs {
+        background: {{ section.settings.sbs_background }};
+      }
+
+      /* Heading to cards. .section-stack carries gap: var(--section-stack-gap),
+         which resolves to 3rem. Overridden here with a literal value and an extra
+         .container in the selector so it outranks both the theme default and the
+         section's own rule with no !important and no calc that could fail to
+         parse. Exposed as a setting because the heading's line-height of 2 puts
+         about 14px of half-leading under the lettering, so the number that looks
+         like 24px depends on whether you measure from the glyphs or the line box.
+         Card sizes, the gap between cards, typography and section padding are all
+         untouched, and no negative margins are used. */
+      #shopify-section-{{ section.id }} .collection-list--sbs .container .section-stack {
+        gap: {{ section.settings.sbs_heading_gap }}px;
+      }
+
+      /* MAIN carousel control. The shared component is left alone; only its
+         appearance is overridden under the Row 08 wrapper class.
+         .circle-button's default box-shadow is tinted with the text colour, so a
+         white chevron produces the white ring - hence box-shadow: none. */
+      #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container__control .circle-button {
+        --circle-button-size: 2.375rem; /* 38px */
+        --circle-button-background: 43 39 36;
+        --circle-button-text-color: 255 255 255;
+        box-sizing: border-box;
+        background: #2b2724;
+        color: #ffffff;
+        border: 2px solid #ffffff;
+        box-shadow: none;
+      }
+
+      #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container__control .circle-button > svg {
+        width: 0.875rem;
+        stroke-width: 1.75;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      @media screen and (pointer: fine) {
+        #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container--on-hover > .floating-controls-container__control,
+        #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
+          opacity: 1;
+          transform: none;
+        }
+
+        #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container:not(:has(.is-scrollable)) .floating-controls-container__control {
+          display: grid;
+        }
+
+        /* theme.css puts the control 1.5rem INSIDE the container, which lands it
+           on top of the last card. Half the disc width pushes it back out so it
+           straddles the outer edge of the carousel viewport instead. */
+        #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container--inside {
+          --floating-controls-inset-inline: -1.1875rem; /* half of 38px */
+        }
+
+        /* Centred on the card, which is 313 x 400 inside the 1300px column */
+        #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container__control {
+          inset-block-start: calc(((min(1300px, 100vw - 2.4rem) - 48px) / 4 * 400 / 313) / 2 - 1.1875rem);
+        }
+      }
+
+      /* Partial next card, with no artificial spacing at either end.
+         The section normally applies lg:unbleed above 1150px, which zeroes the
+         bleed margin, padding AND scroll-padding, collapsing the scrollport onto
+         the 1300px column so four cards fill it exactly and the fifth is clipped
+         at the boundary. Keeping .bleed active instead gives, natively:
+
+           margin-inline    -gutter  -> scrollport spans the window
+           padding-inline   +gutter  -> card 1 starts on the column edge (no left gap)
+           scroll-padding   +gutter  -> snap targets land on the column edge
+
+         Cards still compute to 313px because flex-basis percentages resolve
+         against the content box, which is still the 1300px column. The next card
+         renders into the right padding and peeks; at the end of the scroll the
+         last card lands flush on the column edge with no trailing gap. No
+         negative margins are involved. */
+      #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area .collection-card {
+        scroll-snap-align: start;
+      }
+
+      /* ---------- Mobile: two-row horizontal carousel ---------- */
+      @media screen and (max-width: 699px) {
+        #shopify-section-{{ section.id }} .collection-list--sbs .sbs-text--desktop {
+          display: none;
+        }
+
+        #shopify-section-{{ section.id }} .collection-list--sbs .sbs-text--mobile {
+          display: inline;
+        }
+
+        /* Two rows, two columns in view, moving one column at a time.
+           Both cards in a column share the same x position, so a start-aligned
+           snap on the cards is effectively a snap on the column. .bleed is still
+           active here, so the first column starts on the content edge with no
+           left gap and the last column ends flush with no trailing gap. */
+        #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area {
+          display: grid;
+          gap: {{ section.settings.sbs_mobile_gap }}px;
+          grid-template-rows: repeat(2, auto);
+          grid-auto-flow: column;
+          grid-auto-columns: calc((100% - {{ section.settings.sbs_mobile_gap }}px) / 2);
+          scroll-snap-type: x mandatory;
+        }
+
+        {%- if section.settings.sbs_mobile_fill != 'sequential' -%}
+          /* Pair each column as cards 1+3, 2+4, 5+7, 6+8. Only the visual order
+             changes; the DOM, the desktop sequence and the block order are
+             untouched. */
+          #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area .collection-card {
+            order: var(--sbs-card-order, 0);
+          }
+        {%- endif -%}
+
+        #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area .collection-card {
+          flex-basis: auto;
+          width: auto;
+          scroll-snap-align: start;
+        }
+
+        /* No carousel arrows on mobile in the Figma; swipe drives it */
+        #shopify-section-{{ section.id }} .collection-list--sbs .floating-controls-container__control {
+          display: none;
+        }
+      }
+
+      /* ---------- Mobile progress indicator ---------- */
+      #shopify-section-{{ section.id }} .collection-list--sbs .sbs-progress {
+        display: none;
+      }
+
+      @media screen and (max-width: 699px) {
+        #shopify-section-{{ section.id }} .collection-list--sbs .sbs-progress {
+          display: block;
+          position: relative;
+          height: 3px;
+          margin-block-start: 16px;
+          border-radius: 2px;
+          background: rgb(var(--text-color) / 0.14);
+        }
+
+        #shopify-section-{{ section.id }} .collection-list--sbs .sbs-progress__thumb {
+          position: absolute;
+          inset-block: 0;
+          border-radius: inherit;
+          background: rgb(var(--text-color) / 0.85);
+          width: calc(var(--sbs-progress-size, 0.4) * 100%);
+          inset-inline-start: calc(var(--sbs-progress-position, 0) * (100% - var(--sbs-progress-size, 0.4) * 100%));
+        }
+      }
+    </style>
+  {%- endif -%}
+
   {%- comment -%}
     ------------------------------------------------------------------------------------------------------------------------
     LIQUID
@@ -237,21 +592,187 @@
 
   {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 
-  <div class="{% unless remove_vertical_spacing %}section-spacing {% if reduce_vertical_spacing %}section-spacing--tight{% endif %}{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+  <div class="{% unless remove_vertical_spacing %}section-spacing {% if reduce_vertical_spacing %}section-spacing--tight{% endif %}{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {% if is_sbs %}collection-list--sbs{% endif %}">
     <div class="{% if section.settings.space_items %}container{% endif %}">
       <div class="section-stack">
-        {%- render 'section-header',
-          subheading: section.settings.subheading,
-          heading: section.settings.title,
-          heading_style: section.settings.heading_style,
-          content: section.settings.content,
-          text_alignment: 'center'
-        -%}
+        {%- if is_sbs -%}
+          {%- comment -%}
+            section-header.liquid always emits an <h1>; this variant needs an <h2>
+            plus responsive text, so it renders the same classes inline instead.
+            Only one string is ever displayed, and display:none keeps the other
+            out of the accessibility tree.
+          {%- endcomment -%}
+          {%- if section.settings.subheading != blank or section.settings.title != blank -%}
+            <div class="section-header justify-self-center text-center">
+              <div class="prose">
+                {%- if section.settings.subheading != blank -%}
+                  <p class="h6 section_header_subheading">
+                    {%- if section.settings.sbs_subheading_mobile != blank -%}
+                      <span class="sbs-text sbs-text--desktop">{{- section.settings.subheading -}}</span>
+                      <span class="sbs-text sbs-text--mobile">{{- section.settings.sbs_subheading_mobile -}}</span>
+                    {%- else -%}
+                      {{- section.settings.subheading -}}
+                    {%- endif -%}
+                  </p>
+                {%- endif -%}
+
+                {%- if section.settings.title != blank -%}
+                  <h2 class="{{ section.settings.heading_style | default: 'h2' }} section_header_heading">
+                    {%- if section.settings.sbs_title_mobile != blank -%}
+                      <span class="sbs-text sbs-text--desktop">{{- section.settings.title -}}</span>
+                      <span class="sbs-text sbs-text--mobile">{{- section.settings.sbs_title_mobile -}}</span>
+                    {%- else -%}
+                      {{- section.settings.title -}}
+                    {%- endif -%}
+                  </h2>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- else -%}
+          {%- render 'section-header',
+            subheading: section.settings.subheading,
+            heading: section.settings.title,
+            heading_style: section.settings.heading_style,
+            content: section.settings.content,
+            text_alignment: 'center'
+          -%}
+        {%- endif -%}
 
         {% capture collection_list %}
+          {%- assign sbs_index = 0 -%}
+          {%- assign sbs_rendered = 0 -%}
+          {%- assign sbs_taken = '|' -%}
           {%- for block in section.blocks -%}
             {%- assign collection = block.settings.collection -%}
             {%- assign collection_url = block.settings.button_link | default: collection.url -%}
+            {%- assign card_title = block.settings.title -%}
+            {%- assign render_card = true -%}
+
+            {%- liquid
+              if is_sbs
+                # Any block type can carry a Row 08 card. Both 'style_item' and the
+                # original 'collection' block have an image setting, and the title
+                # and URL come from the menu either way, so the block type is not
+                # something this variant needs to police.
+                #
+                # The block is tied to its menu item BY NAME, not by position, so a
+                # card keeps its own title, URL and image when the block is dragged
+                # to a different place in the theme editor. Editor block order is
+                # therefore the card order, and the whole card moves together.
+                #
+                # Blocks with no name set still fall back to position so an existing
+                # setup keeps rendering; the editor comment lists which ones those
+                # are so they can be filled in.
+                assign sbs_want = block.settings.sbs_item | default: block.settings.title
+                assign sbs_want = sbs_want | downcase | strip
+                assign paired_link = null
+                assign sbs_match = 'auto'
+
+                if sbs_want != blank
+                  assign sbs_match = 'pinned'
+
+                  for sbs_l in sbs_links
+                    assign sbs_lt = sbs_l.title | downcase | strip
+                    assign sbs_lh = sbs_l.handle | default: sbs_l.title | handleize
+                    assign sbs_wh = sbs_want | handleize
+
+                    if sbs_lt == sbs_want or sbs_lh == sbs_wh
+                      assign paired_link = sbs_l
+                      break
+                    endif
+                  endfor
+
+                  # If an older block has an invalid/stale sbs_item value, do not
+                  # let that block disappear from the Theme Editor. Fall back to
+                  # the menu item at the same block position so the configured card
+                  # remains visible while its stored image/settings stay with it.
+                  if paired_link == blank
+                    assign paired_link = sbs_links[forloop.index0]
+                    assign sbs_match = 'position-fallback'
+                  endif
+                else
+                  # Take the next menu item that no block has pinned and that no
+                  # earlier unnamed block has already taken. Menu order therefore
+                  # supplies the default, while block order decides where each
+                  # card is drawn.
+                  for sbs_l in sbs_links
+                    assign sbs_lt = sbs_l.title | downcase | strip
+                    assign sbs_needle = '|' | append: sbs_lt | append: '|'
+
+                    if sbs_claimed contains sbs_needle
+                      continue
+                    endif
+
+                    if sbs_taken contains sbs_needle
+                      continue
+                    endif
+
+                    assign paired_link = sbs_l
+                    assign sbs_taken = sbs_taken | append: sbs_lt | append: '|'
+                    break
+                  endfor
+                endif
+
+                assign sbs_index = sbs_index | plus: 1
+
+                # The menu is the only source of the title and the URL here. The
+                # block's own title, button_text, button_link and collection are
+                # deliberately ignored, so nothing has to be typed twice. A
+                # position with no menu link has no title or destination, so it is
+                # skipped rather than rendered empty - the theme editor comment at
+                # the foot of this section reports exactly which positions paired.
+                assign card_title = paired_link.title
+                assign collection_url = paired_link.url
+
+                if block.settings.enabled == false or paired_link == blank
+                  assign render_card = false
+                endif
+              elsif block.type == 'style_item'
+                # A style item in the default variant has no collection or title,
+                # so it would render an empty card. Skip it there only.
+                assign render_card = false
+              endif
+
+              # Liquid has no operator precedence, so the arrow condition is
+              # resolved here rather than inline. Row 08 shows the arrow whenever
+              # its toggle is on, so a menu item with a missing URL no longer
+              # silently changes the card design as well. The default variant keeps
+              # its original rule of only showing an arrow when there is a link.
+              if is_sbs
+                assign show_card_arrow = sbs_show_arrow
+              else
+                assign show_card_arrow = false
+
+                if collection_url != blank
+                  assign show_card_arrow = true
+                endif
+              endif
+            -%}
+
+            {%- if render_card -%}
+
+            {%- liquid
+              assign sbs_rendered = sbs_rendered | plus: 1
+
+              # Mobile column pairing. The grid flows column-major over two rows,
+              # so re-ordering each group of four as 1,3,2,4 puts cards 1 and 3 in
+              # the first column, 2 and 4 in the second, 5 and 7 in the third and
+              # so on. Applied through the CSS order property inside the mobile
+              # media query only, so the desktop sequence is untouched.
+              assign sbs_r0 = sbs_rendered | minus: 1
+              assign sbs_group = sbs_r0 | divided_by: 4
+              assign sbs_slot = sbs_r0 | modulo: 4
+              assign sbs_flow = sbs_slot
+
+              if sbs_slot == 1
+                assign sbs_flow = 2
+              elsif sbs_slot == 2
+                assign sbs_flow = 1
+              endif
+
+              assign sbs_card_order = sbs_group | times: 4 | plus: sbs_flow
+            -%}
 
             {%- capture collection_card_info -%}
               <div class="collection-card__content color-scheme color-scheme--{{ block.settings.color_scheme.id }} prose prose--tight {{ block.settings.content_position }}">
@@ -260,11 +781,11 @@
                 {%- endif -%}
 
                 <div class="collection-card__row">
-                  {%- if block.settings.title != blank -%}
-                    <p class="h3 collection-card__title">{{- block.settings.title -}}</p>
+                  {%- if card_title != blank and sbs_show_title -%}
+                    <p class="h3 collection-card__title">{{- card_title -}}</p>
                   {%- endif -%}
 
-                  {%- if collection_url != blank -%}
+                  {%- if show_card_arrow -%}
                     <span class="collection-card__arrow" aria-hidden="true">
                       <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -273,7 +794,12 @@
                   {%- endif -%}
                 </div>
 
-                {%- if block.settings.button_text != blank -%}
+                {%- comment -%}
+                  The Collection block ships with button_text defaulting to
+                  "View products". Row 08's cards carry only a title and the
+                  circular arrow, so the button is suppressed in this variant.
+                {%- endcomment -%}
+                {%- if block.settings.button_text != blank and is_sbs == false -%}
                   {%- render 'button', type: 'button', content: block.settings.button_text, style: block.settings.button_style, focusable: false -%}
                 {%- endif -%}
               </div>
@@ -284,9 +810,9 @@
                 {%- assign image = block.settings.image | default: collection.featured_image -%}
                 {%- capture sizes -%}(max-width: 699px) 100vw, {% if block.settings.expand_collection %}100vw{% else %}(max-width: 1149px) {{ 100 | divided_by: section.settings.collections_per_row_desktop | at_least: 50 }}vw, {{ 100 | divided_by: section.settings.collections_per_row_desktop }}vw{% endif %}{%- endcapture -%}
 
-                {%- if image != blank -%}
+                {%- if image != blank and sbs_show_image -%}
                   {{- image | image_url: width: image.width | image_tag: sizes: sizes, widths: '200,300,400,500,600,800,1000,1200,1400,1600,1800,2000,2200,2400', class: 'zoom-image group-hover:zoom', draggable: 'false' -}}
-                {%- else -%}
+                {%- elsif sbs_show_image -%}
                   {%- capture collection_placeholder -%}{%- cycle 'collection-1', 'collection-2', 'collection-3' -%}{%- endcapture -%}
                   {{- collection_placeholder | placeholder_svg_tag: 'placeholder zoom-image group-hover:zoom' | replace: '<svg', '<svg preserveAspectRatio="xMinYMin slice"' -}}
                 {%- endif -%}
@@ -302,13 +828,14 @@
             {%- endcapture -%}
 
             {%- if collection_url != blank -%}
-              <a href="{{ collection_url }}" class="collection-card {% if block.settings.expand_collection %}grow{% endif %} {% unless stack_mobile_and_desktop %}shrink-0 snap-center{% endunless %} {% if forloop.first %}is-selected{% endif %} group" {{ block.shopify_attributes }}>
+              <a href="{{ collection_url }}" class="collection-card {% if block.settings.expand_collection %}grow{% endif %} {% unless stack_mobile_and_desktop %}shrink-0 snap-center{% endunless %} {% if forloop.first %}is-selected{% endif %} group"{% if is_sbs %} style="--sbs-card-order: {{ sbs_card_order }};"{% endif %} {{ block.shopify_attributes }}>
                 {{- collection_card_content -}}
               </a>
             {%- else -%}
-              <div class="collection-card {% if block.settings.expand_collection %}grow{% endif %} {% unless stack_mobile_and_desktop %}shrink-0 snap-center{% endunless %} {% if forloop.first %}is-selected{% endif %} group" {{ block.shopify_attributes }}>
+              <div class="collection-card {% if block.settings.expand_collection %}grow{% endif %} {% unless stack_mobile_and_desktop %}shrink-0 snap-center{% endunless %} {% if forloop.first %}is-selected{% endif %} group"{% if is_sbs %} style="--sbs-card-order: {{ sbs_card_order }};"{% endif %} {{ block.shopify_attributes }}>
                 {{- collection_card_content -}}
               </div>
+            {%- endif -%}
             {%- endif -%}
           {%- endfor -%}
         {% endcapture %}
@@ -327,6 +854,7 @@
           <div class="floating-controls-container floating-controls-container--inside floating-controls-container--on-hover {% if stack_desktop and stack_mobile == false %}lg:hidden{% elsif stack_desktop == false and stack_mobile %}lg-max:hidden{% endif %}">
             {%- assign carousel_id = 'carousel-' | append: section.id -%}
 
+            {%- if sbs_show_nav -%}
             <carousel-prev-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
               <button type="button" class="prev-next-button prev-next-button--prev circle-button circle-button--lg hover:animate-icon-inline" disabled>
                 <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
@@ -334,11 +862,17 @@
               </button>
             </carousel-prev-button>
 
+            {%- comment -%}
+              group-cells with no value makes ScrollCarousel step by
+              floor(clientWidth / cellWidth), i.e. four cards at a time. Omitting
+              it falls back to groupCells = 1, which is the one-card-per-click
+              movement Row 08 needs. Explore Our Range keeps the attribute.
+            {%- endcomment -%}
             <scroll-carousel
               id="{{ carousel_id }}"
-              group-cells
+              {% unless is_sbs %}group-cells{% endunless %}
               allow-drag
-              class="collection-list scroll-area {% if section.settings.show_text_outside %}collection-list--text-outside{% endif %} bleed lg:unbleed"
+              class="collection-list scroll-area {% if section.settings.show_text_outside %}collection-list--text-outside{% endif %} bleed {% unless is_sbs %}lg:unbleed{% endunless %}"
             >
               {{ collection_list }}
             </scroll-carousel>
@@ -349,11 +883,53 @@
                 {%- render 'icon' with 'arrow-right', direction_aware: true -%}
               </button>
             </carousel-next-button>
+            {%- endif -%}
           </div>
+
+          {%- comment -%}
+            Row 08 mobile progress indicator. Proportional thumb driven by the
+            carousel's own scroll position. The custom element is defined once
+            and guarded, matching how the theme registers its own elements.
+          {%- endcomment -%}
+          {%- if is_sbs and section.settings.sbs_show_progress -%}
+            <sbs-scroll-progress class="sbs-progress" aria-hidden="true" data-carousel="{{ carousel_id }}">
+              <span class="sbs-progress__thumb"></span>
+            </sbs-scroll-progress>
+
+            <script>
+              if (!customElements.get('sbs-scroll-progress')) {
+                customElements.define(
+                  'sbs-scroll-progress',
+                  class extends HTMLElement {
+                    connectedCallback() {
+                      this.carousel = document.getElementById(this.dataset.carousel);
+                      if (!this.carousel) return;
+                      this.update = () => {
+                        const el = this.carousel;
+                        const travel = el.scrollWidth - el.clientWidth;
+                        const size = el.scrollWidth > 0 ? el.clientWidth / el.scrollWidth : 1;
+                        this.style.setProperty('--sbs-progress-size', Math.min(1, size));
+                        this.style.setProperty('--sbs-progress-position', travel > 0 ? el.scrollLeft / travel : 0);
+                      };
+                      this.carousel.addEventListener('scroll', this.update, { passive: true });
+                      window.addEventListener('resize', this.update, { passive: true });
+                      this.update();
+                    }
+                    disconnectedCallback() {
+                      if (!this.carousel) return;
+                      this.carousel.removeEventListener('scroll', this.update);
+                      window.removeEventListener('resize', this.update);
+                    }
+                  }
+                );
+              }
+            </script>
+          {%- endif -%}
         {% endif %}
       </div>
     </div>
   </div>
+
 {%- endif -%}
 
 {% schema %}
@@ -366,6 +942,121 @@
     "groups": ["header", "custom.overlay"]
   },
   "settings": [
+    {
+      "type": "select",
+      "id": "layout_variant",
+      "label": "Layout variant",
+      "info": "\"Collection list\" is the original behaviour. \"Shop by style\" takes card titles and links from a navigation menu instead of the collection pickers.",
+      "options": [
+        { "value": "", "label": "Collection list (default)" },
+        { "value": "shop_by_style", "label": "Shop by style (menu driven)" }
+      ],
+      "default": ""
+    },
+    {
+      "type": "header",
+      "content": "Shop by style"
+    },
+    {
+      "type": "paragraph",
+      "content": "Only used when the layout variant is \"Shop by style\". Select the Shop by Style menu and the cards build themselves: each item in that menu supplies one card's title and link, in menu order. The blocks below supply only images and display options - block 1 takes the image for the first menu item, block 2 for the second, and so on. Titles and links entered on a block are ignored here."
+    },
+    {
+      "type": "link_list",
+      "id": "sbs_menu",
+      "label": "Shop by Style menu",
+      "info": "The menu containing the style values. If they are child items of a parent entry such as \"Shop by Style\", select the menu that entry lives in and name the entry in the next setting."
+    },
+    {
+      "type": "color",
+      "id": "sbs_background",
+      "label": "Section background",
+      "info": "Applied only to this section. Global colour schemes are not affected.",
+      "default": "#f3eee4"
+    },
+    {
+      "type": "text",
+      "id": "sbs_parent_item",
+      "label": "Parent menu item",
+      "info": "Leave empty if the selected menu's own items are the styles. If the styles are children of a menu entry, type that entry's exact title or handle, for example Shop by Style or shop-by-style, and its child items become the cards. Searched three levels deep. View source in the theme editor to see the menu tree printed for this section, with the child count next to each entry."
+    },
+    {
+      "type": "text",
+      "id": "sbs_subheading_mobile",
+      "label": "Mobile eyebrow",
+      "info": "Optional. Replaces the eyebrow below 700px."
+    },
+    {
+      "type": "text",
+      "id": "sbs_title_mobile",
+      "label": "Mobile heading",
+      "info": "Optional. Replaces the heading below 700px."
+    },
+    {
+      "type": "range",
+      "id": "sbs_heading_gap",
+      "label": "Heading to cards gap",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "sbs_mobile_fill",
+      "label": "Mobile column pairing",
+      "info": "Paired puts cards 1 and 3 in the first column, 2 and 4 in the second, 5 and 7 in the third. Sequential puts 1 and 2 in the first column, 3 and 4 in the second.",
+      "options": [
+        { "value": "paired", "label": "Paired (1+3, 2+4, 5+7)" },
+        { "value": "sequential", "label": "Sequential (1+2, 3+4, 5+6)" }
+      ],
+      "default": "paired"
+    },
+    {
+      "type": "range",
+      "id": "sbs_mobile_gap",
+      "label": "Mobile card gap",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "sbs_show_image",
+      "label": "Show image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sbs_show_title",
+      "label": "Show title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sbs_show_arrow",
+      "label": "Show card arrow",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sbs_show_nav",
+      "label": "Show desktop carousel arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "sbs_show_progress",
+      "label": "Show mobile progress indicator",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:global.colors.scheme"
+    },
     {
       "type": "color_scheme",
       "id": "color_scheme",
@@ -509,9 +1200,77 @@
   ],
   "blocks": [
     {
+      "type": "style_item",
+      "name": "Style item",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Used only by the \"Shop by style\" layout variant. The title and link come from the matching menu item; only the image and display options are set here."
+        },
+        {
+          "type": "text",
+          "id": "sbs_item",
+          "label": "Shop by Style item",
+          "info": "Optional, and only used by the \"Shop by style\" layout. Leave it empty and this card simply takes the next unused item from the menu, so a new section needs no setup. Fill it in with a child item's exact title or handle to pin this card to that style, and the card then keeps its title, link and image wherever you drag the block. The block's own Title field works as a pin too. Leave blank on Explore Our Range blocks."
+        },
+        {
+          "type": "checkbox",
+          "id": "enabled",
+          "label": "Show this item",
+          "default": true
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:global.image.image"
+        },
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "t:global.colors.scheme",
+          "default": "scheme-4"
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "t:global.position.content_position",
+          "options": [
+            { "value": "place-self-start text-start", "label": "t:global.position.top_left" },
+            { "value": "place-self-center text-center", "label": "t:global.position.center" },
+            { "value": "place-self-end-start text-start", "label": "t:global.position.bottom_left" },
+            { "value": "place-self-end-center text-center", "label": "t:global.position.bottom_center" },
+            { "value": "place-self-end text-end", "label": "t:global.position.bottom_right" }
+          ],
+          "default": "place-self-end-start text-start"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "t:global.colors.overlay",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "label": "t:global.colors.overlay_opacity",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 0
+        }
+      ]
+    },
+    {
       "type": "collection",
       "name": "t:sections.collection_list.blocks.collection.name",
       "settings": [
+        {
+          "type": "text",
+          "id": "sbs_item",
+          "label": "Shop by Style item",
+          "info": "Optional, and only used by the \"Shop by style\" layout. Leave it empty and this card simply takes the next unused item from the menu, so a new section needs no setup. Fill it in with a child item's exact title or handle to pin this card to that style, and the card then keeps its title, link and image wherever you drag the block. The block's own Title field works as a pin too. Leave blank on Explore Our Range blocks."
+        },
         {
           "type": "color_scheme",
           "id": "color_scheme",
