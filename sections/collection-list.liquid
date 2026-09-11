@@ -36,10 +36,9 @@
       Menu  -> card title + card URL (nothing else)
       Block -> image, enabled, presentation
 
-    Pairing is by BLOCK POSITION, not by enabled position: style item 1 always
-    pairs with menu link 1, so disabling an item removes only that card instead
-    of shifting the rest onto the wrong links. Menu order therefore determines
-    Row 08 item order.
+    Blocks are matched to their Shop by Style menu item when a stable item key is
+    available; older/unmatched blocks fall back to the same menu position so they
+    still render in the Theme Editor.
   {%- endcomment -%}
 
   {%- liquid
@@ -675,13 +674,23 @@
 
                   for sbs_l in sbs_links
                     assign sbs_lt = sbs_l.title | downcase | strip
-                    assign sbs_lh = sbs_l.handle | downcase | strip
+                    assign sbs_lh = sbs_l.handle | default: sbs_l.title | handleize
+                    assign sbs_wh = sbs_want | handleize
 
-                    if sbs_lt == sbs_want or sbs_lh == sbs_want
+                    if sbs_lt == sbs_want or sbs_lh == sbs_wh
                       assign paired_link = sbs_l
                       break
                     endif
                   endfor
+
+                  # If an older block has an invalid/stale sbs_item value, do not
+                  # let that block disappear from the Theme Editor. Fall back to
+                  # the menu item at the same block position so the configured card
+                  # remains visible while its stored image/settings stay with it.
+                  if paired_link == blank
+                    assign paired_link = sbs_links[forloop.index0]
+                    assign sbs_match = 'position-fallback'
+                  endif
                 else
                   # Take the next menu item that no block has pinned and that no
                   # earlier unnamed block has already taken. Menu order therefore
@@ -921,90 +930,6 @@
     </div>
   </div>
 
-  {%- comment -%}
-    Theme-editor-only diagnostics for the Shop by Style variant. Emitted as an
-    HTML comment, so it never affects the storefront. View source in the editor
-    to see whether the menu resolved and how many cards were produced.
-  {%- endcomment -%}
-  {%- if is_sbs and request.design_mode -%}
-    <!-- Row 08 (shop_by_style) diagnostics
-
-      menu selected ....... {{ section.settings.sbs_menu.handle | default: 'NOT SELECTED' }}
-      parent item set ..... {{ section.settings.sbs_parent_item | default: '(empty - using the menu top level)' }}
-      cards taken from .... {{ sbs_source }}
-      items found ......... {{ sbs_links.size | default: 0 }}
-      item titles ......... {% for l in sbs_links limit: 24 %}{{ l.title }}{% unless forloop.last %} | {% endunless %}{% endfor %}
-      image blocks ........ {{ section.blocks.size }}
-      cards rendered ...... {{ sbs_enabled_count }}
-      items with NO url ... {{ sbs_missing_urls | default: 'none - every item has a link' }}
-
-      Pairing (block -> how it resolved -> menu item -> url):
-      {%- assign d_taken = '|' -%}
-      {%- for block in section.blocks -%}
-        {%- liquid
-          assign d_key = block.settings.sbs_item | default: block.settings.title
-          assign d_key = d_key | downcase | strip
-          assign d_link = null
-          assign d_mode = 'auto (next free menu item)'
-
-          if d_key != blank
-            assign d_mode = 'pinned to "' | append: d_key | append: '"'
-
-            for d_l in sbs_links
-              assign d_lt = d_l.title | downcase | strip
-              assign d_lh = d_l.handle | downcase | strip
-
-              if d_lt == d_key or d_lh == d_key
-                assign d_link = d_l
-                break
-              endif
-            endfor
-
-            if d_link == blank
-              assign d_mode = 'NO MATCH for "' | append: d_key | append: '" - card skipped'
-            endif
-          else
-            for d_l in sbs_links
-              assign d_lt = d_l.title | downcase | strip
-              assign d_needle = '|' | append: d_lt | append: '|'
-
-              if sbs_claimed contains d_needle
-                continue
-              endif
-
-              if d_taken contains d_needle
-                continue
-              endif
-
-              assign d_link = d_l
-              assign d_taken = d_taken | append: d_lt | append: '|'
-              break
-            endfor
-          endif
-        -%}
-        block {{ forloop.index }} [{{ d_mode }}] -> {{ d_link.title | default: '(none)' }} -> {{ d_link.url | default: '-' }}
-      {%- endfor %}
-
-      Menu items with no block (add a block to give them an image):
-      {%- for l in sbs_links -%}
-        {%- assign l_needle = '|' | append: l.title | downcase | strip | append: '|' -%}
-        {%- unless sbs_claimed contains l_needle or d_taken contains l_needle -%}{{ l.title }} {% endunless -%}
-      {%- endfor %}
-
-      Tree of "{{ section.settings.sbs_menu.handle | default: 'NOT SELECTED' }}".
-      Find the entry whose children are your styles and copy its title into
-      "Parent menu item". The number in brackets is how many children it has.
-      {% for l1 in section.settings.sbs_menu.links %}
-        [1] {{ l1.title }}  ({{ l1.links.size }} children)  handle: {{ l1.handle }}
-        {%- for l2 in l1.links %}
-          [2]   {{ l2.title }}  ({{ l2.links.size }} children)  handle: {{ l2.handle }}
-          {%- if l2.links.size > 0 %}
-            [3]     {% for l3 in l2.links limit: 16 %}{{ l3.title }}{% unless forloop.last %}, {% endunless %}{% endfor %}
-          {%- endif -%}
-        {%- endfor -%}
-      {% endfor %}
-    -->
-  {%- endif -%}
 {%- endif -%}
 
 {% schema %}
