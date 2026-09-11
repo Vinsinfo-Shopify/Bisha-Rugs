@@ -264,13 +264,31 @@
 
       /* The centre card is prominent by being the only fully visible one, so it
          does not also grow. Growing it here would push the neighbours out and
-         narrow the readable area again. */
+         narrow the readable area again.
+         flex is restated in full, not just flex-basis, so nothing from the
+         desktop shorthand can survive into the mobile layout. The width
+         transition is cancelled too: with no size change to animate it only
+         made the card look like it was still growing on settle. */
+      #shopify-section-{{ section.id }} .real-homes__card,
       #shopify-section-{{ section.id }} .real-homes__card.is-active {
-        flex-basis: var(--rh-card);
+        flex: 0 0 var(--rh-card);
+        transition: none;
+        /* One flick moves exactly one card. Without this, momentum scrolling
+           can fly past several snap points and land three cards away. */
+        scroll-snap-stop: always;
+      }
+
+      /* Cards are only identical in height if the panel underneath is. A
+         one-line title made a shorter card, and align-items: center then
+         dropped that card lower than its neighbours, which reads as the
+         centre card being a different size. Two lines are reserved always. */
+      #shopify-section-{{ section.id }} .real-homes__track {
+        align-items: start;
       }
 
       #shopify-section-{{ section.id }} .real-homes__title {
         font-size: 12px;
+        min-height: calc(2 * 1.35em);
       }
 
       /* Guard against the price ever splitting across lines */
@@ -432,6 +450,8 @@
             if (!this.track) return;
             this.track.removeEventListener('scroll', this.onScroll);
             window.removeEventListener('resize', this.onScroll);
+            if (this.onPointerMove) window.removeEventListener('pointermove', this.onPointerMove);
+            if (this.onPointerUp) window.removeEventListener('pointerup', this.onPointerUp);
           }
 
           makeClone(card) {
@@ -523,19 +543,26 @@
               this.track.style.scrollSnapType = 'none';
             });
 
-            window.addEventListener('pointermove', (event) => {
+            // Kept as references so they can be removed again. The theme editor
+            // re-renders the section on every setting change, and anonymous
+            // window listeners from the previous render would otherwise stack up
+            // and keep scrolling a track that no longer exists.
+            this.onPointerMove = (event) => {
               if (!dragging) return;
               const delta = event.clientX - startX;
               moved = Math.max(moved, Math.abs(delta));
               this.track.scrollLeft = startScroll - delta;
-            });
+            };
 
-            window.addEventListener('pointerup', () => {
+            this.onPointerUp = () => {
               if (!dragging) return;
               dragging = false;
               this.track.style.scrollSnapType = '';
               this.onScroll();
-            });
+            };
+
+            window.addEventListener('pointermove', this.onPointerMove);
+            window.addEventListener('pointerup', this.onPointerUp);
 
             // A drag that ends on the product link must not navigate.
             this.track.addEventListener(
