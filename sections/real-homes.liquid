@@ -85,7 +85,6 @@
       overflow: auto hidden;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
-      padding-inline: calc(50% - {{ section.settings.card_width }}px / 2);
     }
 
     #shopify-section-{{ section.id }} .real-homes__track::-webkit-scrollbar {
@@ -109,7 +108,7 @@
 
     #shopify-section-{{ section.id }} .real-homes__media {
       position: relative;
-      aspect-ratio: 281 / 449;
+      aspect-ratio: 281 / 442;
       overflow: hidden;
       border-radius: {{ section.settings.card_radius }}px;
       background: rgb(var(--text-color) / 0.06);
@@ -131,6 +130,8 @@
     }
 
     /* ---------- Product information ---------- */
+    /* A separate bordered card beneath the media, not part of it. The border
+       colour is sampled from the reference at #e6e6e6. */
     #shopify-section-{{ section.id }} .real-homes__info {
       display: grid;
       grid-template-columns: auto minmax(0, 1fr) auto;
@@ -138,6 +139,7 @@
       gap: 10px;
       padding: 8px 10px;
       background: #ffffff;
+      border: 1px solid {{ section.settings.info_border_color }};
       border-radius: {{ section.settings.card_radius }}px;
       margin-block-start: {{ section.settings.info_gap }}px;
     }
@@ -153,7 +155,7 @@
     #shopify-section-{{ section.id }} .real-homes__title {
       font-family: var(--text-font-family);
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 700;
       line-height: 1.35;
       margin: 0;
       display: -webkit-box;
@@ -162,26 +164,38 @@
       overflow: hidden;
     }
 
-    #shopify-section-{{ section.id }} .real-homes__price {
+    /* price-list.liquid still renders the prices, including sale, compare-at,
+       formatting and localisation. Only the weight is restyled here. */
+    #shopify-section-{{ section.id }} .real-homes__price,
+    #shopify-section-{{ section.id }} .real-homes__price .price-list > * {
       font-size: 12px;
       line-height: 1.4;
+      font-weight: 700;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__price {
       margin-block-start: 2px;
     }
 
+    /* Surrounding cards: transparent disc with a dark chevron. */
     #shopify-section-{{ section.id }} .real-homes__arrow {
       width: 28px;
       height: 28px;
       display: grid;
       place-items: center;
       border-radius: var(--rounded-full);
-      background: rgb(43 39 36 / 0.08);
-      color: rgb(var(--text-color));
-      transition: background 0.2s ease, color 0.2s ease;
+      background: transparent;
+      border: 1px solid {{ section.settings.info_border_color }};
+      color: #2b2724;
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
     }
 
+    /* Active centre card: dark disc with a white chevron. */
+    #shopify-section-{{ section.id }} .real-homes__card.is-active .real-homes__arrow,
     #shopify-section-{{ section.id }} .real-homes__card:hover .real-homes__arrow,
     #shopify-section-{{ section.id }} .real-homes__card:focus-visible .real-homes__arrow {
       background: #2b2724;
+      border-color: #2b2724;
       color: #ffffff;
     }
 
@@ -237,7 +251,6 @@
 
       #shopify-section-{{ section.id }} .real-homes__track {
         gap: {{ section.settings.card_gap_mobile }}px;
-        padding-inline: calc(50% - {{ section.settings.card_width_mobile }}px / 2);
       }
 
       #shopify-section-{{ section.id }} .real-homes__card {
@@ -373,7 +386,18 @@
 
             this.carousel.addEventListener('carousel:settle', this.sync);
             this.carousel.addEventListener('carousel:change', this.sync);
-            requestAnimationFrame(this.sync);
+
+            // Open on the middle card rather than the first, so the whole run of
+            // cards is visible straight away with the centre one active. The
+            // track has no leading padding, so the outer cards sit partly beyond
+            // the viewport exactly as the design shows.
+            requestAnimationFrame(() => {
+              const cells = Array.from(this.carousel.children);
+              if (cells.length > 2 && typeof this.carousel.select === 'function') {
+                this.carousel.select(Math.floor((cells.length - 1) / 2), { instant: true });
+              }
+              this.sync();
+            });
           }
 
           disconnectedCallback() {
@@ -419,7 +443,7 @@
       "max": 120,
       "step": 2,
       "unit": "px",
-      "default": 48
+      "default": 84
     },
     {
       "type": "range",
@@ -429,7 +453,7 @@
       "max": 120,
       "step": 2,
       "unit": "px",
-      "default": 48
+      "default": 84
     },
     {
       "type": "header",
@@ -455,7 +479,7 @@
       "max": 80,
       "step": 1,
       "unit": "px",
-      "default": 18
+      "default": 23
     },
     {
       "type": "header",
@@ -517,6 +541,13 @@
       "default": 2
     },
     {
+      "type": "color",
+      "id": "info_border_color",
+      "label": "Product card border",
+      "info": "The subtle outline around the product information card.",
+      "default": "#e6e6e6"
+    },
+    {
       "type": "range",
       "id": "info_gap",
       "label": "Media to product information gap",
@@ -524,13 +555,14 @@
       "max": 32,
       "step": 1,
       "unit": "px",
-      "default": 8
+      "default": 11
     },
     {
       "type": "checkbox",
       "id": "show_controls",
       "label": "Show carousel arrows",
-      "default": true
+      "info": "Off by default. The design has no navigation arrows over the media; the carousel is driven by dragging on desktop and swiping on mobile.",
+      "default": false
     },
     {
       "type": "color",
