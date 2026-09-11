@@ -247,45 +247,38 @@
         font-size: 12px;
       }
 
-      /* One full centre card with its neighbours peeking, not three equal
-         thirds. Dividing the viewport into thirds left a 117px card at 375px,
-         and after the panel padding, thumbnail, arrow and gaps the title column
-         was about 5px wide, which is what forced one character per line.
+      /* Mobile sizing is solved backwards from the ACTIVE card, not from the
+         neighbours. The active card is the one that has to fit the viewport
+         with a gap and a peek on each side, so it is defined first as
+         100% - 2*(peek + gap), and the smaller neighbour width is derived from
+         it by dividing by the same centre-card ratio the desktop uses.
 
-         The card is now the viewport minus one peek and one gap on each side, so
-         the row still fills the width exactly and the centre card takes what is
-         left. Desktop is untouched: this only overrides --rh-card inside the
-         mobile query. */
+         Because --rh-card ends up as active/ratio, the existing
+         .is-active { flex-basis: calc(var(--rh-card) * ratio) } rule resolves
+         back to exactly the active width. No second active rule is needed, no
+         transform, no fixed pixels, and the row can never exceed the track.
+
+         Do not invert this and set the neighbour width first. That was the old
+         approach and the active card then overflowed the viewport by the
+         difference, which is where the horizontal page scroll came from. */
       #shopify-section-{{ section.id }} .real-homes__carousel {
         --rh-gap: {{ section.settings.card_gap_mobile }}px;
         --rh-peek: {{ section.settings.card_peek_mobile }}px;
-        --rh-card: calc(100% - 2 * (var(--rh-peek) + var(--rh-gap)));
+        --rh-ratio: {{ section.settings.active_scale | divided_by: 100.0 }};
+        --rh-active: calc(100% - 2 * (var(--rh-peek) + var(--rh-gap)));
+        --rh-card: calc(var(--rh-active) / var(--rh-ratio));
       }
 
-      /* The centre card is prominent by being the only fully visible one, so it
-         does not also grow. Growing it here would push the neighbours out and
-         narrow the readable area again.
-         flex is restated in full, not just flex-basis, so nothing from the
-         desktop shorthand can survive into the mobile layout. The width
-         transition is cancelled too: with no size change to animate it only
-         made the card look like it was still growing on settle. */
-      #shopify-section-{{ section.id }} .real-homes__card,
-      #shopify-section-{{ section.id }} .real-homes__card.is-active {
-        flex: 0 0 var(--rh-card);
-        transition: none;
-        /* One flick moves exactly one card. Without this, momentum scrolling
-           can fly past several snap points and land three cards away. */
+      /* One flick moves exactly one card. Without this, momentum scrolling can
+         fly past several snap points and land three cards away. */
+      #shopify-section-{{ section.id }} .real-homes__card {
         scroll-snap-stop: always;
       }
 
-      /* Cards are only identical in height if the panel underneath is. A
-         one-line title made a shorter card, and align-items: center then
-         dropped that card lower than its neighbours, which reads as the
-         centre card being a different size. Two lines are reserved always. */
-      #shopify-section-{{ section.id }} .real-homes__track {
-        align-items: start;
-      }
-
+      /* Two title lines are reserved on every card so the info panel is a
+         constant height. Otherwise a one-line title shortens that card and
+         align-items: center drops it below its neighbours, which reads as a
+         size difference on top of the intended one. */
       #shopify-section-{{ section.id }} .real-homes__title {
         font-size: 12px;
         min-height: calc(2 * 1.35em);
@@ -443,6 +436,11 @@
             requestAnimationFrame(() => {
               this.centre(this.originals[Math.floor((this.count - 1) / 2)], true);
               this.mark();
+              // mark() widens the card it just marked, which moves that card's
+              // midpoint right by half the growth, so the first paint would sit
+              // off-centre by that amount. Centre once more now the width is
+              // final. Instant, so nothing is visible.
+              requestAnimationFrame(() => this.centre(this.track.querySelector('.is-active'), true));
             });
           }
 
@@ -671,7 +669,7 @@
       "type": "range",
       "id": "active_scale",
       "label": "Centre card size",
-      "info": "How much larger the centre card is than its neighbours. 117 matches the design.",
+      "info": "How much larger the centre card is than its neighbours, on desktop and mobile. 117 matches the design.",
       "min": 100,
       "max": 140,
       "step": 1,
