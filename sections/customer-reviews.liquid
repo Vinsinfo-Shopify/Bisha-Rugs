@@ -90,6 +90,14 @@
   #shopify-section-{{ section.id }} .rev__track {
     --rev-visible: {{ section.settings.cards_desktop }};
     --rev-gap: {{ section.settings.card_gap }}px;
+    /* Gap count is floor(visible), not visible - 1: with 4.1 cards in view you
+       see four whole gaps, so the sliver of the fifth card is exactly the 0.1
+       and not 0.1 plus a rounding error. */
+    --rev-card: calc((100% - {{ section.settings.cards_desktop | floor }} * var(--rev-gap)) / var(--rev-visible));
+    /* The track carries no inline padding, so card 1 begins on the container
+       edge and the row can run to the opposite edge. */
+    padding-inline: 0;
+    scroll-padding-inline: 0;
     display: flex;
     align-items: stretch;
     gap: var(--rev-gap);
@@ -106,7 +114,7 @@
   /* A fraction of the track, never fixed pixels, so the row cannot exceed its
      container at any width. 4.5 visible is what leaves the partial fifth card. */
   #shopify-section-{{ section.id }} .rev__card {
-    flex: 0 0 calc((100% - (var(--rev-visible) - 1) * var(--rev-gap)) / var(--rev-visible));
+    flex: 0 0 var(--rev-card);
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -118,6 +126,16 @@
     /* One swipe moves one card. Without this a momentum flick sails past
        several snap points. */
     scroll-snap-stop: always;
+  }
+
+  /* Trailing room so the LAST card can travel all the way to the left edge
+     instead of the scroller stopping with the final four filling the view.
+     A margin on the last card, not padding on the track: padding would shrink
+     the track's content box, which is what the card width percentage resolves
+     against, and the width feeds this margin -- circular. Margin sits outside
+     that loop. 100% - card lands the last card exactly on the left edge. */
+  #shopify-section-{{ section.id }} .rev__card:last-child {
+    margin-inline-end: calc(100% - var(--rev-card));
   }
 
   /* ---------- Card ---------- */
@@ -311,6 +329,34 @@
     stroke-linejoin: round;
   }
 
+  @media screen and (pointer: fine) {
+    /* Row 08 overrides the theme's hover-reveal: its arrows are always on. */
+    #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control,
+    #shopify-section-{{ section.id }} .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
+      opacity: 1;
+      transform: translateY(-50%);
+    }
+
+    #shopify-section-{{ section.id }} .floating-controls-container:not(:has(.is-scrollable)) .floating-controls-container__control {
+      display: grid;
+    }
+
+    /* theme.css puts the control 1.5rem INSIDE the container, which lands it on
+       top of the last card. Half the disc width pushes it back out so it
+       straddles the outer edge of the carousel, exactly as Row 08 does. */
+    #shopify-section-{{ section.id }} .floating-controls-container--inside {
+      --floating-controls-inset-inline: -1.1875rem; /* half of 38px */
+    }
+
+    /* Row 08 hardcodes a calc because its cards have a fixed ratio. Here the
+       cards stretch to a shared height, so the container's own midpoint IS the
+       card midpoint and 50% is both simpler and exact. */
+    #shopify-section-{{ section.id }} .floating-controls-container__control {
+      inset-block-start: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
   /* ---------- Mobile ---------- */
   @media screen and (max-width: 699px) {
     #shopify-section-{{ section.id }} .rev__inner {
@@ -320,6 +366,7 @@
     #shopify-section-{{ section.id }} .rev__track {
       --rev-visible: {{ section.settings.cards_mobile }};
       --rev-gap: {{ section.settings.card_gap_mobile }}px;
+      --rev-card: calc((100% - {{ section.settings.cards_mobile | floor }} * var(--rev-gap)) / var(--rev-visible));
     }
 
     #shopify-section-{{ section.id }} .rev__header {
@@ -481,7 +528,15 @@
           // The Theme Editor's sample cards must never reach the storefront.
           // Judge.me flags them with its own notice block; sample product links
           // are also bare "#" anchors, checked per card as a second guard.
-          if (source.parentElement && source.parentElement.querySelector('.jdgm-block-error')) return [];
+          const isSampleMode = !!(
+            source.parentElement && source.parentElement.querySelector('.jdgm-block-error')
+          );
+          // Sample cards are a Theme Editor preview of the LAYOUT only. They
+          // never reach the storefront, and their demo product ("Classic Cable
+          // Knit Sweater") is dropped even in the editor, because a bare "#"
+          // href fails the per-card check below. Nothing about them is stored
+          // or depended on.
+          if (isSampleMode && !(window.Shopify && window.Shopify.designMode)) return [];
 
           const out = [];
           source.querySelectorAll('.jdgm-card').forEach((card) => {
@@ -830,20 +885,21 @@
       "type": "range",
       "id": "cards_desktop",
       "label": "Cards visible (desktop)",
-      "info": "4.5 leaves the partial fifth card from the design.",
+      "info": "4.1 shows four whole cards plus a 10% sliver of the fifth, as in the design.",
       "min": 2,
       "max": 6,
-      "step": 0.5,
-      "default": 4.5
+      "step": 0.1,
+      "default": 4.1
     },
     {
       "type": "range",
       "id": "cards_mobile",
       "label": "Cards visible (mobile)",
+      "info": "1.1 shows one whole card plus a 10% sliver of the next.",
       "min": 1,
       "max": 3.5,
       "step": 0.1,
-      "default": 2.3
+      "default": 1.1
     },
     {
       "type": "range",
