@@ -1744,7 +1744,7 @@
         "tagline_gap": 6,
         "tagline_size": 14,
         "header_gap": 24,
-        "arrow_size": 38,
+        "arrow_size": 26,
         "arrow_offset": 50,
         "arrow_inset_mobile": 0,
         "arrow_background": "#2b2724",
