@@ -22,6 +22,7 @@
     border: 0;
   }
  
+ 
   /* --- Icon with text list --- */
   #shopify-section-{{ section.id }} .icon-with-text-list {
     display: flex;
@@ -101,6 +102,11 @@
       --section-padding-left: {{ section.settings.padding_left_mobile | default: 12 }}px;
       --section-padding-right: {{ section.settings.padding_right_mobile | default: 12 }}px;
     }
+    .image-with-text--the-craft .section-custom-padding {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
   }
  
   {%- comment -%}
