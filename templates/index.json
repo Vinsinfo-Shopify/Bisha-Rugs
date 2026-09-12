@@ -1723,7 +1723,7 @@
         "cta_size_mobile": 14,
         "arrow_offset": 30,
         "arrow_offset_mobile": 40,
-        "arrow_inset_mobile": 15,
+        "arrow_inset_mobile": 8,
         "arrow_background": "#2b2724",
         "arrow_color": "#ffffff",
         "arrow_border": "#ffffff"
