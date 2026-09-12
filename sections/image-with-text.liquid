@@ -599,37 +599,55 @@
        short fade behind it, so it reads as part of the text rather than as a
        row underneath. The fade is built from the colour scheme's own
        background variable, so it matches whatever scheme the section uses. */
+    /* Height and the button's reserved space animate together, so the service
+       icons below move smoothly instead of jumping a line. */
     #shopify-section-{{ section.id }} .collection_banner .cb-desc {
       position: relative;
+      transition: padding-block-end 320ms ease;
+    }
+
+    /* Open reserves one line below the text for the control, which is why the
+       button never changes positioning mode and so never jumps. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-open {
+      padding-block-end: 1.5em;
     }
 
     #shopify-section-{{ section.id }} .collection_banner .cb-desc__text {
+      overflow: hidden;
+      transition: max-height 320ms ease;
+    }
+
+    /* The clamp hangs off a class rather than the expanded state, so it can be
+       lifted for the whole animation and reapplied only once it has finished.
+       Toggling the clamp mid-transition is what made the text snap. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-clamped .cb-desc__text {
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: var(--cb-lines);
-      overflow: hidden;
     }
 
-    /* Expanded clears every restriction explicitly. -webkit-line-clamp only
-       applies to display: -webkit-box, but it is reset anyway so nothing can
-       survive if the display value is ever changed elsewhere. */
-    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-expanded .cb-desc__text,
-    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-measuring .cb-desc__text {
+    @media (prefers-reduced-motion: reduce) {
+      #shopify-section-{{ section.id }} .collection_banner .cb-desc,
+      #shopify-section-{{ section.id }} .collection_banner .cb-desc__text {
+        transition: none;
+      }
+    }
+
+    /* With no .is-clamped there is nothing to clear: the text is a plain block
+       at its natural height. max-height is only ever an inline value during an
+       animation, and it is removed when the animation ends. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc:not(.is-clamped) .cb-desc__text {
       display: block;
-      -webkit-line-clamp: none;
-      -webkit-box-orient: horizontal;
       max-height: none;
-      overflow: visible;
-    }
-
-    /* Used for one frame while measuring, then removed. Invisible to the user:
-       it is only ever set and cleared inside a single synchronous block. */
-    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-measuring {
-      visibility: hidden;
     }
 
     #shopify-section-{{ section.id }} .collection_banner .cb-toggle {
       display: none;
+      position: absolute;
+      inset-inline-end: 0;
+      inset-block-end: 0;
+      align-items: baseline;
+      gap: 4px;
       appearance: none;
       background: none;
       border: 0;
@@ -639,35 +657,49 @@
       line-height: 140%;
       font-weight: 700;
       color: inherit;
-      /* Both properties are set: theme.css resets button decoration in places,
-         and the longhand is what wins against a shorthand reset. */
-      text-decoration: underline;
-      text-decoration-line: underline;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 2px;
+      text-decoration: none;
       cursor: pointer;
     }
 
     /* Only shown once the script has confirmed the text actually overflows, so
        a short description never gets a pointless control. */
     #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-truncatable .cb-toggle {
-      display: inline;
+      display: flex;
     }
 
-    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-truncatable:not(.is-expanded) .cb-toggle {
-      position: absolute;
-      inset-inline-end: 0;
-      inset-block-end: 0;
-      padding-inline-start: 26px;
+    /* Masks the end of the clamped line so the control never prints on top of
+       the description.
+
+       --background carries its own alpha ("85 88 60 / 1"), so
+       rgb(var(--background) / 0) expanded to a three-part colour, the whole
+       declaration was dropped, and no mask was painted at all - which is why
+       the label sat over the text. --background-without-opacity is the plain
+       triplet and is what the theme itself uses for solid fills. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-clamped .cb-toggle {
+      padding-inline-start: 30px;
       background: linear-gradient(
         to right,
-        rgb(var(--background) / 0) 0,
-        rgb(var(--background)) 22px
+        rgb(var(--background-without-opacity) / 0) 0,
+        rgb(var(--background-without-opacity)) 26px
       );
     }
 
-    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-expanded .cb-toggle {
-      margin-block-start: 4px;
+    /* The ellipsis belongs to the control, not to the clamp: the browser's own
+       ellipsis sits under the mask, so this is the one that is seen. It is not
+       underlined, matching the design. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-toggle__dots {
+      text-decoration: none;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc:not(.is-clamped) .cb-toggle__dots {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .cb-toggle__label {
+      text-decoration: underline;
+      text-decoration-line: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
     }
 
     #shopify-section-{{ section.id }} .collection_banner .cb-toggle:focus-visible {
@@ -702,8 +734,6 @@
         font-size: 14px;
         line-height: 140%;
         font-weight: 700;
-        text-decoration: underline;
-        text-decoration-line: underline;
       }
 
       #shopify-section-{{ section.id }} .collection_banner .icon-with-text-item {
@@ -799,13 +829,14 @@
                   text from the collection description is preserved exactly.
                 {%- endcomment -%}
                 {%- if section.settings.custom_class contains 'collection_banner' -%}
-                  <div class="cb-desc" data-cb-desc>
+                  <div class="cb-desc is-clamped" data-cb-desc>
                     <div class="image_with_text_content cb-desc__text" {{ block.shopify_attributes }}>
                       {{- block.settings.content -}}
                     </div>
 
                     <button type="button" class="cb-toggle" data-cb-toggle aria-expanded="false">
-                      Read more
+                      <span class="cb-toggle__dots" aria-hidden="true">&hellip;</span>
+                      <span class="cb-toggle__label">Read more</span>
                     </button>
                   </div>
                 {%- else -%}
@@ -942,41 +973,84 @@
               return;
             }
 
+            this.label = this.toggle.querySelector('.cb-toggle__label') || this.toggle;
             // Read from the markup so the two stay in step: whatever the button
             // is rendered with is what it returns to on collapse.
-            this.moreLabel = this.toggle.textContent.trim();
+            this.moreLabel = this.label.textContent.trim();
             this.lessLabel = 'Read less';
+            this.clampedHeight = 0;
 
             this.onToggle = () => {
-              const expanded = this.wrap.classList.toggle('is-expanded');
-              this.toggle.setAttribute('aria-expanded', String(expanded));
-              this.toggle.textContent = expanded ? this.lessLabel : this.moreLabel;
+              const el = this.text;
+              const isOpen = this.wrap.classList.contains('is-open');
+              const from = el.getBoundingClientRect().height;
+
+              // The label and the reserved space change first so the control
+              // responds immediately; the height then animates to match.
+              if (isOpen) {
+                this.wrap.classList.remove('is-open');
+                this.label.textContent = this.moreLabel;
+                this.toggle.setAttribute('aria-expanded', 'false');
+              } else {
+                this.wrap.classList.remove('is-clamped');
+                this.wrap.classList.add('is-open');
+                this.label.textContent = this.lessLabel;
+                this.toggle.setAttribute('aria-expanded', 'true');
+              }
+
+              // Pin the old height, force a reflow, then set the new one, so the
+              // browser has two values to interpolate between. Without the
+              // reflow both assignments land in the same frame and it cuts.
+              el.style.maxHeight = from + 'px';
+              void el.offsetHeight;
+              el.style.maxHeight = (isOpen ? this.clampedHeight : el.scrollHeight) + 'px';
+
+              const finish = () => {
+                clearTimeout(this.fallback);
+                el.removeEventListener('transitionend', finish);
+                // The clamp is only reapplied once the height has finished
+                // moving, otherwise the text would reflow mid-animation.
+                if (isOpen) this.wrap.classList.add('is-clamped');
+                el.style.maxHeight = '';
+              };
+
+              el.addEventListener('transitionend', finish);
+              // prefers-reduced-motion removes the transition, so transitionend
+              // never fires and the inline height would stick.
+              this.fallback = setTimeout(finish, 420);
             };
 
             this.measure = () => {
-              const wasExpanded = this.wrap.classList.contains('is-expanded');
-              this.wrap.classList.remove('is-expanded');
+              const wasOpen = this.wrap.classList.contains('is-open');
+
+              // Measure from a clean collapsed state, with no inline height
+              // left over from an animation.
+              this.text.style.maxHeight = '';
+              this.wrap.classList.remove('is-open');
+              this.wrap.classList.add('is-clamped');
 
               // scrollHeight is unreliable on a -webkit-box that is being
               // line-clamped: several browsers report it as equal to
               // clientHeight, so the overflow test silently returned false and
-              // the control was never shown. The clamp is therefore lifted for
-              // one synchronous measurement and put straight back, with the
-              // element hidden in between so nothing flashes.
-              const clamped = this.text.clientHeight;
-              this.wrap.classList.add('is-measuring');
+              // the control was never shown. The clamp is lifted for one
+              // synchronous measurement and put straight back.
+              this.clampedHeight = this.text.clientHeight;
+              this.wrap.classList.remove('is-clamped');
               const natural = this.text.scrollHeight;
-              this.wrap.classList.remove('is-measuring');
+              this.wrap.classList.add('is-clamped');
 
-              const overflows = natural - clamped > 1;
+              const overflows = natural - this.clampedHeight > 1;
               this.wrap.classList.toggle('is-truncatable', overflows);
 
-              if (overflows && wasExpanded) {
-                this.wrap.classList.add('is-expanded');
+              if (overflows && wasOpen) {
+                // Restore the open state without animating it back.
+                this.wrap.classList.remove('is-clamped');
+                this.wrap.classList.add('is-open');
               } else if (!overflows) {
-                // Short description: no control, nothing left expanded.
+                // Short description: no control, nothing left open.
+                this.wrap.classList.remove('is-clamped');
                 this.toggle.setAttribute('aria-expanded', 'false');
-                this.toggle.textContent = this.moreLabel;
+                this.label.textContent = this.moreLabel;
               }
             };
 
