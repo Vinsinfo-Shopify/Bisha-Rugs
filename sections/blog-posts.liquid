@@ -263,6 +263,16 @@
     stroke-linejoin: round;
   }
 
+  /* Desktop has no arrow: the carousel is swipe/drag only above the mobile
+     breakpoint. Keyed to min-width, so the mobile rules below - which position
+     and show the control - are untouched. Nothing about scrolling, dragging or
+     snapping changes; only the control is taken out of the layout. */
+  @media screen and (min-width: 700px) {
+    #shopify-section-{{ section.id }} .floating-controls-container__control {
+      display: none;
+    }
+  }
+
   @media screen and (pointer: fine) {
     #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control,
     #shopify-section-{{ section.id }} .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
@@ -842,11 +852,12 @@
       "type": "range",
       "id": "space_bottom",
       "label": "Bottom spacing",
+      "info": "Space below the button only.",
       "min": 0,
-      "max": 120,
+      "max": 160,
       "step": 2,
       "unit": "px",
-      "default": 32
+      "default": 64
     },
     {
       "type": "range",
