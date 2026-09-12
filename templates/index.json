@@ -1681,6 +1681,100 @@
         "arrow_color": "#ffffff",
         "arrow_border": "#ffffff"
       }
+    },
+    "instagram_gallery_rKQiWt": {
+      "type": "instagram-gallery",
+      "blocks": {
+        "gallery_item_PyDa7B": {
+          "type": "gallery_item",
+          "settings": {
+            "autoplay": false,
+            "link": "",
+            "alt": ""
+          }
+        },
+        "gallery_item_DikFE4": {
+          "type": "gallery_item",
+          "settings": {
+            "autoplay": false,
+            "link": "",
+            "alt": ""
+          }
+        },
+        "gallery_item_Pp9tTL": {
+          "type": "gallery_item",
+          "settings": {
+            "autoplay": false,
+            "link": "",
+            "alt": ""
+          }
+        },
+        "gallery_item_LGKpyq": {
+          "type": "gallery_item",
+          "settings": {
+            "autoplay": false,
+            "link": "",
+            "alt": ""
+          }
+        },
+        "gallery_item_XJtiEW": {
+          "type": "gallery_item",
+          "settings": {
+            "autoplay": false,
+            "link": "",
+            "alt": ""
+          }
+        },
+        "gallery_item_cHFHzj": {
+          "type": "gallery_item",
+          "settings": {
+            "autoplay": false,
+            "link": "",
+            "alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "gallery_item_PyDa7B",
+        "gallery_item_DikFE4",
+        "gallery_item_Pp9tTL",
+        "gallery_item_LGKpyq",
+        "gallery_item_XJtiEW",
+        "gallery_item_cHFHzj"
+      ],
+      "name": "Instagram gallery",
+      "settings": {
+        "content_source": "instagram",
+        "subheading": "SOCIALS",
+        "title": "Follow Us On Instagram",
+        "heading_style": "h2",
+        "heading_weight": "400",
+        "tagline_before": "Tag us",
+        "handle": "@bisharugs",
+        "tagline_after": "to get featured",
+        "instagram_url": "https://www.instagram.com/bisharugs?stkn=MXFrZDU0Nm56YXRwZQ==",
+        "items_desktop": 4.1,
+        "items_mobile": 1.1,
+        "item_gap": 8,
+        "item_gap_mobile": 8,
+        "media_ratio": "1 / 1",
+        "media_radius": 0,
+        "play_button_background": "#ffffff",
+        "color_scheme": "",
+        "background": "#fffbf3",
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "eyebrow_gap": 4,
+        "tagline_gap": 6,
+        "tagline_size": 14,
+        "header_gap": 24,
+        "arrow_size": 38,
+        "arrow_offset": 50,
+        "arrow_inset_mobile": 8,
+        "arrow_background": "#2b2724",
+        "arrow_color": "#ffffff",
+        "arrow_border": "#ffffff"
+      }
     }
   },
   "order": [
@@ -1707,6 +1801,7 @@
     "testimonials",
     "image-with-text-overlay-2",
     "customer_reviews_J4BbaT",
-    "contact_options_fnhmgN"
+    "contact_options_fnhmgN",
+    "instagram_gallery_rKQiWt"
   ]
 }
