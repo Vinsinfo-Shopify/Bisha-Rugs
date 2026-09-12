@@ -1715,6 +1715,7 @@
         "gallery_item_LGKpyq": {
           "type": "gallery_item",
           "settings": {
+            "video": "shopify://files/videos/WhatsApp Video 2026-09-12 at 12.11.01 PM.mp4",
             "autoplay": false,
             "link": "",
             "alt": ""
@@ -1723,6 +1724,7 @@
         "gallery_item_XJtiEW": {
           "type": "gallery_item",
           "settings": {
+            "image": "shopify://shop_images/appointment.png",
             "autoplay": false,
             "link": "",
             "alt": ""
@@ -1731,6 +1733,7 @@
         "gallery_item_cHFHzj": {
           "type": "gallery_item",
           "settings": {
+            "video": "shopify://files/videos/WhatsApp Video 2026-09-12 at 12.10.13 PM.mp4",
             "autoplay": false,
             "link": "",
             "alt": ""
