@@ -549,7 +549,7 @@
     /* Number of lines shown before Read more. Changing these two values is the
        only edit needed to retune the collapsed height at either breakpoint. */
     #shopify-section-{{ section.id }} .collection_banner {
-      --cb-lines: 3;
+      --cb-lines: 2;
     }
 
     /* ---------- Desktop typography ---------- */
@@ -683,7 +683,7 @@
        behaviour rather than changing underneath the rest of the page. */
     @media screen and (max-width: 699px) {
       #shopify-section-{{ section.id }} .collection_banner {
-        --cb-lines: 4;
+        --cb-lines: 2;
       }
 
       #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_heading {
@@ -805,7 +805,7 @@
                     </div>
 
                     <button type="button" class="cb-toggle" data-cb-toggle aria-expanded="false">
-                      {{- section.settings.cb_more_label | default: 'Read more' -}}
+                      Read more
                     </button>
                   </div>
                 {%- else -%}
@@ -931,10 +931,21 @@
             this.wrap = this.querySelector('[data-cb-desc]');
             this.text = this.wrap && this.wrap.querySelector('.cb-desc__text');
             this.toggle = this.wrap && this.wrap.querySelector('[data-cb-toggle]');
-            if (!this.wrap || !this.text || !this.toggle) return;
 
+            // Connecting before the children exist is recoverable: try again on
+            // the next frame rather than giving up for the life of the page.
+            if (!this.wrap || !this.text || !this.toggle) {
+              if (!this.retried) {
+                this.retried = true;
+                requestAnimationFrame(() => this.connectedCallback());
+              }
+              return;
+            }
+
+            // Read from the markup so the two stay in step: whatever the button
+            // is rendered with is what it returns to on collapse.
             this.moreLabel = this.toggle.textContent.trim();
-            this.lessLabel = this.dataset.lessLabel || 'Read less';
+            this.lessLabel = 'Read less';
 
             this.onToggle = () => {
               const expanded = this.wrap.classList.toggle('is-expanded');
@@ -997,9 +1008,17 @@
       var desc = root.querySelector('[data-cb-desc]');
       if (!desc || desc.closest('collection-banner-readmore')) return;
       var host = document.createElement('collection-banner-readmore');
-      host.dataset.lessLabel = {{ section.settings.cb_less_label | default: 'Read less' | json }};
-      desc.parentNode.insertBefore(host, desc);
+
+      // Order matters. connectedCallback fires the moment the host enters the
+      // document, so inserting it first and filling it afterwards meant the
+      // callback ran against an empty element, found no [data-cb-desc], and
+      // returned before binding the click. That is why Read more did nothing.
+      // The description is moved into the host while the host is still
+      // detached, so by the time it connects its children are already there.
+      var parent = desc.parentNode;
+      var next = desc.nextSibling;
       host.appendChild(desc);
+      parent.insertBefore(host, next);
     })();
   </script>
 {%- endif -%}
@@ -1020,20 +1039,8 @@
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
     },
-      {
-      "type": "text",
-      "id": "cb_more_label",
-      "label": "Read more label",
-      "info": "Collection banner only. Leave empty for \"Read more\".",
-      "default": "Read more"
-    },
-    {
-      "type": "text",
-      "id": "cb_less_label",
-      "label": "Read less label",
-      "info": "Collection banner only. Leave empty for \"Read less\".",
-      "default": "Read less"
-    },
+  
+
     {
       "type": "text",
       "id": "custom_class",
