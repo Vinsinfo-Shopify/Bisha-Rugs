@@ -179,6 +179,15 @@
     border-block-start-width: 0;
   }
 
+  /* theme.css sets .image-with-text { display: grid; gap: 22px } globally.
+     That declaration is left exactly as it is; this only overrides the
+     computed value under THIS section's id, and the id only exists on the
+     homepage trade instance. Craft (the-craft), Custom Rugs and every
+     Image with Text on About Us, Craftsmanship and Collection keep 22px. */
+  #shopify-section-{{ section.id }} .image-with-text {
+    gap: {{ section.settings.trade_media_gap }}px;
+  }
+
   /* -- Layout ------------------------------------------------------ */
   /* Icon list is last in the DOM but sits above the button, so the
      prose is a flex column at every width and uses order. */
@@ -347,10 +356,22 @@
       max-width: 300px;       /* SEE NOTE 1 — controls the wrap */
     }
 
+    /* Two features on row one, the third on row two - by structure, not by
+       whatever happens to fit. Flex-wrap decided the rows from available
+       width, so the break moved with the label text. Grid pins it: two
+       content-sized columns, and item three spans both.
+       Icon size, icon-to-text gap and typography are untouched. */
     #shopify-section-{{ section.id }} .icon-with-text-list {
       margin-top: 0;          /* now carried by the paragraph above */
-      column-gap: 16px;       /* SEE NOTE 2 — derived 18.1 */
+      display: grid;
+      grid-template-columns: max-content max-content;
+      justify-content: start;
+      column-gap: {{ section.settings.trade_feature_gap_mobile }}px;
       row-gap: 10px;
+    }
+
+    #shopify-section-{{ section.id }} .icon-with-text-item:nth-child(3) {
+      grid-column: 1 / -1;
     }
 
     #shopify-section-{{ section.id }} .icon-with-text-item {
@@ -790,6 +811,28 @@
         }
       ],
       "default": "sm"
+    },
+    {
+      "type": "range",
+      "id": "trade_media_gap",
+      "label": "Trade: gap between image and content",
+      "info": "Overrides the theme's 22px only for this section.",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "trade_feature_gap_mobile",
+      "label": "Trade: gap between features (mobile)",
+      "info": "Horizontal space between the first two features. Reduce it if their labels do not fit on one line.",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
     },
     {
       "type": "range",
