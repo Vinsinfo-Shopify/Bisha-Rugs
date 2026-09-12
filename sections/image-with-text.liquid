@@ -147,10 +147,24 @@
     --border-color: 0 0 0;
   }
 
-  /* The page background around this section is #FFFBF3. Without the
-     line below the panel shows that instead of #F3EEE4 — which is
-     exactly the "wrong cream" that started this. */
+  /* The cream belongs to the PANEL, not to the section element.
+     Painting the section itself would colour the 50px bands too; the
+     brief wants those transparent so the page background shows through:
+
+       page background
+       -> 50px transparent
+       -> #F3EEE4 panel
+       -> 50px transparent
+
+     The panel is the section's own first child - the div carrying
+     section-spacing and the colour-scheme classes - so its internal
+     padding, and the whole layout inside it, are untouched. */
   #shopify-section-{{ section.id }} {
+    background-color: transparent;
+    padding-block: {{ section.settings.trade_outer_spacing }}px;
+  }
+
+  #shopify-section-{{ section.id }} > .color-scheme {
     background-color: rgb(var(--background));
   }
 
@@ -199,7 +213,7 @@
     font-family: var(--text-font-family);
     font-size: 14px;
     font-weight: 500;
-    line-height: 1.2;         /* 16.8px */
+    line-height: 20px;
     letter-spacing: 0;
     text-transform: uppercase;
   }
@@ -251,13 +265,18 @@
   /* -- Button ------------------------------------------------------ */
   /* 12px/28px padding + 16px/1.4 line-height reproduces Figma's
      158 x 46 exactly: 28 + 102.0 + 28 = 158, 12 + 22.4 + 12 = 46.4 */
-  #shopify-section-{{ section.id }} .prose .button,
-  #shopify-section-{{ section.id }} .prose .button:hover,
-  #shopify-section-{{ section.id }} .prose .button:focus,
-  #shopify-section-{{ section.id }} .prose .button:visited {
-    background: rgb(var(--accent-color));
-    color: #ffffff;
-    border: 0;
+  /* Colours go through the component's OWN custom properties, and the
+     :hover / :focus / :visited overrides are gone. theme.css animates
+     .button with a gradient wipe driven by --button-background plus a
+     background-size transition; setting the background shorthand on
+     :hover destroys background-image and background-size and kills that
+     animation, which is why this button behaved unlike the other
+     sections' CTAs. Nothing global is modified - only these variables
+     are reassigned, inside the trade variant. */
+  #shopify-section-{{ section.id }} .prose .button {
+    --button-background: {{ section.settings.trade_button_background | color_extract: 'red' }} {{ section.settings.trade_button_background | color_extract: 'green' }} {{ section.settings.trade_button_background | color_extract: 'blue' }};
+    --button-text-color: {{ section.settings.trade_button_text | color_extract: 'red' }} {{ section.settings.trade_button_text | color_extract: 'green' }} {{ section.settings.trade_button_text | color_extract: 'blue' }};
+    --button-outline-color: {{ section.settings.trade_button_background | color_extract: 'red' }} {{ section.settings.trade_button_background | color_extract: 'green' }} {{ section.settings.trade_button_background | color_extract: 'blue' }};
     border-radius: 0;
     padding: 12px 28px;
     font-family: var(--text-font-family);
@@ -748,6 +767,29 @@
         }
       ],
       "default": "sm"
+    },
+    {
+      "id": "trade_outer_spacing",
+      "label": "Trade: spacing above and below",
+      "info": "Transparent space outside the cream panel. Applies only to the Trade layout variant.",
+      "type": "range",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "color",
+      "id": "trade_button_background",
+      "label": "Trade: button background",
+      "default": "#4f5b3f"
+    },
+    {
+      "type": "color",
+      "id": "trade_button_text",
+      "label": "Trade: button text",
+      "default": "#ffffff"
     },
     {
       "type": "select",
