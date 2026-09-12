@@ -1,3 +1,35 @@
+{%- comment -%}
+  Typography only. This section is used on the collection template and nowhere
+  else, so the rules are scoped to its own id and cannot reach the product page
+  breadcrumb, which is rendered by snippets/breadcrumbs.liquid instead.
+
+  The theme's .smallcaps class makes these 10px and uppercase. The design wants
+  sentence case at 14px, so that class is overridden here rather than removed
+  from the markup, which keeps the section's structure untouched.
+{%- endcomment -%}
+<style>
+  #shopify-section-{{ section.id }} .breadcrumb__list-item .smallcaps {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  /* The collection currently being viewed. aria-current is already on that
+     link, so no extra class is needed in the markup. */
+  #shopify-section-{{ section.id }} .breadcrumb__list-item .smallcaps[aria-current='page'] {
+    color: #898989;
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .breadcrumb__list-item .smallcaps {
+      font-size: 12px;
+      line-height: 17px;
+    }
+  }
+</style>
+
 <nav class="collection-breadcrumb" aria-label="{{ 'general.breadcrumb.label' | t | escape }}">
   <div class="collection-breadcrumb__inner">
     <ol class="breadcrumb__list unstyled-list">
