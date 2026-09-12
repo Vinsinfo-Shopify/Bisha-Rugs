@@ -312,6 +312,18 @@
   /* Figma: 375 wide, 12px side padding -> 351px content column.
      Confirmed by the heading: "…Interior Designers" measures 350.8px
      and breaks before "&", which only works at 351. */
+ @media screen and (max-width: 500px){
+    #shopify-section-{{ section.id }} .prose .button {
+      margin-bottom: 0;
+    }
+  }
+
+  @media screen and (max-width: 700px){
+    #shopify-section-{{ section.id }} .prose .button {
+      margin-bottom: 24px;
+    }
+  }
+
   @media screen and (max-width: 999px) {
     #shopify-section-{{ section.id }} {
       --section-padding-left: 12px;
