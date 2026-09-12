@@ -213,6 +213,11 @@
       #shopify-section-{{ section.id }} .collection-list--sbs .container {
           --container-max-width: 1300px;
         }
+      #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area {
+          margin-inline: calc(50% - 50vw);
+          padding-inline: calc(50vw - 50%);
+          scroll-padding-inline: calc(50vw - 50%);
+        }
     }
 
     @media screen and (min-width: 1150px) {
