@@ -245,11 +245,48 @@
   }
 
   /* Vertically centred on the image area rather than the whole card, which is
-     where the design puts it. A percentage of the card, so it holds as the
-     card grows or shrinks. */
+     where the design puts it. Used on mobile; desktop has no controls. */
   #shopify-section-{{ section.id }} .floating-controls-container__control {
     inset-block-start: {{ section.settings.arrow_offset }}%;
     transform: translateY(-50%);
+  }
+
+  /* ---------- Desktop: a static row, not a carousel ----------
+     Everything that makes the track behave as a carousel is switched off above
+     the mobile breakpoint, and the controls are removed from the layout. The
+     scroll-carousel element still wraps the cards because mobile needs it, but
+     with no scrollable overflow and no snap points it has nothing to drive:
+     dragging does nothing and there is no slide movement.
+
+     Scoped to min-width so it cannot reach the mobile rules below. */
+  @media screen and (min-width: 700px) {
+    #shopify-section-{{ section.id }} .co__track {
+      scroll-snap-type: none;
+      overscroll-behavior-x: auto;
+    }
+
+    #shopify-section-{{ section.id }} .co__card {
+      scroll-snap-align: none;
+      scroll-snap-stop: normal;
+    }
+
+    /* No arrows, no floating controls, nothing to click. */
+    #shopify-section-{{ section.id }} .floating-controls-container__control {
+      display: none;
+    }
+  }
+
+  /* Wide enough for the whole 1289px group plus the container gutters, so the
+     track needs no scrolling at all and overflow can be visible.
+
+     Below this width the group genuinely does not fit: the cards are a fixed
+     415px by design and must not shrink, so the track stays scrollable there
+     rather than clipping the third card against the section's overflow: clip.
+     Still no arrows and no snap - it is a plain overflow, not a carousel. */
+  @media screen and (min-width: 1400px) {
+    #shopify-section-{{ section.id }} .co__track {
+      overflow: visible;
+    }
   }
 
   /* ---------- Mobile ---------- */
