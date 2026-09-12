@@ -1,0 +1,692 @@
+{%- doc -%}
+  "Follow Us On Instagram" - a horizontal socials gallery of images and videos.
+
+  Content source is a setting. Both options feed ONE presentation layer, so the
+  gallery, carousel, arrows, play button and responsive behaviour are identical
+  whichever source is chosen; only the media list differs.
+
+    manual     -> the section's own media blocks
+    instagram  -> a supported feed integration, when one exists on the store
+
+  There is no Instagram integration in this theme today: no feed snippet, no
+  app embed, nothing beyond the social LINK settings. So the instagram option
+  falls back to the manual blocks and says so in the Theme Editor rather than
+  rendering an empty gallery or inventing an API. When a supported feed app is
+  installed, only the media-list assignment below needs to change.
+
+  Reused rather than rebuilt:
+    snippets/section-header.liquid   eyebrow + heading, native typography
+    snippets/media.liquid            image OR video, with the theme's own
+                                     centred play button - this is why no
+                                     play-button component is added here
+    scroll-carousel (theme.js)       one item per click, same as Row 08
+    floating-controls-container      the Row 08 arrow, its position and states
+
+  Not reused, and why:
+    sections/media-grid.liquid is a fixed mosaic driven by per-block column and
+    row counts with overlay text. It has no carousel, and it is live on the
+    homepage, so adapting it would change an existing page.
+
+  No JavaScript is added. Every selector is prefixed with this section's id and
+  the carousel is bound to its controls by a per-section id, so the section can
+  appear more than once on a page without conflict.
+{%- enddoc -%}
+
+{%- liquid
+  assign carousel_id = 'ig-carousel-' | append: section.id
+
+  # THE SOURCE SWITCH.
+  # Everything downstream reads media_blocks and nothing else, so adding a real
+  # feed later means assigning a different list here - not touching the markup.
+  assign media_blocks = section.blocks
+  assign instagram_unavailable = false
+
+  if section.settings.content_source == 'instagram'
+    # No supported feed integration exists on this store. Falling back to the
+    # manual blocks keeps the storefront intact.
+    assign instagram_unavailable = true
+  endif
+-%}
+
+{%- if media_blocks.size > 0 -%}
+  <style>
+    /* Every rule is prefixed with this section's id. */
+    #shopify-section-{{ section.id }} .ig {
+      background: {{ section.settings.background }};
+      /* The carousel can never widen the document. clip, not hidden: it makes
+         no scroll container of its own. */
+      overflow-x: clip;
+    }
+
+    #shopify-section-{{ section.id }} .ig__inner {
+      padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+    }
+
+    #shopify-section-{{ section.id }} .ig__header {
+      margin-block-end: {{ section.settings.header_gap }}px;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .ig__header .section-header {
+      gap: 0;
+    }
+
+    #shopify-section-{{ section.id }} .ig__header .section_header_subheading {
+      margin-block: 0 {{ section.settings.eyebrow_gap }}px;
+      line-height: 1.3;
+    }
+
+    #shopify-section-{{ section.id }} .ig__header .section_header_heading {
+      font-weight: {{ section.settings.heading_weight }};
+      margin-block: 0;
+    }
+
+    #shopify-section-{{ section.id }} .ig__tagline {
+      margin-block: {{ section.settings.tagline_gap }}px 0;
+      font-size: {{ section.settings.tagline_size }}px;
+      line-height: 1.4;
+    }
+
+    #shopify-section-{{ section.id }} .ig__handle {
+      color: inherit;
+      font-style: italic;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* ---------- Carousel ----------
+       group-cells is omitted, so ScrollCarousel's groupCells getter returns 1:
+       one item per arrow click, never a page. cell-selector pins the cells to
+       the media items. */
+    #shopify-section-{{ section.id }} .ig__carousel {
+      position: relative;
+    }
+
+    #shopify-section-{{ section.id }} .ig__track {
+      --ig-visible: {{ section.settings.items_desktop }};
+      --ig-gap: {{ section.settings.item_gap }}px;
+      /* Gap count is floor(visible), not visible - 1: with 4.1 items in view
+         you see four whole gaps, so the sliver of the fifth is exactly the 0.1
+         and not 0.1 plus a rounding error. */
+      --ig-item: calc((100% - {{ section.settings.items_desktop | floor }} * var(--ig-gap)) / var(--ig-visible));
+      display: flex;
+      align-items: stretch;
+      gap: var(--ig-gap);
+      overflow: auto hidden;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      /* No inline padding: item 1 begins on the container edge and the row runs
+         to the opposite edge. The last item therefore ends flush with the
+         container, fully visible, with nothing trailing it. */
+      padding-inline: 0;
+      scroll-padding-inline: 0;
+    }
+
+    #shopify-section-{{ section.id }} .ig__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .ig__item {
+      flex: 0 0 var(--ig-item);
+      min-width: 0;
+      position: relative;
+      aspect-ratio: {{ section.settings.media_ratio }};
+      overflow: hidden;
+      border-radius: {{ section.settings.media_radius }}px;
+      background: rgb(var(--text-color) / 0.06);
+      scroll-snap-align: start;
+      /* One swipe moves one item. Without this a momentum flick sails past
+         several snap points. */
+      scroll-snap-stop: always;
+    }
+
+    /* media.liquid renders an image or a video with the theme's own play
+       button; only the fill behaviour is restated so every item crops to the
+       same box rather than setting its own height. */
+    #shopify-section-{{ section.id }} .ig__item :is(img, svg, video) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .ig__item .media,
+    #shopify-section-{{ section.id }} .ig__item deferred-media {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .ig__link {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+    }
+
+    /* ---------- Arrows ----------
+       Row 08's treatment, reproduced under this section's id. Size, inset,
+       hover, disabled and the hide-when-not-scrollable behaviour all come from
+       theme.css; only the colours and placement are restated.
+       collection-list.liquid is untouched.
+
+       circle-button's default box-shadow is tinted with the text colour, so a
+       white chevron would otherwise draw a white halo - hence none. */
+    #shopify-section-{{ section.id }} .floating-controls-container__control {
+      z-index: 3;
+      inset-block-start: {{ section.settings.arrow_offset }}%;
+      transform: translateY(-50%);
+    }
+
+    #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+      --circle-button-size: {{ section.settings.arrow_size }}px;
+      --circle-button-background: 43 39 36;
+      --circle-button-text-color: 255 255 255;
+      box-sizing: border-box;
+      background: {{ section.settings.arrow_background }};
+      color: {{ section.settings.arrow_color }};
+      border: 2px solid {{ section.settings.arrow_border }};
+      box-shadow: none;
+    }
+
+    #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+      width: {{ section.settings.arrow_size | times: 0.42 | round }}px;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    @media screen and (pointer: fine) {
+      /* Row 08 overrides the theme's hover-reveal: its arrows are always on. */
+      #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control,
+      #shopify-section-{{ section.id }} .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
+        opacity: 1;
+        transform: translateY(-50%);
+      }
+    }
+
+    /* ---------- Mobile ---------- */
+    @media screen and (max-width: 699px) {
+      #shopify-section-{{ section.id }} .ig__inner {
+        padding-block: {{ section.settings.padding_top | divided_by: 2 }}px {{ section.settings.padding_bottom | divided_by: 2 }}px;
+      }
+
+      #shopify-section-{{ section.id }} .ig__header {
+        margin-block-end: {{ section.settings.header_gap | times: 0.7 | round }}px;
+      }
+
+      #shopify-section-{{ section.id }} .ig__track {
+        --ig-visible: {{ section.settings.items_mobile }};
+        --ig-gap: {{ section.settings.item_gap_mobile }}px;
+        --ig-item: calc((100% - {{ section.settings.items_mobile | floor }} * var(--ig-gap)) / var(--ig-visible));
+      }
+
+      /* theme.css only positions these controls under (pointer: fine), so on a
+         touch device they would fall into normal flow. Positioning is restated
+         here. No display, visibility or opacity is used to hide them. */
+      #shopify-section-{{ section.id }} .floating-controls-container__control {
+        position: absolute;
+        display: grid;
+        place-items: center;
+        inset-block-start: {{ section.settings.arrow_offset }}%;
+      }
+
+      #shopify-section-{{ section.id }} carousel-prev-button.floating-controls-container__control {
+        inset-inline-start: {{ section.settings.arrow_inset_mobile }}px;
+        inset-inline-end: auto;
+      }
+
+      #shopify-section-{{ section.id }} carousel-next-button.floating-controls-container__control {
+        inset-inline-end: {{ section.settings.arrow_inset_mobile }}px;
+        inset-inline-start: auto;
+      }
+    }
+  </style>
+
+  <div class="ig color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="ig__inner container container--xl">
+      <div class="ig__header">
+        {%- render 'section-header',
+          subheading: section.settings.subheading,
+          heading: section.settings.title,
+          heading_style: section.settings.heading_style
+        -%}
+
+        {%- if section.settings.tagline_before != blank or section.settings.handle != blank -%}
+          <p class="ig__tagline">
+            {{- section.settings.tagline_before }}
+            {% if section.settings.handle != blank -%}
+              {%- if section.settings.instagram_url != blank -%}
+                <a class="ig__handle" href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener">{{ section.settings.handle }}</a>
+              {%- else -%}
+                <span class="ig__handle">{{ section.settings.handle }}</span>
+              {%- endif -%}
+            {%- endif %}
+            {{ section.settings.tagline_after -}}
+          </p>
+        {%- endif -%}
+
+        {%- comment -%}
+          Editor-only notice. Never rendered on the storefront, so a merchant
+          sees why the feed option did nothing without a visitor seeing it.
+        {%- endcomment -%}
+        {%- if instagram_unavailable and request.design_mode -%}
+          <p class="ig__tagline">
+            Instagram feed is not available on this store - no supported feed integration is installed. Showing the manual media below.
+          </p>
+        {%- endif -%}
+      </div>
+
+      <div class="ig__carousel floating-controls-container floating-controls-container--inside floating-controls-container--on-hover">
+        <carousel-prev-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
+          <button type="button" class="prev-next-button prev-next-button--prev circle-button circle-button--lg hover:animate-icon-inline" disabled>
+            <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+            {%- render 'icon' with 'arrow-left', direction_aware: true -%}
+          </button>
+        </carousel-prev-button>
+
+        {%- comment -%}
+          group-cells is deliberately omitted: ScrollCarousel's groupCells
+          getter returns 1 without it, which is one item per click.
+        {%- endcomment -%}
+        <scroll-carousel id="{{ carousel_id }}" allow-drag class="ig__track" cell-selector=".ig__item">
+          {%- for block in media_blocks -%}
+            {%- capture media_sizes -%}
+              (max-width: 699px) {{ 100 | divided_by: section.settings.items_mobile | round }}vw, {{ 100 | divided_by: section.settings.items_desktop | round }}vw
+            {%- endcapture -%}
+
+            <div class="ig__item" {{ block.shopify_attributes }}>
+              {%- comment -%}
+                A block with a video renders as a video; otherwise as its image.
+                media.liquid supplies the centred play button itself when the
+                video is not autoplaying, which is why nothing here draws one.
+              {%- endcomment -%}
+              {%- if block.settings.video != blank -%}
+                {%- render 'media',
+                  media: block.settings.video,
+                  sizes: media_sizes,
+                  autoplay: block.settings.autoplay,
+                  loop: true,
+                  controls: false,
+                  show_play_button: true,
+                  play_button_background: section.settings.play_button_background,
+                  group: carousel_id
+                -%}
+              {%- elsif block.settings.image != blank -%}
+                {{-
+                  block.settings.image
+                  | image_url: width: 1200
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '200,300,400,600,800,1000,1200',
+                    sizes: media_sizes,
+                    alt: block.settings.alt | default: block.settings.image.alt
+                -}}
+              {%- else -%}
+                {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder' -}}
+              {%- endif -%}
+
+              {%- comment -%}
+                The link sits above the media so the whole tile is tappable, but
+                it is a separate element: it never wraps the video, which would
+                swallow the play button's own click.
+              {%- endcomment -%}
+              {%- if block.settings.link != blank -%}
+                <a
+                  class="ig__link"
+                  href="{{ block.settings.link }}"
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="{{ block.settings.alt | default: section.settings.handle | escape }}"
+                ></a>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </scroll-carousel>
+
+        <carousel-next-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
+          <button type="button" class="prev-next-button prev-next-button--next circle-button circle-button--lg hover:animate-icon-inline">
+            <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+            {%- render 'icon' with 'arrow-right', direction_aware: true -%}
+          </button>
+        </carousel-next-button>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Instagram gallery",
+  "class": "shopify-section--instagram-gallery",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "content_source",
+      "label": "Content source",
+      "info": "Instagram feed needs a supported feed app installed. Until then it falls back to the manual media below.",
+      "options": [
+        { "value": "manual", "label": "Manual media" },
+        { "value": "instagram", "label": "Instagram feed" }
+      ],
+      "default": "manual"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:global.text.subheading",
+      "default": "SOCIALS"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:global.text.heading",
+      "default": "Follow Us On Instagram"
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "Large" },
+        { "value": "h2", "label": "Medium" },
+        { "value": "h3", "label": "Small" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "text",
+      "id": "tagline_before",
+      "label": "Tagline, before the handle",
+      "default": "Tag us"
+    },
+    {
+      "type": "text",
+      "id": "handle",
+      "label": "Instagram handle",
+      "default": "@bisharugs"
+    },
+    {
+      "type": "text",
+      "id": "tagline_after",
+      "label": "Tagline, after the handle",
+      "default": "to get featured"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram profile URL",
+      "info": "Links the handle. Leave empty for plain text."
+    },
+    {
+      "type": "header",
+      "content": "Gallery"
+    },
+    {
+      "type": "range",
+      "id": "items_desktop",
+      "label": "Items visible (desktop)",
+      "info": "4.1 shows four whole items plus a 10% sliver of the fifth, as in the design.",
+      "min": 2,
+      "max": 6,
+      "step": 0.1,
+      "default": 4.1
+    },
+    {
+      "type": "range",
+      "id": "items_mobile",
+      "label": "Items visible (mobile)",
+      "info": "1.1 shows one whole item plus a 10% sliver of the next.",
+      "min": 1,
+      "max": 3,
+      "step": 0.1,
+      "default": 1.1
+    },
+    {
+      "type": "range",
+      "id": "item_gap",
+      "label": "Item gap (desktop)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "item_gap_mobile",
+      "label": "Item gap (mobile)",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "media_ratio",
+      "label": "Media shape",
+      "options": [
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 5", "label": "Portrait" },
+        { "value": "3 / 4", "label": "Tall portrait" },
+        { "value": "5 / 4", "label": "Landscape" }
+      ],
+      "default": "1 / 1"
+    },
+    {
+      "type": "range",
+      "id": "media_radius",
+      "label": "Media corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "play_button_background",
+      "label": "Play button background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Design"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Section background",
+      "default": "#fffbf3"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_gap",
+      "label": "Eyebrow to heading gap",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "tagline_gap",
+      "label": "Heading to tagline gap",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "tagline_size",
+      "label": "Tagline size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "header_gap",
+      "label": "Header to gallery gap",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Arrows"
+    },
+    {
+      "type": "range",
+      "id": "arrow_size",
+      "label": "Arrow size",
+      "min": 24,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "arrow_offset",
+      "label": "Arrow vertical position",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "arrow_inset_mobile",
+      "label": "Arrow distance from edge (mobile)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "arrow_background",
+      "label": "Arrow background",
+      "default": "#2b2724"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow chevron",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_border",
+      "label": "Arrow ring",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gallery_item",
+      "name": "Media",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "When set, this replaces the image and a play button is shown."
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Autoplay video",
+          "info": "Off keeps the play button, as in the design.",
+          "default": false
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Alt text",
+          "info": "Describes the media for screen readers. Falls back to the image's own alt text."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram gallery",
+      "blocks": [
+        { "type": "gallery_item" },
+        { "type": "gallery_item" },
+        { "type": "gallery_item" },
+        { "type": "gallery_item" },
+        { "type": "gallery_item" },
+        { "type": "gallery_item" }
+      ]
+    }
+  ]
+}
+{% endschema %}
