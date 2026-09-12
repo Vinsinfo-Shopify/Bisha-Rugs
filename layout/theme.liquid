@@ -63,6 +63,36 @@
 
     {{- 'theme.css' | asset_url | stylesheet_tag: preload: true -}}
     {{ 'fonts.css' | asset_url | stylesheet_tag }}
+
+    {%- comment -%}
+      Homepage content column, applied once for every section on the page.
+
+      Desktop caps the column at 1300px. Mobile insets 12px a side, which is
+      351px at 375 - stated as a gutter rather than a 351px width on purpose:
+      a fixed width would leave dead space at 390 and overflow below 375.
+
+      margin-inline, NOT --container-gutter. The gutter also feeds
+      --distance-to-bleed, which the Shop by Style, Trade, Find the Perfect
+      Look and Instagram carousels use to compute their negative margins.
+      Leaving that variable alone means their edge-to-edge scrolling is
+      untouched while every non-bleeding section picks up the new spacing.
+
+      body.template-index scopes this to the homepage: collection, product,
+      blog, cart, About Us and Craftsmanship are unaffected. Placed after
+      theme.css so it wins on order as well as on specificity - (0,2,0)
+      against the theme's (0,1,0).
+    {%- endcomment -%}
+    <style>
+      body.template-index .container {
+        --container-max-width: 81.25rem; /* 1300px */
+      }
+
+      @media screen and (max-width: 699px) {
+        body.template-index .container {
+          margin-inline: 12px;
+        }
+      }
+    </style>
   </head>
 
   {% liquid
