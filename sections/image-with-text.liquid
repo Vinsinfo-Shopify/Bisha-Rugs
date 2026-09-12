@@ -530,6 +530,182 @@
 
 </style>
 
+{%- comment -%}
+  ------------------------------------------------------------------------
+  PLP Collection Banner
+  ------------------------------------------------------------------------
+  Emitted only for the instance whose custom_class contains
+  collection_banner, which on this theme is image_with_text_9TrLX9 on the
+  collection template. Custom Rugs, Crafted in India, Trade and every other
+  image-with-text instance never render this block at all, so they cannot be
+  affected by it.
+
+  The equivalent rules already in assets/theme.css (around line 8893) are left
+  alone. These come later in the cascade and carry the same or higher
+  specificity, so they win without !important and without a global edit.
+{%- endcomment -%}
+{%- if section.settings.custom_class contains 'collection_banner' -%}
+  <style>
+    /* Number of lines shown before Read more. Changing these two values is the
+       only edit needed to retune the collapsed height at either breakpoint. */
+    #shopify-section-{{ section.id }} .collection_banner {
+      --cb-lines: 3;
+    }
+
+    /* ---------- Desktop typography ---------- */
+    #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_heading {
+      font-size: 28px;
+      line-height: 36px;
+      font-weight: 400;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_content,
+    #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_content > * {
+      font-size: 16px;
+      line-height: 140%;
+      font-weight: 400;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .icon-with-text-item {
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: 500;
+    }
+
+    /* ---------- Desktop image ----------
+       562 x 223. The ratio is set rather than a height so the box cannot be
+       distorted; cover crops to fill it. theme.css already caps the width at
+       562px, which is left in place. */
+    #shopify-section-{{ section.id }} .collection_banner .image-with-text picture {
+      max-width: 562px;
+      aspect-ratio: 562 / 223;
+      max-height: none;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .image-with-text picture :is(img, svg) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ---------- Read more ----------
+       The description is clamped to --cb-lines. The control is a sibling of the
+       text, never a copy of it, so the rich text is rendered exactly once and
+       whatever HTML the collection description contains survives untouched.
+
+       Collapsed, the control sits at the end of the last visible line with a
+       short fade behind it, so it reads as part of the text rather than as a
+       row underneath. The fade is built from the colour scheme's own
+       background variable, so it matches whatever scheme the section uses. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc {
+      position: relative;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc__text {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: var(--cb-lines);
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-expanded .cb-desc__text {
+      display: block;
+      -webkit-line-clamp: unset;
+      overflow: visible;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .cb-toggle {
+      display: none;
+      appearance: none;
+      background: none;
+      border: 0;
+      padding: 0;
+      font-family: inherit;
+      font-size: 16px;
+      line-height: 140%;
+      font-weight: 700;
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      cursor: pointer;
+    }
+
+    /* Only shown once the script has confirmed the text actually overflows, so
+       a short description never gets a pointless control. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-truncatable .cb-toggle {
+      display: inline;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-truncatable:not(.is-expanded) .cb-toggle {
+      position: absolute;
+      inset-inline-end: 0;
+      inset-block-end: 0;
+      padding-inline-start: 26px;
+      background: linear-gradient(
+        to right,
+        rgb(var(--background) / 0) 0,
+        rgb(var(--background)) 22px
+      );
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-expanded .cb-toggle {
+      margin-block-start: 4px;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .cb-toggle:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 3px;
+    }
+
+    /* ---------- Mobile ----------
+       699px is the theme's own mobile breakpoint: 20 rules in theme.css and
+       every section written for this build use it. The banner rules in
+       theme.css break at 1100px instead; that tier is deliberately left as it
+       is, and this one sits inside it so the 700-1100 range keeps its current
+       behaviour rather than changing underneath the rest of the page. */
+    @media screen and (max-width: 699px) {
+      #shopify-section-{{ section.id }} .collection_banner {
+        --cb-lines: 4;
+      }
+
+      #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_heading {
+        font-size: 26px;
+        line-height: 34px;
+        font-weight: 400;
+      }
+
+      #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_content,
+      #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_content > * {
+        font-size: 14px;
+        line-height: 140%;
+      }
+
+      #shopify-section-{{ section.id }} .collection_banner .cb-toggle {
+        font-size: 14px;
+        line-height: 140%;
+      }
+
+      #shopify-section-{{ section.id }} .collection_banner .icon-with-text-item {
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 500;
+      }
+
+      /* Edge to edge: 375px at a 375px viewport, 155px tall.
+         The instance already sets its mobile side padding to 0, so the image
+         only needs its ratio and full width here. The text keeps the container
+         padding, which is why the padding is not removed from the section. */
+      #shopify-section-{{ section.id }} .collection_banner .image-with-text picture {
+        max-width: none;
+        width: 100%;
+        aspect-ratio: 375 / 155;
+      }
+    }
+  </style>
+{%- endif -%}
+
   {%- comment -%}
     ------------------------------------------------------------------------------------------------------------------------
     LIQUID
@@ -582,9 +758,30 @@
 
             {%- when 'richtext' -%}
               {%- if block.settings.content != blank -%}
-                <div class="image_with_text_content" {{ block.shopify_attributes }}>
-                  {{- block.settings.content -}}
-                </div>
+                {%- comment -%}
+                  The collection banner needs a wrapper and a toggle around this
+                  content. Every other image-with-text instance falls through to
+                  the original markup unchanged.
+
+                  The content itself is printed once, in both branches. There is
+                  no second copy for mobile and no plain-text duplicate, so rich
+                  text from the collection description is preserved exactly.
+                {%- endcomment -%}
+                {%- if section.settings.custom_class contains 'collection_banner' -%}
+                  <div class="cb-desc" data-cb-desc>
+                    <div class="image_with_text_content cb-desc__text" {{ block.shopify_attributes }}>
+                      {{- block.settings.content -}}
+                    </div>
+
+                    <button type="button" class="cb-toggle" data-cb-toggle aria-expanded="false">
+                      {{- section.settings.cb_more_label | default: 'Read more' -}}
+                    </button>
+                  </div>
+                {%- else -%}
+                  <div class="image_with_text_content" {{ block.shopify_attributes }}>
+                    {{- block.settings.content -}}
+                  </div>
+                {%- endif -%}
               {%- endif -%}
 
             {%- when 'page' -%}
@@ -676,6 +873,97 @@
   </div>
 {%- endif -%}
 
+{%- if section.settings.custom_class contains 'collection_banner' -%}
+  {%- comment -%}
+    Read more, scoped to this instance.
+
+    Two jobs only: decide whether the description actually overflows its clamp,
+    and toggle the expanded class. The clamping itself is CSS, so the collapsed
+    height follows the breakpoint without the script knowing anything about
+    viewport sizes.
+
+    The check is re-run on resize because a description that fits three lines on
+    desktop may need four on a phone, and vice versa. If it stops overflowing
+    while expanded, the control is removed and the expansion reset, so the
+    panel never keeps a dead button.
+
+    Everything is found by querySelector inside the element itself, so a second
+    banner on another template cannot be reached, and no global listener is left
+    behind on disconnect.
+  {%- endcomment -%}
+  <script>
+    if (!customElements.get('collection-banner-readmore')) {
+      customElements.define(
+        'collection-banner-readmore',
+        class extends HTMLElement {
+          connectedCallback() {
+            this.wrap = this.querySelector('[data-cb-desc]');
+            this.text = this.wrap && this.wrap.querySelector('.cb-desc__text');
+            this.toggle = this.wrap && this.wrap.querySelector('[data-cb-toggle]');
+            if (!this.wrap || !this.text || !this.toggle) return;
+
+            this.moreLabel = this.toggle.textContent.trim();
+            this.lessLabel = this.dataset.lessLabel || 'Read less';
+
+            this.onToggle = () => {
+              const expanded = this.wrap.classList.toggle('is-expanded');
+              this.toggle.setAttribute('aria-expanded', String(expanded));
+              this.toggle.textContent = expanded ? this.lessLabel : this.moreLabel;
+            };
+
+            this.measure = () => {
+              // Measured against the collapsed state, so the comparison is
+              // always clamp height versus full height.
+              const wasExpanded = this.wrap.classList.contains('is-expanded');
+              if (wasExpanded) this.wrap.classList.remove('is-expanded');
+
+              const overflows = this.text.scrollHeight - this.text.clientHeight > 1;
+              this.wrap.classList.toggle('is-truncatable', overflows);
+
+              if (overflows && wasExpanded) {
+                this.wrap.classList.add('is-expanded');
+              } else if (!overflows) {
+                // Short description: no control, and nothing left expanded.
+                this.toggle.setAttribute('aria-expanded', 'false');
+                this.toggle.textContent = this.moreLabel;
+              }
+            };
+
+            this.toggle.addEventListener('click', this.onToggle);
+            window.addEventListener('resize', this.measure, { passive: true });
+
+            // Fonts change the line box, so measuring before they land can
+            // misjudge the overflow by a line.
+            if (document.fonts && document.fonts.ready) {
+              document.fonts.ready.then(this.measure);
+            }
+            requestAnimationFrame(this.measure);
+          }
+
+          disconnectedCallback() {
+            if (this.toggle) this.toggle.removeEventListener('click', this.onToggle);
+            window.removeEventListener('resize', this.measure);
+          }
+        }
+      );
+    }
+
+    // Upgrade the banner's prose container in place. Wrapping the markup in the
+    // custom element in Liquid would have meant touching the shared layout for
+    // every instance; this only ever runs inside this section.
+    (function () {
+      var root = document.getElementById('shopify-section-{{ section.id }}');
+      if (!root) return;
+      var desc = root.querySelector('[data-cb-desc]');
+      if (!desc || desc.closest('collection-banner-readmore')) return;
+      var host = document.createElement('collection-banner-readmore');
+      host.dataset.lessLabel = {{ section.settings.cb_less_label | default: 'Read less' | json }};
+      desc.parentNode.insertBefore(host, desc);
+      host.appendChild(desc);
+    })();
+  </script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "t:sections.image_with_text.name",
@@ -693,6 +981,20 @@
       "default": "scheme-1"
     },
       {
+      "type": "text",
+      "id": "cb_more_label",
+      "label": "Read more label",
+      "info": "Collection banner only. Leave empty for \"Read more\".",
+      "default": "Read more"
+    },
+    {
+      "type": "text",
+      "id": "cb_less_label",
+      "label": "Read less label",
+      "info": "Collection banner only. Leave empty for \"Read less\".",
+      "default": "Read less"
+    },
+    {
       "type": "text",
       "id": "custom_class",
       "label": "Custom CSS class",
