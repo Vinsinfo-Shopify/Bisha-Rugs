@@ -1030,53 +1030,6 @@
         "show_features": false
       }
     },
-    "image-with-text-overlay-1": {
-      "type": "image-with-text-overlay",
-      "blocks": {
-        "subheading-1": {
-          "type": "subheading",
-          "settings": {
-            "text": "New product"
-          }
-        },
-        "heading-1": {
-          "type": "heading",
-          "settings": {
-            "text": "Our backpack",
-            "heading_tag": "h2"
-          }
-        },
-        "button-1": {
-          "type": "button",
-          "settings": {
-            "style": "solid",
-            "text": "Shop",
-            "url": "",
-            "background": "#ffffff",
-            "text_color": "#1c1c1c"
-          }
-        }
-      },
-      "block_order": [
-        "subheading-1",
-        "heading-1",
-        "button-1"
-      ],
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-4",
-        "custom_class": "",
-        "image_size": "sm",
-        "allow_transparent_header": false,
-        "reveal_on_scroll": true,
-        "remove_vertical_spacing": true,
-        "content_width": "md",
-        "mobile_text_position": "place-self-center text-center",
-        "desktop_text_position": "sm:place-self-end-start sm:text-start",
-        "overlay_color": "#000000",
-        "overlay_opacity": 20
-      }
-    },
     "media-grid": {
       "type": "media-grid",
       "blocks": {
@@ -1742,7 +1695,6 @@
     "find_perfect_look_8htECx",
     "image_with_text_xnyQHV",
     "image_with_text_nK66R9",
-    "image-with-text-overlay-1",
     "media-grid",
     "featured-collections-2",
     "countdown",
