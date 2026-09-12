@@ -610,10 +610,22 @@
       overflow: hidden;
     }
 
-    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-expanded .cb-desc__text {
+    /* Expanded clears every restriction explicitly. -webkit-line-clamp only
+       applies to display: -webkit-box, but it is reset anyway so nothing can
+       survive if the display value is ever changed elsewhere. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-expanded .cb-desc__text,
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-measuring .cb-desc__text {
       display: block;
-      -webkit-line-clamp: unset;
+      -webkit-line-clamp: none;
+      -webkit-box-orient: horizontal;
+      max-height: none;
       overflow: visible;
+    }
+
+    /* Used for one frame while measuring, then removed. Invisible to the user:
+       it is only ever set and cleared inside a single synchronous block. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-measuring {
+      visibility: hidden;
     }
 
     #shopify-section-{{ section.id }} .collection_banner .cb-toggle {
@@ -627,7 +639,11 @@
       line-height: 140%;
       font-weight: 700;
       color: inherit;
+      /* Both properties are set: theme.css resets button decoration in places,
+         and the longhand is what wins against a shorthand reset. */
       text-decoration: underline;
+      text-decoration-line: underline;
+      text-decoration-thickness: 1px;
       text-underline-offset: 2px;
       cursor: pointer;
     }
@@ -685,6 +701,9 @@
       #shopify-section-{{ section.id }} .collection_banner .cb-toggle {
         font-size: 14px;
         line-height: 140%;
+        font-weight: 700;
+        text-decoration: underline;
+        text-decoration-line: underline;
       }
 
       #shopify-section-{{ section.id }} .collection_banner .icon-with-text-item {
@@ -701,6 +720,18 @@
         max-width: none;
         width: 100%;
         aspect-ratio: 375 / 155;
+      }
+
+      /* Balanced 12px either side of the text column, giving 351px of content
+         at a 375px viewport. The instance sets its own mobile side padding to
+         0 so the image can stay edge to edge; that stays as it is, and the
+         spacing is put on the text column alone. Applies to the title, the
+         description, Read more and the service rows, because they all live
+         inside this one element. */
+      #shopify-section-{{ section.id }} .collection_banner .image-with-text > .prose {
+        box-sizing: border-box;
+        padding-inline: 12px;
+        max-width: none;
       }
     }
   </style>
@@ -912,18 +943,27 @@
             };
 
             this.measure = () => {
-              // Measured against the collapsed state, so the comparison is
-              // always clamp height versus full height.
               const wasExpanded = this.wrap.classList.contains('is-expanded');
-              if (wasExpanded) this.wrap.classList.remove('is-expanded');
+              this.wrap.classList.remove('is-expanded');
 
-              const overflows = this.text.scrollHeight - this.text.clientHeight > 1;
+              // scrollHeight is unreliable on a -webkit-box that is being
+              // line-clamped: several browsers report it as equal to
+              // clientHeight, so the overflow test silently returned false and
+              // the control was never shown. The clamp is therefore lifted for
+              // one synchronous measurement and put straight back, with the
+              // element hidden in between so nothing flashes.
+              const clamped = this.text.clientHeight;
+              this.wrap.classList.add('is-measuring');
+              const natural = this.text.scrollHeight;
+              this.wrap.classList.remove('is-measuring');
+
+              const overflows = natural - clamped > 1;
               this.wrap.classList.toggle('is-truncatable', overflows);
 
               if (overflows && wasExpanded) {
                 this.wrap.classList.add('is-expanded');
               } else if (!overflows) {
-                // Short description: no control, and nothing left expanded.
+                // Short description: no control, nothing left expanded.
                 this.toggle.setAttribute('aria-expanded', 'false');
                 this.toggle.textContent = this.moreLabel;
               }
