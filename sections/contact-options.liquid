@@ -298,6 +298,12 @@
     #shopify-section-{{ section.id }} .co__header {
       margin-block-end: {{ section.settings.header_gap | times: 0.7 | round }}px;
     }
+    #shopify-section-{{ section.id }} .co__header,
+    #shopify-section-{{ section.id }} .co__header .section-header {
+      justify-items: start;
+      justify-self: start;
+      text-align: left;
+    }
 
     /* Mobile is an edge-aligned scroller, not a centred group: the desktop
        fit-content/auto-margin centring is undone here or every slide would sit
