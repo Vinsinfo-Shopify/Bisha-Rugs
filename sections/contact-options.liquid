@@ -277,10 +277,9 @@
          negative margin       -> the track spans the full viewport, so the
                                    partial next card reaches the right edge
 
-       No trailing margin on the last card. That is what produced the empty
-       band in the screenshot: it reserved a whole viewport width of scroll
-       room so the last card could travel to the left edge. The track is now
-       sized by its cards alone. */
+       No trailing margin of a viewport width on the last card. That is what
+       produced the empty band in the earlier screenshot. The track is sized by
+       its cards alone. */
     #shopify-section-{{ section.id }} .co__track {
       --co-gap: {{ section.settings.card_gap_mobile }}px;
       --co-card: {{ section.settings.image_width_mobile }}px;
@@ -288,8 +287,35 @@
       width: auto;
       max-width: none;
       margin-inline: calc(-1 * var(--container-gutter));
-      padding-inline: {{ section.settings.mobile_edge_gap }}px;
+      /* Start padding only. The end spacing is a margin on the last card
+         instead: padding-inline-end on a flex scroll container is unreliable
+         across engines -- several drop it from scrollWidth entirely, which
+         shortens the maximum scroll AND makes the carousel believe it has hit
+         the end early, which is what left the final card clipped with the
+         arrow already disabled. A margin on the item is always counted. */
+      padding-inline-start: {{ section.settings.mobile_edge_gap }}px;
+      padding-inline-end: 0;
       scroll-padding-inline: 0;
+    }
+
+    /* The initial gap was being scrolled away, not missing.
+       scroll-snap-type: x mandatory snaps on load, and with scroll-padding 0
+       the nearest snap point put card 1's left edge on the scrollport's left
+       edge -- scrollLeft jumped to 16 and ate the padding.
+
+       scroll-margin on the FIRST card only shifts that one card's snap area
+       outward by the same amount, so its snap position resolves to scrollLeft 0
+       and the padding stays on screen. Every other card is untouched, so the
+       middle of the carousel is still edge to edge. */
+    #shopify-section-{{ section.id }} .co__card:first-child {
+      scroll-margin-inline-start: {{ section.settings.mobile_edge_gap }}px;
+    }
+
+    /* The intended spacing after the last card, as a margin so it is inside
+       scrollWidth and the carousel can scroll far enough to expose the card in
+       full before the next button disables. */
+    #shopify-section-{{ section.id }} .co__card:last-child {
+      margin-inline-end: {{ section.settings.mobile_edge_gap }}px;
     }
 
     #shopify-section-{{ section.id }} .co__title {
@@ -329,7 +355,7 @@
       position: absolute;
       display: grid;
       place-items: center;
-      z-index: 3;
+      z-index: 4;
       inset-block-start: {{ section.settings.arrow_offset_mobile }}%;
       transform: translateY(-50%);
       opacity: 1;
@@ -694,7 +720,7 @@
       "max": 40,
       "step": 1,
       "unit": "px",
-      "default": 24
+      "default": 22
     },
     {
       "type": "range",
