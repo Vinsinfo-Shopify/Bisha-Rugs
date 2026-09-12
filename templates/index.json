@@ -1706,6 +1706,7 @@
         "gallery_item_Pp9tTL": {
           "type": "gallery_item",
           "settings": {
+            "video": "shopify://files/videos/Hey friends! I’m so excited to share this incredible upgrade in our library room. True quality a.mp4",
             "autoplay": false,
             "link": "",
             "alt": ""
