@@ -4,6 +4,34 @@
   ------------------------------------------------------------------------------------------------------------------------
 {%- endcomment -%}
 
+{%- comment -%}
+  HOMEPAGE-ONLY TOP SPACING.
+
+  This section reaches the homepage through sections/footer-group.json, a
+  section GROUP, so the very same instance renders on every page of the store.
+  A plain section setting would therefore add the margin everywhere. It is
+  gated on request.page_type instead: on any other template the rule below is
+  never emitted at all - not overridden, not present - so nothing else can
+  inherit it. templates/page.about-us.json holds a separate newsletter instance
+  with its own id and is equally unaffected.
+
+  Only the space ABOVE the section changes. No internal spacing, design,
+  content or typography is touched, and no global CSS is modified.
+{%- endcomment -%}
+{%- if request.page_type == 'index' and section.settings.home_top_spacing > 0 -%}
+  <style>
+    #shopify-section-{{ section.id }} {
+      margin-block-start: {{ section.settings.home_top_spacing }}px;
+    }
+
+    @media screen and (max-width: 699px) {
+      #shopify-section-{{ section.id }} {
+        margin-block-start: {{ section.settings.home_top_spacing | divided_by: 2 }}px;
+      }
+    }
+  </style>
+{%- endif -%}
+
 {%- liquid
   assign has_media = false
   if section.settings.image_1 != blank or section.settings.image_2 != blank
@@ -200,6 +228,17 @@
     "groups": ["header", "custom.overlay"]
   },
   "settings": [
+    {
+      "type": "range",
+      "id": "home_top_spacing",
+      "label": "Extra top spacing on the home page",
+      "info": "Applies only where this section renders on the home page. Every other page is unaffected. Halves on mobile.",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    },
     {
       "type": "paragraph",
       "content": "t:sections.newsletter.instructions"
