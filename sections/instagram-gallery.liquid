@@ -1,18 +1,10 @@
 {%- doc -%}
   "Follow Us On Instagram" - a horizontal socials gallery of images and videos.
 
-  Content source is a setting. Both options feed ONE presentation layer, so the
-  gallery, carousel, arrows, play button and responsive behaviour are identical
-  whichever source is chosen; only the media list differs.
-
-    manual     -> the section's own media blocks
-    instagram  -> a supported feed integration, when one exists on the store
-
-  There is no Instagram integration in this theme today: no feed snippet, no
-  app embed, nothing beyond the social LINK settings. So the instagram option
-  falls back to the manual blocks and says so in the Theme Editor rather than
-  rendering an empty gallery or inventing an API. When a supported feed app is
-  installed, only the media-list assignment below needs to change.
+  Media comes from the section's own blocks. A live Instagram feed was assessed
+  and deliberately not built: it needs a Meta app, a server-side token and a
+  scheduled sync, which is disproportionate here. The media list is assigned in
+  one place below, so a feed could be added later without touching the markup.
 
   Reused rather than rebuilt:
     snippets/section-header.liquid   eyebrow + heading, native typography
@@ -35,17 +27,9 @@
 {%- liquid
   assign carousel_id = 'ig-carousel-' | append: section.id
 
-  # THE SOURCE SWITCH.
-  # Everything downstream reads media_blocks and nothing else, so adding a real
-  # feed later means assigning a different list here - not touching the markup.
+  # Everything downstream reads media_blocks and nothing else, so a live feed
+  # could later be assigned here without touching the markup.
   assign media_blocks = section.blocks
-  assign instagram_unavailable = false
-
-  if section.settings.content_source == 'instagram'
-    # No supported feed integration exists on this store. Falling back to the
-    # manual blocks keeps the storefront intact.
-    assign instagram_unavailable = true
-  endif
 -%}
 
 {%- if media_blocks.size > 0 -%}
@@ -265,16 +249,6 @@
             {{ section.settings.tagline_after -}}
           </p>
         {%- endif -%}
-
-        {%- comment -%}
-          Editor-only notice. Never rendered on the storefront, so a merchant
-          sees why the feed option did nothing without a visitor seeing it.
-        {%- endcomment -%}
-        {%- if instagram_unavailable and request.design_mode -%}
-          <p class="ig__tagline">
-            Instagram feed is not available on this store - no supported feed integration is installed. Showing the manual media below.
-          </p>
-        {%- endif -%}
       </div>
 
       <div class="ig__carousel floating-controls-container floating-controls-container--inside floating-controls-container--on-hover">
@@ -364,17 +338,6 @@
     "groups": ["header", "footer", "custom.overlay"]
   },
   "settings": [
-    {
-      "type": "select",
-      "id": "content_source",
-      "label": "Content source",
-      "info": "Instagram feed needs a supported feed app installed. Until then it falls back to the manual media below.",
-      "options": [
-        { "value": "manual", "label": "Manual media" },
-        { "value": "instagram", "label": "Instagram feed" }
-      ],
-      "default": "manual"
-    },
     {
       "type": "header",
       "content": "Content"
