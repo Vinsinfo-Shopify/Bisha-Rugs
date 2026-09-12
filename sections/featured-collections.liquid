@@ -514,12 +514,22 @@
           display: none;
         }
 
+        #shopify-section-{{ section.id }} .floating-controls-container > carousel-prev-button.floating-controls-container__control,
         #shopify-section-{{ section.id }} .floating-controls-container > carousel-next-button.floating-controls-container__control {
           z-index: 3;
           display: grid;
           position: absolute;
-          inset-inline-end: 6px;
           inset-block-start: calc(((100vw - 2.125rem) / 2 * 380 / 313) / 2 - 0.875rem);
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container > carousel-prev-button.floating-controls-container__control {
+          inset-inline-start: 6px;
+          inset-inline-end: auto;
+        }
+
+        #shopify-section-{{ section.id }} .floating-controls-container > carousel-next-button.floating-controls-container__control {
+          inset-inline-end: 6px;
+          inset-inline-start: auto;
         }
 
         #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
