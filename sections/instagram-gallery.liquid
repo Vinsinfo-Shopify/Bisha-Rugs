@@ -43,7 +43,7 @@
     }
 
     #shopify-section-{{ section.id }} .ig__inner {
-      padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+      padding-block: {{ section.settings.space_top }}px {{ section.settings.space_bottom }}px;
     }
 
     #shopify-section-{{ section.id }} .ig__header {
@@ -55,12 +55,18 @@
       gap: 0;
     }
 
+    /* Line heights are ratios so they hold if a size is changed:
+       14 x 1.43 = 20, 28 x 1.214 = 34, 16 x 1.375 = 22. */
     #shopify-section-{{ section.id }} .ig__header .section_header_subheading {
       margin-block: 0 {{ section.settings.eyebrow_gap }}px;
-      line-height: 1.3;
+      font-size: {{ section.settings.eyebrow_size }}px;
+      line-height: 1.43;
+      font-weight: {{ section.settings.eyebrow_weight }};
     }
 
     #shopify-section-{{ section.id }} .ig__header .section_header_heading {
+      font-size: {{ section.settings.heading_size }}px;
+      line-height: 1.214;
       font-weight: {{ section.settings.heading_weight }};
       margin-block: 0;
     }
@@ -68,7 +74,8 @@
     #shopify-section-{{ section.id }} .ig__tagline {
       margin-block: {{ section.settings.tagline_gap }}px 0;
       font-size: {{ section.settings.tagline_size }}px;
-      line-height: 1.4;
+      line-height: 1.375;
+      font-weight: 400;
     }
 
     #shopify-section-{{ section.id }} .ig__handle {
@@ -97,6 +104,19 @@
       align-items: stretch;
       gap: var(--ig-gap);
       overflow: auto hidden;
+      /* The cells are position: relative, so their offsetParent is the nearest
+         positioned ancestor. That was .ig__carousel, one level up. ScrollCarousel
+         computes every target as cell.offsetLeft, and assumes that offset is
+         measured from the TRACK. Any difference between the two boxes becomes a
+         constant offset on every position, including the first. Making the track
+         itself the offsetParent removes the assumption. */
+      position: relative;
+      /* Scroll anchoring is the other cause. The media is lazy-loaded inside a
+         mandatory-snap scroller: as images arrive the browser adjusts scrollLeft
+         to keep content stable, which lands the scroller a few pixels in and
+         reveals a sliver of the previous item on the left. Anchoring off keeps
+         the resting position at exactly 0. */
+      overflow-anchor: none;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
@@ -192,11 +212,22 @@
     /* ---------- Mobile ---------- */
     @media screen and (max-width: 699px) {
       #shopify-section-{{ section.id }} .ig__inner {
-        padding-block: {{ section.settings.padding_top | divided_by: 2 }}px {{ section.settings.padding_bottom | divided_by: 2 }}px;
+        padding-block: {{ section.settings.space_top | divided_by: 2 }}px {{ section.settings.space_bottom | divided_by: 2 }}px;
       }
 
       #shopify-section-{{ section.id }} .ig__header {
         margin-block-end: {{ section.settings.header_gap | times: 0.7 | round }}px;
+      }
+
+      /* 24 x 1.208 = 29, 14 x 1.571 = 22. The eyebrow is unchanged at 14/20. */
+      #shopify-section-{{ section.id }} .ig__header .section_header_heading {
+        font-size: {{ section.settings.heading_size_mobile }}px;
+        line-height: 1.208;
+      }
+
+      #shopify-section-{{ section.id }} .ig__tagline {
+        font-size: {{ section.settings.tagline_size_mobile }}px;
+        line-height: 1.571;
       }
 
       #shopify-section-{{ section.id }} .ig__track {
@@ -377,6 +408,57 @@
       "default": "400"
     },
     {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size (desktop)",
+      "min": 18,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size (mobile)",
+      "min": 16,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "label": "Eyebrow size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_weight",
+      "label": "Eyebrow weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "range",
+      "id": "tagline_size_mobile",
+      "label": "Tagline size (mobile)",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
       "type": "text",
       "id": "tagline_before",
       "label": "Tagline, before the handle",
@@ -490,23 +572,23 @@
     },
     {
       "type": "range",
-      "id": "padding_top",
+      "id": "space_top",
       "label": "Top spacing",
       "min": 0,
       "max": 120,
       "step": 2,
       "unit": "px",
-      "default": 56
+      "default": 40
     },
     {
       "type": "range",
-      "id": "padding_bottom",
+      "id": "space_bottom",
       "label": "Bottom spacing",
       "min": 0,
       "max": 120,
       "step": 2,
       "unit": "px",
-      "default": 56
+      "default": 40
     },
     {
       "type": "range",
@@ -531,12 +613,12 @@
     {
       "type": "range",
       "id": "tagline_size",
-      "label": "Tagline size",
+      "label": "Tagline size (desktop)",
       "min": 11,
       "max": 20,
       "step": 1,
       "unit": "px",
-      "default": 14
+      "default": 16
     },
     {
       "type": "range",
