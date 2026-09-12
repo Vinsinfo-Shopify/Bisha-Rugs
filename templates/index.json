@@ -1141,30 +1141,6 @@
         "hide_collection_title": false
       }
     },
-    "countdown": {
-      "type": "countdown",
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-3",
-        "separate_section_with_border": false,
-        "image_size": "auto",
-        "subheading": "Limited time only",
-        "title": "Super Sale Up to 40% off",
-        "heading_style": "h1",
-        "content": "<p>Shop our selection of exclusive handbags and backpacks at reduced price during the Super Sale. Hurry up!</p>",
-        "button_link": "shopify://collections/sale",
-        "button_text": "Shop now",
-        "expiration_date": "2035-04-25",
-        "expiration_behavior": "leave",
-        "timer_position": "end",
-        "animate_number": true,
-        "flip_background": "",
-        "flip_background_opacity": 50,
-        "flip_text_color": "",
-        "overlay_color": "#1c1c1c",
-        "overlay_opacity": 30
-      }
-    },
     "multiple-media-with-text": {
       "type": "multiple-media-with-text",
       "blocks": {
@@ -1750,7 +1726,6 @@
       ],
       "name": "Instagram gallery",
       "settings": {
-        "content_source": "manual",
         "subheading": "SOCIALS",
         "title": "Follow Us On Instagram",
         "heading_style": "h2",
@@ -1781,6 +1756,84 @@
         "arrow_color": "#ffffff",
         "arrow_border": "#ffffff"
       }
+    },
+    "media_grid_AXiUW7": {
+      "type": "media-grid",
+      "blocks": {
+        "image_gRfBx4": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "",
+            "column_count": "8",
+            "row_count": 2,
+            "add_padding": false,
+            "title": "",
+            "heading_tag": "h4",
+            "content": "",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_position": "place-self-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0
+          }
+        },
+        "image_XQh8Bk": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "",
+            "column_count": "4",
+            "row_count": 1,
+            "add_padding": false,
+            "title": "",
+            "heading_tag": "h4",
+            "content": "",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_position": "place-self-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0
+          }
+        },
+        "image_ii3VG3": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "",
+            "column_count": "4",
+            "row_count": 1,
+            "add_padding": false,
+            "title": "",
+            "heading_tag": "h4",
+            "content": "",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_position": "place-self-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_gRfBx4",
+        "image_XQh8Bk",
+        "image_ii3VG3"
+      ],
+      "disabled": true,
+      "name": "t:sections.media_grid.presets.media_grid.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "desktop_row_height": 290,
+        "mobile_row_height": 180,
+        "section_width": "lg",
+        "spacing": "md",
+        "subheading": "",
+        "title": "Media grid",
+        "heading_style": "h2",
+        "content": ""
+      }
     }
   },
   "order": [
@@ -1797,7 +1850,6 @@
     "image_with_text_nK66R9",
     "media-grid",
     "featured-collections-2",
-    "countdown",
     "multiple-media-with-text",
     "before-after",
     "images-with-text-scroll",
@@ -1808,6 +1860,7 @@
     "image-with-text-overlay-2",
     "customer_reviews_J4BbaT",
     "contact_options_fnhmgN",
-    "instagram_gallery_rKQiWt"
+    "instagram_gallery_rKQiWt",
+    "media_grid_AXiUW7"
   ]
 }
