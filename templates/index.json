@@ -1042,7 +1042,7 @@
         "trade_para_top": 10,
         "trade_para_bottom": 20,
         "trade_para_top_mobile": 10,
-        "trade_para_bottom_mobile": 20,
+        "trade_para_bottom_mobile": 15,
         "trade_outer_spacing": 50,
         "trade_button_background": "#4f5b3f",
         "trade_button_text": "#ffffff",
