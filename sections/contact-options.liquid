@@ -67,12 +67,13 @@
   }
 
   #shopify-section-{{ section.id }} .co__track {
-    --co-visible: 3;
     --co-gap: {{ section.settings.card_gap }}px;
-    /* Three whole cards, so the gap count is one fewer than the cards. The
-       tablet and mobile rules restate this with floor(visible) instead, because
-       a partial card means you see a whole gap before it. */
-    --co-card: calc((100% - (var(--co-visible) - 1) * var(--co-gap)) / var(--co-visible));
+    /* Fixed, not a fraction of the track. The design specifies a rendered image
+       size, so the card is that size at every viewport and the carousel simply
+       scrolls when they stop fitting. A fractional width would have re-derived
+       the image size from the container and broken the measurement. */
+    --co-card: {{ section.settings.image_width }}px;
+    --co-media: {{ section.settings.image_height }}px;
     display: flex;
     align-items: stretch;
     gap: var(--co-gap);
@@ -105,10 +106,15 @@
     scroll-snap-stop: always;
   }
 
+  /* A fixed box, not an aspect ratio: the rendered height is specified, so the
+     source image's own proportions must not decide it. cover crops to fill
+     without distorting. */
   #shopify-section-{{ section.id }} .co__media {
-    aspect-ratio: {{ section.settings.image_ratio }};
+    width: 100%;
+    height: var(--co-media);
     background: rgb(var(--text-color) / 0.06);
     flex: none;
+    overflow: hidden;
   }
 
   #shopify-section-{{ section.id }} .co__media :is(img, svg) {
@@ -134,10 +140,18 @@
     gap: 8px;
   }
 
+  /* Width is fixed and height follows, so an icon exported at any resolution
+     keeps its own proportions and cannot inflate the title row. */
   #shopify-section-{{ section.id }} .co__icon {
     display: inline-flex;
     flex: none;
-    color: {{ section.settings.icon_color }};
+    line-height: 0;
+  }
+
+  #shopify-section-{{ section.id }} .co__icon img {
+    width: {{ section.settings.icon_width }}px;
+    height: auto;
+    display: block;
   }
 
   #shopify-section-{{ section.id }} .co__title {
@@ -229,37 +243,64 @@
     transform: translateY(-50%);
   }
 
-  /* ---------- Tablet ----------
-     Two cards and a sliver: a sensible midpoint rather than a squeezed three. */
-  @media screen and (max-width: 999px) {
-    #shopify-section-{{ section.id }} .co__track {
-      --co-visible: {{ section.settings.cards_tablet }};
-      --co-card: calc((100% - {{ section.settings.cards_tablet | floor }} * var(--co-gap)) / var(--co-visible));
-    }
-  }
-
   /* ---------- Mobile ---------- */
   @media screen and (max-width: 699px) {
     #shopify-section-{{ section.id }} .co__inner {
       padding-block: {{ section.settings.padding_top | divided_by: 2 }}px {{ section.settings.padding_bottom | divided_by: 2 }}px;
     }
 
-    #shopify-section-{{ section.id }} .co__track {
-      --co-visible: {{ section.settings.cards_mobile }};
-      --co-gap: {{ section.settings.card_gap_mobile }}px;
-      --co-card: calc((100% - {{ section.settings.cards_mobile | floor }} * var(--co-gap)) / var(--co-visible));
-    }
-
     #shopify-section-{{ section.id }} .co__header {
       margin-block-end: {{ section.settings.header_gap | times: 0.7 | round }}px;
     }
 
+    #shopify-section-{{ section.id }} .co__track {
+      --co-gap: {{ section.settings.card_gap_mobile }}px;
+      --co-card: {{ section.settings.image_width_mobile }}px;
+      --co-media: {{ section.settings.image_height_mobile }}px;
+    }
+
     /* Trailing room so the LAST card can travel to the left edge instead of the
        scroller stopping with it against the right. A margin on the last card,
-       not padding on the track: padding shrinks the content box that --co-card
-       resolves against, and that width feeds this margin - circular. */
+       not padding on the track: padding shrinks the content box this resolves
+       against. */
     #shopify-section-{{ section.id }} .co__card:last-child {
       margin-inline-end: calc(100% - var(--co-card));
+    }
+
+    /* THE MOBILE ARROW FIX.
+       Nothing was hiding it. theme.css only makes these controls absolute, grid
+       and inset inside @media (pointer: fine) -- on a touch device none of that
+       applies, so the buttons fell into normal flow as inline elements with an
+       inset-block-start that does nothing without positioning. They were
+       rendering, just nowhere visible.
+
+       Positioning is therefore restated here for touch, scoped to this section.
+       No display: none, visibility or opacity is used on the control; the theme
+       still hides a button when it is [disabled], which is why only the next
+       arrow shows at the start of the carousel. */
+    #shopify-section-{{ section.id }} .co__carousel {
+      position: relative;
+    }
+
+    #shopify-section-{{ section.id }} .floating-controls-container__control {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      z-index: 4;
+      inset-block-start: {{ section.settings.arrow_offset_mobile }}%;
+      transform: translateY(-50%);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #shopify-section-{{ section.id }} carousel-prev-button.floating-controls-container__control {
+      inset-inline-start: {{ section.settings.arrow_inset_mobile }}px;
+      inset-inline-end: auto;
+    }
+
+    #shopify-section-{{ section.id }} carousel-next-button.floating-controls-container__control {
+      inset-inline-end: {{ section.settings.arrow_inset_mobile }}px;
+      inset-inline-start: auto;
     }
   }
 </style>
@@ -293,7 +334,7 @@
               echo 'card_' | append: i | append: '_image'
             endcapture
             capture icon_key
-              echo 'card_' | append: i | append: '_icon'
+              echo 'card_' | append: i | append: '_icon_image'
             endcapture
             capture title_key
               echo 'card_' | append: i | append: '_title'
@@ -337,9 +378,17 @@
 
             <div class="co__body">
               <div class="co__title-row">
-                {%- if card_icon != 'none' -%}
+                {%- comment -%}
+                  No icon uploaded: the element is not rendered at all, so there
+                  is no broken image and no empty gap beside the title.
+                {%- endcomment -%}
+                {%- if card_icon != blank -%}
                   <span class="co__icon">
-                    {%- render 'icon', icon: card_icon, width: section.settings.icon_size -%}
+                    {{-
+                      card_icon
+                      | image_url: width: 160
+                      | image_tag: loading: 'lazy', widths: '40,80,120,160', alt: ''
+                    -}}
                   </span>
                 {%- endif -%}
 
@@ -432,16 +481,9 @@
       "label": "Image"
     },
     {
-      "type": "select",
-      "id": "card_1_icon",
-      "label": "Icon",
-      "options": [
-        { "value": "picto-phone", "label": "Phone" },
-        { "value": "picto-camera", "label": "Video" },
-        { "value": "picto-envelope", "label": "Email" },
-        { "value": "none", "label": "None" }
-      ],
-      "default": "picto-phone"
+      "type": "image_picker",
+      "id": "card_1_icon_image",
+      "label": "Icon image"
     },
     {
       "type": "text",
@@ -478,16 +520,9 @@
       "label": "Image"
     },
     {
-      "type": "select",
-      "id": "card_2_icon",
-      "label": "Icon",
-      "options": [
-        { "value": "picto-phone", "label": "Phone" },
-        { "value": "picto-camera", "label": "Video" },
-        { "value": "picto-envelope", "label": "Email" },
-        { "value": "none", "label": "None" }
-      ],
-      "default": "picto-camera"
+      "type": "image_picker",
+      "id": "card_2_icon_image",
+      "label": "Icon image"
     },
     {
       "type": "text",
@@ -523,16 +558,9 @@
       "label": "Image"
     },
     {
-      "type": "select",
-      "id": "card_3_icon",
-      "label": "Icon",
-      "options": [
-        { "value": "picto-phone", "label": "Phone" },
-        { "value": "picto-camera", "label": "Video" },
-        { "value": "picto-envelope", "label": "Email" },
-        { "value": "none", "label": "None" }
-      ],
-      "default": "picto-envelope"
+      "type": "image_picker",
+      "id": "card_3_icon_image",
+      "label": "Icon image"
     },
     {
       "type": "text",
@@ -637,34 +665,45 @@
     },
     {
       "type": "range",
-      "id": "cards_tablet",
-      "label": "Cards visible (tablet)",
-      "min": 1.1,
-      "max": 3,
-      "step": 0.1,
-      "default": 2.1
+      "id": "image_width",
+      "label": "Image width (desktop)",
+      "info": "Also the card width. 415 matches the design.",
+      "min": 240,
+      "max": 520,
+      "step": 5,
+      "unit": "px",
+      "default": 415
     },
     {
       "type": "range",
-      "id": "cards_mobile",
-      "label": "Cards visible (mobile)",
-      "info": "1.1 shows one whole card plus a 10% sliver of the next.",
-      "min": 1,
-      "max": 2.5,
-      "step": 0.1,
-      "default": 1.1
+      "id": "image_height",
+      "label": "Image height (desktop)",
+      "min": 249,
+      "max": 349,
+      "step": 1,
+      "unit": "px",
+      "default": 299
     },
     {
-      "type": "select",
-      "id": "image_ratio",
-      "label": "Image shape",
-      "options": [
-        { "value": "3 / 4", "label": "Tall portrait" },
-        { "value": "4 / 5", "label": "Portrait" },
-        { "value": "1 / 1", "label": "Square" },
-        { "value": "5 / 4", "label": "Landscape" }
-      ],
-      "default": "4 / 5"
+      "type": "range",
+      "id": "image_width_mobile",
+      "label": "Image width (mobile)",
+      "info": "Also the card width. 219 matches the design.",
+      "min": 169,
+      "max": 269,
+      "step": 1,
+      "unit": "px",
+      "default": 219
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "label": "Image height (mobile)",
+      "min": 184,
+      "max": 284,
+      "step": 1,
+      "unit": "px",
+      "default": 234
     },
     {
       "type": "range",
@@ -700,19 +739,14 @@
     },
     {
       "type": "range",
-      "id": "icon_size",
-      "label": "Icon size",
-      "min": 14,
-      "max": 40,
-      "step": 2,
+      "id": "icon_width",
+      "label": "Icon width",
+      "info": "Height follows the uploaded icon's own proportions.",
+      "min": 12,
+      "max": 48,
+      "step": 1,
       "unit": "px",
       "default": 22
-    },
-    {
-      "type": "color",
-      "id": "icon_color",
-      "label": "Icon colour",
-      "default": "#2b2724"
     },
     {
       "type": "range",
@@ -752,13 +786,33 @@
     {
       "type": "range",
       "id": "arrow_offset",
-      "label": "Arrow vertical position",
+      "label": "Arrow vertical position (desktop)",
       "info": "Measured down from the top of the card, so it can sit on the image rather than the card's middle.",
       "min": 10,
       "max": 90,
       "step": 5,
       "unit": "%",
       "default": 30
+    },
+    {
+      "type": "range",
+      "id": "arrow_offset_mobile",
+      "label": "Arrow vertical position (mobile)",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "arrow_inset_mobile",
+      "label": "Arrow distance from edge (mobile)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 8
     },
     {
       "type": "color",
