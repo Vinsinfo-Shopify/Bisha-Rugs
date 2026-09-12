@@ -126,24 +126,32 @@
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
-      /* START and END are deliberately asymmetric.
+      /* The track spans the FULL viewport. The two boundaries are then defined
+         as content, not as edges of the container:
 
-         LEFT: the track keeps the container's own gutter, so item 1 begins on
-         the section's left edge - the intended left spacing - and there is
-         never a partial item to its left.
+           start inset = padding-inline-start on the track
+           end inset   = margin-inline-end on the last item
 
-         RIGHT: the track escapes the container on that side only, so the
-         partial next item runs to the viewport edge instead of stopping at the
-         gutter, and at maximum scroll the last item finishes flush with that
-         edge rather than being held back by the inset.
+         so scrollWidth = start inset + items + gaps + end inset, and
+         maxScroll = scrollWidth - viewport. At scrollLeft 0 the start inset is
+         the left space. At maxScroll the end inset is the only thing right of
+         the final item, and everything to its left is content covering the left
+         edge. Previously the track began at the container edge, so its left
+         boundary was fixed and nothing could ever reach that strip - which is
+         why the final position kept an empty band on the left.
 
-         No padding is used on either side: padding-inline-end is unreliable in
-         a flex scroll container - several engines drop it from scrollWidth,
-         which shortens the scrollable range. The end spacing, when wanted, is
-         a margin on the last item instead. */
-      margin-inline-end: calc(-1 * var(--container-gutter));
-      padding-inline: 0;
-      scroll-padding-inline: 0;
+         The end inset is a margin on the last item rather than padding on the
+         track: several engines drop padding-inline-end from scrollWidth, which
+         silently shortens maxScroll.
+
+         scroll-padding-inline-start matches the start inset so the theme's own
+         calculateLeftScroll resolves item 1 to offsetLeft - scrollPadding = 0.
+         That pins the current, approved start position exactly. */
+      margin-inline: calc(-1 * var(--container-gutter));
+      padding-inline-start: var(--container-gutter);
+      padding-inline-end: 0;
+      scroll-padding-inline-start: var(--container-gutter);
+      scroll-padding-inline-end: 0;
     }
 
     #shopify-section-{{ section.id }} .ig__track::-webkit-scrollbar {
@@ -186,7 +194,7 @@
        so it is counted in scrollWidth and the carousel can actually scroll to
        it. */
     #shopify-section-{{ section.id }} .ig__item:last-child {
-      margin-inline-end: {{ section.settings.end_gap }}px;
+      margin-inline-end: calc(var(--container-gutter) + {{ section.settings.end_gap }}px);
     }
 
     #shopify-section-{{ section.id }} .ig__link {
