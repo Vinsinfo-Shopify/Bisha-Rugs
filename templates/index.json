@@ -1883,9 +1883,9 @@
         "card_border": "#e6e6e6",
         "cta_background": "#4f5b3f",
         "cta_text_color": "#ffffff",
-        "arrow_size": 38,
+        "arrow_size": 26,
         "arrow_offset": 40,
-        "arrow_inset_mobile": 8,
+        "arrow_inset_mobile": 0,
         "arrow_background": "#2b2724",
         "arrow_color": "#ffffff",
         "arrow_border": "#ffffff"
