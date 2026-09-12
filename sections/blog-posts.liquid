@@ -24,6 +24,16 @@
 {%- endcomment -%}
 <style>
   /* Every rule is prefixed with this section's id. */
+
+  /* The clip lives on the full-width wrapper, NOT on .blogc__inner. That inner
+     element is the .container the track deliberately bleeds out of, so clipping
+     there cut the track straight back to the container box - leaving the same
+     inset visible on both sides at every scroll position, including the last.
+     Here it still stops the bleed from giving the page horizontal scroll. */
+  #shopify-section-{{ section.id }} .blogc {
+    overflow-x: clip;
+  }
+
   #shopify-section-{{ section.id }} .blogc__inner {
     padding-block: {{ section.settings.space_top }}px {{ section.settings.space_bottom }}px;
   }
@@ -219,19 +229,12 @@
     margin-block-start: {{ section.settings.cta_gap }}px;
   }
 
-  /* Hover colours only - dimensions and typography stay with the theme's own
-     button component, which is not modified. */
-  #shopify-section-{{ section.id }} .blogc__cta .button {
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-  }
-
-  @media screen and (pointer: fine) {
-    #shopify-section-{{ section.id }} .blogc__cta .button:hover {
-      background: {{ section.settings.button_hover_background }};
-      color: {{ section.settings.button_hover_text }};
-      border-color: {{ section.settings.button_hover_background }};
-    }
-  }
+  /* No button rules here on purpose. theme.css drives .button's hover with a
+     gradient wipe (--initial-gradient / --hover-gradient plus a background-size
+     transition). Setting the background shorthand on :hover wipes out
+     background-image and background-size and kills that animation, which is
+     what made this CTA behave unlike the other sections. The colours are passed
+     into the button snippet instead, exactly as the completed sections do. */
 
   /* ---------- Arrows ----------
      Row 08's treatment under this section's id. Size, inset, hover and
@@ -316,7 +319,7 @@
 </style>
 
 <div class="blogc color-scheme color-scheme--{{ section.settings.color_scheme.id }}"{% if section.settings.background != blank %} style="background: {{ section.settings.background }};"{% endif %}>
-  <div class="blogc__inner container container--lg" style="overflow-x: clip;">
+  <div class="blogc__inner container container--lg">
     <div class="blogc__header">
       {%- render 'section-header',
         subheading: section.settings.subheading,
@@ -399,7 +402,12 @@
     {%- if section.settings.button_text != blank -%}
       <div class="blogc__cta">
         {%- assign button_link = section.settings.button_link | default: section.settings.blog.url -%}
-        {%- render 'button', href: button_link, content: section.settings.button_text -%}
+        {%- render 'button',
+          href: button_link,
+          content: section.settings.button_text,
+          background: section.settings.cta_background,
+          text_color: section.settings.cta_text_color
+        -%}
       </div>
     {%- endif -%}
   </div>
@@ -904,14 +912,15 @@
     },
     {
       "type": "color",
-      "id": "button_hover_background",
-      "label": "Button hover background",
-      "default": "#2b2724"
+      "id": "cta_background",
+      "label": "Button background",
+      "info": "Hover is the theme's own button animation; it is not overridden here.",
+      "default": "#4f5b3f"
     },
     {
       "type": "color",
-      "id": "button_hover_text",
-      "label": "Button hover text",
+      "id": "cta_text_color",
+      "label": "Button text",
       "default": "#ffffff"
     },
     {
