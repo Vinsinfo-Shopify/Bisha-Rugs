@@ -318,21 +318,9 @@
       --section-padding-right: 12px;
     }
 
-    /* --section-padding-bottom comes from padding_bottom (0 on this
-       instance) at the base, from padding_bottom_mobile only inside
-       @media (max-width: 500px), and is set back to 0 at min-width:
-       1000px. 501-999px therefore inherits 0 and the panel ends flush
-       under the button. The spacing is owned here instead, across the
-       whole range below 1000px, and the var is zeroed so the <=500px
-       value cannot add to it. */
-    #shopify-section-{{ section.id }} {
-      --section-padding-bottom: 0px;
-    }
-
     #shopify-section-{{ section.id }} .image-with-text {
       display: flex;
       flex-direction: column;
-      padding-bottom: {{ section.settings.trade_content_bottom }}px;
     }
 
     #shopify-section-{{ section.id }} .image-with-text > picture {
@@ -411,34 +399,6 @@
 
     #shopify-section-{{ section.id }} .prose .button {
       margin-top: 18px;       /* was 16 */
-    }
-  }
-
-  /* -- Tablet: 700-999px ------------------------------------------- */
-  /* The prose is a flex column and its default align-items is stretch,
-     so the button and the feature list take the container's alignment
-     rather than the text's. text-align is already left here - both from
-     the trade base rule and from .sm\:text-start, which starts at 700px
-     - so pinning the flex children to flex-start is what actually holds
-     the block left. Bounded at both ends: below 700 and above 999 are
-     untouched. */
-  @media screen and (min-width: 700px) and (max-width: 999px) {
-    #shopify-section-{{ section.id }} .image-with-text > .prose {
-      align-items: flex-start;
-      text-align: left;
-    }
-
-    #shopify-section-{{ section.id }} .image-with-text > .prose > * {
-      margin-inline: 0;
-    }
-
-    #shopify-section-{{ section.id }} .prose .button {
-      align-self: flex-start;
-    }
-
-    #shopify-section-{{ section.id }} .icon-with-text-list {
-      justify-content: start;
-      justify-items: start;
     }
   }
 
@@ -863,17 +823,6 @@
         }
       ],
       "default": "sm"
-    },
-    {
-      "type": "range",
-      "id": "trade_content_bottom",
-      "label": "Trade: space below the button (under 1000px)",
-      "info": "Inside the cream panel. The transparent band outside it is the section spacing setting.",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "default": 50
     },
     {
       "type": "range",
