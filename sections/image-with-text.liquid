@@ -17,6 +17,11 @@
   #shopify-section-{{ section.id }} .image-with-text-container {
     margin-inline: auto;
   }
+
+  #shopify-section-{{ section.id }} .image-with-text-container::before, 
+  #shopify-section-{{ section.id }} .image-with-text-container::after  {
+    border: 0;
+  }
  
   /* --- Icon with text list --- */
   #shopify-section-{{ section.id }} .icon-with-text-list {
@@ -505,7 +510,7 @@
       margin-bottom: 0;
     }
   }
-  
+
 {%- endif -%}
 
 
