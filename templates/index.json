@@ -1688,6 +1688,7 @@
         "gallery_item_PyDa7B": {
           "type": "gallery_item",
           "settings": {
+            "image": "shopify://shop_images/appointment.png",
             "autoplay": false,
             "link": "",
             "alt": ""
@@ -1744,7 +1745,7 @@
       ],
       "name": "Instagram gallery",
       "settings": {
-        "content_source": "instagram",
+        "content_source": "manual",
         "subheading": "SOCIALS",
         "title": "Follow Us On Instagram",
         "heading_style": "h2",
