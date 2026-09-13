@@ -1,0 +1,31 @@
+{%- doc -%}
+  @param {object} section - the cart drawer section
+{%- enddoc -%}
+
+{%- if section.settings.show_service_strip -%}
+  {%- capture service_items -%}
+    {%- render 'cart-drawer-service-items',
+      section: section,
+      tag: 'span',
+      item_class: 'cart-drawer-marquee__item',
+      icon_class: 'cart-drawer-marquee__icon'
+    -%}
+  {%- endcapture -%}
+
+  {%- if service_items != blank -%}
+    {%- if section.settings.service_strip_scroll -%}
+      <cart-drawer-marquee class="cart-drawer-marquee" data-speed="{{ section.settings.service_strip_speed }}">
+        <div class="cart-drawer-marquee__track">
+          <div class="cart-drawer-marquee__group">{{ service_items }}</div>
+          <div class="cart-drawer-marquee__group" aria-hidden="true">{{ service_items }}</div>
+        </div>
+      </cart-drawer-marquee>
+    {%- else -%}
+      <div class="cart-drawer-marquee cart-drawer-marquee--static">
+        <div class="cart-drawer-marquee__track">
+          <div class="cart-drawer-marquee__group">{{ service_items }}</div>
+        </div>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

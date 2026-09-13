@@ -1,0 +1,109 @@
+{%- doc -%}
+  @param {object} section - the cart drawer section
+{%- enddoc -%}
+
+{%- liquid
+  assign recommended_count = 0
+
+  for product in section.settings.cross_sell_products
+    assign items_for_product = cart | line_items_for: product
+
+    if items_for_product.size == 0 and product.available
+      assign recommended_count = recommended_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if recommended_count > 0 -%}
+  <div class="cart-drawer-recommendations">
+    {%- if section.settings.cross_sell_title != blank -%}
+      <p class="cart-drawer__section-title" id="cart-drawer-recommendations-title-{{ section.id }}">
+        {{- section.settings.cross_sell_title -}}
+      </p>
+    {%- endif -%}
+
+    <div
+      class="cart-drawer-recommendations__scroller"
+      tabindex="0"
+      role="group"
+      {% if section.settings.cross_sell_title != blank %}
+        aria-labelledby="cart-drawer-recommendations-title-{{ section.id }}"
+      {% endif %}
+    >
+      {%- for product in section.settings.cross_sell_products -%}
+        {%- liquid
+          assign products_in_cart = cart.items | where: 'product_id', product.id
+
+          if products_in_cart.size > 0 or product.available == false
+            continue
+          endif
+
+          assign saving_percentage = 0
+          if product.compare_at_price > product.price
+            assign saving_percentage = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
+          endif
+
+          assign single_variant = false
+          if product.variants.size == 1 and product.selling_plan_groups.size == 0
+            assign single_variant = true
+          endif
+        -%}
+
+        <div class="cart-drawer-recommendation">
+          <a href="{{ product.url }}" class="cart-drawer-recommendation__media" tabindex="-1" aria-hidden="true">
+            {{-
+              product.featured_media
+              | image_url: width: 240
+              | image_tag: loading: 'lazy', sizes: '76px', widths: '76,152,228', class: 'cart-drawer-recommendation__image', alt: ''
+            -}}
+          </a>
+
+          <div class="cart-drawer-recommendation__info">
+            <a href="{{ product.url }}" class="cart-drawer-recommendation__title">{{ product.title }}</a>
+
+            <div class="cart-drawer-recommendation__prices">
+              {%- render 'price-list', product: product, context: 'card', hide_unit_price: true -%}
+
+              {%- if section.settings.cross_sell_show_save_badge and saving_percentage > 0 -%}
+                <span class="cart-drawer-recommendation__badge">
+                  {{- 'general.product.save' | t: percentage: saving_percentage -}}
+                </span>
+              {%- endif -%}
+            </div>
+          </div>
+
+          {%- if single_variant -%}
+            <product-form class="cart-drawer-recommendation__action">
+              {%- form 'product', product -%}
+                <input type="hidden" name="on_success" value="force_open_drawer">
+                <input type="hidden" name="quantity" value="1">
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+                <button type="submit" class="cart-drawer-recommendation__button">
+                  {{- section.settings.cross_sell_add_button_label -}}
+                  <span class="sr-only">{{ product.title }}</span>
+                </button>
+              {%- endform -%}
+            </product-form>
+          {%- else -%}
+            {%- capture quick_buy_id -%}cart-drawer-quick-buy-{{ section.id }}-{{ product.id }}{%- endcapture -%}
+
+            <div class="cart-drawer-recommendation__action">
+              <button type="button" aria-controls="{{ quick_buy_id }}" class="cart-drawer-recommendation__button">
+                {{- section.settings.cross_sell_add_button_label -}}
+                <span class="sr-only">{{ product.title }}</span>
+              </button>
+            </div>
+
+            <quick-buy-modal
+              handle="{{ product.handle }}?variant={{ product.selected_or_first_available_variant.id }}"
+              class="quick-buy-modal modal"
+              id="{{ quick_buy_id }}"
+              aria-label="{{ 'product.general.choose_options_with_title' | t: title: product.title | escape }}"
+            ></quick-buy-modal>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
