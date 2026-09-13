@@ -146,11 +146,15 @@
        Only emitted while the development gate is on. */
     /* Measured from the 1440 frame: label inline to the left of the row, not
        stacked above it, and vertically centred against the circles. */
+    /* Measured from the 1440 frame: label inline to the left of the row, not
+       stacked above it, and vertically centred against the circles. The heading
+       sits 38px clear of the first swatch. */
     #shopify-section-{{ section.id }} .pf-colors {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 38px;
       min-width: 0;
+      margin-block-end: {{ section.settings.color_strip_gap }}px;
     }
 
     #shopify-section-{{ section.id }} .pf-colors__heading {
@@ -187,7 +191,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      /* Measured: 17px between the bottom of the circle and the label cap
+         height. At 6px the labels crowded the swatches. */
+      gap: 17px;
       text-decoration: none;
       /* Inactive */
       font-size: 13px;
@@ -231,11 +237,15 @@
     /* Active is a thin ring sitting just outside the swatch, measured at about
        3px clear of it. Drawn with box-shadow so it adds no layout width and the
        row cannot shift when the selection changes. */
+    /* Active is a thin ring just outside the swatch. Measured at 4px total
+       across the diameter, so roughly 2px a side: a 1px breathing gap and a 1px
+       ring. Drawn with box-shadow so it adds no layout width and the row cannot
+       shift when the selection changes. */
     #shopify-section-{{ section.id }} .pf-color.is-active .pf-color__media {
       box-shadow:
         inset 0 0 0 1px rgb(0 0 0 / 0.08),
-        0 0 0 3px rgb(var(--background-without-opacity)),
-        0 0 0 4px #000000;
+        0 0 0 1px rgb(var(--background-without-opacity)),
+        0 0 0 2px #000000;
     }
 
     @media screen and (max-width: 699px) {
@@ -759,6 +769,17 @@
       "step": 2,
       "unit": "px",
       "default": 56
+    },
+    {
+      "type": "range",
+      "id": "color_strip_gap",
+      "label": "Space below Shop by Color",
+      "info": "Measured at 49px between the colour labels and the toolbar row beneath.",
+      "min": 0,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 49
     },
     {
       "type": "range",
