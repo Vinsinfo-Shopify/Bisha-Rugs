@@ -144,10 +144,12 @@
   {%- if section.settings.enable_new_filters -%}
     /* ---------- Shop by Color (Phase 1) ----------
        Only emitted while the development gate is on. */
+    /* Measured from the 1440 frame: label inline to the left of the row, not
+       stacked above it, and vertically centred against the circles. */
     #shopify-section-{{ section.id }} .pf-colors {
       display: flex;
-      align-items: baseline;
-      gap: 16px;
+      align-items: center;
+      gap: 24px;
       min-width: 0;
     }
 
@@ -162,14 +164,18 @@
 
     /* Horizontal overflow is on the track, so the row can scroll without the
        page ever gaining a scrollbar. */
+    /* 56px swatch on an 85px pitch leaves a 28px gap. The last swatch is cut
+       off at the container edge in the design, so the row scrolls rather than
+       wrapping. Overflow is on the track, so the page never gains a scrollbar. */
     #shopify-section-{{ section.id }} .pf-colors__track {
       display: flex;
       align-items: flex-start;
-      gap: 20px;
+      gap: {{ section.settings.color_swatch_gap }}px;
       min-width: 0;
       overflow: auto hidden;
       overscroll-behavior-x: contain;
       scrollbar-width: none;
+      padding-block: 4px;
     }
 
     #shopify-section-{{ section.id }} .pf-colors__track::-webkit-scrollbar {
@@ -199,6 +205,9 @@
 
     /* One box whether it holds a metaobject image, a swatch image or a plain
        colour, so the row keeps its rhythm regardless of what Shopify returns. */
+    /* One box whatever Shopify returns: a metaobject image, a swatch image or
+       a plain colour. Keeps the row's rhythm regardless of which branch a value
+       takes, and stops a missing swatch collapsing the pill. */
     #shopify-section-{{ section.id }} .pf-color__media {
       display: block;
       width: {{ section.settings.color_swatch_size }}px;
@@ -210,11 +219,23 @@
       box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
     }
 
+    /* The cleared state when no image is set for it. A conic sweep reads as
+       "any colour" without naming one. */
+    #shopify-section-{{ section.id }} .pf-color__media--all {
+      background: conic-gradient(
+        from 180deg,
+        #c9d6df, #e8d5c4, #d9c3a9, #b8c4a0, #d4a5a5, #a8b8c8, #c9d6df
+      );
+    }
+
+    /* Active is a thin ring sitting just outside the swatch, measured at about
+       3px clear of it. Drawn with box-shadow so it adds no layout width and the
+       row cannot shift when the selection changes. */
     #shopify-section-{{ section.id }} .pf-color.is-active .pf-color__media {
       box-shadow:
         inset 0 0 0 1px rgb(0 0 0 / 0.08),
-        0 0 0 2px #ffffff,
-        0 0 0 3.5px #000000;
+        0 0 0 3px rgb(var(--background-without-opacity)),
+        0 0 0 4px #000000;
     }
 
     @media screen and (max-width: 699px) {
@@ -295,6 +316,30 @@
             <p class="pf-colors__heading">{{ section.settings.color_filter_heading }}</p>
 
             <div class="pf-colors__track">
+              {%- comment -%}
+                "All" is not a filter value, it is the cleared state. Shopify
+                provides the group's own url_to_remove, which strips every
+                selected colour at once, and the pill is active exactly when
+                nothing in the group is selected. Nothing is hardcoded.
+              {%- endcomment -%}
+              <a
+                class="pf-color {% if color_filter.active_values.size == 0 %}is-active{% endif %}"
+                href="{{ color_filter.url_to_remove }}"
+                {% if color_filter.active_values.size == 0 %}aria-current="true"{% endif %}
+              >
+                {%- if section.settings.color_all_image != blank -%}
+                  {{-
+                    section.settings.color_all_image
+                    | image_url: width: 160
+                    | image_tag: class: 'pf-color__media', loading: 'lazy', widths: '56,112,160', sizes: '56px', alt: ''
+                  -}}
+                {%- else -%}
+                  <span class="pf-color__media pf-color__media--all"></span>
+                {%- endif -%}
+
+                <span class="pf-color__label">{{ section.settings.color_all_label }}</span>
+              </a>
+
               {%- for value in color_filter.values -%}
                 {%- comment -%}
                   url_to_add and url_to_remove are Shopify's own, so the link
@@ -710,10 +755,33 @@
       "id": "color_swatch_size",
       "label": "Colour swatch size",
       "min": 24,
-      "max": 72,
+      "max": 96,
       "step": 2,
       "unit": "px",
-      "default": 40
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "color_swatch_gap",
+      "label": "Colour swatch gap",
+      "min": 8,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "text",
+      "id": "color_all_label",
+      "label": "Clear-colour label",
+      "info": "The first pill, which clears every selected colour. It is not a Search & Discovery value.",
+      "default": "All"
+    },
+    {
+      "type": "image_picker",
+      "id": "color_all_image",
+      "label": "Clear-colour image",
+      "info": "Optional. A gradient swatch is drawn when this is empty."
     },
     {
       "type": "checkbox",
