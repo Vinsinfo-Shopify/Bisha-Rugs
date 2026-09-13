@@ -1,13 +1,53 @@
 {%- liquid
+  # Production protection.
+  #
+  # Resolved here rather than further down because Liquid runs in order and the
+  # count below needs it. The same variable is then read by the facets and
+  # active-facets render calls later in this file, so there is one list feeding
+  # all four surfaces: sidebar, drawer, chips and this count.
+  assign production_filters = ''
+
+  unless section.settings.enable_new_filters
+    assign production_filters = section.settings.production_filters
+  endunless
+
+  assign count_allow_list = ''
+
+  if production_filters != blank
+    assign count_allow_list = production_filters | downcase | replace: ', ', ',' | strip | split: ','
+  endif
+
   assign active_values_count = 0
 
   for filter in collection.filters
-    if filter.type == 'price_range'
-      if filter.max_value.value != blank or filter.min_value.value != blank
-        assign active_values_count = active_values_count | plus: 1
+    # A filter that is not rendered must not be counted either, or the mobile
+    # button would read "Filter (3)" with nothing in the drawer accounting for
+    # it. Same matching as the snippets: label or param_name, case insensitive.
+    assign count_filter = true
+
+    if count_allow_list != ''
+      assign count_filter = false
+      assign count_label = filter.label | downcase | strip
+      assign count_param = filter.param_name | downcase | strip
+
+      for allowed in count_allow_list
+        assign allowed_key = allowed | strip
+
+        if count_label == allowed_key or count_param == allowed_key
+          assign count_filter = true
+          break
+        endif
+      endfor
+    endif
+
+    if count_filter
+      if filter.type == 'price_range'
+        if filter.max_value.value != blank or filter.min_value.value != blank
+          assign active_values_count = active_values_count | plus: 1
+        endif
+      else
+        assign active_values_count = active_values_count | plus: filter.active_values.size
       endif
-    else
-      assign active_values_count = active_values_count | plus: filter.active_values.size
     endif
   endfor
 
@@ -100,6 +140,107 @@
       {%- endif -%}
     }
   }
+
+  {%- if section.settings.enable_new_filters -%}
+    /* ---------- Shop by Color (Phase 1) ----------
+       Only emitted while the development gate is on. */
+    #shopify-section-{{ section.id }} .pf-colors {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    #shopify-section-{{ section.id }} .pf-colors__heading {
+      flex: none;
+      margin: 0;
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: 600;
+      color: #000000;
+    }
+
+    /* Horizontal overflow is on the track, so the row can scroll without the
+       page ever gaining a scrollbar. */
+    #shopify-section-{{ section.id }} .pf-colors__track {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      min-width: 0;
+      overflow: auto hidden;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .pf-colors__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .pf-color {
+      flex: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      /* Inactive */
+      font-size: 13px;
+      line-height: 28px;
+      font-weight: 400;
+      color: #696969;
+    }
+
+    #shopify-section-{{ section.id }} .pf-color.is-active {
+      font-size: 13px;
+      line-height: 15px;
+      font-weight: 600;
+      color: #000000;
+    }
+
+    /* One box whether it holds a metaobject image, a swatch image or a plain
+       colour, so the row keeps its rhythm regardless of what Shopify returns. */
+    #shopify-section-{{ section.id }} .pf-color__media {
+      display: block;
+      width: {{ section.settings.color_swatch_size }}px;
+      height: {{ section.settings.color_swatch_size }}px;
+      border-radius: var(--rounded-full);
+      object-fit: cover;
+      background-size: cover;
+      background-position: center;
+      box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+    }
+
+    #shopify-section-{{ section.id }} .pf-color.is-active .pf-color__media {
+      box-shadow:
+        inset 0 0 0 1px rgb(0 0 0 / 0.08),
+        0 0 0 2px #ffffff,
+        0 0 0 3.5px #000000;
+    }
+
+    @media screen and (max-width: 699px) {
+      #shopify-section-{{ section.id }} .pf-colors {
+        display: block;
+      }
+
+      #shopify-section-{{ section.id }} .pf-colors__heading {
+        margin-block-end: 10px;
+      }
+
+      #shopify-section-{{ section.id }} .pf-color {
+        font-size: 12px;
+        line-height: 17px;
+        font-weight: 500;
+        color: #7D7D7D;
+      }
+
+      #shopify-section-{{ section.id }} .pf-color.is-active {
+        font-size: 12px;
+        line-height: 17px;
+        font-weight: 600;
+        color: #000000;
+      }
+    }
+  {%- endif -%}
 </style>
 
 {%- comment -%}
@@ -108,9 +249,88 @@
   ------------------------------------------------------------------------------------------------------------------------
 {%- endcomment -%}
 
+{%- comment -%}
+  production_filters is resolved in the liquid block at the top of this file, so
+  that the filter count there uses the same list as the render calls below.
+{%- endcomment -%}
 <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
   <div class="container">
     <div class="v-stack gap-6 sm:gap-12">
+      {%- comment -%}
+        ------------------------------------------------------------------
+        NEW PLP FILTERS - development gate
+        ------------------------------------------------------------------
+        enable_new_filters is off by default. While it is off nothing below
+        is rendered at all, so the published theme keeps today's production
+        filter untouched and no unfinished markup reaches a customer. This
+        is a Liquid gate, not display:none: the HTML is never produced.
+
+        Phase 1 is Shop by Color only. The remaining phases will be added
+        inside the same gate.
+      {%- endcomment -%}
+      {%- if section.settings.enable_new_filters -%}
+        {%- liquid
+          # Find the colour filter in whatever Search & Discovery returns.
+          # Nothing here is hardcoded: the values, labels, counts, URLs and
+          # active states all come from collection.filters. Only the name of
+          # the GROUP is configurable, because Shopify gives no other way to
+          # tell one list filter from another.
+          assign color_filter = null
+          assign wanted = section.settings.color_filter_label | downcase | strip
+
+          for f in collection.filters
+            if color_filter == null
+              assign f_label = f.label | downcase | strip
+              assign f_param = f.param_name | downcase
+
+              if f_label == wanted or f_param contains 'color' or f_param contains 'colour'
+                assign color_filter = f
+              endif
+            endif
+          endfor
+        -%}
+
+        {%- if color_filter != null and color_filter.values.size > 0 -%}
+          <div class="pf-colors">
+            <p class="pf-colors__heading">{{ section.settings.color_filter_heading }}</p>
+
+            <div class="pf-colors__track">
+              {%- for value in color_filter.values -%}
+                {%- comment -%}
+                  url_to_add and url_to_remove are Shopify's own, so the link
+                  carries the real filter state and a plain navigation applies
+                  it. active comes from Shopify too, so after the section is
+                  re-rendered the selected colour is still marked.
+                {%- endcomment -%}
+                <a
+                  class="pf-color {% if value.active %}is-active{% endif %}"
+                  href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
+                  {% if value.active %}aria-current="true"{% endif %}
+                >
+                  {%- if value.image != blank -%}
+                    {{-
+                      value.image
+                      | image_url: width: 120
+                      | image_tag: class: 'pf-color__media', loading: 'lazy', widths: '40,80,120', sizes: '40px', alt: ''
+                    -}}
+                  {%- elsif value.swatch.image != blank -%}
+                    {{-
+                      value.swatch.image
+                      | image_url: width: 120
+                      | image_tag: class: 'pf-color__media', loading: 'lazy', widths: '40,80,120', sizes: '40px', alt: ''
+                    -}}
+                  {%- elsif value.swatch.color != blank -%}
+                    <span class="pf-color__media" style="background: {{ value.swatch.color }};"></span>
+                  {%- endif -%}
+
+                  <span class="pf-color__label">{{ value.label }}</span>
+                </a>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+
       {%- if collection.all_products_count == 0 -%}
         <div class="empty-state">
           <div class="prose">
@@ -246,6 +466,7 @@
                   open_filters_by_default: section.settings.open_filters_by_default,
                   update_on_change: false,
                   quick_links_menu: section.settings.quick_links_menu,
+                  allowed_filters: production_filters,
                   context: 'drawer'
                 -%}
 
@@ -266,6 +487,7 @@
                     open_filters_by_default: section.settings.open_filters_by_default,
                     update_on_change: true,
                     quick_links_menu: section.settings.quick_links_menu,
+                    allowed_filters: production_filters,
                     context: 'sidebar'
                   -%}
                 </safe-sticky>
@@ -286,7 +508,12 @@
               </div>
             {%- else -%}
               <div class="collection__main">
-                {%- render 'active-facets', results: collection -%}
+                {%- comment -%}
+                  The chips get the same list, otherwise a hidden filter arriving
+                  through a pasted URL would still appear as a removable chip in
+                  production.
+                {%- endcomment -%}
+                {%- render 'active-facets', results: collection, allowed_filters: production_filters -%}
 
                 <product-list
                   id="product-list-{{ section.id }}"
@@ -446,6 +673,47 @@
       "id": "show_sort_by",
       "label": "t:global.faceting.show_sort_by",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "New filters (development)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_new_filters",
+      "label": "Enable the new filter experience",
+      "info": "Off renders the existing production filter. Turn this on only in a development or draft theme: the new implementation is still being built, and while this is off none of its markup is rendered at all.",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "production_filters",
+      "label": "Production filters (allow-list)",
+      "info": "Only these filters render while the new implementation is off. Comma separated, matched on the filter label or its param_name. Any filter added in Search & Discovery that is not listed here stays hidden from the production sidebar automatically.",
+      "default": "Availability, Price"
+    },
+    {
+      "type": "text",
+      "id": "color_filter_heading",
+      "label": "Shop by Color heading",
+      "default": "Shop by Color:"
+    },
+    {
+      "type": "text",
+      "id": "color_filter_label",
+      "label": "Colour filter name",
+      "info": "The exact label of the colour filter in Search & Discovery. Values, counts and links always come from Shopify; this only identifies which filter group is the colour one.",
+      "default": "Color"
+    },
+    {
+      "type": "range",
+      "id": "color_swatch_size",
+      "label": "Colour swatch size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 40
     },
     {
       "type": "checkbox",
