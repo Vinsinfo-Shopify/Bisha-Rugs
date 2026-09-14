@@ -4,10 +4,66 @@
 
 {%- liquid
   assign t = template | split: '.' | first
+
+  # --- Product template only -------------------------------------------------
+  # Everything below is guarded on t == 'product', so no other template reads or
+  # renders any of it and their trails are byte-identical to before.
+  if t == 'product'
+    # First level: the real "Shop All" menu entry. Title AND url both come from
+    # the menu, so renaming or re-pointing it in navigation updates the
+    # breadcrumb with no code change. Falls back to the all-products route only
+    # when no such entry exists.
+    assign pdp_root_url = ''
+    assign pdp_root_title = ''
+    assign pdp_menu = linklists[settings.menu] | default: linklists['main-menu']
+
+    for pdp_link in pdp_menu.links
+      assign pdp_link_title = pdp_link.title | downcase | strip
+
+      if pdp_link_title == 'shop all'
+        assign pdp_root_url = pdp_link.url
+        assign pdp_root_title = pdp_link.title
+        break
+      endif
+    endfor
+
+    if pdp_root_url == blank
+      assign pdp_root_url = routes.all_products_collection_url
+      assign pdp_root_title = 'Shop All'
+    endif
+
+    # Middle level: the collection the visitor came through. A direct link, a
+    # search result or a paid click has no collection object, so it falls back
+    # to the product's own type, linked only when a collection with that handle
+    # actually exists.
+    assign pdp_mid_title = ''
+    assign pdp_mid_url = ''
+
+    if collection.url != blank
+      assign pdp_mid_title = collection.title
+      assign pdp_mid_url = collection.url
+    elsif product.type != blank
+      assign pdp_mid_title = product.type
+      assign pdp_type_collection = collections[product.type | handle]
+
+      if pdp_type_collection != blank and pdp_type_collection.url != blank
+        assign pdp_mid_url = pdp_type_collection.url
+      endif
+    endif
+  endif
 -%}
 
 <nav class="breadcrumbs" aria-label="breadcrumbs">
-  <a href="{{ routes.root_url }}">{{- 'general.breadcrumb.home' | t -}}</a>
+  {%- comment -%}
+    The first link is shared by every template, so the product variant is
+    guarded rather than replacing it. Page, collection, blog, article and cart
+    still render Home exactly as before.
+  {%- endcomment -%}
+  {%- if t == 'product' -%}
+    <a href="{{ pdp_root_url }}">{{- pdp_root_title -}}</a>
+  {%- else -%}
+    <a href="{{ routes.root_url }}">{{- 'general.breadcrumb.home' | t -}}</a>
+  {%- endif -%}
 
   {%- case t -%}
     {%- when 'page' -%}
@@ -15,11 +71,25 @@
       <span class="breadcrumb-current" aria-current="page">{{ page.title }}</span>
 
     {%- when 'product' -%}
-      {%- if collection.url -%}
-        <span class="breadcrumb-separator">&middot;</span>
-        <a href="{{ collection.url }}">{{ collection.title }}</a>
+      {%- comment -%}
+        Shop All > collection or product type > product title.
+        A level with no value is skipped entirely, so there is never a stray
+        separator with nothing after it.
+      {%- endcomment -%}
+      {%- if pdp_mid_title != blank -%}
+        <span class="breadcrumb-separator breadcrumb-separator--pdp">&gt;</span>
+
+        {%- if pdp_mid_url != blank -%}
+          <a href="{{ pdp_mid_url }}">{{ pdp_mid_title }}</a>
+        {%- else -%}
+          {%- comment -%}
+            A real level of the trail with no destination: shown as text rather
+            than a link that goes nowhere.
+          {%- endcomment -%}
+          <span class="breadcrumb-plain">{{ pdp_mid_title }}</span>
+        {%- endif -%}
       {%- endif -%}
-      <span class="breadcrumb-separator">&middot;</span>
+      <span class="breadcrumb-separator breadcrumb-separator--pdp">&gt;</span>
       <span class="breadcrumb-current" aria-current="page">{{ product.title }}</span>
 
     {%- when 'collection' -%}
@@ -59,3 +129,57 @@
       <span class="breadcrumb-current" aria-current="page">{{ page_title }}</span>
   {%- endcase -%}
 </nav>
+
+{%- comment -%}
+  Product-only styling. Emitted solely on the product template, so the page,
+  collection, blog, article and cart trails keep the theme's own appearance and
+  theme.css is not touched. Scoped by .breadcrumbs--pdp rather than by section
+  id, because this snippet has no section context of its own.
+{%- endcomment -%}
+{%- if t == 'product' -%}
+  <style>
+    .breadcrumbs:has(.breadcrumb-separator--pdp) {
+      display: flex;
+      flex-wrap: wrap;          /* wraps rather than widening the page */
+      align-items: baseline;
+      gap: 0 6px;
+      min-width: 0;
+    }
+
+    .breadcrumbs:has(.breadcrumb-separator--pdp) :is(a, span) {
+      font-family: var(--text-font-family);
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 400;
+      /* a long title wraps between words; an unbroken string breaks rather
+         than forcing horizontal scroll */
+      overflow-wrap: break-word;
+      word-break: break-word;
+      min-width: 0;
+    }
+
+    .breadcrumbs:has(.breadcrumb-separator--pdp) a {
+      color: #000000;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .breadcrumbs:has(.breadcrumb-separator--pdp) .breadcrumb-plain {
+      color: #000000;
+      text-decoration: none;
+    }
+
+    .breadcrumbs:has(.breadcrumb-separator--pdp) .breadcrumb-separator--pdp,
+    .breadcrumbs:has(.breadcrumb-separator--pdp) .breadcrumb-current {
+      color: #898989;
+      text-decoration: none;
+    }
+
+    @media screen and (max-width: 699px) {
+      .breadcrumbs:has(.breadcrumb-separator--pdp) :is(a, span) {
+        font-size: 12px;
+        line-height: 17px;
+      }
+    }
+  </style>
+{%- endif -%}
