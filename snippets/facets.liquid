@@ -7,6 +7,8 @@
   @param {boolean} [update_on_change] - if set to true the results will reload as soon as an option is changed
   @param {object} [quick_links_menu] - an optional menu that will show fixed links
   @param {string} [context] - an optional context to generate unique ID if facets are outputted several times
+  @param {string} [allowed_filters] - an optional comma separated allow-list of filters to render, matched on either the filter label or its param_name, case insensitive. When omitted (the default) every filter from the resource is rendered, so existing callers are unaffected.
+  @param {boolean} [hide_facet_checkbox] - whether list filter values hide their checkbox and show a dot instead. Defaults to true, which is the theme's existing appearance, so callers that do not pass it are unaffected. Pass false to render a real checkbox.
   @param {object} [section]
 {%- enddoc -%}
 
@@ -49,7 +51,52 @@
       {%- endif -%}
 
       {%- if show_filters -%}
+        {%- comment -%}
+          Optional allow-list.
+
+          Opt-in by design: with allowed_filters omitted the list is blank, the
+          guard below is skipped entirely, and every caller that does not pass
+          it behaves exactly as before. Search and any other context are
+          therefore untouched.
+
+          Matching accepts either the filter's label or its param_name, so a
+          merchant can write "Availability, Price" while a developer can write
+          "filter.v.availability, filter.v.price", and a renamed label does not
+          silently drop a filter if the param is listed.
+
+          It is an allow-list rather than a block-list on purpose: a filter
+          added in Search & Discovery later is hidden here automatically,
+          without anyone having to remember to add it to a list of exclusions.
+        {%- endcomment -%}
+        {%- liquid
+          assign allow_list = ''
+
+          if allowed_filters != blank
+            assign allow_list = allowed_filters | downcase | replace: ', ', ',' | strip | split: ','
+          endif
+        -%}
+
         {%- for filter in results.filters -%}
+          {%- liquid
+            assign render_filter = true
+
+            if allow_list != ''
+              assign render_filter = false
+              assign this_label = filter.label | downcase | strip
+              assign this_param = filter.param_name | downcase | strip
+
+              for allowed in allow_list
+                assign allowed_key = allowed | strip
+
+                if this_label == allowed_key or this_param == allowed_key
+                  assign render_filter = true
+                  break
+                endif
+              endfor
+            endif
+          -%}
+
+          {%- if render_filter -%}
           {%- capture filter_content -%}
             {%- if filter.type == 'boolean' or filter.param_name == 'filter.v.availability' -%}
               {%- if filter.param_name == 'filter.v.availability' -%}
@@ -108,7 +155,18 @@
                             assign label = filter_value.label
                           endif
 
-                          render 'checkbox', hide_checkbox: true, label: label, name: filter_value.param_name, value: filter_value.value, checked: filter_value.active, id_prefix: value_id_prefix
+                          # hide_checkbox was hardcoded to true here, which is why
+                          # list values rendered as plain text with a dot rather
+                          # than a checkbox. It now follows a parameter that
+                          # defaults to true, so every existing caller keeps the
+                          # same appearance and only a caller that opts in gets
+                          # the checkbox.
+                          assign hide_value_checkbox = true
+                          if hide_facet_checkbox == false
+                            assign hide_value_checkbox = false
+                          endif
+
+                          render 'checkbox', hide_checkbox: hide_value_checkbox, label: label, name: filter_value.param_name, value: filter_value.value, checked: filter_value.active, id_prefix: value_id_prefix
                         endif
                       endfor
                     %}
@@ -122,6 +180,7 @@
 
           {%- if filter_content != blank -%}
             {%- render 'accordion', title: filter.label, content: filter_content, open: open_filters_by_default, show_arrow: true -%}
+          {%- endif -%}
           {%- endif -%}
         {%- endfor -%}
       {%- endif -%}
