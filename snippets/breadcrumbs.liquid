@@ -44,7 +44,10 @@
       assign pdp_mid_url = collection.url
     elsif product.type != blank
       assign pdp_mid_title = product.type
-      assign pdp_type_collection = collections[product.type | handle]
+      # The filter has to be applied before the lookup: Liquid does not allow a
+      # filter expression inside square brackets.
+      assign pdp_type_handle = product.type | handle
+      assign pdp_type_collection = collections[pdp_type_handle]
 
       if pdp_type_collection != blank and pdp_type_collection.url != blank
         assign pdp_mid_url = pdp_type_collection.url
