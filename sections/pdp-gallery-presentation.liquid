@@ -208,11 +208,34 @@
     is underlined so it reads as the link it is; the stars and value are the
     theme's own markup and are not restyled here.
   {%- endcomment -%}
+  {%- comment -%}
+    The stars and the two text runs are separate inline-flex boxes, each with
+    its own line box, so centring the row still leaves them a pixel or two
+    apart. Every part is given the same line-height and aligned on the same
+    axis instead: the row centres its children, and each child centres its own
+    contents, so the star glyphs and the text share one optical line.
+  {%- endcomment -%}
   .shopify-section--main-product .pdp-rating {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0 {{ section.settings.rating_gap }}px;
+  }
+
+  .shopify-section--main-product .pdp-rating .rating-badge,
+  .shopify-section--main-product .pdp-rating .rating-badge__stars,
+  .shopify-section--main-product .pdp-rating__link {
+    display: inline-flex;
+    align-items: center;
+    line-height: {{ section.settings.rating_line_height }}px;
+    margin: 0;
+  }
+
+  /* an svg is replaced content and sits on the text baseline by default, which
+     is what drops the stars below the numbers */
+  .shopify-section--main-product .pdp-rating .rating-badge__stars > svg {
+    display: block;
+    vertical-align: middle;
   }
 
   {%- comment -%}
