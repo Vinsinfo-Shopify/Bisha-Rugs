@@ -537,7 +537,16 @@
         margin-block-start: {{ section.settings.rt_group_gap }}px;
       }
 
-      #shopify-section-{{ section.id }} .pf-rugtype__heading {
+      /* On Shop All the accordion supplies its own heading row, padding and
+         rule, so the group's own spacing is dropped to avoid doubling up. The
+         heading type comes from the .accordion__toggle rule above, the same one
+         every other group uses. */
+      #shopify-section-{{ section.id }} .pf-rugtype--accordion {
+        padding-block-start: 0;
+      }
+
+      /* Only used on a specific rug collection, where there is no accordion. */
+      #shopify-section-{{ section.id }} .pf-rugtype:not(.pf-rugtype--accordion) .pf-rugtype__heading {
         font-size: 16px;
         line-height: 22px;
         font-weight: 600;
@@ -978,6 +987,18 @@
                         endif
                       endfor
 
+                      # Shop All, identified from Shopify's own route rather
+                      # than a hardcoded path. "Shop All Types" is itself a link
+                      # in the menu and points here, so without this the menu
+                      # match would fire and only that one entry would render.
+                      # The route wins.
+                      assign rt_is_shop_all = false
+
+                      if collection.url == routes.all_products_collection_url
+                        assign rt_is_shop_all = true
+                        assign rt_current = null
+                      endif
+
                       # Carry the active filters across, so changing type does
                       # not silently drop a Color or Style selection.
                       assign rt_query = ''
@@ -990,9 +1011,12 @@
                     -%}
 
                     {%- if rt_links.size > 0 -%}
-                      <div class="pf-rugtype">
-                        <p class="pf-rugtype__heading">{{ section.settings.rt_heading }}</p>
-
+                      {%- comment -%}
+                        The list is captured once and used by both branches, so
+                        the values, counts, checkboxes, active state and filter
+                        URLs are identical either way. Only the wrapper differs.
+                      {%- endcomment -%}
+                      {%- capture rt_list -%}
                         <ul class="pf-rugtype__list">
                           {%- for l in rt_links -%}
                             {%- comment -%}
@@ -1036,6 +1060,32 @@
                             {%- endif -%}
                           {%- endfor -%}
                         </ul>
+                      {%- endcapture -%}
+
+                      <div class="pf-rugtype {% if rt_is_shop_all %}pf-rugtype--accordion{% endif %}">
+                        {%- if rt_is_shop_all -%}
+                          {%- comment -%}
+                            Shop All gets the theme's own accordion, with the
+                            same parameters facets.liquid passes at line 182, so
+                            the toggle, chevron, rotation and open state are
+                            identical to every other group. accordion.liquid is
+                            not modified.
+                          {%- endcomment -%}
+                          {%- render 'accordion',
+                            title: section.settings.rt_heading,
+                            content: rt_list,
+                            open: open_filters,
+                            show_arrow: true
+                          -%}
+                        {%- else -%}
+                          {%- comment -%}
+                            A specific rug collection keeps the existing
+                            behaviour: a plain heading, no accordion, showing
+                            only the collection you are on.
+                          {%- endcomment -%}
+                          <p class="pf-rugtype__heading">{{ section.settings.rt_heading }}</p>
+                          {{ rt_list }}
+                        {%- endif -%}
                       </div>
                     {%- endif -%}
                   {%- endif -%}
