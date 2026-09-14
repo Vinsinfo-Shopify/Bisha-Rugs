@@ -35,6 +35,24 @@
     padding-block-end: {{ section.settings.space_bottom }}px;
   }
 
+  /* theme.css:9172 sets, on .breadcrumbs itself:
+         justify-content: center;
+         margin-bottom: 24px;
+     The centring is that first line. The second is why setting the spacing
+     below to 0 changed nothing - the section's padding went to 0 while the
+     element's own 24px margin remained, so the gap never closed.
+
+     Both are overridden here, under this section's id, so the rule in
+     theme.css is untouched and the collection, blog, article, page and cart
+     trails keep the centring and spacing they have today. No negative margin,
+     no transform, no absolute positioning - the margin is simply set to 0 at
+     the element that owns it, and the section's own padding becomes the only
+     control. */
+  #shopify-section-{{ section.id }} .breadcrumbs {
+    justify-content: flex-start;
+    margin-bottom: 0;
+  }
+
   @media screen and (max-width: 699px) {
     #shopify-section-{{ section.id }} .pdp-breadcrumb-bar {
       padding-block-start: {{ section.settings.space_top_mobile }}px;
