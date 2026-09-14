@@ -318,11 +318,37 @@
         margin: 0 0 {{ section.settings.pf_filters_heading_gap }}px;
       }
 
-      /* The Figma column is wider than Prestige's default. Only the column is
-         resized; the facets markup inside it is untouched. */
+      /* Layout.
+         .collection is a CSS grid whose columns come from
+         --collection-grid-template, built from --collection-sidebar-width
+         (15rem by default) with --collection-gap of 2rem between them. All
+         three are variables, so the whole layout is set here without touching
+         the grid definition in theme.css.
+
+         1300 content = 300 sidebar + 32 gap + 968 grid. The 32px gap is
+         already Prestige's own --collection-gap, so only the sidebar width
+         changes and the product column takes the remainder. */
+      #shopify-section-{{ section.id }} .collection {
+        --collection-sidebar-width: {{ section.settings.pf_sidebar_width }}px;
+        --collection-gap: {{ section.settings.pf_sidebar_gap }}px;
+      }
+
+      /* Containment. The accordion toggle is width: 100%, and without an
+         explicit width plus min-width: 0 on the column it resolved against the
+         grid area rather than the sidebar, which is why the chevron rendered
+         over the first product image. */
+      #shopify-section-{{ section.id }} .facets-sidebar,
       #shopify-section-{{ section.id }} .facets {
-        width: {{ section.settings.pf_sidebar_width }}px;
-        flex: 0 0 {{ section.settings.pf_sidebar_width }}px;
+        width: 100%;
+        max-width: {{ section.settings.pf_sidebar_width }}px;
+        min-width: 0;
+        overflow-x: clip;
+      }
+
+      /* Three product columns alongside an open sidebar. Prestige's own
+         variable, so the product card markup is untouched. */
+      #shopify-section-{{ section.id }} {
+        --collection-items-per-row-large: {{ section.settings.pf_products_per_row }};
       }
 
       /* Group headings. The accordion supplies the row and chevron; only the
@@ -353,6 +379,11 @@
         align-items: center;
         justify-content: space-between;
         gap: 12px;
+        /* Keeps the row, and therefore the chevron, inside the sidebar column. */
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding-inline-end: {{ section.settings.pf_sidebar_inset }}px;
       }
 
       /* A rule between groups, not beneath every heading. */
@@ -376,23 +407,35 @@
          control: keyboard focus, screen readers and the theme's own change
          handler all keep working, and filtering still goes through the
          existing form. */
-      /* theme.css:1296 sets align-items: flex-start on .checkbox-control, which
-         top-aligns an 18px box against a 22px line and reads as misaligned.
-         Centred here, and the theme's --checkbox-control-gap is replaced by an
-         explicit gap so the two cannot disagree. */
+      /* Row alignment.
+         theme.css:1296 sets align-items: flex-start, which top-aligns an 18px
+         box against a 22px line. checkbox.liquid also gives the input
+         margin-block-start to push it down under that rule, so centring alone
+         still left the box low. Both are corrected, and the row is stated as a
+         two-column grid so the box and the label share one centre line
+         regardless of how long the label wraps.
+
+         Typography is untouched: this is purely the row structure. */
       #shopify-section-{{ section.id }} .facets .checkbox-control {
-        display: flex;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
         align-items: center;
         column-gap: {{ section.settings.pf_checkbox_gap }}px;
         gap: {{ section.settings.pf_checkbox_gap }}px;
+        min-height: {{ section.settings.pf_checkbox_size }}px;
       }
 
-      /* The label is the other half of the row; without a matching line-height
-         the box and the text sit on different baselines. */
+      /* The theme nudges the input down to sit on the first text line. With a
+         centred row that nudge is what puts it out of line. */
+      #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox {
+        margin-block: 0;
+        align-self: center;
+      }
+
       #shopify-section-{{ section.id }} .facets .checkbox-control label {
-        display: flex;
-        align-items: center;
-        min-height: {{ section.settings.pf_checkbox_size }}px;
+        display: block;
+        align-self: center;
+        margin: 0;
       }
 
       #shopify-section-{{ section.id }} .facets .checkbox-control + .checkbox-control {
@@ -1223,12 +1266,43 @@
       "type": "range",
       "id": "pf_sidebar_width",
       "label": "Sidebar width",
-      "info": "Measured at 294px on the 1440 frame.",
+      "info": "1300 content = 300 sidebar + 32 gap + 968 grid.",
       "min": 200,
       "max": 400,
       "step": 2,
       "unit": "px",
-      "default": 294
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "pf_sidebar_gap",
+      "label": "Filter to product gap",
+      "info": "1300 content = 300 sidebar + 32 gap + 968 grid.",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "pf_sidebar_inset",
+      "label": "Sidebar right inset",
+      "info": "Keeps the accordion chevron clear of the product grid.",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "pf_products_per_row",
+      "label": "Product columns beside the sidebar",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
     },
     {
       "type": "range",
