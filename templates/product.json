@@ -54,12 +54,27 @@
         },
         "vendor": {
           "type": "vendor",
+          "disabled": true,
           "settings": {}
         },
         "title": {
           "type": "title",
           "settings": {
             "heading_tag": "h3"
+          }
+        },
+        "rating_e7H76A": {
+          "type": "rating",
+          "settings": {
+            "show_empty": true,
+            "rating_mode": "rating"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "collapse_content": false,
+            "show_below_gallery": false
           }
         },
         "price": {
@@ -75,13 +90,6 @@
         "separator": {
           "type": "separator",
           "settings": {}
-        },
-        "description": {
-          "type": "description",
-          "settings": {
-            "collapse_content": false,
-            "show_below_gallery": false
-          }
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -124,10 +132,11 @@
         "liquid_e7CWYC",
         "vendor",
         "title",
+        "rating_e7H76A",
+        "description",
         "price",
         "payment_terms",
         "separator",
-        "description",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
