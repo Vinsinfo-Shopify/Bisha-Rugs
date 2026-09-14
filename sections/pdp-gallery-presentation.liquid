@@ -203,6 +203,24 @@
     --product-info-gap: {{ section.settings.info_row_gap }}px;
   }
 
+  {%- comment -%}
+    Rating row: stars, value and the linked review count on one line. The count
+    is underlined so it reads as the link it is; the stars and value are the
+    theme's own markup and are not restyled here.
+  {%- endcomment -%}
+  .shopify-section--main-product .pdp-rating {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 {{ section.settings.rating_gap }}px;
+  }
+
+  .shopify-section--main-product .pdp-rating__link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
   .shopify-section--main-product .pdp-pills {
     display: flex;
     flex-wrap: wrap;
@@ -598,6 +616,16 @@
       "step": 2,
       "unit": "px",
       "default": 32
+    },
+    {
+      "type": "range",
+      "id": "rating_gap",
+      "label": "Space between stars and review count",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 6
     },
     {
       "type": "range",
