@@ -120,10 +120,70 @@
     }
 
     {%- comment -%}
+      Arrows over the media, under the "thumbnails" control. The buttons ship
+      as bare tap-areas - Prestige styles them only inside its own
+      carousel-with-arrows wrapper, which thumbnails mode deliberately does not
+      use. They are given the homepage carousel's disc here: 38px charcoal
+      circle, white chevron, 2px white ring.
+
+      The carousel is the positioning context, so the buttons sit over the
+      media rather than beside it, and z-index keeps them above the image
+      without being clipped - the track scrolls but does not hide them.
+    {%- endcomment -%}
+    .shopify-section--main-product .product-gallery__carousel-with-thumb-arrows {
+      position: relative;
+    }
+
+    .shopify-section--main-product .product-gallery__carousel-with-thumb-arrows > :is(carousel-prev-button, carousel-next-button) {
+      display: contents;
+    }
+
+    .shopify-section--main-product .product-gallery__carousel-with-thumb-arrows :is(carousel-prev-button, carousel-next-button) button {
+      z-index: 2;
+      position: absolute;
+      inset-block-start: 50%;
+      transform: translateY(-50%);
+      display: grid;
+      place-items: center;
+      box-sizing: border-box;
+      width: 2.375rem;
+      height: 2.375rem;
+      border: 2px solid {{ section.settings.arrow_border }};
+      border-radius: 50%;
+      background: {{ section.settings.arrow_background }};
+      color: {{ section.settings.arrow_color }};
+      box-shadow: none;
+    }
+
+    .shopify-section--main-product .product-gallery__carousel-with-thumb-arrows carousel-prev-button button {
+      inset-inline-start: {{ section.settings.arrow_inset }}px;
+    }
+
+    .shopify-section--main-product .product-gallery__carousel-with-thumb-arrows carousel-next-button button {
+      inset-inline-end: {{ section.settings.arrow_inset }}px;
+    }
+
+    .shopify-section--main-product .product-gallery__carousel-with-thumb-arrows :is(carousel-prev-button, carousel-next-button) button > svg {
+      width: 0.875rem;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Prestige hides a disabled prev/next entirely; at the first and last
+       media that leaves the control missing rather than inactive. Dimmed
+       instead, so the position stays stable. */
+    .shopify-section--main-product .product-gallery__carousel-with-thumb-arrows :is(carousel-prev-button, carousel-next-button) button[disabled] {
+      opacity: 0.35;
+      visibility: visible;
+      pointer-events: none;
+    }
+
+    {%- comment -%}
       theme.css forces each item to 45vw and centres it when arrows are on,
       which is what stops the Figma's full-width item with a sliver of the
       next. Reset to the grid width above. This is an override under this
-      section's id, not an edit to theme.css.
+      section's class, not an edit to theme.css.
     {%- endcomment -%}
     .shopify-section--main-product .product-gallery__carousel-with-arrows .product-gallery__media {
       width: auto;
@@ -220,6 +280,16 @@
     {
       "type": "header",
       "content": "Mobile arrows"
+    },
+    {
+      "type": "range",
+      "id": "arrow_inset",
+      "label": "Distance from the media edge",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
     },
     {
       "type": "color",
