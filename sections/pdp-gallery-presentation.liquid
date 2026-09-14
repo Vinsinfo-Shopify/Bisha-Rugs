@@ -1,0 +1,250 @@
+{%- comment -%}
+  PDP gallery presentation.
+
+  Adds no gallery of its own. The desktop two-column grid, the media rendering,
+  video with its play button, zoom and the product.media ordering all stay with
+  Prestige's own product-gallery snippet - the grid comes from its "Grid (2 per
+  row)" layout, which already emits repeat(2, minmax(0, 1fr)) with a
+  configurable gap. This file only adjusts presentation that no setting exposes:
+
+    - the gallery column width on desktop
+    - one media plus a sliver of the next on mobile, one item per swipe
+    - the arrow treatment used across the homepage carousels
+
+  Nothing in snippets/product-gallery.liquid, theme.css or theme.js is touched,
+  so the Default product template and every other template are unaffected.
+
+  Add this section to the product template, anywhere - it renders no markup and
+  only emits scoped CSS.
+{%- endcomment -%}
+
+<style>
+  {%- comment -%}
+    ---------- Desktop ----------
+    The column is sized by the section's own "Product info width" setting, so
+    the width is not restated here - that would fight the setting and drift
+    from it. Only the gap is pinned, because the design calls for the same
+    16px horizontally and vertically and the theme's own setting drives both.
+  {%- endcomment -%}
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.settings.target_section }} .product-gallery__carousel {
+      --product-gallery-carousel-gap: {{ section.settings.grid_gap }}px;
+    }
+
+    {%- comment -%}
+      Each cell keeps the design's proportion rather than the source image's,
+      so a portrait and a landscape photograph sit in a tidy grid. object-fit
+      crops rather than distorting - rugs must never be stretched.
+    {%- endcomment -%}
+    {%- if section.settings.lock_ratio -%}
+      #shopify-section-{{ section.settings.target_section }} .product-gallery__media {
+        aspect-ratio: {{ section.settings.media_ratio }};
+        overflow: hidden;
+      }
+
+      #shopify-section-{{ section.settings.target_section }} .product-gallery__media :is(img, video, iframe, model-viewer) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    {%- endif -%}
+  }
+
+  {%- comment -%}
+    ---------- Mobile ----------
+    One media item plus a sliver of the next, one item per swipe.
+
+    The same shape as the homepage carousels: the track spans the viewport, the
+    start inset is padding on the track and the end inset is a margin on the
+    LAST cell - never padding-inline-end, which several engines drop from
+    scrollWidth and which then clips the final item. scroll-padding matches the
+    start inset so the first snap position resolves to 0.
+
+    Widths are percentages of the track, so nothing here can widen the page:
+    no 100vw, no negative page margins, no fixed pixel widths.
+  {%- endcomment -%}
+  @media screen and (max-width: 999px) {
+    #shopify-section-{{ section.settings.target_section }} .product-gallery__carousel {
+      --product-gallery-carousel-grid: auto / auto-flow {{ section.settings.mobile_media_width }}%;
+      --product-gallery-carousel-gap: {{ section.settings.mobile_gap }}px;
+      --product-gallery-carousel-scroll-snap-type: x mandatory;
+      scroll-snap-type: x mandatory;
+      /* one item per swipe: without this a momentum flick sails past several
+         snap points */
+      scroll-snap-stop: always;
+      /* lazy-loaded media under a mandatory snap makes the browser nudge
+         scrollLeft as images arrive, revealing a sliver of the previous item */
+      overflow-anchor: none;
+      overscroll-behavior-x: contain;
+      padding-inline-start: {{ section.settings.mobile_inset }}px;
+      scroll-padding-inline-start: {{ section.settings.mobile_inset }}px;
+      padding-inline-end: 0;
+    }
+
+    #shopify-section-{{ section.settings.target_section }} .product-gallery__media {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    #shopify-section-{{ section.settings.target_section }} .product-gallery__media:last-child {
+      margin-inline-end: {{ section.settings.mobile_inset }}px;
+    }
+
+    {%- comment -%}
+      Arrow treatment from the homepage carousels: 38px charcoal disc, white
+      chevron, 2px white ring, no shadow. The theme's own circle-button
+      component is reused - only its colours and size are reassigned, so hover,
+      focus and disabled behaviour stay native.
+    {%- endcomment -%}
+    #shopify-section-{{ section.settings.target_section }} .product-gallery__carousel-with-arrows .circle-button {
+      --circle-button-size: 2.375rem;
+      --circle-button-background: 43 39 36;
+      --circle-button-text-color: 255 255 255;
+      box-sizing: border-box;
+      background: {{ section.settings.arrow_background }};
+      color: {{ section.settings.arrow_color }};
+      border: 2px solid {{ section.settings.arrow_border }};
+      box-shadow: none;
+    }
+
+    #shopify-section-{{ section.settings.target_section }} .product-gallery__carousel-with-arrows .circle-button > svg {
+      width: 0.875rem;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    {%- comment -%}
+      theme.css forces each item to 45vw and centres it when arrows are on,
+      which is what stops the Figma's full-width item with a sliver of the
+      next. Reset to the grid width above. This is an override under this
+      section's id, not an edit to theme.css.
+    {%- endcomment -%}
+    #shopify-section-{{ section.settings.target_section }} .product-gallery__carousel-with-arrows .product-gallery__media {
+      width: auto;
+      margin-inline: 0;
+    }
+
+    #shopify-section-{{ section.settings.target_section }} .product-gallery__carousel-with-arrows .product-gallery__media:last-child {
+      margin-inline-end: {{ section.settings.mobile_inset }}px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PDP gallery presentation",
+  "tag": "section",
+  "class": "shopify-section--pdp-gallery-css",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Renders nothing. Adjusts the product gallery's presentation only. Set the product section's Desktop media layout to \"Grid (2 per row)\" and Mobile controls to \"Arrows\" for this to apply."
+    },
+    {
+      "type": "text",
+      "id": "target_section",
+      "label": "Product section ID",
+      "info": "The id of the main product section, e.g. template--123__main. Find it in the page source as shopify-section-<id>."
+    },
+    {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Gap between media",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "lock_ratio",
+      "label": "Use a fixed shape for each media item",
+      "info": "Crops each item to the same proportion so the grid stays even. Turn off to keep each image's own shape.",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "media_ratio",
+      "label": "Media shape",
+      "options": [
+        { "value": "357 / 419", "label": "Design (357 x 419)" },
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 5", "label": "Portrait" },
+        { "value": "3 / 2", "label": "Landscape" }
+      ],
+      "default": "357 / 419"
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_media_width",
+      "label": "Media width",
+      "info": "Percentage of the track. Below 100 leaves a sliver of the next item visible.",
+      "min": 60,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 88
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "label": "Gap between media",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_inset",
+      "label": "Space before the first and after the last",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Mobile arrows"
+    },
+    {
+      "type": "color",
+      "id": "arrow_background",
+      "label": "Background",
+      "default": "#2b2724"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Chevron",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_border",
+      "label": "Ring",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP gallery presentation"
+    }
+  ]
+}
+{% endschema %}
