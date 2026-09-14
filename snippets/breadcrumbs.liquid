@@ -51,6 +51,14 @@
 
       if pdp_type_collection != blank and pdp_type_collection.url != blank
         assign pdp_mid_url = pdp_type_collection.url
+      else
+        # No collection carries this product type, so the level would have had
+        # no destination. Rather than render an underlined item that cannot be
+        # clicked, it points at the all-products listing filtered by type.
+        # Shopify ignores an unknown filter parameter, so the worst case is the
+        # full listing rather than a broken page - it degrades, it never 404s.
+        assign pdp_type_param = product.type | url_encode
+        assign pdp_mid_url = routes.all_products_collection_url | append: '?filter.p.product_type=' | append: pdp_type_param
       endif
     endif
   endif
@@ -82,15 +90,7 @@
       {%- if pdp_mid_title != blank -%}
         <span class="breadcrumb-separator breadcrumb-separator--pdp">&gt;</span>
 
-        {%- if pdp_mid_url != blank -%}
-          <a href="{{ pdp_mid_url }}">{{ pdp_mid_title }}</a>
-        {%- else -%}
-          {%- comment -%}
-            A real level of the trail with no destination: shown as text rather
-            than a link that goes nowhere.
-          {%- endcomment -%}
-          <span class="breadcrumb-plain">{{ pdp_mid_title }}</span>
-        {%- endif -%}
+        <a href="{{ pdp_mid_url }}">{{ pdp_mid_title }}</a>
       {%- endif -%}
       <span class="breadcrumb-separator breadcrumb-separator--pdp">&gt;</span>
       <span class="breadcrumb-current" aria-current="page">{{ product.title }}</span>
@@ -165,11 +165,6 @@
       color: #000000;
       text-decoration: underline;
       text-underline-offset: 2px;
-    }
-
-    .breadcrumbs:has(.breadcrumb-separator--pdp) .breadcrumb-plain {
-      color: #000000;
-      text-decoration: none;
     }
 
     .breadcrumbs:has(.breadcrumb-separator--pdp) .breadcrumb-separator--pdp,
