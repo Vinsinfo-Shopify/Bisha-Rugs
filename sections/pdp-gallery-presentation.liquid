@@ -215,8 +215,44 @@
     gap: 0 {{ section.settings.rating_gap }}px;
   }
 
-  .shopify-section--main-product .pdp-rating__link {
+  {%- comment -%}
+    Type is stated once, outside any media query: the design uses the same
+    values at every width, so a mobile override would only be a second place to
+    keep in step.
+
+    The family is var(--text-font-family), which is the theme's configured body
+    font, rather than naming Figtree directly - the theme loads that font and
+    serves it with the right fallbacks, and naming it here would break silently
+    if a weight were not loaded. If the body font is ever changed away from
+    Figtree, this line is where to pin it.
+  {%- endcomment -%}
+  .shopify-section--main-product .pdp-rating,
+  .shopify-section--main-product .pdp-rating .rating-badge {
+    font-family: var(--text-font-family);
+    font-size: {{ section.settings.rating_font_size }}px;
+    line-height: {{ section.settings.rating_line_height }}px;
+    font-weight: 500;
+    color: #000000;
+  }
+
+  .shopify-section--main-product .pdp-rating .rating-badge__stars > svg {
+    width: {{ section.settings.rating_star_size }}px;
+    height: {{ section.settings.rating_star_size }}px;
+  }
+
+  {%- comment -%}
+    theme.css gives the rating text its own smaller size through .text-xxs and
+    a subdued colour; both are reset so the row reads at the design's size and
+    in black.
+  {%- endcomment -%}
+  .shopify-section--main-product .pdp-rating :is(.text-xxs, .text-subdued) {
+    font-size: inherit;
+    line-height: inherit;
     color: inherit;
+  }
+
+  .shopify-section--main-product .pdp-rating__link {
+    color: #000000;
     text-decoration: underline;
     text-underline-offset: 2px;
   }
@@ -616,6 +652,36 @@
       "step": 2,
       "unit": "px",
       "default": 32
+    },
+    {
+      "type": "range",
+      "id": "rating_star_size",
+      "label": "Star size",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "rating_font_size",
+      "label": "Rating text size",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "rating_line_height",
+      "label": "Rating line height",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 20
     },
     {
       "type": "range",
