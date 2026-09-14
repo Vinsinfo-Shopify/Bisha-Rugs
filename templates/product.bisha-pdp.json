@@ -12,6 +12,12 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "liquid_CFRfcc": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% render 'pdp-breadcrumb' %}"
+          }
+        },
         "vendor": {
           "type": "vendor",
           "settings": {}
@@ -81,6 +87,7 @@
         }
       },
       "block_order": [
+        "liquid_CFRfcc",
         "vendor",
         "title",
         "price",
@@ -126,20 +133,9 @@
         "heading_style": "h2",
         "content": ""
       }
-    },
-    "pdp_breadcrumb_bar_6Fx63X": {
-      "type": "pdp-breadcrumb-bar",
-      "name": "Breadcrumb",
-      "settings": {
-        "space_top": 16,
-        "space_bottom": 16,
-        "space_top_mobile": 12,
-        "space_bottom_mobile": 12
-      }
     }
   },
   "order": [
-    "pdp_breadcrumb_bar_6Fx63X",
     "main",
     "related-products"
   ]

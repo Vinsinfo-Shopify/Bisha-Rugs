@@ -1,13 +1,98 @@
 {%- liquid
+  # Production protection.
+  #
+  # Resolved here rather than further down because Liquid runs in order and the
+  # count below needs it. The same variable is then read by the facets and
+  # active-facets render calls later in this file, so there is one list feeding
+  # all four surfaces: sidebar, drawer, chips and this count.
+  assign production_filters = ''
+
+  unless section.settings.enable_new_filters
+    assign production_filters = section.settings.production_filters
+  endunless
+
+  # Colour already has its own strip above the toolbar, so listing it again in
+  # the sidebar would be a second control for the same filter.
+  #
+  # Written as an allow-list of every OTHER filter rather than as a new
+  # exclusion parameter, because facets.liquid already accepts allowed_filters.
+  # The shared snippet is unchanged, and a filter added in Search & Discovery
+  # later is included here automatically.
+  if section.settings.enable_new_filters and section.settings.pf_hide_color_in_sidebar
+    assign colour_key = section.settings.color_filter_label | downcase | strip
+    assign sidebar_allow = ''
+
+    for f in collection.filters
+      assign f_label = f.label | downcase | strip
+      assign f_param = f.param_name | downcase
+      assign is_colour = false
+
+      if f_label == colour_key or f_param contains 'color' or f_param contains 'colour'
+        assign is_colour = true
+      endif
+
+      unless is_colour
+        assign sidebar_allow = sidebar_allow | append: f.label | append: ','
+      endunless
+    endfor
+
+    assign production_filters = sidebar_allow
+  endif
+
+  # Driven by the existing gate rather than a new setting: the checkbox is
+  # part of the new filter design, so it appears exactly when that design does.
+  assign hide_facet_checkbox = true
+
+  if section.settings.enable_new_filters
+    assign hide_facet_checkbox = false
+  endif
+
+  # The design shows the groups open on load. Derived from the gate rather than
+  # asking for the merchant setting to be flipped, and it only changes the
+  # INITIAL state: the accordion still expands and collapses on click.
+  assign open_filters = section.settings.open_filters_by_default
+
+  if section.settings.enable_new_filters
+    assign open_filters = true
+  endif
+
+  assign count_allow_list = ''
+
+  if production_filters != blank
+    assign count_allow_list = production_filters | downcase | replace: ', ', ',' | strip | split: ','
+  endif
+
   assign active_values_count = 0
 
   for filter in collection.filters
-    if filter.type == 'price_range'
-      if filter.max_value.value != blank or filter.min_value.value != blank
-        assign active_values_count = active_values_count | plus: 1
+    # A filter that is not rendered must not be counted either, or the mobile
+    # button would read "Filter (3)" with nothing in the drawer accounting for
+    # it. Same matching as the snippets: label or param_name, case insensitive.
+    assign count_filter = true
+
+    if count_allow_list != ''
+      assign count_filter = false
+      assign count_label = filter.label | downcase | strip
+      assign count_param = filter.param_name | downcase | strip
+
+      for allowed in count_allow_list
+        assign allowed_key = allowed | strip
+
+        if count_label == allowed_key or count_param == allowed_key
+          assign count_filter = true
+          break
+        endif
+      endfor
+    endif
+
+    if count_filter
+      if filter.type == 'price_range'
+        if filter.max_value.value != blank or filter.min_value.value != blank
+          assign active_values_count = active_values_count | plus: 1
+        endif
+      else
+        assign active_values_count = active_values_count | plus: filter.active_values.size
       endif
-    else
-      assign active_values_count = active_values_count | plus: filter.active_values.size
     endif
   endfor
 
@@ -100,6 +185,461 @@
       {%- endif -%}
     }
   }
+
+  {%- if section.settings.enable_new_filters -%}
+    /* ---------- Shop by Color (Phase 1) ----------
+       Only emitted while the development gate is on. */
+    /* Measured from the 1440 frame: label inline to the left of the row, not
+       stacked above it, and vertically centred against the circles. */
+    /* Measured from the 1440 frame: label inline to the left of the row, not
+       stacked above it, and vertically centred against the circles. The heading
+       sits 38px clear of the first swatch. */
+    #shopify-section-{{ section.id }} .pf-colors {
+      display: flex;
+      align-items: center;
+      gap: 38px;
+      min-width: 0;
+    }
+
+    /* The space below the strip came from the wrapping v-stack's own
+       sm:gap-12, which is 3rem = 48px, with my 49px margin stacking on top of
+       it for roughly 97px. The margin is gone and the wrapper's gap is set
+       directly instead, so there is one value controlling one boundary. */
+    #shopify-section-{{ section.id }} .v-stack.gap-6 {
+      gap: {{ section.settings.color_strip_gap }}px;
+    }
+
+    #shopify-section-{{ section.id }} .pf-colors__heading {
+      flex: none;
+      margin: 0;
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: 600;
+      color: #000000;
+    }
+
+    /* Horizontal overflow is on the track, so the row can scroll without the
+       page ever gaining a scrollbar. */
+    /* 56px swatch on an 85px pitch leaves a 28px gap. The last swatch is cut
+       off at the container edge in the design, so the row scrolls rather than
+       wrapping. Overflow is on the track, so the page never gains a scrollbar. */
+    #shopify-section-{{ section.id }} .pf-colors__track {
+      display: flex;
+      align-items: flex-start;
+      gap: {{ section.settings.color_swatch_gap }}px;
+      min-width: 0;
+      overflow: auto hidden;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      padding-block: 4px;
+    }
+
+    #shopify-section-{{ section.id }} .pf-colors__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .pf-color {
+      flex: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* Measured: 17px between the bottom of the circle and the label cap
+         height. At 6px the labels crowded the swatches. */
+      gap: 17px;
+      text-decoration: none;
+      /* Inactive */
+      font-size: 13px;
+      line-height: 28px;
+      font-weight: 400;
+      color: #696969;
+    }
+
+    #shopify-section-{{ section.id }} .pf-color.is-active {
+      font-size: 13px;
+      line-height: 15px;
+      font-weight: 600;
+      color: #000000;
+    }
+
+    /* One box whether it holds a metaobject image, a swatch image or a plain
+       colour, so the row keeps its rhythm regardless of what Shopify returns. */
+    /* One box whatever Shopify returns: a metaobject image, a swatch image or
+       a plain colour. Keeps the row's rhythm regardless of which branch a value
+       takes, and stops a missing swatch collapsing the pill. */
+    #shopify-section-{{ section.id }} .pf-color__media {
+      display: block;
+      width: {{ section.settings.color_swatch_size }}px;
+      height: {{ section.settings.color_swatch_size }}px;
+      border-radius: var(--rounded-full);
+      object-fit: cover;
+      background-size: cover;
+      background-position: center;
+      box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+    }
+
+    /* The cleared state when no image is set for it. A conic sweep reads as
+       "any colour" without naming one. */
+    #shopify-section-{{ section.id }} .pf-color__media--all {
+      background: conic-gradient(
+        from 180deg,
+        #c9d6df, #e8d5c4, #d9c3a9, #b8c4a0, #d4a5a5, #a8b8c8, #c9d6df
+      );
+    }
+
+    /* Active is a thin ring sitting just outside the swatch, measured at about
+       3px clear of it. Drawn with box-shadow so it adds no layout width and the
+       row cannot shift when the selection changes. */
+    /* Active is a thin ring just outside the swatch. Measured at 4px total
+       across the diameter, so roughly 2px a side: a 1px breathing gap and a 1px
+       ring. Drawn with box-shadow so it adds no layout width and the row cannot
+       shift when the selection changes. */
+    #shopify-section-{{ section.id }} .pf-color.is-active .pf-color__media {
+      box-shadow:
+        inset 0 0 0 1px rgb(0 0 0 / 0.08),
+        0 0 0 1px rgb(var(--background-without-opacity)),
+        0 0 0 2px #000000;
+    }
+
+    /* ---------------- PHASE 2: desktop filter sidebar ----------------
+       Measured off the 1440 frame:
+         sidebar content x 79-373      -> 294px column
+         "Filters" heading y 160-175   -> 20/28/700
+         group headings                -> 16/22/600
+         rules at y 338 and 733        -> between groups, not under headings
+         image values 67px on a 104px pitch, three per row
+       All scoped to this section and inside the enable_new_filters gate, so
+       the production layout is untouched. facets.liquid is not modified. */
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .pf-sidebar-heading {
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 700;
+        color: #000000;
+        margin: 0 0 {{ section.settings.pf_filters_heading_gap }}px;
+      }
+
+      /* Layout.
+         .collection is a CSS grid whose columns come from
+         --collection-grid-template, built from --collection-sidebar-width
+         (15rem by default) with --collection-gap of 2rem between them. All
+         three are variables, so the whole layout is set here without touching
+         the grid definition in theme.css.
+
+         1300 content = 300 sidebar + 32 gap + 968 grid. The 32px gap is
+         already Prestige's own --collection-gap, so only the sidebar width
+         changes and the product column takes the remainder. */
+      #shopify-section-{{ section.id }} .collection {
+        --collection-sidebar-width: {{ section.settings.pf_sidebar_width }}px;
+        --collection-gap: {{ section.settings.pf_sidebar_gap }}px;
+      }
+
+      /* Containment. The accordion toggle is width: 100%, and without an
+         explicit width plus min-width: 0 on the column it resolved against the
+         grid area rather than the sidebar, which is why the chevron rendered
+         over the first product image. */
+      #shopify-section-{{ section.id }} .facets-sidebar,
+      #shopify-section-{{ section.id }} .facets {
+        width: 100%;
+        max-width: {{ section.settings.pf_sidebar_width }}px;
+        min-width: 0;
+        overflow-x: clip;
+      }
+
+      /* Three product columns alongside an open sidebar. Prestige's own
+         variable, so the product card markup is untouched. */
+      #shopify-section-{{ section.id }} {
+        --collection-items-per-row-large: {{ section.settings.pf_products_per_row }};
+      }
+
+      /* Group headings. The accordion supplies the row and chevron; only the
+         type is restated here. */
+      #shopify-section-{{ section.id }} .facets .accordion__toggle {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 600;
+        color: #000000;
+      }
+
+      /* Accordion chevron. facets.liquid already passes show_arrow: true, so
+         the existing accordion component supplies it; only its size and colour
+         are corrected here. Measured off the Figma at roughly 13 x 7 css px in
+         a mid grey, against Prestige's larger default. No Style-specific icon:
+         this applies to every group in the sidebar. */
+      #shopify-section-{{ section.id }} .facets .accordion__toggle svg {
+        width: {{ section.settings.pf_accordion_icon_width }}px;
+        height: auto;
+        color: {{ section.settings.pf_accordion_icon_color }};
+        flex: none;
+      }
+
+      /* Keeps the chevron on the heading's optical centre rather than its
+         text baseline. */
+      #shopify-section-{{ section.id }} .facets .accordion__toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        /* Keeps the row, and therefore the chevron, inside the sidebar column. */
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding-inline-end: {{ section.settings.pf_sidebar_inset }}px;
+      }
+
+      /* A rule between groups, not beneath every heading. */
+      #shopify-section-{{ section.id }} .facets .accordion + .accordion {
+        border-block-start: 1px solid rgb(0 0 0 / 0.08);
+      }
+
+      /* Checkbox values keep the same size and weight whether active or not;
+         only the colour changes, exactly as specified. */
+      /* Checkbox values.
+         The real markup is snippets/checkbox.liquid: a .checkbox-control
+         wrapper holding <input class="checkbox"> and a sibling <label>. My
+         earlier attempt targeted .checkbox-container, which does not exist in
+         this theme, so none of it applied.
+
+         Measured off the Figma: 18px square, olive #55583C when checked with a
+         white tick, light outline when not, 12px to the label, 18px between
+         rows.
+
+         The input is styled directly rather than replaced, so it stays a real
+         control: keyboard focus, screen readers and the theme's own change
+         handler all keep working, and filtering still goes through the
+         existing form. */
+      /* Row alignment.
+         theme.css:1296 sets align-items: flex-start, which top-aligns an 18px
+         box against a 22px line. checkbox.liquid also gives the input
+         margin-block-start to push it down under that rule, so centring alone
+         still left the box low. Both are corrected, and the row is stated as a
+         two-column grid so the box and the label share one centre line
+         regardless of how long the label wraps.
+
+         Typography is untouched: this is purely the row structure. */
+      #shopify-section-{{ section.id }} .facets .checkbox-control {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        column-gap: {{ section.settings.pf_checkbox_gap }}px;
+        gap: {{ section.settings.pf_checkbox_gap }}px;
+        min-height: {{ section.settings.pf_checkbox_size }}px;
+      }
+
+      /* The theme nudges the input down to sit on the first text line. With a
+         centred row that nudge is what puts it out of line. */
+      #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox {
+        margin-block: 0;
+        align-self: center;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-control label {
+        display: block;
+        align-self: center;
+        margin: 0;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-control + .checkbox-control {
+        margin-block-start: {{ section.settings.pf_checkbox_row_gap }}px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox {
+        appearance: none;
+        -webkit-appearance: none;
+        flex: none;
+        width: {{ section.settings.pf_checkbox_size }}px;
+        height: {{ section.settings.pf_checkbox_size }}px;
+        margin: 0;
+        border: 1px solid {{ section.settings.pf_checkbox_border }};
+        border-radius: {{ section.settings.pf_checkbox_radius }}px;
+        background: #ffffff;
+        cursor: pointer;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox:checked {
+        background-color: {{ section.settings.pf_checkbox_checked }};
+        border-color: {{ section.settings.pf_checkbox_checked }};
+        /* The tick is a background image, so no extra element is needed in
+           markup this section does not own. */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 5l3.5 3.5L11 1.5'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 62%;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox:focus-visible {
+        outline: 2px solid {{ section.settings.pf_checkbox_checked }};
+        outline-offset: 2px;
+      }
+
+      /* Label typography: same size and weight whether active or not, only the
+         colour changes. :has() on the wrapper keeps it tied to the real input
+         state rather than a class the theme would have to maintain. */
+      #shopify-section-{{ section.id }} .facets .checkbox-control label {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 500;
+        color: #696969;
+        cursor: pointer;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-control:has(input:checked) label {
+        color: #000000;
+      }
+
+      /* Image and swatch values: three per row, 67px media. */
+      #shopify-section-{{ section.id }} .facets .option-value-list {
+        display: grid;
+        grid-template-columns: repeat({{ section.settings.pf_value_columns }}, minmax(0, 1fr));
+        gap: {{ section.settings.pf_value_row_gap }}px {{ section.settings.pf_value_col_gap }}px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .option-value :is(img, svg),
+      #shopify-section-{{ section.id }} .facets .option-value__swatch {
+        width: {{ section.settings.pf_value_media_size }}px;
+        height: {{ section.settings.pf_value_media_size }}px;
+        object-fit: cover;
+        border-radius: var(--rounded-full);
+      }
+
+      #shopify-section-{{ section.id }} .facets .option-value {
+        font-size: 13px;
+        line-height: 18px;
+        font-weight: 400;
+        color: #696969;
+      }
+
+      #shopify-section-{{ section.id }} .facets .option-value:has(input:checked) {
+        line-height: 16px;
+        font-weight: 600;
+        color: #000000;
+      }
+
+      /* The design has no grid-density or list-view controls. Hidden rather
+         than removed, so the theme's own JS keeps its references. */
+      {%- if section.settings.pf_hide_view_switcher -%}
+        /* The element is <collection-layout-switch> carrying
+           .collection-toolbar__layout-switch-list. My first attempt targeted
+           .collection-toolbar__layout-switch and product-list-grid-switcher,
+           neither of which exists in this theme, so the icons stayed visible. */
+        #shopify-section-{{ section.id }} collection-layout-switch,
+        #shopify-section-{{ section.id }} .collection-toolbar__layout-switch-list {
+          display: none;
+        }
+      {%- endif -%}
+
+      /* Rug Type. Styled to sit with the other sidebar groups: the same
+         heading treatment, and values using the checkbox-value typography from
+         the spec since these are text rows, not image swatches. */
+      #shopify-section-{{ section.id }} .pf-rugtype {
+        border-block-start: 1px solid rgb(0 0 0 / 0.08);
+        padding-block-start: {{ section.settings.rt_group_gap }}px;
+        margin-block-start: {{ section.settings.rt_group_gap }}px;
+      }
+
+      /* On Shop All the accordion supplies its own heading row, padding and
+         rule, so the group's own spacing is dropped to avoid doubling up. The
+         heading type comes from the .accordion__toggle rule above, the same one
+         every other group uses. */
+      #shopify-section-{{ section.id }} .pf-rugtype--accordion {
+        padding-block-start: 0;
+      }
+
+      /* Only used on a specific rug collection, where there is no accordion. */
+      #shopify-section-{{ section.id }} .pf-rugtype:not(.pf-rugtype--accordion) .pf-rugtype__heading {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 600;
+        color: #000000;
+        margin: 0 0 {{ section.settings.rt_heading_gap }}px;
+      }
+
+      #shopify-section-{{ section.id }} .pf-rugtype__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: {{ section.settings.rt_row_gap }}px;
+      }
+
+      /* Same row shape and the same checkbox values as the real filter
+         checkboxes, so the group is visually indistinguishable from them. The
+         values are read from the same settings, so changing the checkbox size
+         or colour moves both together. */
+      #shopify-section-{{ section.id }} .pf-rugtype__item {
+        display: flex;
+        align-items: center;
+        gap: {{ section.settings.pf_checkbox_gap }}px;
+        min-height: {{ section.settings.pf_checkbox_size }}px;
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 500;
+        color: #696969;
+        text-decoration: none;
+      }
+
+      #shopify-section-{{ section.id }} .pf-rugtype__box {
+        flex: none;
+        width: {{ section.settings.pf_checkbox_size }}px;
+        height: {{ section.settings.pf_checkbox_size }}px;
+        border: 1px solid {{ section.settings.pf_checkbox_border }};
+        border-radius: {{ section.settings.pf_checkbox_radius }}px;
+        background: #ffffff;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
+      }
+
+      #shopify-section-{{ section.id }} .pf-rugtype__item.is-active {
+        color: #000000;
+      }
+
+      #shopify-section-{{ section.id }} .pf-rugtype__item.is-active .pf-rugtype__box {
+        background-color: {{ section.settings.pf_checkbox_checked }};
+        border-color: {{ section.settings.pf_checkbox_checked }};
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 5l3.5 3.5L11 1.5'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 62%;
+      }
+
+      #shopify-section-{{ section.id }} .pf-rugtype__item:focus-visible {
+        outline: 2px solid {{ section.settings.pf_checkbox_checked }};
+        outline-offset: 2px;
+      }
+
+      /* The toolbar in the design carries no rules. */
+      {%- if section.settings.pf_hide_toolbar_rules -%}
+        /* theme.css:4503 draws these rules with box-shadow, not border, so
+           border-block: 0 had no effect. */
+        #shopify-section-{{ section.id }} .collection-toolbar {
+          box-shadow: none;
+        }
+      {%- endif -%}
+    }
+
+    @media screen and (max-width: 699px) {
+      #shopify-section-{{ section.id }} .pf-colors {
+        display: block;
+      }
+
+      #shopify-section-{{ section.id }} .pf-colors__heading {
+        margin-block-end: 10px;
+      }
+
+      #shopify-section-{{ section.id }} .pf-color {
+        font-size: 12px;
+        line-height: 17px;
+        font-weight: 500;
+        color: #7D7D7D;
+      }
+
+      #shopify-section-{{ section.id }} .pf-color.is-active {
+        font-size: 12px;
+        line-height: 17px;
+        font-weight: 600;
+        color: #000000;
+      }
+    }
+  {%- endif -%}
 </style>
 
 {%- comment -%}
@@ -108,9 +648,112 @@
   ------------------------------------------------------------------------------------------------------------------------
 {%- endcomment -%}
 
+{%- comment -%}
+  production_filters is resolved in the liquid block at the top of this file, so
+  that the filter count there uses the same list as the render calls below.
+{%- endcomment -%}
 <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
   <div class="container">
     <div class="v-stack gap-6 sm:gap-12">
+      {%- comment -%}
+        ------------------------------------------------------------------
+        NEW PLP FILTERS - development gate
+        ------------------------------------------------------------------
+        enable_new_filters is off by default. While it is off nothing below
+        is rendered at all, so the published theme keeps today's production
+        filter untouched and no unfinished markup reaches a customer. This
+        is a Liquid gate, not display:none: the HTML is never produced.
+
+        Phase 1 is Shop by Color only. The remaining phases will be added
+        inside the same gate.
+      {%- endcomment -%}
+      {%- if section.settings.enable_new_filters -%}
+        {%- liquid
+          # Find the colour filter in whatever Search & Discovery returns.
+          # Nothing here is hardcoded: the values, labels, counts, URLs and
+          # active states all come from collection.filters. Only the name of
+          # the GROUP is configurable, because Shopify gives no other way to
+          # tell one list filter from another.
+          assign color_filter = null
+          assign wanted = section.settings.color_filter_label | downcase | strip
+
+          for f in collection.filters
+            if color_filter == null
+              assign f_label = f.label | downcase | strip
+              assign f_param = f.param_name | downcase
+
+              if f_label == wanted or f_param contains 'color' or f_param contains 'colour'
+                assign color_filter = f
+              endif
+            endif
+          endfor
+        -%}
+
+        {%- if color_filter != null and color_filter.values.size > 0 -%}
+          <div class="pf-colors">
+            <p class="pf-colors__heading">{{ section.settings.color_filter_heading }}</p>
+
+            <div class="pf-colors__track">
+              {%- comment -%}
+                "All" is not a filter value, it is the cleared state. Shopify
+                provides the group's own url_to_remove, which strips every
+                selected colour at once, and the pill is active exactly when
+                nothing in the group is selected. Nothing is hardcoded.
+              {%- endcomment -%}
+              <a
+                class="pf-color {% if color_filter.active_values.size == 0 %}is-active{% endif %}"
+                href="{{ color_filter.url_to_remove }}"
+                {% if color_filter.active_values.size == 0 %}aria-current="true"{% endif %}
+              >
+                {%- if section.settings.color_all_image != blank -%}
+                  {{-
+                    section.settings.color_all_image
+                    | image_url: width: 160
+                    | image_tag: class: 'pf-color__media', loading: 'lazy', widths: '56,112,160', sizes: '56px', alt: ''
+                  -}}
+                {%- else -%}
+                  <span class="pf-color__media pf-color__media--all"></span>
+                {%- endif -%}
+
+                <span class="pf-color__label">{{ section.settings.color_all_label }}</span>
+              </a>
+
+              {%- for value in color_filter.values -%}
+                {%- comment -%}
+                  url_to_add and url_to_remove are Shopify's own, so the link
+                  carries the real filter state and a plain navigation applies
+                  it. active comes from Shopify too, so after the section is
+                  re-rendered the selected colour is still marked.
+                {%- endcomment -%}
+                <a
+                  class="pf-color {% if value.active %}is-active{% endif %}"
+                  href="{% if value.active %}{{ value.url_to_remove }}{% else %}{{ value.url_to_add }}{% endif %}"
+                  {% if value.active %}aria-current="true"{% endif %}
+                >
+                  {%- if value.image != blank -%}
+                    {{-
+                      value.image
+                      | image_url: width: 120
+                      | image_tag: class: 'pf-color__media', loading: 'lazy', widths: '40,80,120', sizes: '40px', alt: ''
+                    -}}
+                  {%- elsif value.swatch.image != blank -%}
+                    {{-
+                      value.swatch.image
+                      | image_url: width: 120
+                      | image_tag: class: 'pf-color__media', loading: 'lazy', widths: '40,80,120', sizes: '40px', alt: ''
+                    -}}
+                  {%- elsif value.swatch.color != blank -%}
+                    <span class="pf-color__media" style="background: {{ value.swatch.color }};"></span>
+                  {%- endif -%}
+
+                  <span class="pf-color__label">{{ value.label }}</span>
+                </a>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+
       {%- if collection.all_products_count == 0 -%}
         <div class="empty-state">
           <div class="prose">
@@ -243,9 +886,11 @@
                 {%- render 'facets',
                   results: collection,
                   show_filters: section.settings.show_filters,
-                  open_filters_by_default: section.settings.open_filters_by_default,
+                  open_filters_by_default: open_filters,
                   update_on_change: false,
                   quick_links_menu: section.settings.quick_links_menu,
+                  allowed_filters: production_filters,
+                  hide_facet_checkbox: hide_facet_checkbox,
                   context: 'drawer'
                 -%}
 
@@ -260,14 +905,190 @@
 
               {%- if section.settings.filter_layout == 'sidebar' -%}
                 <safe-sticky class="facets-sidebar md-max:hidden">
+                  {%- comment -%}
+                    The design puts a "Filters" heading above the groups.
+                    Prestige has none, so it is added here rather than inside
+                    facets.liquid, which is shared with search and with the
+                    production allow-list.
+                  {%- endcomment -%}
+                  {%- if section.settings.enable_new_filters and section.settings.pf_filters_heading != blank -%}
+                    <p class="pf-sidebar-heading">{{ section.settings.pf_filters_heading }}</p>
+                  {%- endif -%}
+
                   {%- render 'facets',
                     results: collection,
                     show_filters: section.settings.show_filters,
-                    open_filters_by_default: section.settings.open_filters_by_default,
+                    open_filters_by_default: open_filters,
                     update_on_change: true,
                     quick_links_menu: section.settings.quick_links_menu,
+                    allowed_filters: production_filters,
+                    hide_facet_checkbox: hide_facet_checkbox,
                     context: 'sidebar'
                   -%}
+
+                  {%- comment -%}
+                    ---------------- Rug Type ----------------
+                    Sourced from a navigation menu, not from Search & Discovery,
+                    because the rug types are Shopify collections and Shopify has
+                    no collection filter source. Titles, URLs and order all come
+                    from the menu, so adding a collection there adds it here.
+
+                    Behaviour, as specified: on a collection that appears in the
+                    menu, only that one is listed and marked active. Anywhere
+                    else, including Shop All Types, the full list is shown.
+
+                    These are links rather than checkboxes because this is
+                    navigation: you are in one collection at a time. The current
+                    filter query string is carried across, so switching type
+                    keeps any Color, Style or Shape selection.
+                  {%- endcomment -%}
+                  {%- if section.settings.enable_new_filters -%}
+                    {%- liquid
+                      assign rt_menu = section.settings.rt_menu
+                      assign rt_parent = section.settings.rt_parent_item | downcase | strip
+                      assign rt_links = null
+
+                      if rt_parent != blank
+                        for l1 in rt_menu.links
+                          if rt_links == null
+                            assign t1 = l1.title | downcase | strip
+                            assign h1 = l1.handle | downcase | strip
+
+                            if t1 == rt_parent or h1 == rt_parent
+                              assign rt_links = l1.links
+                            endif
+                          endif
+
+                          if rt_links == null
+                            for l2 in l1.links
+                              if rt_links == null
+                                assign t2 = l2.title | downcase | strip
+                                assign h2 = l2.handle | downcase | strip
+
+                                if t2 == rt_parent or h2 == rt_parent
+                                  assign rt_links = l2.links
+                                endif
+                              endif
+                            endfor
+                          endif
+                        endfor
+                      else
+                        assign rt_links = rt_menu.links
+                      endif
+
+                      # Which of the menu's collections is the page we are on.
+                      # Compared on handle, taken from the link's own object
+                      # rather than parsed out of the URL.
+                      assign rt_current = null
+
+                      for l in rt_links
+                        if l.object.handle == collection.handle
+                          assign rt_current = l
+                        endif
+                      endfor
+
+                      # Shop All, identified from Shopify's own route rather
+                      # than a hardcoded path. "Shop All Types" is itself a link
+                      # in the menu and points here, so without this the menu
+                      # match would fire and only that one entry would render.
+                      # The route wins.
+                      assign rt_is_shop_all = false
+
+                      if collection.url == routes.all_products_collection_url
+                        assign rt_is_shop_all = true
+                        assign rt_current = null
+                      endif
+
+                      # Carry the active filters across, so changing type does
+                      # not silently drop a Color or Style selection.
+                      assign rt_query = ''
+
+                      for f in collection.filters
+                        for v in f.active_values
+                          assign rt_query = rt_query | append: '&' | append: v.param_name | append: '=' | append: v.value | url_encode
+                        endfor
+                      endfor
+                    -%}
+
+                    {%- if rt_links.size > 0 -%}
+                      {%- comment -%}
+                        The list is captured once and used by both branches, so
+                        the values, counts, checkboxes, active state and filter
+                        URLs are identical either way. Only the wrapper differs.
+                      {%- endcomment -%}
+                      {%- capture rt_list -%}
+                        <ul class="pf-rugtype__list">
+                          {%- for l in rt_links -%}
+                            {%- comment -%}
+                              Option B: on a matched collection only that entry
+                              renders; everywhere else the whole list does.
+                            {%- endcomment -%}
+                            {%- if rt_current == null or l.object.handle == collection.handle -%}
+                              {%- liquid
+                                assign rt_active = false
+                                if l.object.handle == collection.handle
+                                  assign rt_active = true
+                                endif
+
+                                assign rt_href = l.url
+                                if rt_query != blank
+                                  assign rt_href = l.url | append: '?' | append: rt_query | remove_first: '&'
+                                endif
+                              -%}
+                              <li>
+                                {%- comment -%}
+                                  Rendered as a checkbox row so the group reads
+                                  the same as the other non-image filters. The
+                                  box is a span, not an input: this is still a
+                                  link to a collection, so a screen reader is
+                                  told the truth about what activating it does,
+                                  and aria-current marks the one you are on.
+                                {%- endcomment -%}
+                                <a
+                                  class="pf-rugtype__item {% if rt_active %}is-active{% endif %}"
+                                  href="{{ rt_href }}"
+                                  {% if rt_active %}aria-current="page"{% endif %}
+                                >
+                                  <span class="pf-rugtype__box" aria-hidden="true"></span>
+                                  <span class="pf-rugtype__label">{{ l.title }}</span>
+
+                                  {%- if section.settings.rt_show_counts and l.object.all_products_count > 0 -%}
+                                    <span class="pf-rugtype__count">({{ l.object.all_products_count }})</span>
+                                  {%- endif -%}
+                                </a>
+                              </li>
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </ul>
+                      {%- endcapture -%}
+
+                      <div class="pf-rugtype {% if rt_is_shop_all %}pf-rugtype--accordion{% endif %}">
+                        {%- if rt_is_shop_all -%}
+                          {%- comment -%}
+                            Shop All gets the theme's own accordion, with the
+                            same parameters facets.liquid passes at line 182, so
+                            the toggle, chevron, rotation and open state are
+                            identical to every other group. accordion.liquid is
+                            not modified.
+                          {%- endcomment -%}
+                          {%- render 'accordion',
+                            title: section.settings.rt_heading,
+                            content: rt_list,
+                            open: open_filters,
+                            show_arrow: true
+                          -%}
+                        {%- else -%}
+                          {%- comment -%}
+                            A specific rug collection keeps the existing
+                            behaviour: a plain heading, no accordion, showing
+                            only the collection you are on.
+                          {%- endcomment -%}
+                          <p class="pf-rugtype__heading">{{ section.settings.rt_heading }}</p>
+                          {{ rt_list }}
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                  {%- endif -%}
                 </safe-sticky>
               {%- endif -%}
             {%- endif -%}
@@ -286,7 +1107,12 @@
               </div>
             {%- else -%}
               <div class="collection__main">
-                {%- render 'active-facets', results: collection -%}
+                {%- comment -%}
+                  The chips get the same list, otherwise a hidden filter arriving
+                  through a pasted URL would still appear as a removable chip in
+                  production.
+                {%- endcomment -%}
+                {%- render 'active-facets', results: collection, allowed_filters: production_filters -%}
 
                 <product-list
                   id="product-list-{{ section.id }}"
@@ -446,6 +1272,337 @@
       "id": "show_sort_by",
       "label": "t:global.faceting.show_sort_by",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "New filters (development)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_new_filters",
+      "label": "Enable the new filter experience",
+      "info": "Off renders the existing production filter. Turn this on only in a development or draft theme: the new implementation is still being built, and while this is off none of its markup is rendered at all.",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "production_filters",
+      "label": "Production filters (allow-list)",
+      "info": "Only these filters render while the new implementation is off. Comma separated, matched on the filter label or its param_name. Any filter added in Search & Discovery that is not listed here stays hidden from the production sidebar automatically.",
+      "default": "Availability, Price"
+    },
+    {
+      "type": "header",
+      "content": "Sidebar (new filters)"
+    },
+    {
+      "type": "text",
+      "id": "pf_filters_heading",
+      "label": "Sidebar heading",
+      "info": "Leave empty to hide it.",
+      "default": "Filters"
+    },
+    {
+      "type": "range",
+      "id": "pf_filters_heading_gap",
+      "label": "Sidebar heading gap",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "pf_sidebar_width",
+      "label": "Sidebar width",
+      "info": "1300 content = 300 sidebar + 32 gap + 968 grid.",
+      "min": 200,
+      "max": 400,
+      "step": 2,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "pf_sidebar_gap",
+      "label": "Filter to product gap",
+      "info": "1300 content = 300 sidebar + 32 gap + 968 grid.",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "pf_sidebar_inset",
+      "label": "Sidebar right inset",
+      "info": "Keeps the accordion chevron clear of the product grid.",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "pf_products_per_row",
+      "label": "Product columns beside the sidebar",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "pf_value_columns",
+      "label": "Image filter columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "pf_value_media_size",
+      "label": "Image filter swatch size",
+      "min": 40,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 67
+    },
+    {
+      "type": "range",
+      "id": "pf_value_col_gap",
+      "label": "Image filter column gap",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 37
+    },
+    {
+      "type": "range",
+      "id": "pf_value_row_gap",
+      "label": "Image filter row gap",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 27
+    },
+    {
+      "type": "header",
+      "content": "Rug Type (from a menu)"
+    },
+    {
+      "type": "paragraph",
+      "content": "The rug types are Shopify collections, and Shopify has no collection filter source, so this group is built from a navigation menu instead. Titles, links and order all come from the menu. On a collection that appears in the menu only that entry is shown, marked as current; anywhere else the whole list is shown."
+    },
+    {
+      "type": "text",
+      "id": "rt_heading",
+      "label": "Group heading",
+      "info": "Leave empty to hide the whole group.",
+      "default": "Rug Type"
+    },
+    {
+      "type": "link_list",
+      "id": "rt_menu",
+      "label": "Menu",
+      "info": "Required. Select the menu containing the Shop By Type entry. No default is set on purpose: Shopify only accepts main-menu or footer as a link_list default, and a wrong default fails silently by rendering nothing."
+    },
+    {
+      "type": "text",
+      "id": "rt_parent_item",
+      "label": "Parent menu item",
+      "info": "The entry whose child links are the rug types, for example Shop By Type. Leave empty if the selected menu's own items are the rug types. Searched two levels deep, by title or handle.",
+      "default": "Shop By Type"
+    },
+    {
+      "type": "checkbox",
+      "id": "rt_show_counts",
+      "label": "Show product counts",
+      "info": "Counts are the collection totals, so they do not narrow as other filters are applied.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rt_group_gap",
+      "label": "Space above the group",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "rt_heading_gap",
+      "label": "Heading gap",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "rt_row_gap",
+      "label": "Row gap",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "pf_accordion_icon_width",
+      "label": "Accordion chevron width",
+      "info": "Measured at about 13px on the 1440 frame.",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "pf_accordion_icon_color",
+      "label": "Accordion chevron colour",
+      "default": "#807E7A"
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_hide_color_in_sidebar",
+      "label": "Hide Color from the sidebar",
+      "info": "Colour has its own strip above the toolbar, so the sidebar entry would be a duplicate control.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "pf_checkbox_size",
+      "label": "Checkbox size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "pf_checkbox_radius",
+      "label": "Checkbox corner radius",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "pf_checkbox_gap",
+      "label": "Checkbox to label gap",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "pf_checkbox_row_gap",
+      "label": "Checkbox row gap",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "pf_checkbox_checked",
+      "label": "Checkbox checked colour",
+      "default": "#55583C"
+    },
+    {
+      "type": "color",
+      "id": "pf_checkbox_border",
+      "label": "Checkbox outline",
+      "default": "#D9D7D0"
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_hide_view_switcher",
+      "label": "Hide grid and list view controls",
+      "info": "The design has none.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_hide_toolbar_rules",
+      "label": "Hide the toolbar rules",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "color_filter_heading",
+      "label": "Shop by Color heading",
+      "default": "Shop by Color:"
+    },
+    {
+      "type": "text",
+      "id": "color_filter_label",
+      "label": "Colour filter name",
+      "info": "The exact label of the colour filter in Search & Discovery. Values, counts and links always come from Shopify; this only identifies which filter group is the colour one.",
+      "default": "Color"
+    },
+    {
+      "type": "range",
+      "id": "color_swatch_size",
+      "label": "Colour swatch size",
+      "min": 24,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "color_strip_gap",
+      "label": "Space below Shop by Color",
+      "info": "Measured at 49px between the colour labels and the toolbar row beneath.",
+      "min": 0,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 49
+    },
+    {
+      "type": "range",
+      "id": "color_swatch_gap",
+      "label": "Colour swatch gap",
+      "min": 8,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "text",
+      "id": "color_all_label",
+      "label": "Clear-colour label",
+      "info": "The first pill, which clears every selected colour. It is not a Search & Discovery value.",
+      "default": "All"
+    },
+    {
+      "type": "image_picker",
+      "id": "color_all_image",
+      "label": "Clear-colour image",
+      "info": "Optional. A gradient swatch is drawn when this is empty."
     },
     {
       "type": "checkbox",

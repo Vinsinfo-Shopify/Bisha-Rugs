@@ -1,0 +1,1001 @@
+{%- doc -%}
+  "Still Have Questions?" - three fixed contact options.
+
+  Deliberately blockless. The design always carries the same three options and
+  the details change rarely, so everything is a section setting. That means a
+  merchant adding this to a new page gets the three cards already shaped and
+  only fills in the values, rather than assembling blocks each time.
+
+  Reused rather than rebuilt:
+    snippets/section-header.liquid   eyebrow + heading, native typography
+    snippets/icon.liquid             picto-phone / picto-camera / picto-envelope
+    scroll-carousel (theme.js)       one card per click, same component as Row 08
+    floating-controls-container      the Row 08 arrow, its position and states
+
+  No JavaScript is added. The carousel and its controls are the theme's own
+  custom elements, so nothing here can conflict when the section appears twice
+  on one page: every selector is prefixed with this section's id, and the
+  carousel is bound to the controls by a per-section id.
+
+  On desktop all three cards fit, so the carousel is not scrollable and the
+  theme disables both arrows, which hides them. Below that it becomes a swipe
+  carousel. Same markup either way.
+{%- enddoc -%}
+
+{%- liquid
+  assign carousel_id = 'co-carousel-' | append: section.id
+-%}
+
+<style>
+  /* Every rule is prefixed with this section's id, so two instances on one page
+     cannot reach each other. */
+  #shopify-section-{{ section.id }} .co {
+    background: {{ section.settings.background }};
+    /* The carousel can never widen the document. clip, not hidden: it creates
+       no scroll container of its own. */
+    overflow-x: clip;
+  }
+
+  #shopify-section-{{ section.id }} .co__inner {
+    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+  }
+
+  #shopify-section-{{ section.id }} .co__header {
+    margin-block-end: {{ section.settings.header_gap }}px;
+  }
+
+  #shopify-section-{{ section.id }} .co__header .section-header {
+    gap: 0;
+  }
+
+  #shopify-section-{{ section.id }} .co__header .section_header_subheading {
+    margin-block: 0 {{ section.settings.eyebrow_gap }}px;
+    line-height: 1.3;
+  }
+
+  #shopify-section-{{ section.id }} .co__header .section_header_heading {
+    font-weight: {{ section.settings.heading_weight }};
+    margin-block: 0;
+  }
+
+  /* ---------- Carousel ----------
+     group-cells is omitted, so ScrollCarousel's groupCells getter returns 1:
+     one card per arrow click, never a page. cell-selector pins the cells to the
+     cards so nothing else can be counted. */
+  #shopify-section-{{ section.id }} .co__carousel {
+    position: relative;
+  }
+
+  #shopify-section-{{ section.id }} .co__track {
+    --co-gap: {{ section.settings.card_gap }}px;
+    /* Fixed, not a fraction of the track. The design specifies a rendered image
+       size, so the card is that size at every viewport and the carousel simply
+       scrolls when they stop fitting. A fractional width would have re-derived
+       the image size from the container and broken the measurement. */
+    --co-card: {{ section.settings.image_width }}px;
+    --co-media: {{ section.settings.image_height }}px;
+    display: flex;
+    align-items: stretch;
+    gap: var(--co-gap);
+    /* Equal outer space without touching either side's padding: the track is
+       only as wide as its cards (3 x 415 + 2 x 22 = 1289px) and auto margins
+       split the remainder. max-width caps it at the container, so on a narrow
+       desktop it simply becomes a scroller again instead of overflowing. */
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    overflow: auto hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    /* No inline padding: card 1 starts on the container edge and the row can
+       run to the opposite edge. */
+    padding-inline: 0;
+    scroll-padding-inline: 0;
+  }
+
+  #shopify-section-{{ section.id }} .co__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .co__card {
+    flex: 0 0 var(--co-card);
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background: {{ section.settings.card_background }};
+    border: 1px solid {{ section.settings.card_border }};
+    border-radius: {{ section.settings.card_radius }}px;
+    overflow: hidden;
+    scroll-snap-align: start;
+    /* One swipe moves one card. Without this a momentum flick sails past
+       several snap points. */
+    scroll-snap-stop: always;
+  }
+
+  /* A fixed box, not an aspect ratio: the rendered height is specified, so the
+     source image's own proportions must not decide it. cover crops to fill
+     without distorting. */
+  #shopify-section-{{ section.id }} .co__media {
+    width: 100%;
+    height: var(--co-media);
+    background: rgb(var(--text-color) / 0.06);
+    flex: none;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .co__media :is(img, svg) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* flex: 1 with the CTA pushed to the bottom keeps the three CTAs on one line
+     across cards even when one description runs longer. */
+  #shopify-section-{{ section.id }} .co__body {
+    padding: {{ section.settings.card_padding }}px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1 1 auto;
+  }
+
+  #shopify-section-{{ section.id }} .co__title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Width is fixed and height follows, so an icon exported at any resolution
+     keeps its own proportions and cannot inflate the title row. */
+  #shopify-section-{{ section.id }} .co__icon {
+    display: inline-flex;
+    flex: none;
+    line-height: 0;
+  }
+
+  #shopify-section-{{ section.id }} .co__icon img {
+    width: {{ section.settings.icon_width }}px;
+    height: auto;
+    display: block;
+  }
+
+  /* Line heights are ratios, not the Figma's pixel values, so they still hold
+     if a size is changed: 18 x 1.39 = 25px, 16 x 1.375 = 22px. */
+  #shopify-section-{{ section.id }} .co__title {
+    font-family: var(--heading-font-family);
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: {{ section.settings.title_weight }};
+    line-height: 1.39;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .co__text {
+    font-size: {{ section.settings.text_size }}px;
+    line-height: 1.4;
+    margin: 0;
+    color: rgb(var(--text-color) / 0.8);
+  }
+
+  #shopify-section-{{ section.id }} .co__cta {
+    margin-block-start: auto;
+    font-size: {{ section.settings.cta_size }}px;
+    line-height: 1.375;
+    font-weight: 400;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    justify-self: start;
+    align-self: start;
+  }
+
+  #shopify-section-{{ section.id }} .co__cta:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  /* ---------- Arrows ----------
+     Row 08's treatment, reproduced under this section's id. Size, inset,
+     hover, disabled and the hide-when-not-scrollable behaviour all come from
+     theme.css; only the colours and the two placement values are restated.
+     collection-list.liquid is untouched.
+
+     circle-button's default box-shadow is tinted with the text colour, so a
+     white chevron would otherwise draw a white halo - hence none. */
+  #shopify-section-{{ section.id }} .floating-controls-container__control {
+    z-index: 3;
+  }
+
+  #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+    --circle-button-size: 26px; /* 38px, same as Row 08 */
+    --circle-button-background: 43 39 36;
+    --circle-button-text-color: 255 255 255;
+    box-sizing: border-box;
+    background: {{ section.settings.arrow_background }};
+    color: {{ section.settings.arrow_color }};
+    border: 2px solid {{ section.settings.arrow_border }};
+    box-shadow: none;
+  }
+
+  #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+    width: 11px;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @media screen and (pointer: fine) {
+    /* Row 08 overrides the theme's hover-reveal: its arrows are always on.
+       When all cards fit, the carousel is not scrollable, both buttons are
+       disabled, and the theme's own [disabled] rule hides them - which is why
+       no desktop-specific hiding is needed here. */
+    #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control,
+    #shopify-section-{{ section.id }} .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
+      opacity: 1;
+      transform: translateY(-50%);
+    }
+
+    /* theme.css puts the control 1.5rem INSIDE the container, which lands it on
+       top of the last card. Half the disc width pushes it back out so it
+       straddles the outer edge, exactly as Row 08 does. */
+    #shopify-section-{{ section.id }} .floating-controls-container--inside {
+      --floating-controls-inset-inline: -1.1875rem; /* half of 38px */
+    }
+  }
+
+  /* Vertically centred on the image area rather than the whole card, which is
+     where the design puts it. Used on mobile; desktop has no controls. */
+  #shopify-section-{{ section.id }} .floating-controls-container__control {
+    inset-block-start: {{ section.settings.arrow_offset }}%;
+    transform: translateY(-50%);
+  }
+
+  /* ---------- Desktop: a static row, not a carousel ----------
+     Everything that makes the track behave as a carousel is switched off above
+     the mobile breakpoint, and the controls are removed from the layout. The
+     scroll-carousel element still wraps the cards because mobile needs it, but
+     with no scrollable overflow and no snap points it has nothing to drive:
+     dragging does nothing and there is no slide movement.
+
+     Scoped to min-width so it cannot reach the mobile rules below. */
+  @media screen and (min-width: 700px) {
+    #shopify-section-{{ section.id }} .co__track {
+      scroll-snap-type: none;
+      overscroll-behavior-x: auto;
+    }
+
+    #shopify-section-{{ section.id }} .co__card {
+      scroll-snap-align: none;
+      scroll-snap-stop: normal;
+    }
+
+    /* No arrows, no floating controls, nothing to click. */
+    #shopify-section-{{ section.id }} .floating-controls-container__control {
+      display: none;
+    }
+  }
+
+  /* Wide enough for the whole 1289px group plus the container gutters, so the
+     track needs no scrolling at all and overflow can be visible.
+
+     Below this width the group genuinely does not fit: the cards are a fixed
+     415px by design and must not shrink, so the track stays scrollable there
+     rather than clipping the third card against the section's overflow: clip.
+     Still no arrows and no snap - it is a plain overflow, not a carousel. */
+  @media screen and (min-width: 1400px) {
+    #shopify-section-{{ section.id }} .co__track {
+      overflow: visible;
+    }
+  }
+
+  /* ---------- Mobile ---------- */
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .co__inner {
+      padding-block: {{ section.settings.padding_top | divided_by: 2 }}px {{ section.settings.padding_bottom | divided_by: 2 }}px;
+    }
+
+    #shopify-section-{{ section.id }} .co__header {
+      margin-block-end: {{ section.settings.header_gap | times: 0.7 | round }}px;
+    }
+    #shopify-section-{{ section.id }} .co__header,
+    #shopify-section-{{ section.id }} .co__header .section-header {
+      justify-items: start;
+      justify-self: start;
+      text-align: left;
+    }
+
+    /* Mobile is an edge-aligned scroller, not a centred group: the desktop
+       fit-content/auto-margin centring is undone here or every slide would sit
+       inset. Three states come out of four declarations:
+
+         padding-inline-start  -> the intentional gap before card 1 at rest
+         scroll-padding-start 0 -> snapped cards after the first sit flush on
+                                   the viewport edge, so the middle of the
+                                   carousel is edge to edge
+         padding-inline-end    -> the last card stops with the same intended
+                                   spacing on its right, instead of running
+                                   under the screen edge
+         negative margin       -> the track spans the full viewport, so the
+                                   partial next card reaches the right edge
+
+       No trailing margin of a viewport width on the last card. That is what
+       produced the empty band in the earlier screenshot. The track is sized by
+       its cards alone. */
+    #shopify-section-{{ section.id }} .co__track {
+      --co-gap: {{ section.settings.card_gap_mobile }}px;
+      --co-card: {{ section.settings.image_width_mobile }}px;
+      --co-media: {{ section.settings.image_height_mobile }}px;
+      width: auto;
+      max-width: none;
+      margin-inline: calc(-1 * var(--container-gutter));
+      /* Start padding only. The end spacing is a margin on the last card
+         instead: padding-inline-end on a flex scroll container is unreliable
+         across engines -- several drop it from scrollWidth entirely, which
+         shortens the maximum scroll AND makes the carousel believe it has hit
+         the end early, which is what left the final card clipped with the
+         arrow already disabled. A margin on the item is always counted. */
+      padding-inline-start: {{ section.settings.mobile_edge_gap }}px;
+      padding-inline-end: 0;
+      scroll-padding-inline: 0;
+    }
+
+    /* The initial gap was being scrolled away, not missing.
+       scroll-snap-type: x mandatory snaps on load, and with scroll-padding 0
+       the nearest snap point put card 1's left edge on the scrollport's left
+       edge -- scrollLeft jumped to 16 and ate the padding.
+
+       scroll-margin on the FIRST card only shifts that one card's snap area
+       outward by the same amount, so its snap position resolves to scrollLeft 0
+       and the padding stays on screen. Every other card is untouched, so the
+       middle of the carousel is still edge to edge. */
+    #shopify-section-{{ section.id }} .co__card:first-child {
+      scroll-margin-inline-start: {{ section.settings.mobile_edge_gap }}px;
+    }
+
+    /* The intended spacing after the last card, as a margin so it is inside
+       scrollWidth and the carousel can scroll far enough to expose the card in
+       full before the next button disables. */
+    #shopify-section-{{ section.id }} .co__card:last-child {
+      margin-inline-end: {{ section.settings.mobile_edge_gap }}px;
+    }
+
+    #shopify-section-{{ section.id }} .co__title {
+      font-size: {{ section.settings.title_size_mobile }}px;
+      line-height: 1.375;
+    }
+
+    #shopify-section-{{ section.id }} .co__text {
+      font-size: {{ section.settings.text_size_mobile }}px;
+      line-height: 1.4;
+      /* Long unbroken words wrap rather than forcing a horizontal scroll, but
+         normal text still breaks between words. */
+      overflow-wrap: break-word;
+    }
+
+    #shopify-section-{{ section.id }} .co__cta {
+      font-size: {{ section.settings.cta_size_mobile }}px;
+      line-height: 1.43;
+    }
+
+    /* THE MOBILE ARROW FIX.
+       Nothing was hiding it. theme.css only makes these controls absolute, grid
+       and inset inside @media (pointer: fine) -- on a touch device none of that
+       applies, so the buttons fell into normal flow as inline elements with an
+       inset-block-start that does nothing without positioning. They were
+       rendering, just nowhere visible.
+
+       Positioning is therefore restated here for touch, scoped to this section.
+       No display: none, visibility or opacity is used on the control; the theme
+       still hides a button when it is [disabled], which is why only the next
+       arrow shows at the start of the carousel. */
+    #shopify-section-{{ section.id }} .co__carousel {
+      position: relative;
+    }
+
+    #shopify-section-{{ section.id }} .floating-controls-container__control {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      z-index: 3;
+      inset-block-start: {{ section.settings.arrow_offset_mobile }}%;
+      transform: translateY(-50%);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #shopify-section-{{ section.id }} carousel-prev-button.floating-controls-container__control {
+      inset-inline-start: {{ section.settings.arrow_inset_mobile }}px;
+      inset-inline-end: auto;
+    }
+
+    #shopify-section-{{ section.id }} carousel-next-button.floating-controls-container__control {
+      inset-inline-end: {{ section.settings.arrow_inset_mobile }}px;
+      inset-inline-start: auto;
+    }
+  }
+</style>
+
+<div class="co color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div class="co__inner container container--xl">
+    <div class="co__header">
+      {%- render 'section-header',
+        subheading: section.settings.subheading,
+        heading: section.settings.title,
+        heading_style: section.settings.heading_style
+      -%}
+    </div>
+
+    <div class="co__carousel floating-controls-container floating-controls-container--inside floating-controls-container--on-hover">
+      <carousel-prev-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
+        <button type="button" class="prev-next-button prev-next-button--prev circle-button circle-button--lg hover:animate-icon-inline" disabled>
+          <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+          {%- render 'icon' with 'arrow-left', direction_aware: true -%}
+        </button>
+      </carousel-prev-button>
+
+      {%- comment -%}
+        group-cells is deliberately omitted: ScrollCarousel's groupCells getter
+        returns 1 without it, which is one card per click rather than a page.
+      {%- endcomment -%}
+      <scroll-carousel id="{{ carousel_id }}" allow-drag class="co__track" cell-selector=".co__card">
+        {%- for i in (1..3) -%}
+          {%- liquid
+            capture image_key
+              echo 'card_' | append: i | append: '_image'
+            endcapture
+            capture icon_key
+              echo 'card_' | append: i | append: '_icon_image'
+            endcapture
+            capture title_key
+              echo 'card_' | append: i | append: '_title'
+            endcapture
+            capture text_key
+              echo 'card_' | append: i | append: '_text'
+            endcapture
+            capture label_key
+              echo 'card_' | append: i | append: '_cta_label'
+            endcapture
+            capture url_key
+              echo 'card_' | append: i | append: '_cta_url'
+            endcapture
+
+            assign card_image = section.settings[image_key]
+            assign card_icon = section.settings[icon_key]
+            assign card_title = section.settings[title_key]
+            assign card_text = section.settings[text_key]
+            assign card_label = section.settings[label_key]
+            assign card_url = section.settings[url_key]
+          -%}
+
+          <div class="co__card">
+            <div class="co__media">
+              {%- if card_image != blank -%}
+                {%- capture image_sizes -%}(max-width: 699px) 90vw, (max-width: 999px) 45vw, 33vw{%- endcapture -%}
+
+                {{-
+                  card_image
+                  | image_url: width: 1200
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '200,300,400,600,800,1000,1200',
+                    sizes: image_sizes,
+                    alt: card_image.alt
+                -}}
+              {%- else -%}
+                {{- 'image' | placeholder_svg_tag: 'placeholder' -}}
+              {%- endif -%}
+            </div>
+
+            <div class="co__body">
+              <div class="co__title-row">
+                {%- comment -%}
+                  No icon uploaded: the element is not rendered at all, so there
+                  is no broken image and no empty gap beside the title.
+                {%- endcomment -%}
+                {%- if card_icon != blank -%}
+                  <span class="co__icon">
+                    {{-
+                      card_icon
+                      | image_url: width: 160
+                      | image_tag: loading: 'lazy', widths: '40,80,120,160', alt: ''
+                    -}}
+                  </span>
+                {%- endif -%}
+
+                {%- if card_title != blank -%}
+                  <p class="co__title">{{ card_title }}</p>
+                {%- endif -%}
+              </div>
+
+              {%- if card_text != blank -%}
+                <p class="co__text">{{ card_text }}</p>
+              {%- endif -%}
+
+              {%- comment -%}
+                Only the CTA navigates. The card itself is not a link, so the
+                phone number, the booking page and the email address each stay
+                a single deliberate target.
+              {%- endcomment -%}
+              {%- if card_label != blank -%}
+                <a class="co__cta" href="{{ card_url | default: '#' }}">{{ card_label }}</a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </scroll-carousel>
+
+      <carousel-next-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
+        <button type="button" class="prev-next-button prev-next-button--next circle-button circle-button--lg hover:animate-icon-inline">
+          <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+          {%- render 'icon' with 'arrow-right', direction_aware: true -%}
+        </button>
+      </carousel-next-button>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact options",
+  "class": "shopify-section--contact-options",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:global.text.subheading",
+      "default": "CONTACT US"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:global.text.heading",
+      "default": "Still Have Questions?"
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "Large" },
+        { "value": "h2", "label": "Medium" },
+        { "value": "h3", "label": "Small" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Card 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_1_icon_image",
+      "label": "Icon image"
+    },
+    {
+      "type": "text",
+      "id": "card_1_title",
+      "label": "Title",
+      "default": "Give Us a Call"
+    },
+    {
+      "type": "textarea",
+      "id": "card_1_text",
+      "label": "Description",
+      "default": "Our experts are just a call away to help you find the perfect rug."
+    },
+    {
+      "type": "text",
+      "id": "card_1_cta_label",
+      "label": "Link label",
+      "default": "+1 (415) 980-7774"
+    },
+    {
+      "type": "text",
+      "id": "card_1_cta_url",
+      "label": "Link URL",
+      "info": "Use a tel: address for a phone number, e.g. tel:+14159807774",
+      "default": "tel:+14159807774"
+    },
+    {
+      "type": "header",
+      "content": "Card 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_2_icon_image",
+      "label": "Icon image"
+    },
+    {
+      "type": "text",
+      "id": "card_2_title",
+      "label": "Title",
+      "default": "Virtual Appointment"
+    },
+    {
+      "type": "textarea",
+      "id": "card_2_text",
+      "label": "Description",
+      "default": "Schedule a call to explore designs, ask questions and shop online with our experts."
+    },
+    {
+      "type": "text",
+      "id": "card_2_cta_label",
+      "label": "Link label",
+      "default": "Book Now"
+    },
+    {
+      "type": "url",
+      "id": "card_2_cta_url",
+      "label": "Link URL",
+      "info": "The booking destination. Set this per page or per environment."
+    },
+    {
+      "type": "header",
+      "content": "Card 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "card_3_icon_image",
+      "label": "Icon image"
+    },
+    {
+      "type": "text",
+      "id": "card_3_title",
+      "label": "Title",
+      "default": "Send Us an Email"
+    },
+    {
+      "type": "textarea",
+      "id": "card_3_text",
+      "label": "Description",
+      "default": "Prefer email? Send your query and our team will respond with all the details you need."
+    },
+    {
+      "type": "text",
+      "id": "card_3_cta_label",
+      "label": "Link label",
+      "default": "love@bisharugs.com"
+    },
+    {
+      "type": "text",
+      "id": "card_3_cta_url",
+      "label": "Link URL",
+      "info": "Use a mailto: address for email, e.g. mailto:love@bisharugs.com",
+      "default": "mailto:love@bisharugs.com"
+    },
+    {
+      "type": "header",
+      "content": "Design"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Section background",
+      "default": "#fffbf3"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_gap",
+      "label": "Eyebrow to heading gap",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "header_gap",
+      "label": "Heading to cards gap",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Card gap (desktop)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "card_gap_mobile",
+      "label": "Card gap (mobile)",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_edge_gap",
+      "label": "Carousel edge spacing (mobile)",
+      "info": "The gap before the first card at rest and after the last card at the end. Middle slides stay edge to edge.",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Image width (desktop)",
+      "info": "Also the card width. 415 matches the design.",
+      "min": 240,
+      "max": 520,
+      "step": 5,
+      "unit": "px",
+      "default": 415
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height (desktop)",
+      "min": 249,
+      "max": 349,
+      "step": 1,
+      "unit": "px",
+      "default": 299
+    },
+    {
+      "type": "range",
+      "id": "image_width_mobile",
+      "label": "Image width (mobile)",
+      "info": "Also the card width. 219 matches the design.",
+      "min": 169,
+      "max": 269,
+      "step": 1,
+      "unit": "px",
+      "default": 219
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "label": "Image height (mobile)",
+      "min": 184,
+      "max": 284,
+      "step": 1,
+      "unit": "px",
+      "default": 234
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Card padding",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Card border",
+      "default": "#e6e6e6"
+    },
+    {
+      "type": "range",
+      "id": "icon_width",
+      "label": "Icon width",
+      "info": "Height follows the uploaded icon's own proportions.",
+      "min": 12,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Card title size (desktop)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Card title size (mobile)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Card title weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Body text size (desktop)",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "label": "Body text size (mobile)",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "cta_size",
+      "label": "Link size (desktop)",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "cta_size_mobile",
+      "label": "Link size (mobile)",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Arrows"
+    },
+    {
+      "type": "range",
+      "id": "arrow_offset",
+      "label": "Arrow vertical position (desktop)",
+      "info": "Measured down from the top of the card, so it can sit on the image rather than the card's middle.",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "arrow_offset_mobile",
+      "label": "Arrow vertical position (mobile)",
+      "min": 10,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "arrow_inset_mobile",
+      "label": "Arrow distance from edge (mobile)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "arrow_background",
+      "label": "Arrow background",
+      "default": "#2b2724"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow chevron",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_border",
+      "label": "Arrow ring",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [{ "name": "Contact options" }]
+}
+{% endschema %}

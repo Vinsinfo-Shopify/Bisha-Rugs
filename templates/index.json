@@ -479,6 +479,83 @@
         "content": ""
       }
     },
+    "real_homes_pTLTFX": {
+      "type": "real-homes",
+      "blocks": {
+        "card_tFabhH": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "image": "shopify://shop_images/Shop_by_Style_-_Abstract.png",
+            "product": "hand-knotted-oushak-wool-rug-gray-ivory-and-pastel-turkish-carpet",
+            "link": ""
+          }
+        },
+        "card_marr7x": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "image": "shopify://shop_images/Shop_by_Style_-_Minimalist.png",
+            "product": "white-color-modern-design-rug-bisha-rugs",
+            "link": ""
+          }
+        },
+        "card_kWamFg": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "image": "shopify://shop_images/Shop_by_Style_-_Floral.png",
+            "product": "l-030-cleo-hand-knotted-rug-bisha-rugs",
+            "link": ""
+          }
+        },
+        "card_MqJwEU": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "image": "shopify://shop_images/Shop_by_Style_-_Geometric.png",
+            "product": "9x12-hand-knotted-oushak-wool-rug-moss-green-turkish-area-rug",
+            "link": ""
+          }
+        },
+        "card_zUymC3": {
+          "type": "card",
+          "settings": {
+            "enabled": true,
+            "image": "shopify://shop_images/c0a4d61bbc28d2127363ecf547d1f6829f8d6d42_1.png",
+            "product": "oushak-rug-9x12-turkish-knot-rug-hand-knotted-vintage-antique-oushak-wool-area-rug-for-living-room-and-dining-room-quick-ship",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_tFabhH",
+        "card_marr7x",
+        "card_kWamFg",
+        "card_MqJwEU",
+        "card_zUymC3"
+      ],
+      "name": "Real homes",
+      "settings": {
+        "color_scheme": "",
+        "background": "#fffbf3",
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "subheading": "REAL HOMES",
+        "title": "Styled by Bisha",
+        "header_gap": 18,
+        "loop": true,
+        "active_scale": 117,
+        "card_gap": 24,
+        "card_peek_mobile": 34,
+        "card_gap_mobile": 12,
+        "card_radius": 2,
+        "info_border_color": "#e6e6e6",
+        "info_gap": 8,
+        "play_button_color": "#2b2724",
+        "play_button_opacity": 60
+      }
+    },
     "image_with_text_eJwpDm": {
       "type": "image-with-text",
       "blocks": {
@@ -531,15 +608,269 @@
         "padding_bottom_mobile": 0,
         "padding_left_mobile": 0,
         "padding_right_mobile": 0,
-        "image": "shopify://shop_images/Desktop_-_Design_in_Mind_d7cbe819-03f7-42ac-aaeb-8bc84180cafd.png",
-        "mobile_image": "shopify://shop_images/Mobile_-_Design_in_Mind_096f3677-ee0d-4c1b-bd44-7fe88ea31508.png",
+        "image": "shopify://shop_images/Frame_1437253894.png",
         "media_position_mobile": "before_text",
         "reveal_on_scroll": true,
         "image_position": "start",
         "content_width": "lg",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
         "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
+      }
+    },
+    "find_perfect_look_8htECx": {
+      "type": "find-perfect-look",
+      "blocks": {
+        "image_PNyyyV": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_1.png",
+            "ratio": "4 / 5",
+            "product_1": "oushak-rug-9x12-turkish-knot-rug-hand-knotted-vintage-antique-oushak-wool-area-rug-for-living-room-and-dining-room-quick-ship",
+            "product_1_horizontal_position": 30,
+            "product_1_vertical_position": 85,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_GexHkn": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_3_c0c747f8-418d-4c40-86b0-b255956c95d4.png",
+            "ratio": "1 / 1",
+            "product_1": "handmade-oushak-wool-rug-muted-pink-brown-vintage-turkish-design",
+            "product_1_horizontal_position": 72,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_Cxgt4r": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_5.png",
+            "ratio": "4 / 5",
+            "product_1": "l-010-agatha-hand-knotted-rug",
+            "product_1_horizontal_position": 14,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_gFftU4": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_2.png",
+            "ratio": "1 / 1",
+            "product_1": "white-color-modern-design-rug-bisha-rugs",
+            "product_1_horizontal_position": 85,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_tRygrD": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_4.png",
+            "ratio": "4 / 5",
+            "product_1": "handmade-oushak-wool-rug-peach-ivory-brown-floral-medallion",
+            "product_1_horizontal_position": 68,
+            "product_1_vertical_position": 77,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_hgepPx": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_6.png",
+            "ratio": "1 / 1",
+            "product_1": "l-023-beth-mini-hand-knotted-rug",
+            "product_1_horizontal_position": 48,
+            "product_1_vertical_position": 85,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_iBAajk": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_1.png",
+            "ratio": "4 / 5",
+            "product_1": "oushak-rug-9x12-turkish-knot-rug-hand-knotted-vintage-antique-oushak-wool-area-rug-for-living-room-and-dining-room-quick-ship",
+            "product_1_horizontal_position": 30,
+            "product_1_vertical_position": 85,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_cmiXXG": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_3_c0c747f8-418d-4c40-86b0-b255956c95d4.png",
+            "ratio": "1 / 1",
+            "product_1": "handmade-oushak-wool-rug-muted-pink-brown-vintage-turkish-design",
+            "product_1_horizontal_position": 72,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_zMNEjb": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_5.png",
+            "ratio": "4 / 5",
+            "product_1": "l-010-agatha-hand-knotted-rug",
+            "product_1_horizontal_position": 14,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_egzVJN": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_2.png",
+            "ratio": "1 / 1",
+            "product_1": "white-color-modern-design-rug-bisha-rugs",
+            "product_1_horizontal_position": 85,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_yKLp8Y": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_4.png",
+            "ratio": "4 / 5",
+            "product_1": "handmade-oushak-wool-rug-peach-ivory-brown-floral-medallion",
+            "product_1_horizontal_position": 68,
+            "product_1_vertical_position": 77,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_ybkfYL": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_6.png",
+            "ratio": "1 / 1",
+            "product_1": "l-023-beth-mini-hand-knotted-rug",
+            "product_1_horizontal_position": 48,
+            "product_1_vertical_position": 85,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        }
+      },
+      "block_order": [
+        "image_PNyyyV",
+        "image_GexHkn",
+        "image_Cxgt4r",
+        "image_gFftU4",
+        "image_tRygrD",
+        "image_hgepPx",
+        "image_iBAajk",
+        "image_cmiXXG",
+        "image_zMNEjb",
+        "image_egzVJN",
+        "image_yKLp8Y",
+        "image_ybkfYL"
+      ],
+      "name": "Find the perfect look",
+      "settings": {
+        "color_scheme": "",
+        "background": "#fffbf3",
+        "padding_top": 84,
+        "padding_bottom": 84,
+        "subheading": "GET INSPIRED",
+        "title": "Find the Perfect Look",
+        "heading_style": "h2",
+        "eyebrow_gap": 4,
+        "heading_weight": "400",
+        "header_gap": 28,
+        "columns": 3,
+        "columns_mobile": "2",
+        "grid_gap": 12,
+        "grid_gap_mobile": 8,
+        "image_radius": 2,
+        "hotspot_size": 14,
+        "hotspot_color": "#ffffff",
+        "card_width_max": 344,
+        "card_width_share": 78,
+        "card_min_width": 260,
+        "card_width_mobile_px": 344,
+        "card_opacity_pct": 82,
+        "thumb_width": 56,
+        "card_margin_mobile_px": 16,
+        "gutter_mobile": 16,
+        "card_radius": 2,
+        "card_border_color": "#e6e6e6",
+        "cta_text": "SEE ALL INSPIRATION",
+        "cta_link": "",
+        "cta_background": "#4f5b3f",
+        "cta_text_color": "#ffffff",
+        "cta_gap": 32
       }
     },
     "image_with_text_xnyQHV": {
@@ -609,6 +940,15 @@
         "reveal_on_scroll": true,
         "image_position": "end",
         "content_width": "lg",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
         "layout_variant": "the-craft",
         "remove_vertical_spacing": true,
         "show_features": false
@@ -702,133 +1042,18 @@
         "reveal_on_scroll": true,
         "image_position": "start",
         "content_width": "lg",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 10,
+        "trade_para_bottom": 20,
+        "trade_para_top_mobile": 10,
+        "trade_para_bottom_mobile": 15,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
         "layout_variant": "trade",
         "remove_vertical_spacing": true,
         "show_features": false
-      }
-    },
-    "image-with-text-overlay-1": {
-      "type": "image-with-text-overlay",
-      "blocks": {
-        "subheading-1": {
-          "type": "subheading",
-          "settings": {
-            "text": "New product"
-          }
-        },
-        "heading-1": {
-          "type": "heading",
-          "settings": {
-            "text": "Our backpack",
-            "heading_tag": "h2"
-          }
-        },
-        "button-1": {
-          "type": "button",
-          "settings": {
-            "style": "solid",
-            "text": "Shop",
-            "url": "",
-            "background": "#ffffff",
-            "text_color": "#1c1c1c"
-          }
-        }
-      },
-      "block_order": [
-        "subheading-1",
-        "heading-1",
-        "button-1"
-      ],
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-4",
-        "custom_class": "",
-        "image_size": "sm",
-        "allow_transparent_header": false,
-        "reveal_on_scroll": true,
-        "remove_vertical_spacing": true,
-        "content_width": "md",
-        "mobile_text_position": "place-self-center text-center",
-        "desktop_text_position": "sm:place-self-end-start sm:text-start",
-        "overlay_color": "#000000",
-        "overlay_opacity": 20
-      }
-    },
-    "media-grid": {
-      "type": "media-grid",
-      "blocks": {
-        "image-1": {
-          "type": "image",
-          "settings": {
-            "color_scheme": "scheme-4",
-            "column_count": "8",
-            "row_count": 2,
-            "add_padding": false,
-            "title": "Women",
-            "heading_tag": "h1",
-            "content": "",
-            "link_text": "",
-            "link_url": "",
-            "link_style": "link",
-            "text_position": "place-self-center text-center",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
-          }
-        },
-        "image-2": {
-          "type": "image",
-          "settings": {
-            "color_scheme": "scheme-4",
-            "column_count": "4",
-            "row_count": 1,
-            "add_padding": false,
-            "title": "Men",
-            "heading_tag": "h3",
-            "content": "",
-            "link_text": "",
-            "link_url": "",
-            "link_style": "link",
-            "text_position": "place-self-center text-center",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
-          }
-        },
-        "image-3": {
-          "type": "image",
-          "settings": {
-            "color_scheme": "scheme-4",
-            "column_count": "4",
-            "row_count": 1,
-            "add_padding": false,
-            "title": "Accessories",
-            "heading_tag": "h4",
-            "content": "",
-            "link_text": "",
-            "link_url": "",
-            "link_style": "link",
-            "text_position": "place-self-center text-center",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0
-          }
-        }
-      },
-      "block_order": [
-        "image-1",
-        "image-2",
-        "image-3"
-      ],
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-1",
-        "separate_section_with_border": false,
-        "desktop_row_height": 290,
-        "mobile_row_height": 180,
-        "section_width": "lg",
-        "spacing": "md",
-        "subheading": "",
-        "title": "Media grid",
-        "heading_style": "h2",
-        "content": ""
       }
     },
     "featured-collections-2": {
@@ -863,85 +1088,6 @@
         "heading_style": "h2",
         "subheading": "Be classy",
         "hide_collection_title": false
-      }
-    },
-    "shop-the-look": {
-      "type": "shop-the-look",
-      "blocks": {
-        "look-1": {
-          "type": "look",
-          "settings": {
-            "hot_spots_background": "#ffffff",
-            "product_1": "",
-            "product_1_horizontal_position": 24,
-            "product_1_vertical_position": 35,
-            "product_2": "",
-            "product_2_horizontal_position": 67,
-            "product_2_vertical_position": 51,
-            "product_3": "",
-            "product_3_horizontal_position": 30,
-            "product_3_vertical_position": 65,
-            "product_4": "",
-            "product_4_horizontal_position": 85,
-            "product_4_vertical_position": 85
-          }
-        },
-        "look-2": {
-          "type": "look",
-          "settings": {
-            "hot_spots_background": "#ffffff",
-            "product_1": "",
-            "product_1_horizontal_position": 35,
-            "product_1_vertical_position": 58,
-            "product_2": "",
-            "product_2_horizontal_position": 69,
-            "product_2_vertical_position": 75,
-            "product_3": "",
-            "product_3_horizontal_position": 75,
-            "product_3_vertical_position": 30,
-            "product_4": "",
-            "product_4_horizontal_position": 85,
-            "product_4_vertical_position": 85
-          }
-        }
-      },
-      "block_order": [
-        "look-1",
-        "look-2"
-      ],
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-1",
-        "separate_section_with_border": true,
-        "subheading": "Shop",
-        "title": "Our looks",
-        "heading_style": "h2",
-        "content": "",
-        "popover_title": "Shop the look"
-      }
-    },
-    "countdown": {
-      "type": "countdown",
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-3",
-        "separate_section_with_border": false,
-        "image_size": "auto",
-        "subheading": "Limited time only",
-        "title": "Super Sale Up to 40% off",
-        "heading_style": "h1",
-        "content": "<p>Shop our selection of exclusive handbags and backpacks at reduced price during the Super Sale. Hurry up!</p>",
-        "button_link": "shopify://collections/sale",
-        "button_text": "Shop now",
-        "expiration_date": "2035-04-25",
-        "expiration_behavior": "leave",
-        "timer_position": "end",
-        "animate_number": true,
-        "flip_background": "",
-        "flip_background_opacity": 50,
-        "flip_text_color": "",
-        "overlay_color": "#1c1c1c",
-        "overlay_opacity": 30
       }
     },
     "multiple-media-with-text": {
@@ -1086,6 +1232,7 @@
       "type": "blog-posts",
       "disabled": true,
       "settings": {
+        "layout": "grid",
         "color_scheme": "scheme-1",
         "separate_section_with_border": true,
         "blog": "news",
@@ -1100,7 +1247,46 @@
         "heading_style": "h2",
         "content": "",
         "button_link": "shopify://blogs/news",
-        "button_text": "Discover all our stories"
+        "button_text": "Discover all our stories",
+        "card_width": 313,
+        "image_height": 323,
+        "card_width_mobile": 219,
+        "image_height_mobile": 242,
+        "card_gap": 16,
+        "card_gap_mobile": 12,
+        "end_gap": 0,
+        "words_per_minute": 200,
+        "read_time_label": "min read",
+        "meta_separator": "|",
+        "date_format": "%b %d, %Y",
+        "excerpt_words": 22,
+        "excerpt_lines": 3,
+        "eyebrow_size": 14,
+        "heading_size": 28,
+        "heading_size_mobile": 24,
+        "meta_size": 12,
+        "title_size": 18,
+        "title_size_mobile": 14,
+        "excerpt_size": 14,
+        "excerpt_size_mobile": 12,
+        "background": "#fffbf3",
+        "space_top": 32,
+        "space_bottom": 32,
+        "eyebrow_gap": 4,
+        "header_gap": 24,
+        "cta_gap": 24,
+        "card_padding": 16,
+        "card_radius": 2,
+        "card_background": "#ffffff",
+        "card_border": "#e6e6e6",
+        "cta_background": "#4f5b3f",
+        "cta_text_color": "#ffffff",
+        "arrow_size": 38,
+        "arrow_offset": 40,
+        "arrow_inset_mobile": 8,
+        "arrow_background": "#2b2724",
+        "arrow_color": "#ffffff",
+        "arrow_border": "#ffffff"
       }
     },
     "featured-product": {
@@ -1286,79 +1472,6 @@
         "content": ""
       }
     },
-    "timeline": {
-      "type": "timeline",
-      "blocks": {
-        "item-1": {
-          "type": "item",
-          "settings": {
-            "label": "2013",
-            "subheading": "",
-            "title": "A story of shared vision",
-            "heading_style": "h2",
-            "content": "<p>This project began with two creative minds, united by both passion and purpose. From day one, the goal was clear: to build something meaningful together. What started as a simple idea turned into a first product launch—and the beginning of a lasting journey.</p>",
-            "link_text": "",
-            "link_url": "",
-            "link_style": "link",
-            "mobile_text_color": "#ffffff"
-          }
-        },
-        "item-2": {
-          "type": "item",
-          "settings": {
-            "label": "2014",
-            "subheading": "",
-            "title": "No middlemen",
-            "heading_style": "h2",
-            "content": "<p>By working directly with you, we eliminate unnecessary markups and focus on what matters: offering thoughtfully designed, high-quality pieces at a fair price. A modern approach to fashion, rooted in transparency.</p>",
-            "link_text": "",
-            "link_url": "",
-            "link_style": "link",
-            "mobile_text_color": "#ffffff"
-          }
-        },
-        "item-3": {
-          "type": "item",
-          "settings": {
-            "label": "2015",
-            "subheading": "",
-            "title": "Crafted in Italy",
-            "heading_style": "h2",
-            "content": "<p>Production takes place in a family-run workshop near Naples, known for its artisanal expertise. The collaboration is close and ongoing, with daily conversations shaping both the process and the products. More than just a manufacturer—true partners in craft.</p>",
-            "link_text": "",
-            "link_url": "",
-            "link_style": "link",
-            "mobile_text_color": "#ffffff"
-          }
-        },
-        "item-4": {
-          "type": "item",
-          "settings": {
-            "label": "2017",
-            "subheading": "Subheading",
-            "title": "Discover our products",
-            "heading_style": "h2",
-            "content": "<p>Located in the heart of the city, our showroom is open throughout the week and offers the ideal place to explore the full range in person.</p>",
-            "link_text": "",
-            "link_url": "",
-            "link_style": "link",
-            "mobile_text_color": "#ffffff"
-          }
-        }
-      },
-      "block_order": [
-        "item-1",
-        "item-2",
-        "item-3",
-        "item-4"
-      ],
-      "disabled": true,
-      "settings": {
-        "color_scheme": "scheme-1",
-        "item_color_scheme": "scheme-2",
-        "separate_section_with_border": false
-      }
-    },
     "image-with-text-overlay-2": {
       "type": "image-with-text-overlay",
       "blocks": {
@@ -1395,88 +1508,387 @@
         "overlay_opacity": 30
       }
     },
-    "multi-column": {
-      "type": "multi-column",
+    "customer_reviews_J4BbaT": {
+      "type": "customer-reviews",
       "blocks": {
-        "image-with-text-1": {
-          "type": "image_with_text",
+        "judge_me_reviews_cards_carousel_9PcHaX": {
+          "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
-            "title": "The design",
-            "heading_tag": "h4",
-            "custom_heading_size": 24,
-            "content": "<p>Every product is imagined and developed in our studio, with a focus on both form and function.</p>",
-            "link_url": "",
-            "link_text": ""
-          }
-        },
-        "image-with-text-2": {
-          "type": "image_with_text",
-          "settings": {
-            "title": "Materials",
-            "heading_tag": "h4",
-            "custom_heading_size": 24,
-            "content": "<p>Our materials come from hides sourced as byproducts of the food industry. We collaborate exclusively with trusted tanneries based in Italy, France, and Spain.</p>",
-            "link_url": "",
-            "link_text": ""
-          }
-        },
-        "image-with-text-3": {
-          "type": "image_with_text",
-          "settings": {
-            "title": "The know-how",
-            "heading_tag": "h4",
-            "custom_heading_size": 24,
-            "content": "<p>Every step of the process follows the rigorous standards of traditional leatherworking—ensuring durability, precision, and lasting quality.</p>",
-            "link_url": "",
-            "link_text": ""
+            "show_sample_reviews": true,
+            "reviews_selection": "all",
+            "products": [],
+            "filter_pinned": false,
+            "filter_featured": false,
+            "filter_custom_tags": "",
+            "star_rating": "all",
+            "show_review_media": true,
+            "display_order": "media_first",
+            "no_image_fallback": "review_text_only",
+            "max_reviews": 20,
+            "review_length": "medium",
+            "text_size": "medium",
+            "image_ratio": "1",
+            "reviews_shown": 4,
+            "show_reviewer_name": true,
+            "show_product_name": true,
+            "hide_arrows_mobile": true,
+            "arrows_position": "sides",
+            "max_width": 1100,
+            "corner_styling": "soft",
+            "header_text_color": "#000000",
+            "text_color": "#000000",
+            "card_color": "#f9f9f9",
+            "stars_color": "",
+            "arrows_color": "#000000",
+            "transition_speed": 5,
+            "header_text": "Customers are saying",
+            "show_average_rating": true,
+            "rating_display": "default"
           }
         }
       },
       "block_order": [
-        "image-with-text-1",
-        "image-with-text-2",
-        "image-with-text-3"
+        "judge_me_reviews_cards_carousel_9PcHaX"
       ],
-      "disabled": true,
+      "name": "Customer reviews",
       "settings": {
-        "color_scheme": "scheme-1",
-        "custom_class": "",
-        "separate_section_with_border": true,
-        "remove_section_spacing": false,
-        "columns_per_row": 3,
-        "stack_on_mobile": false,
-        "overlap_image": false,
-        "content_alignment": "center",
-        "text_alignment": "center",
-        "spacing": "md",
-        "media_height": "379px",
-        "subheading": "About us",
-        "title": "From A to Z",
+        "color_scheme": "",
+        "background": "#fffbf3",
+        "padding_top": 48,
+        "padding_bottom": 56,
+        "subheading": "REVIEWS",
+        "title": "Why Our Customers Love Us",
         "heading_style": "h2",
-        "content": "",
-        "padding_top_mobile": 0,
-        "padding_bottom_mobile": 0,
-        "padding_left_mobile": 0,
-        "padding_right_mobile": 0,
-        "padding_top_desktop": 0,
-        "padding_bottom_desktop": 0,
-        "padding_left_desktop": 0,
-        "padding_right_desktop": 0
+        "heading_weight": "400",
+        "eyebrow_gap": 4,
+        "header_gap": 24,
+        "max_reviews": 12,
+        "cards_desktop": 4.5,
+        "cards_mobile": 2.3,
+        "card_gap": 12,
+        "card_gap_mobile": 8,
+        "show_arrows_mobile": false,
+        "image_ratio": "1 / 1",
+        "text_limit": 120,
+        "read_more_label": "read more",
+        "verified_label": "Verified",
+        "thumb_size": 36,
+        "card_background": "#ffffff",
+        "card_border": "#e6e6e6",
+        "card_radius": 2,
+        "star_color": "#2b2724",
+        "verified_color": "#3d8168",
+        "show_review_image": true,
+        "show_name": true,
+        "show_verified": true,
+        "show_product": true,
+        "show_rating": true,
+        "arrow_background": "#2b2724",
+        "arrow_color": "#ffffff",
+        "arrow_border": "#ffffff"
       }
     },
-    "newsletter": {
-      "type": "newsletter",
-      "disabled": true,
+    "contact_options_fnhmgN": {
+      "type": "contact-options",
+      "name": "Contact options",
       "settings": {
-        "color_scheme": "scheme-3",
-        "separate_section_with_border": true,
-        "image_position_mobile": "after_text",
-        "subheading": "Keep me updated",
-        "title": "Newsletter",
+        "subheading": "CONTACT US",
+        "title": "Still Have Questions?",
+        "heading_style": "h1",
+        "heading_weight": "400",
+        "card_1_image": "shopify://shop_images/call.png",
+        "card_1_icon_image": "shopify://shop_images/call-icon.png",
+        "card_1_title": "Give Us a Call",
+        "card_1_text": "Our experts are just a call away to help you find the perfect rug.",
+        "card_1_cta_label": "+1 (415) 980-7774",
+        "card_1_cta_url": "tel:+14159807774",
+        "card_2_image": "shopify://shop_images/appointment.png",
+        "card_2_icon_image": "shopify://shop_images/appointment-icon.png",
+        "card_2_title": "Virtual Appointment",
+        "card_2_text": "Schedule a call to explore designs, ask questions and shop online with our experts.",
+        "card_2_cta_label": "Book Now",
+        "card_2_cta_url": "",
+        "card_3_image": "shopify://shop_images/mail.png",
+        "card_3_icon_image": "shopify://shop_images/mail-icon.png",
+        "card_3_title": "Send Us an Email",
+        "card_3_text": "Prefer email? Send your query and our team will respond with all the details you need.",
+        "card_3_cta_label": "love@bisharugs.com",
+        "card_3_cta_url": "mailto:love@bisharugs.com",
+        "color_scheme": "",
+        "background": "#f3eee4",
+        "padding_top": 56,
+        "padding_bottom": 56,
+        "eyebrow_gap": 4,
+        "header_gap": 28,
+        "card_gap": 24,
+        "card_gap_mobile": 16,
+        "mobile_edge_gap": 16,
+        "image_width": 415,
+        "image_height": 299,
+        "image_width_mobile": 219,
+        "image_height_mobile": 234,
+        "card_padding": 16,
+        "card_radius": 2,
+        "card_background": "#ffffff",
+        "card_border": "#e6e6e6",
+        "icon_width": 22,
+        "title_size": 18,
+        "title_size_mobile": 16,
+        "title_weight": "700",
+        "text_size": 16,
+        "text_size_mobile": 14,
+        "cta_size": 16,
+        "cta_size_mobile": 14,
+        "arrow_offset": 30,
+        "arrow_offset_mobile": 40,
+        "arrow_inset_mobile": 0,
+        "arrow_background": "#2b2724",
+        "arrow_color": "#ffffff",
+        "arrow_border": "#ffffff"
+      }
+    },
+    "instagram_gallery_rKQiWt": {
+      "type": "instagram-gallery",
+      "blocks": {
+        "gallery_item_PyDa7B": {
+          "type": "gallery_item",
+          "settings": {
+            "image": "shopify://shop_images/appointment.png",
+            "autoplay": false,
+            "link": "",
+            "alt": ""
+          }
+        },
+        "gallery_item_DikFE4": {
+          "type": "gallery_item",
+          "settings": {
+            "video": "shopify://files/videos/Celestial Midnight Garden – Karakul Handmade Rug ✨🌙Artistic • Textured • Ethereal Craftsmanship.mp4",
+            "autoplay": false,
+            "link": "",
+            "alt": ""
+          }
+        },
+        "gallery_item_Pp9tTL": {
+          "type": "gallery_item",
+          "settings": {
+            "video": "shopify://files/videos/Hey friends! I’m so excited to share this incredible upgrade in our library room. True quality a.mp4",
+            "autoplay": false,
+            "link": "",
+            "alt": ""
+          }
+        },
+        "gallery_item_LGKpyq": {
+          "type": "gallery_item",
+          "settings": {
+            "video": "shopify://files/videos/WhatsApp Video 2026-09-12 at 12.11.01 PM.mp4",
+            "autoplay": false,
+            "link": "",
+            "alt": ""
+          }
+        },
+        "gallery_item_XJtiEW": {
+          "type": "gallery_item",
+          "settings": {
+            "image": "shopify://shop_images/appointment.png",
+            "autoplay": false,
+            "link": "",
+            "alt": ""
+          }
+        },
+        "gallery_item_cHFHzj": {
+          "type": "gallery_item",
+          "settings": {
+            "video": "shopify://files/videos/WhatsApp Video 2026-09-12 at 12.10.13 PM.mp4",
+            "autoplay": false,
+            "link": "",
+            "alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "gallery_item_PyDa7B",
+        "gallery_item_DikFE4",
+        "gallery_item_Pp9tTL",
+        "gallery_item_LGKpyq",
+        "gallery_item_XJtiEW",
+        "gallery_item_cHFHzj"
+      ],
+      "name": "Instagram gallery",
+      "settings": {
+        "subheading": "SOCIALS",
+        "title": "Follow Us On Instagram",
         "heading_style": "h2",
-        "content": "<p>Subscribe to get notified about product launches, special offers and company news.</p>",
-        "button_text": "Subscribe",
-        "disclaimer": "<p>You can unsubscribe anytime. For more details, read our Privacy Policy.</p>"
+        "heading_weight": "400",
+        "heading_size": 28,
+        "heading_size_mobile": 24,
+        "eyebrow_size": 14,
+        "eyebrow_weight": "500",
+        "tagline_size_mobile": 14,
+        "tagline_before": "Tag us",
+        "handle": "@bisharugs",
+        "tagline_after": "to get featured",
+        "instagram_url": "https://www.instagram.com/bisharugs?stkn=MXFrZDU0Nm56YXRwZQ==",
+        "items_desktop": 4.1,
+        "items_mobile": 1.1,
+        "end_gap": 0,
+        "item_gap": 8,
+        "item_gap_mobile": 8,
+        "media_ratio": "1 / 1",
+        "media_radius": 0,
+        "play_button_background": "#ffffff",
+        "color_scheme": "",
+        "background": "#fffbf3",
+        "space_top": 32,
+        "space_bottom": 32,
+        "eyebrow_gap": 4,
+        "tagline_gap": 6,
+        "tagline_size": 14,
+        "header_gap": 24,
+        "arrow_size": 26,
+        "arrow_offset": 50,
+        "arrow_inset_mobile": 0,
+        "arrow_background": "#2b2724",
+        "arrow_color": "#ffffff",
+        "arrow_border": "#ffffff"
+      }
+    },
+    "media_grid_AXiUW7": {
+      "type": "media-grid",
+      "blocks": {
+        "image_gRfBx4": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "",
+            "column_count": "8",
+            "row_count": 2,
+            "add_padding": false,
+            "title": "",
+            "heading_tag": "h4",
+            "content": "",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_position": "place-self-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0
+          }
+        },
+        "image_XQh8Bk": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "",
+            "column_count": "4",
+            "row_count": 1,
+            "add_padding": false,
+            "title": "",
+            "heading_tag": "h4",
+            "content": "",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_position": "place-self-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0
+          }
+        },
+        "image_ii3VG3": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "",
+            "column_count": "4",
+            "row_count": 1,
+            "add_padding": false,
+            "title": "",
+            "heading_tag": "h4",
+            "content": "",
+            "link_text": "",
+            "link_url": "",
+            "link_style": "link",
+            "text_position": "place-self-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_gRfBx4",
+        "image_XQh8Bk",
+        "image_ii3VG3"
+      ],
+      "disabled": true,
+      "name": "t:sections.media_grid.presets.media_grid.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "desktop_row_height": 290,
+        "mobile_row_height": 180,
+        "section_width": "lg",
+        "spacing": "md",
+        "subheading": "",
+        "title": "Media grid",
+        "heading_style": "h2",
+        "content": ""
+      }
+    },
+    "blog_posts_XGjXHn": {
+      "type": "blog-posts",
+      "name": "t:sections.blog_posts.presets.blog_posts.name",
+      "settings": {
+        "layout": "carousel",
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "blog": "news",
+        "posts_count": 10,
+        "stack_on_mobile": false,
+        "show_category": true,
+        "show_date": false,
+        "show_excerpt": true,
+        "show_read_more": true,
+        "subheading": "Blog",
+        "title": "Guides and Inspiration",
+        "heading_style": "h2",
+        "content": "",
+        "button_link": "",
+        "button_text": "Read all blogs",
+        "card_width": 313,
+        "image_height": 323,
+        "card_width_mobile": 219,
+        "image_height_mobile": 242,
+        "card_gap": 16,
+        "card_gap_mobile": 12,
+        "end_gap": 0,
+        "words_per_minute": 200,
+        "read_time_label": "min read",
+        "meta_separator": "|",
+        "date_format": "%b %d, %Y",
+        "excerpt_words": 22,
+        "excerpt_lines": 3,
+        "eyebrow_size": 14,
+        "heading_size": 28,
+        "heading_size_mobile": 24,
+        "meta_size": 12,
+        "title_size": 18,
+        "title_size_mobile": 14,
+        "excerpt_size": 14,
+        "excerpt_size_mobile": 12,
+        "background": "#fffbf3",
+        "space_top": 32,
+        "space_bottom": 32,
+        "eyebrow_gap": 4,
+        "header_gap": 24,
+        "cta_gap": 24,
+        "card_padding": 16,
+        "card_radius": 2,
+        "card_background": "#ffffff",
+        "card_border": "#e6e6e6",
+        "cta_background": "#4f5b3f",
+        "cta_text_color": "#ffffff",
+        "arrow_size": 26,
+        "arrow_offset": 40,
+        "arrow_inset_mobile": 0,
+        "arrow_background": "#2b2724",
+        "arrow_color": "#ffffff",
+        "arrow_border": "#ffffff"
       }
     }
   },
@@ -1487,14 +1899,12 @@
     "featured-collections-1",
     "color_palette_row07",
     "collection_list_y68EWi",
+    "real_homes_pTLTFX",
     "image_with_text_eJwpDm",
+    "find_perfect_look_8htECx",
     "image_with_text_xnyQHV",
     "image_with_text_nK66R9",
-    "image-with-text-overlay-1",
-    "media-grid",
     "featured-collections-2",
-    "shop-the-look",
-    "countdown",
     "multiple-media-with-text",
     "before-after",
     "images-with-text-scroll",
@@ -1502,9 +1912,11 @@
     "featured-product",
     "image-with-text-block",
     "testimonials",
-    "timeline",
     "image-with-text-overlay-2",
-    "multi-column",
-    "newsletter"
+    "customer_reviews_J4BbaT",
+    "contact_options_fnhmgN",
+    "instagram_gallery_rKQiWt",
+    "media_grid_AXiUW7",
+    "blog_posts_XGjXHn"
   ]
 }
