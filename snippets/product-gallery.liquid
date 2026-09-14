@@ -213,7 +213,24 @@
                 correct behaviour on a product page.
               {%- endcomment -%}
               {%- if forloop.first -%}
-                {%- render 'product-badges', product: product, vertical: true, context: 'product' -%}
+                <div class="pdp-media-badges">
+                  {%- comment -%}
+                    The discount type is excluded on purpose. With
+                    context: 'product' the shared snippet always echoes
+                    discount_badge_html, which follows settings.discount_mode -
+                    the amount on this store, "SAVE $319.00". The design wants a
+                    plain on-sale label, so the theme's own on_sale_badge string
+                    is used instead. Custom badges and sold-out still come from
+                    the shared snippet, unchanged.
+                  {%- endcomment -%}
+                  {%- render 'product-badges', product: product, vertical: true, context: 'product', types: 'custom, sold_out' -%}
+
+                  {%- if product.compare_at_price > product.price -%}
+                    <on-sale-badge class="badge badge--on-sale">
+                      {{- 'product.general.on_sale_badge' | t -}}
+                    </on-sale-badge>
+                  {%- endif -%}
+                </div>
               {%- endif -%}
 
               {%- comment -%}
