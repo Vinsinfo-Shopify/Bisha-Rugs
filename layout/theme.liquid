@@ -89,8 +89,22 @@
 
       @media screen and (max-width: 699px) {
         body.template-index .container {
-          --container-gutter: 0.75rem;
+          --container-gutter: 0.75rem; /* 12px -> 351px at 375 */
         }
+      }
+
+      /* Product pages share one 1300px column. The product section's own
+         "Section width" setting caps it at Prestige's lg value, 1260px, while
+         a plain .container is 100% - which is why the breadcrumb and the
+         gallery started at different left edges. Setting the variable lines
+         every .container on the template up on the same column.
+
+         The variable, never margin-inline: the gutter also feeds
+         --distance-to-bleed, and overriding the margin directly is what caused
+         page overflow on the homepage. At 1440 this gives
+         max(48, 720 - 650) = 70px each side. */
+      body.template-product .container {
+        --container-max-width: 81.25rem; /* 1300px */
       }
     </style>
   </head>
