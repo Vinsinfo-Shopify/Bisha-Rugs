@@ -37,7 +37,10 @@
     {%- unless line_item.product.has_only_default_variant or line_item.gift_card -%}
       <div class="cart-drawer-line__options">
         {%- for option in line_item.options_with_values -%}
-          <p class="cart-drawer-line__option">{{ option.name }}: {{ option.value }}</p>
+          <p class="cart-drawer-line__option">
+            <span class="cart-drawer-line__option-name">{{ option.name }}:</span>
+            <span class="cart-drawer-line__option-value">{{ option.value }}</span>
+          </p>
         {%- endfor -%}
       </div>
     {%- endunless -%}

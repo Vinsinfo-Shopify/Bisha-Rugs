@@ -63,6 +63,7 @@
   --cart-drawer-savings-text: {{ section.settings.savings_text_color }};
   --cart-drawer-promo-accent: {{ section.settings.promo_accent_color }};
   --cart-drawer-promo-unlocked-background: {{ section.settings.promo_unlocked_background }};
+  --cart-drawer-promo-icon-size: {{ section.settings.promo_icon_size }}px;
   --cart-drawer-strip-background: {{ section.settings.service_strip_background }};
   --cart-drawer-strip-text: {{ section.settings.service_strip_text_color }};
   --cart-drawer-strip-font-size: {{ section.settings.service_strip_text_size_desktop }}px;
@@ -296,6 +297,14 @@
       "default": false
     },
     {
+      "type": "checkbox",
+      "id": "service_icon_recolor",
+      "label": "Tint uploaded icons to match text colour",
+      "info": "Draws the icon as a solid shape in the strip or list text colour. Turn off to keep multi-colour logos.",
+      "default": true,
+      "visible_if": "{{ section.settings.service_custom_icons }}"
+    },
+    {
       "type": "text",
       "id": "service_item_1_text",
       "label": "Service 1 text",
@@ -512,6 +521,21 @@
       "default": "#56583D"
     },
     {
+      "type": "image_picker",
+      "id": "promo_icon",
+      "label": "Promotion icon"
+    },
+    {
+      "type": "range",
+      "id": "promo_icon_size",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Promotion icon size",
+      "default": 16
+    },
+    {
       "type": "color",
       "id": "promo_unlocked_background",
       "label": "Unlocked message background",
@@ -583,7 +607,8 @@
       "step": 2,
       "unit": "px",
       "label": "Card width",
-      "default": 344,
+      "info": "344 matches the Figma. Raise it if your prices show decimals.",
+      "default": 368,
       "visible_if": "{{ section.settings.cross_sell_products != blank }}"
     },
     {

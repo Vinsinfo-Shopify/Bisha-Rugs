@@ -56,7 +56,13 @@
 
   <div class="cart-drawer-promo {% if promo_all_unlocked %}cart-drawer-promo--unlocked{% endif %}">
     <p class="cart-drawer-promo__message">
-      {%- if promo_all_unlocked -%}
+      {%- if section.settings.promo_icon != blank -%}
+        {{-
+          section.settings.promo_icon
+          | image_url: width: 96
+          | image_tag: alt: '', widths: '24,48,96', class: 'cart-drawer-promo__logo', loading: 'lazy'
+        -}}
+      {%- elsif promo_all_unlocked -%}
         {%- render 'icon' with 'success', width: 12, class: 'cart-drawer-promo__icon' -%}
       {%- endif -%}
       <span>{{ promo_message }}</span>
@@ -78,14 +84,22 @@
           <span
             class="cart-drawer-promo__node {% if tier_1_reached %}is-reached{% endif %}"
             style="--cart-drawer-promo-node: {{ tier_1_position }}%;"
-          ></span>
+          >
+            {%- if tier_1_reached -%}
+              {%- render 'icon' with 'success', width: 8, class: 'cart-drawer-promo__tick' -%}
+            {%- endif -%}
+          </span>
         {%- endif -%}
 
         {%- if tier_2_amount > 0 -%}
           <span
             class="cart-drawer-promo__node {% if tier_2_reached %}is-reached{% endif %}"
             style="--cart-drawer-promo-node: 100%;"
-          ></span>
+          >
+            {%- if tier_2_reached -%}
+              {%- render 'icon' with 'success', width: 8, class: 'cart-drawer-promo__tick' -%}
+            {%- endif -%}
+          </span>
         {%- endif -%}
       </div>
 
