@@ -51,12 +51,6 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "liquid_kWJCec": {
-          "type": "liquid",
-          "settings": {
-            "liquid": "{% render 'pdp-short-description' %}"
-          }
-        },
         "liquid_e7CWYC": {
           "type": "liquid",
           "settings": {
@@ -67,6 +61,12 @@
           "type": "title",
           "settings": {
             "heading_tag": "h3"
+          }
+        },
+        "liquid_kWJCec": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% render 'pdp-short-description' %}"
           }
         },
         "rating_e7H76A": {
@@ -134,9 +134,9 @@
         }
       },
       "block_order": [
-        "liquid_kWJCec",
         "liquid_e7CWYC",
         "title",
+        "liquid_kWJCec",
         "rating_e7H76A",
         "price",
         "liquid_WK9Eei",
