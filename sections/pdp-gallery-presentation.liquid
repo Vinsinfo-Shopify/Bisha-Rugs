@@ -79,6 +79,32 @@
   }
 
   {%- comment -%}
+    ---------- Mobile order ----------
+    Information above the gallery below 1000px.
+
+    main-product builds the stacked layout as grid areas -
+    "product-gallery" "product-info" - so the gallery comes first simply
+    because it is named first. Re-stating the areas in the other order moves
+    the whole column without touching the markup: the information is still
+    rendered once, in one place, and nothing is duplicated or moved by script.
+
+    product-content is kept in the list because the section adds that area when
+    there are blocks below the gallery. An area with no item in it collapses to
+    a zero-height track, so naming it is safe whether or not it exists.
+
+    Desktop is untouched: its two-column areas are declared inside the
+    section's own min-width query and this rule cannot reach them.
+  {%- endcomment -%}
+  @media screen and (max-width: 999px) {
+    .shopify-section--main-product .product {
+      grid-template-areas:
+        "product-info"
+        "product-gallery"
+        "product-content";
+    }
+  }
+
+  {%- comment -%}
     ---------- Pill ----------
     Shape and spacing only. The value comes from the pill snippet, which reuses
     the product card's own expression.
@@ -94,7 +120,7 @@
     display: inline-flex;
     align-items: center;
     padding: 6px 14px;
-    border: 1px solid rgb(var(--text-color) / 0.15);
+    border: 0;
     border-radius: 100px;
     background: {{ section.settings.pill_background }};
     color: rgb(var(--text-color));
@@ -349,7 +375,7 @@
       "type": "color",
       "id": "pill_background",
       "label": "Pill background",
-      "default": "#f3eee4"
+      "default": "#ffffff"
     },
     {
       "type": "header",
