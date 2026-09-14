@@ -25,6 +25,11 @@
       "settings": {
         "info_width": 537,
         "info_gap": 32,
+        "info_row_gap": 8,
+        "info_row_gap_mobile": 6,
+        "description_points": 2,
+        "description_line_gap": 6,
+        "price_gap": 12,
         "pill_gap": 12,
         "pill_background": "#f3eee4",
         "badge_top": 10,
@@ -46,16 +51,17 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "liquid_kWJCec": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% render 'pdp-short-description' %}"
+          }
+        },
         "liquid_e7CWYC": {
           "type": "liquid",
           "settings": {
             "liquid": "{% render 'pdp-product-pill' %}"
           }
-        },
-        "vendor": {
-          "type": "vendor",
-          "disabled": true,
-          "settings": {}
         },
         "title": {
           "type": "title",
@@ -68,13 +74,6 @@
           "settings": {
             "show_empty": true,
             "rating_mode": "rating"
-          }
-        },
-        "description": {
-          "type": "description",
-          "settings": {
-            "collapse_content": false,
-            "show_below_gallery": false
           }
         },
         "price": {
@@ -135,11 +134,10 @@
         }
       },
       "block_order": [
+        "liquid_kWJCec",
         "liquid_e7CWYC",
-        "vendor",
         "title",
         "rating_e7H76A",
-        "description",
         "price",
         "liquid_WK9Eei",
         "payment_terms",
