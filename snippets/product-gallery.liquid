@@ -113,8 +113,30 @@
       ----------------------------------------------------------------------------------------------------------------------
     {%- endcomment -%}
 
-    <div class="{% if mobile_controls == 'arrows' %}product-gallery__carousel-with-arrows{% else %}contents{% endif %}">
-      {%- if mobile_controls == 'arrows' -%}
+    {%- comment -%}
+      The prev/next buttons were gated on mobile_controls == 'arrows', so a
+      gallery set to 'thumbnails' rendered no buttons at all - nothing for CSS
+      to reveal. They now render for 'thumbnails' too, so a mobile gallery can
+      have a thumbnail strip AND arrows over the media, which no single value
+      of the setting provides.
+
+      Every other value behaves exactly as before: 'dots' and 'free_scroll'
+      still render no buttons, and 'arrows' still gets the
+      product-gallery__carousel-with-arrows wrapper and its centred 45vw item.
+      Under 'thumbnails' the wrapper is deliberately NOT applied, so the
+      carousel keeps its full-bleed behaviour and the buttons are positioned by
+      the product template's own scoped CSS instead.
+    {%- endcomment -%}
+    {%- liquid
+      assign show_mobile_arrows = false
+
+      if mobile_controls == 'arrows' or mobile_controls == 'thumbnails'
+        assign show_mobile_arrows = true
+      endif
+    -%}
+
+    <div class="{% if mobile_controls == 'arrows' %}product-gallery__carousel-with-arrows{% else %}contents{% endif %}{% if mobile_controls == 'thumbnails' %} product-gallery__carousel-with-thumb-arrows{% endif %}">
+      {%- if show_mobile_arrows -%}
         <carousel-prev-button aria-controls="{{ product_gallery_carousel_id }}" class="contents">
           <button type="button" class="tap-area sm:hidden">
             <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
@@ -208,7 +230,7 @@
         {%- endif -%}
       </scroll-carousel>
 
-      {%- if mobile_controls == 'arrows' -%}
+      {%- if show_mobile_arrows -%}
         <carousel-next-button aria-controls="{{ product_gallery_carousel_id }}" class="contents">
           <button type="button" class="tap-area sm:hidden">
             <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
