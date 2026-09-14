@@ -25,6 +25,7 @@
       "settings": {
         "info_width": 537,
         "info_gap": 32,
+        "rating_gap": 6,
         "info_row_gap": 8,
         "info_row_gap_mobile": 6,
         "description_points": 2,
@@ -63,17 +64,16 @@
             "heading_tag": "h3"
           }
         },
+        "liquid_VxkgFD": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% render 'pdp-rating' %}"
+          }
+        },
         "liquid_kWJCec": {
           "type": "liquid",
           "settings": {
             "liquid": "{% render 'pdp-short-description' %}"
-          }
-        },
-        "rating_e7H76A": {
-          "type": "rating",
-          "settings": {
-            "show_empty": true,
-            "rating_mode": "rating"
           }
         },
         "price": {
@@ -136,8 +136,8 @@
       "block_order": [
         "liquid_e7CWYC",
         "title",
+        "liquid_VxkgFD",
         "liquid_kWJCec",
-        "rating_e7H76A",
         "price",
         "liquid_WK9Eei",
         "payment_terms",
