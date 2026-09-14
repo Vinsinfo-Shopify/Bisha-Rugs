@@ -67,7 +67,7 @@
       white-space: nowrap;
       overflow: hidden;
       min-width: 0;
-      gap: 0 4px;
+      gap: 0 5px;
     }
 
     /* The two links and the separators hold their natural width; only the
@@ -84,16 +84,13 @@
       text-overflow: ellipsis;
     }
 
-    /* Dot instead of the chevron. The glyph in the markup is collapsed with
-       font-size: 0 and the dot drawn by a pseudo-element, so the snippet's
-       markup is unchanged and desktop keeps its ">". */
+    /* The ">" from the snippet's markup, shown as-is. flex-shrink: 0 is what
+       keeps both separators at full width while the title truncates - without
+       it the last separator is the first thing the browser squeezes when the
+       row runs out of space, and it disappears before the ellipsis appears. */
     #shopify-section-{{ section.id }} .breadcrumbs .breadcrumb-separator--pdp {
-      font-size: 0;
-      line-height: 0;
-    }
-
-    #shopify-section-{{ section.id }} .breadcrumbs .breadcrumb-separator--pdp::before {
-      content: "\00B7";
+      flex: 0 0 auto;
+      padding-inline: 2px;
       font-size: 12px;
       line-height: 17px;
       color: #898989;
