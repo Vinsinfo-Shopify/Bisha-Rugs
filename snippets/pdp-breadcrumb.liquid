@@ -106,15 +106,18 @@
   </nav>
 
   <style>
-    /* Scoped to the body class Shopify writes for this template suffix, so
-       the Default product template and every other template keep the trail
-       snippets/breadcrumbs.liquid gives them. Nothing here can reach them even
-       if this snippet is rendered elsewhere by mistake. */
-    body.template-product-bisha-pdp .pdp-breadcrumb {
+    /* Scoped by .pdp-breadcrumb, which exists only in this snippet.
+       theme.liquid writes template-{{ request.page_type }} on <body>, which
+       resolves to "template-product" with no suffix - so a body.template-
+       product-bisha-pdp selector would never match anything. The class is the
+       reliable hook, and since this snippet is rendered only from the bisha-pdp
+       template, snippets/breadcrumbs.liquid and every other template are
+       untouched regardless. */
+    .pdp-breadcrumb {
       margin-block-end: 16px;
     }
 
-    body.template-product-bisha-pdp .pdp-breadcrumb__list {
+    .pdp-breadcrumb__list {
       display: flex;
       flex-wrap: wrap;      /* wraps instead of pushing the page wider */
       align-items: baseline;
@@ -125,14 +128,14 @@
       min-width: 0;
     }
 
-    body.template-product-bisha-pdp .pdp-breadcrumb__item {
+    .pdp-breadcrumb__item {
       display: flex;
       align-items: baseline;
       gap: 6px;
       min-width: 0;         /* lets a long title shrink rather than overflow */
     }
 
-    body.template-product-bisha-pdp .pdp-breadcrumb :is(a, span) {
+    .pdp-breadcrumb :is(a, span) {
       font-family: var(--text-font-family);
       font-size: 14px;
       line-height: 20px;
@@ -144,28 +147,28 @@
       min-width: 0;
     }
 
-    body.template-product-bisha-pdp .pdp-breadcrumb__link {
+    .pdp-breadcrumb__link {
       color: #000000;
       text-decoration: underline;
       text-underline-offset: 2px;
     }
 
-    body.template-product-bisha-pdp .pdp-breadcrumb__link--plain {
+    .pdp-breadcrumb__link--plain {
       text-decoration: none;
     }
 
-    body.template-product-bisha-pdp .pdp-breadcrumb__sep,
-    body.template-product-bisha-pdp .pdp-breadcrumb__current {
+    .pdp-breadcrumb__sep,
+    .pdp-breadcrumb__current {
       color: #898989;
       text-decoration: none;
     }
 
     @media screen and (max-width: 699px) {
-      body.template-product-bisha-pdp .pdp-breadcrumb {
+      .pdp-breadcrumb {
         margin-block-end: 12px;
       }
 
-      body.template-product-bisha-pdp .pdp-breadcrumb :is(a, span) {
+      .pdp-breadcrumb :is(a, span) {
         font-size: 12px;
         line-height: 17px;
       }
