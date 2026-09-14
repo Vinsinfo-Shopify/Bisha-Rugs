@@ -23,6 +23,10 @@
       "type": "pdp-gallery-presentation",
       "name": "PDP gallery presentation",
       "settings": {
+        "info_width": 537,
+        "info_gap": 32,
+        "pill_gap": 12,
+        "pill_background": "#f3eee4",
         "badge_top": 10,
         "badge_left": 0,
         "grid_gap": 16,
@@ -42,6 +46,12 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "liquid_e7CWYC": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% render 'pdp-product-pill' %}"
+          }
+        },
         "vendor": {
           "type": "vendor",
           "settings": {}
@@ -111,6 +121,7 @@
         }
       },
       "block_order": [
+        "liquid_e7CWYC",
         "vendor",
         "title",
         "price",
