@@ -196,18 +196,24 @@
     list-style: none;
   }
 
+  {%- comment -%}
+    The points run on as continuous text rather than one per row, so the
+    description fills the column and wraps naturally over a couple of lines.
+    Each item is inline and a dot is inserted BETWEEN items - li + li, so the
+    first point never starts with one and a product with a single point shows
+    no separator at all.
+
+    The separator is presentation, not content: the product's own text is
+    untouched, and a screen reader still reads the items as a list.
+  {%- endcomment -%}
   .shopify-section--main-product .product-info__block-item[data-block-type='description'] li {
-    display: flex;
-    gap: 8px;
-    margin-block-end: {{ section.settings.description_line_gap }}px;
+    display: inline;
+    margin: 0;
   }
 
-  .shopify-section--main-product .product-info__block-item[data-block-type='description'] li::before {
+  .shopify-section--main-product .product-info__block-item[data-block-type='description'] li + li::before {
     content: "\00B7";
-    flex: none;
-    /* the dot's own line box, so it aligns with the first line of a wrapped
-       item rather than centring against the whole block */
-    line-height: inherit;
+    margin-inline: {{ section.settings.description_line_gap }}px;
   }
 
   {%- comment -%}
@@ -524,12 +530,12 @@
     {
       "type": "range",
       "id": "description_line_gap",
-      "label": "Space between description lines",
+      "label": "Space around the description dot separator",
       "min": 0,
       "max": 24,
       "step": 1,
       "unit": "px",
-      "default": 4
+      "default": 6
     },
     {
       "type": "range",
