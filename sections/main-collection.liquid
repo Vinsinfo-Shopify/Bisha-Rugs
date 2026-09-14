@@ -331,8 +331,12 @@
       /* The design has no grid-density or list-view controls. Hidden rather
          than removed, so the theme's own JS keeps its references. */
       {%- if section.settings.pf_hide_view_switcher -%}
-        #shopify-section-{{ section.id }} .collection-toolbar__layout-switch,
-        #shopify-section-{{ section.id }} product-list-grid-switcher {
+        /* The element is <collection-layout-switch> carrying
+           .collection-toolbar__layout-switch-list. My first attempt targeted
+           .collection-toolbar__layout-switch and product-list-grid-switcher,
+           neither of which exists in this theme, so the icons stayed visible. */
+        #shopify-section-{{ section.id }} collection-layout-switch,
+        #shopify-section-{{ section.id }} .collection-toolbar__layout-switch-list {
           display: none;
         }
       {%- endif -%}
@@ -379,8 +383,10 @@
 
       /* The toolbar in the design carries no rules. */
       {%- if section.settings.pf_hide_toolbar_rules -%}
+        /* theme.css:4503 draws these rules with box-shadow, not border, so
+           border-block: 0 had no effect. */
         #shopify-section-{{ section.id }} .collection-toolbar {
-          border-block: 0;
+          box-shadow: none;
         }
       {%- endif -%}
     }
@@ -1098,7 +1104,7 @@
       "type": "link_list",
       "id": "rt_menu",
       "label": "Menu",
-      "default": "main-menu"
+      "info": "Required. Select the menu containing the Shop By Type entry. No default is set on purpose: Shopify only accepts main-menu or footer as a link_list default, and a wrong default fails silently by rendering nothing."
     },
     {
       "type": "text",
