@@ -265,11 +265,27 @@
     number of lines set here and end with an ellipsis. The product's full text
     is untouched and still present for search engines and screen readers.
   {%- endcomment -%}
-  .shopify-section--main-product .product-info__block-item[data-block-type='description'] .prose {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: {{ section.settings.description_lines }};
-    overflow: hidden;
+  {%- comment -%}
+    Only the first few points are shown. A count of POINTS, not of rendered
+    lines: a line clamp cuts wherever the column happens to run out, mid-word,
+    while this always ends on a complete sentence whatever the width.
+
+    The rest stay in the DOM rather than being deleted, so the full description
+    is still there for search engines and screen readers - and raising the
+    setting brings them back with no code change.
+
+    Any heading inside the description is hidden too. Products here begin their
+    description with a "Description" heading of their own, which is content
+    rather than theme markup; this removes it from the PDP without editing
+    every product. If a product's description legitimately needs a visible
+    heading, turn this off and remove the word from the product instead.
+  {%- endcomment -%}
+  .shopify-section--main-product .product-info__block-item[data-block-type='description'] li:nth-child(n + {{ section.settings.description_points | plus: 1 }}) {
+    display: none;
+  }
+
+  .shopify-section--main-product .product-info__block-item[data-block-type='description'] .prose > :is(h1, h2, h3, h4, h5, h6) {
+    display: none;
   }
 
   {%- comment -%}
@@ -605,10 +621,11 @@
     },
     {
       "type": "range",
-      "id": "description_lines",
-      "label": "Description lines shown",
+      "id": "description_points",
+      "label": "Description points shown",
+      "info": "Counts complete points, so the text never cuts mid-sentence. The rest stay in the page for search engines.",
       "min": 1,
-      "max": 8,
+      "max": 10,
       "step": 1,
       "default": 2
     },
