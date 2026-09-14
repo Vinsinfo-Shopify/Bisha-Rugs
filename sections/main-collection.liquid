@@ -248,6 +248,103 @@
         0 0 0 2px #000000;
     }
 
+    /* ---------------- PHASE 2: desktop filter sidebar ----------------
+       Measured off the 1440 frame:
+         sidebar content x 79-373      -> 294px column
+         "Filters" heading y 160-175   -> 20/28/700
+         group headings                -> 16/22/600
+         rules at y 338 and 733        -> between groups, not under headings
+         image values 67px on a 104px pitch, three per row
+       All scoped to this section and inside the enable_new_filters gate, so
+       the production layout is untouched. facets.liquid is not modified. */
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .pf-sidebar-heading {
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 700;
+        color: #000000;
+        margin: 0 0 {{ section.settings.pf_filters_heading_gap }}px;
+      }
+
+      /* The Figma column is wider than Prestige's default. Only the column is
+         resized; the facets markup inside it is untouched. */
+      #shopify-section-{{ section.id }} .facets {
+        width: {{ section.settings.pf_sidebar_width }}px;
+        flex: 0 0 {{ section.settings.pf_sidebar_width }}px;
+      }
+
+      /* Group headings. The accordion supplies the row and chevron; only the
+         type is restated here. */
+      #shopify-section-{{ section.id }} .facets .accordion__toggle {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 600;
+        color: #000000;
+      }
+
+      /* A rule between groups, not beneath every heading. */
+      #shopify-section-{{ section.id }} .facets .accordion + .accordion {
+        border-block-start: 1px solid rgb(0 0 0 / 0.08);
+      }
+
+      /* Checkbox values keep the same size and weight whether active or not;
+         only the colour changes, exactly as specified. */
+      #shopify-section-{{ section.id }} .facets .checkbox-container {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 500;
+        color: #696969;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-container:has(input:checked) {
+        color: #000000;
+      }
+
+      /* Image and swatch values: three per row, 67px media. */
+      #shopify-section-{{ section.id }} .facets .option-value-list {
+        display: grid;
+        grid-template-columns: repeat({{ section.settings.pf_value_columns }}, minmax(0, 1fr));
+        gap: {{ section.settings.pf_value_row_gap }}px {{ section.settings.pf_value_col_gap }}px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .option-value :is(img, svg),
+      #shopify-section-{{ section.id }} .facets .option-value__swatch {
+        width: {{ section.settings.pf_value_media_size }}px;
+        height: {{ section.settings.pf_value_media_size }}px;
+        object-fit: cover;
+        border-radius: var(--rounded-full);
+      }
+
+      #shopify-section-{{ section.id }} .facets .option-value {
+        font-size: 13px;
+        line-height: 18px;
+        font-weight: 400;
+        color: #696969;
+      }
+
+      #shopify-section-{{ section.id }} .facets .option-value:has(input:checked) {
+        line-height: 16px;
+        font-weight: 600;
+        color: #000000;
+      }
+
+      /* The design has no grid-density or list-view controls. Hidden rather
+         than removed, so the theme's own JS keeps its references. */
+      {%- if section.settings.pf_hide_view_switcher -%}
+        #shopify-section-{{ section.id }} .collection-toolbar__layout-switch,
+        #shopify-section-{{ section.id }} product-list-grid-switcher {
+          display: none;
+        }
+      {%- endif -%}
+
+      /* The toolbar in the design carries no rules. */
+      {%- if section.settings.pf_hide_toolbar_rules -%}
+        #shopify-section-{{ section.id }} .collection-toolbar {
+          border-block: 0;
+        }
+      {%- endif -%}
+    }
+
     @media screen and (max-width: 699px) {
       #shopify-section-{{ section.id }} .pf-colors {
         display: block;
@@ -536,6 +633,16 @@
 
               {%- if section.settings.filter_layout == 'sidebar' -%}
                 <safe-sticky class="facets-sidebar md-max:hidden">
+                  {%- comment -%}
+                    The design puts a "Filters" heading above the groups.
+                    Prestige has none, so it is added here rather than inside
+                    facets.liquid, which is shared with search and with the
+                    production allow-list.
+                  {%- endcomment -%}
+                  {%- if section.settings.enable_new_filters and section.settings.pf_filters_heading != blank -%}
+                    <p class="pf-sidebar-heading">{{ section.settings.pf_filters_heading }}</p>
+                  {%- endif -%}
+
                   {%- render 'facets',
                     results: collection,
                     show_filters: section.settings.show_filters,
@@ -746,6 +853,90 @@
       "label": "Production filters (allow-list)",
       "info": "Only these filters render while the new implementation is off. Comma separated, matched on the filter label or its param_name. Any filter added in Search & Discovery that is not listed here stays hidden from the production sidebar automatically.",
       "default": "Availability, Price"
+    },
+    {
+      "type": "header",
+      "content": "Sidebar (new filters)"
+    },
+    {
+      "type": "text",
+      "id": "pf_filters_heading",
+      "label": "Sidebar heading",
+      "info": "Leave empty to hide it.",
+      "default": "Filters"
+    },
+    {
+      "type": "range",
+      "id": "pf_filters_heading_gap",
+      "label": "Sidebar heading gap",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "pf_sidebar_width",
+      "label": "Sidebar width",
+      "info": "Measured at 294px on the 1440 frame.",
+      "min": 200,
+      "max": 400,
+      "step": 2,
+      "unit": "px",
+      "default": 294
+    },
+    {
+      "type": "range",
+      "id": "pf_value_columns",
+      "label": "Image filter columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "pf_value_media_size",
+      "label": "Image filter swatch size",
+      "min": 40,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 67
+    },
+    {
+      "type": "range",
+      "id": "pf_value_col_gap",
+      "label": "Image filter column gap",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 37
+    },
+    {
+      "type": "range",
+      "id": "pf_value_row_gap",
+      "label": "Image filter row gap",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 27
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_hide_view_switcher",
+      "label": "Hide grid and list view controls",
+      "info": "The design has none.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_hide_toolbar_rules",
+      "label": "Hide the toolbar rules",
+      "default": true
     },
     {
       "type": "text",
