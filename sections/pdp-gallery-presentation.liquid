@@ -96,11 +96,63 @@
     section's own min-width query and this rule cannot reach them.
   {%- endcomment -%}
   @media screen and (max-width: 999px) {
+    {%- comment -%}
+      The stacked layout is a grid of named areas, so swapping the area order
+      moves the WHOLE information column - purchase controls included. The
+      design needs the column split: title, description, rating and price above
+      the gallery; variant picker, quantity and buy buttons below it.
+
+      display: contents on the two wrappers takes them out of the box tree
+      without removing their children, so every block becomes a direct child of
+      one flex column alongside the gallery. Order can then interleave blocks
+      from what were two different parents.
+
+      product-info.liquid gives every block a data-block-type attribute, so the
+      groups are selected by what a block IS rather than by position - add,
+      remove or reorder blocks in the editor and the split still holds.
+
+      No duplicated markup, no script moving nodes, no absolute positioning and
+      no negative margins. Desktop is untouched: this is inside a max-width
+      query and the grid is left alone above it.
+    {%- endcomment -%}
     .shopify-section--main-product .product {
-      grid-template-areas:
-        "product-info"
-        "product-gallery"
-        "product-content";
+      display: flex;
+      flex-direction: column;
+    }
+
+    .shopify-section--main-product .product-info,
+    .shopify-section--main-product .product-info__block-list {
+      display: contents;
+    }
+
+    /* 1 - information, above the gallery */
+    .shopify-section--main-product .product-info__block-item {
+      order: 1;
+    }
+
+    /* 2 - the gallery */
+    .shopify-section--main-product .product-gallery {
+      order: 2;
+    }
+
+    /* 3 - everything to do with configuring and buying, below the gallery.
+       Listed by block type, so a block type not named here stays with the
+       information group by default. */
+    .shopify-section--main-product .product-info__block-item:is(
+      [data-block-type='variant-picker'],
+      [data-block-type='quantity-selector'],
+      [data-block-type='buy-buttons'],
+      [data-block-type='line-item-property'],
+      [data-block-type='pickup-availability'],
+      [data-block-type='payment-terms'],
+      [data-block-type='inventory'],
+      [data-block-type='offers'],
+      [data-block-type='volume-pricing'],
+      [data-block-type='complementary-products'],
+      [data-block-type='product-variations']
+    ),
+    .shopify-section--main-product .product-info__block-group {
+      order: 3;
     }
   }
 
@@ -131,6 +183,51 @@
   }
 
   {%- comment -%}
+    ---------- Description and price ----------
+    The description block renders the product's own rich text, so the bullets
+    come from the product content in Shopify, not from the theme. The list
+    markers are removed and each item kept as its own line with a dot leading
+    it, which is the design's presentation of the same dynamic content - no
+    text is rewritten here and nothing is hardcoded.
+  {%- endcomment -%}
+  .shopify-section--main-product .product-info__block-item[data-block-type='description'] :is(ul, ol) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .shopify-section--main-product .product-info__block-item[data-block-type='description'] li {
+    display: flex;
+    gap: 8px;
+    margin-block-end: {{ section.settings.description_line_gap }}px;
+  }
+
+  .shopify-section--main-product .product-info__block-item[data-block-type='description'] li::before {
+    content: "\00B7";
+    flex: none;
+    /* the dot's own line box, so it aligns with the first line of a wrapped
+       item rather than centring against the whole block */
+    line-height: inherit;
+  }
+
+  {%- comment -%}
+    Price, compare-at and the savings pill on one row. The savings pill is a
+    separate Liquid block, so it is a sibling of the price block rather than a
+    child - the two are pulled onto one line here instead of by restructuring
+    the blocks.
+  {%- endcomment -%}
+  .shopify-section--main-product .product-info__block-item[data-block-type='price'] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 {{ section.settings.price_gap }}px;
+  }
+
+  .shopify-section--main-product .pdp-savings {
+    align-self: center;
+  }
+
+  {%- comment -%}
     ---------- Badge ----------
     .badge-list is only a flex row in theme.css - the product card positions it
     by making its own figure the containing block. The gallery media has no
@@ -144,6 +241,24 @@
   {%- endcomment -%}
   .shopify-section--main-product .product-gallery__media {
     position: relative;
+  }
+
+  .shopify-section--main-product .product-gallery__media > .pdp-media-badges {
+    z-index: 1;
+    position: absolute;
+    inset-block-start: {{ section.settings.badge_top }}px;
+    inset-inline-start: {{ section.settings.badge_left }}px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    pointer-events: none;
+  }
+
+  /* the lists inside the wrapper stay in normal flow - the wrapper is the one
+     positioned element, so several badges stack instead of overlapping */
+  .shopify-section--main-product .product-gallery__media .pdp-media-badges .badge-list {
+    position: static;
   }
 
   .shopify-section--main-product .product-gallery__media > .badge-list {
@@ -360,6 +475,26 @@
       "step": 2,
       "unit": "px",
       "default": 32
+    },
+    {
+      "type": "range",
+      "id": "description_line_gap",
+      "label": "Space between description lines",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "price_gap",
+      "label": "Space between price, compare-at and savings",
+      "min": 4,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 12
     },
     {
       "type": "range",
