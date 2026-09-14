@@ -56,6 +56,55 @@
   }
 
   {%- comment -%}
+    ---------- Product information column ----------
+    Desktop only. Prestige builds the product grid from a percentage of the
+    container, which cannot express the design's 537px exactly: at a 1300px
+    column with a 32px gap the setting's 1% step lands on 532 or 545. The
+    columns are stated directly instead - the information column is a fixed
+    width and the gallery takes what is left, so the two always add up to the
+    container and the gap is exactly the design value.
+
+    grid-template-columns after the theme's `grid` shorthand overrides only the
+    columns; the areas and rows the shorthand set are untouched. Specificity is
+    (0,2,0) against the theme's (0,1,0), so no !important is needed.
+
+    Inside a min-width query, so below 1000px Prestige's own stacked layout is
+    left completely alone and no fixed width can overflow a phone.
+  {%- endcomment -%}
+  @media screen and (min-width: 1000px) {
+    .shopify-section--main-product .product {
+      --product-gap: {{ section.settings.info_gap }}px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, {{ section.settings.info_width }}px);
+    }
+  }
+
+  {%- comment -%}
+    ---------- Pill ----------
+    Shape and spacing only. The value comes from the pill snippet, which reuses
+    the product card's own expression.
+  {%- endcomment -%}
+  .shopify-section--main-product .pdp-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-block-end: {{ section.settings.pill_gap }}px;
+  }
+
+  .shopify-section--main-product .pdp-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border: 1px solid rgb(var(--text-color) / 0.15);
+    border-radius: 100px;
+    background: {{ section.settings.pill_background }};
+    color: rgb(var(--text-color));
+    font-family: var(--text-font-family);
+    font-size: 13px;
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  {%- comment -%}
     ---------- Badge ----------
     .badge-list is only a flex row in theme.css - the product card positions it
     by making its own figure the containing block. The gallery media has no
@@ -260,6 +309,51 @@
     {
       "type": "paragraph",
       "content": "Renders nothing. Adjusts the product gallery's presentation only, and finds the product section automatically. Set the product section's Desktop media layout to \"Grid (2 per row)\" and Mobile controls to \"Arrows\" for this to apply."
+    },
+    {
+      "type": "header",
+      "content": "Product information"
+    },
+    {
+      "type": "range",
+      "id": "info_width",
+      "label": "Information column width (desktop)",
+      "info": "The gallery takes the remaining width.",
+      "min": 487,
+      "max": 587,
+      "step": 1,
+      "unit": "px",
+      "default": 537
+    },
+    {
+      "type": "range",
+      "id": "info_gap",
+      "label": "Gap between gallery and information",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "pill_gap",
+      "label": "Space below the pill",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "pill_background",
+      "label": "Pill background",
+      "default": "#f3eee4"
+    },
+    {
+      "type": "header",
+      "content": "Badge"
     },
     {
       "type": "range",
