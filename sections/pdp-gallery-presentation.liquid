@@ -74,8 +74,8 @@
   .shopify-section--main-product .product-gallery__media > .badge-list {
     z-index: 1;
     position: absolute;
-    inset-block-start: {{ section.settings.badge_inset }}px;
-    inset-inline-start: {{ section.settings.badge_inset }}px;
+    inset-block-start: {{ section.settings.badge_top }}px;
+    inset-inline-start: {{ section.settings.badge_left }}px;
     /* out of the flow, so it cannot change the media's size or the grid */
     pointer-events: none;
   }
@@ -163,16 +163,28 @@
       display: contents;
     }
 
+    {%- comment -%}
+      Size and vertical position come from settings via custom properties, so
+      the chevron scales with the disc from one value rather than two that can
+      drift apart. Position is a percentage of the CAROUSEL, which is the
+      containing block - so it tracks the media area and never the thumbnail
+      strip or the viewport.
+    {%- endcomment -%}
+    .shopify-section--main-product .product-gallery__carousel-with-thumb-arrows {
+      --pdp-arrow-size: {{ section.settings.arrow_size }}px;
+      --pdp-arrow-top: {{ section.settings.arrow_position }}%;
+    }
+
     .shopify-section--main-product .product-gallery__carousel-with-thumb-arrows :is(carousel-prev-button, carousel-next-button) button {
       z-index: 2;
       position: absolute;
-      inset-block-start: 50%;
+      inset-block-start: var(--pdp-arrow-top);
       transform: translateY(-50%);
       display: grid;
       place-items: center;
       box-sizing: border-box;
-      width: 2.375rem;
-      height: 2.375rem;
+      width: var(--pdp-arrow-size);
+      height: var(--pdp-arrow-size);
       border: 2px solid {{ section.settings.arrow_border }};
       border-radius: 50%;
       background: {{ section.settings.arrow_background }};
@@ -189,7 +201,8 @@
     }
 
     .shopify-section--main-product .product-gallery__carousel-with-thumb-arrows :is(carousel-prev-button, carousel-next-button) button > svg {
-      width: 0.875rem;
+      /* 14/38 of the disc - the homepage proportion, kept as the button resizes */
+      width: calc(var(--pdp-arrow-size) * 0.368);
       stroke-width: 1.75;
       stroke-linecap: round;
       stroke-linejoin: round;
@@ -250,13 +263,24 @@
     },
     {
       "type": "range",
-      "id": "badge_inset",
-      "label": "Badge distance from the media corner",
+      "id": "badge_top",
+      "label": "Badge top spacing",
       "min": 0,
       "max": 40,
       "step": 1,
       "unit": "px",
-      "default": 16
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "badge_left",
+      "label": "Badge left spacing",
+      "info": "0 keeps the badge flush with the image's left edge.",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 0
     },
     {
       "type": "header",
@@ -329,6 +353,27 @@
     {
       "type": "header",
       "content": "Mobile arrows"
+    },
+    {
+      "type": "range",
+      "id": "arrow_size",
+      "label": "Mobile arrow size",
+      "min": 24,
+      "max": 56,
+      "step": 1,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "arrow_position",
+      "label": "Mobile arrow vertical position",
+      "info": "Percentage down the main media. 50 is centred; lower moves it up.",
+      "min": 10,
+      "max": 90,
+      "step": 1,
+      "unit": "%",
+      "default": 50
     },
     {
       "type": "range",
