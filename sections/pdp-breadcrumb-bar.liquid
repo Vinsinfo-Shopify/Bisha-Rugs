@@ -1,0 +1,106 @@
+{%- comment -%}
+  PDP breadcrumb placement.
+
+  A section rather than a block: blocks can only render inside the product
+  information column, and the design calls for the trail to sit above the whole
+  two-column area. This file adds no breadcrumb logic of its own - it renders
+  snippets/breadcrumbs.liquid, which already produces the product trail, so
+  there is exactly one implementation to maintain.
+
+  The snippet decides what to show from the template, so this section is inert
+  anywhere a breadcrumb is not wanted; it is only added to the product template.
+  Collection, blog, article, page and cart keep rendering the snippet however
+  they already do, untouched.
+{%- endcomment -%}
+
+<div class="pdp-breadcrumb-bar">
+  <div class="container">
+    {%- render 'breadcrumbs' -%}
+  </div>
+</div>
+
+{%- comment -%}
+  Spacing only. The trail's own typography and colours live in the snippet, so
+  they stay in one place and are not duplicated here.
+
+  No width is set: .container is the theme's own wrapper, so the trail lines up
+  with the media and product columns below it at every breakpoint, and any
+  change to the PDP column width later applies here automatically. Nothing here
+  can introduce horizontal overflow - no fixed width, no negative margin, no
+  100vw.
+{%- endcomment -%}
+<style>
+  #shopify-section-{{ section.id }} .pdp-breadcrumb-bar {
+    padding-block-start: {{ section.settings.space_top }}px;
+    padding-block-end: {{ section.settings.space_bottom }}px;
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .pdp-breadcrumb-bar {
+      padding-block-start: {{ section.settings.space_top_mobile }}px;
+      padding-block-end: {{ section.settings.space_bottom_mobile }}px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Breadcrumb",
+  "tag": "section",
+  "class": "shopify-section--pdp-breadcrumb",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Renders the theme's breadcrumb trail above the product layout. The trail content and styling come from the shared breadcrumbs snippet."
+    },
+    {
+      "type": "range",
+      "id": "space_top",
+      "label": "Space above (desktop)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "space_bottom",
+      "label": "Space below (desktop)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "space_top_mobile",
+      "label": "Space above (mobile)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "space_bottom_mobile",
+      "label": "Space below (mobile)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "Breadcrumb"
+    }
+  ]
+}
+{% endschema %}
