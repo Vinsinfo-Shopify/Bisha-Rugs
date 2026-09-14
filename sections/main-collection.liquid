@@ -11,6 +11,34 @@
     assign production_filters = section.settings.production_filters
   endunless
 
+  # Colour already has its own strip above the toolbar, so listing it again in
+  # the sidebar would be a second control for the same filter.
+  #
+  # Written as an allow-list of every OTHER filter rather than as a new
+  # exclusion parameter, because facets.liquid already accepts allowed_filters.
+  # The shared snippet is unchanged, and a filter added in Search & Discovery
+  # later is included here automatically.
+  if section.settings.enable_new_filters and section.settings.pf_hide_color_in_sidebar
+    assign colour_key = section.settings.color_filter_label | downcase | strip
+    assign sidebar_allow = ''
+
+    for f in collection.filters
+      assign f_label = f.label | downcase | strip
+      assign f_param = f.param_name | downcase
+      assign is_colour = false
+
+      if f_label == colour_key or f_param contains 'color' or f_param contains 'colour'
+        assign is_colour = true
+      endif
+
+      unless is_colour
+        assign sidebar_allow = sidebar_allow | append: f.label | append: ','
+      endunless
+    endfor
+
+    assign production_filters = sidebar_allow
+  endif
+
   assign count_allow_list = ''
 
   if production_filters != blank
@@ -298,6 +326,55 @@
 
       #shopify-section-{{ section.id }} .facets .checkbox-container:has(input:checked) {
         color: #000000;
+      }
+
+      /* Checkbox, measured off the Figma: 18px square, olive #55583C when
+         checked with a white tick, a light outline when not. The olive is the
+         same value as REMOVE ALL, so the sidebar uses one accent throughout.
+
+         The input is styled directly rather than hidden behind a pseudo
+         element, so it stays a real control: keyboard focus, screen readers and
+         the theme's own change handler all keep working. */
+      #shopify-section-{{ section.id }} .facets .checkbox-container input[type='checkbox'] {
+        appearance: none;
+        -webkit-appearance: none;
+        flex: none;
+        width: {{ section.settings.pf_checkbox_size }}px;
+        height: {{ section.settings.pf_checkbox_size }}px;
+        margin: 0;
+        border: 1px solid {{ section.settings.pf_checkbox_border }};
+        border-radius: {{ section.settings.pf_checkbox_radius }}px;
+        background: #ffffff;
+        cursor: pointer;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-container input[type='checkbox']:checked {
+        background-color: {{ section.settings.pf_checkbox_checked }};
+        border-color: {{ section.settings.pf_checkbox_checked }};
+        /* The tick is a background image so no extra element is needed and the
+           input keeps its native semantics. */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 5l3.5 3.5L11 1.5'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 62%;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-container input[type='checkbox']:focus-visible {
+        outline: 2px solid {{ section.settings.pf_checkbox_checked }};
+        outline-offset: 2px;
+      }
+
+      /* Row rhythm: 22px line-height on a 40px pitch leaves 18px between rows. */
+      #shopify-section-{{ section.id }} .facets .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: {{ section.settings.pf_checkbox_gap }}px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-container + .checkbox-container,
+      #shopify-section-{{ section.id }} .facets li + li {
+        margin-block-start: {{ section.settings.pf_checkbox_row_gap }}px;
       }
 
       /* Image and swatch values: three per row, 67px media. */
@@ -1149,6 +1226,65 @@
       "step": 1,
       "unit": "px",
       "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_hide_color_in_sidebar",
+      "label": "Hide Color from the sidebar",
+      "info": "Colour has its own strip above the toolbar, so the sidebar entry would be a duplicate control.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "pf_checkbox_size",
+      "label": "Checkbox size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "pf_checkbox_radius",
+      "label": "Checkbox corner radius",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "pf_checkbox_gap",
+      "label": "Checkbox to label gap",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "pf_checkbox_row_gap",
+      "label": "Checkbox row gap",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "pf_checkbox_checked",
+      "label": "Checkbox checked colour",
+      "default": "#55583C"
+    },
+    {
+      "type": "color",
+      "id": "pf_checkbox_border",
+      "label": "Checkbox outline",
+      "default": "#D9D7D0"
     },
     {
       "type": "checkbox",
