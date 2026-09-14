@@ -196,6 +196,27 @@
               {%- endif -%}
 
               {%- comment -%}
+                Product badges, over the first media item only.
+
+                This gallery never rendered them - its only "badge" markup is
+                the 3D and video media icons - which is why the PDP showed
+                nothing while the homepage card did. The card renders the same
+                snippet at product-card.liquid:63, so the data and the markup
+                are shared and there is one source of truth: custom.badges for
+                custom labels, plus the snippet's own sold-out and discount
+                logic. "ON SALE" comes from that discount branch, computed from
+                the price, which is why it needs no metafield.
+
+                context: 'product' rather than 'card' so the discount branch
+                compares the SELECTED variant's prices - on a product with 102
+                variants the badge then follows the chosen size, which is the
+                correct behaviour on a product page.
+              {%- endcomment -%}
+              {%- if forloop.first -%}
+                {%- render 'product-badges', product: product, vertical: true, context: 'product' -%}
+              {%- endif -%}
+
+              {%- comment -%}
                 NOTE: for the product gallery, the autoplay does not work in a similar way. It is always false at the product level,
                 and the product-gallery component itself will autoplay (if needed)
               {%- endcomment -%}

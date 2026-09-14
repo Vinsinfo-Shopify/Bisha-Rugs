@@ -56,6 +56,31 @@
   }
 
   {%- comment -%}
+    ---------- Badge ----------
+    .badge-list is only a flex row in theme.css - the product card positions it
+    by making its own figure the containing block. The gallery media has no
+    positioning context, so the badge would sit in normal flow above the image
+    and push it down. Both breakpoints, since the badge belongs to the first
+    media item on desktop and mobile alike.
+
+    The badge's own colours and text come from product-badges.liquid and the
+    theme's badge styles, exactly as on the homepage card - only the position
+    is set here.
+  {%- endcomment -%}
+  .shopify-section--main-product .product-gallery__media {
+    position: relative;
+  }
+
+  .shopify-section--main-product .product-gallery__media > .badge-list {
+    z-index: 1;
+    position: absolute;
+    inset-block-start: {{ section.settings.badge_inset }}px;
+    inset-inline-start: {{ section.settings.badge_inset }}px;
+    /* out of the flow, so it cannot change the media's size or the grid */
+    pointer-events: none;
+  }
+
+  {%- comment -%}
     ---------- Mobile ----------
     One media item plus a sliver of the next, one item per swipe.
 
@@ -208,6 +233,16 @@
     {
       "type": "paragraph",
       "content": "Renders nothing. Adjusts the product gallery's presentation only, and finds the product section automatically. Set the product section's Desktop media layout to \"Grid (2 per row)\" and Mobile controls to \"Arrows\" for this to apply."
+    },
+    {
+      "type": "range",
+      "id": "badge_inset",
+      "label": "Badge distance from the media corner",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
     },
     {
       "type": "header",
