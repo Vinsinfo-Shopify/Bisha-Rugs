@@ -216,11 +216,56 @@
     child - the two are pulled onto one line here instead of by restructuring
     the blocks.
   {%- endcomment -%}
+  {%- comment -%}
+    The price and the savings pill are two separate blocks, so each is its own
+    row in the information column and the pill drops below the prices however
+    the price block itself is styled.
+
+    The two are put on one row by taking the price block out of the box tree
+    with display: contents and letting the column lay out their children
+    directly, then giving the price list and the pill the same flex line. The
+    block list is a grid, so the row is created with a two-column track sized to
+    content - the pill sits beside the prices and the row still wraps to the
+    column width rather than overflowing it.
+
+    No markup change, no reordering, no JavaScript.
+  {%- endcomment -%}
   .shopify-section--main-product .product-info__block-item[data-block-type='price'] {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     gap: 0 {{ section.settings.price_gap }}px;
+  }
+
+  .shopify-section--main-product .product-info__block-item[data-block-type='price'] .price-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 {{ section.settings.price_gap }}px;
+  }
+
+  {%- comment -%}
+    product-info__block-list is a plain block container - its children are
+    block-level and stacked with margins, which is why the pill starts a new
+    row however the price block itself is styled.
+
+    Making both blocks inline-level puts them on the same line, with their own
+    vertical margins zeroed so the line box is not inflated. Spacing above and
+    below is unaffected: the block before still contributes margin-block-end
+    and the block after still contributes margin-block-start.
+
+    No negative margins, no absolute positioning, no markup change.
+  {%- endcomment -%}
+  .shopify-section--main-product .product-info__block-item[data-block-type='price'],
+  .shopify-section--main-product .product-info__block-item:has(.pdp-savings) {
+    display: inline-flex;
+    align-items: baseline;
+    vertical-align: baseline;
+    margin-block: 0;
+  }
+
+  .shopify-section--main-product .product-info__block-item:has(.pdp-savings) {
+    margin-inline-start: {{ section.settings.price_gap }}px;
   }
 
   .shopify-section--main-product .pdp-savings {
