@@ -14,6 +14,11 @@
   Nothing in snippets/product-gallery.liquid, theme.css or theme.js is touched,
   so the Default product template and every other template are unaffected.
 
+  The product section is found by its own class, shopify-section--main-product,
+  which main-product.liquid declares in its schema - so nothing has to be
+  configured per product or per template. The rules reach only that section, and
+  only where this CSS section has been added, which is the product template.
+
   Add this section to the product template, anywhere - it renders no markup and
   only emits scoped CSS.
 {%- endcomment -%}
@@ -27,7 +32,7 @@
     16px horizontally and vertically and the theme's own setting drives both.
   {%- endcomment -%}
   @media screen and (min-width: 1000px) {
-    #shopify-section-{{ section.settings.target_section }} .product-gallery__carousel {
+    .shopify-section--main-product .product-gallery__carousel {
       --product-gallery-carousel-gap: {{ section.settings.grid_gap }}px;
     }
 
@@ -37,12 +42,12 @@
       crops rather than distorting - rugs must never be stretched.
     {%- endcomment -%}
     {%- if section.settings.lock_ratio -%}
-      #shopify-section-{{ section.settings.target_section }} .product-gallery__media {
+      .shopify-section--main-product .product-gallery__media {
         aspect-ratio: {{ section.settings.media_ratio }};
         overflow: hidden;
       }
 
-      #shopify-section-{{ section.settings.target_section }} .product-gallery__media :is(img, video, iframe, model-viewer) {
+      .shopify-section--main-product .product-gallery__media :is(img, video, iframe, model-viewer) {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -64,7 +69,7 @@
     no 100vw, no negative page margins, no fixed pixel widths.
   {%- endcomment -%}
   @media screen and (max-width: 999px) {
-    #shopify-section-{{ section.settings.target_section }} .product-gallery__carousel {
+    .shopify-section--main-product .product-gallery__carousel {
       --product-gallery-carousel-grid: auto / auto-flow {{ section.settings.mobile_media_width }}%;
       --product-gallery-carousel-gap: {{ section.settings.mobile_gap }}px;
       --product-gallery-carousel-scroll-snap-type: x mandatory;
@@ -81,12 +86,12 @@
       padding-inline-end: 0;
     }
 
-    #shopify-section-{{ section.settings.target_section }} .product-gallery__media {
+    .shopify-section--main-product .product-gallery__media {
       scroll-snap-align: start;
       scroll-snap-stop: always;
     }
 
-    #shopify-section-{{ section.settings.target_section }} .product-gallery__media:last-child {
+    .shopify-section--main-product .product-gallery__media:last-child {
       margin-inline-end: {{ section.settings.mobile_inset }}px;
     }
 
@@ -96,7 +101,7 @@
       component is reused - only its colours and size are reassigned, so hover,
       focus and disabled behaviour stay native.
     {%- endcomment -%}
-    #shopify-section-{{ section.settings.target_section }} .product-gallery__carousel-with-arrows .circle-button {
+    .shopify-section--main-product .product-gallery__carousel-with-arrows .circle-button {
       --circle-button-size: 2.375rem;
       --circle-button-background: 43 39 36;
       --circle-button-text-color: 255 255 255;
@@ -107,7 +112,7 @@
       box-shadow: none;
     }
 
-    #shopify-section-{{ section.settings.target_section }} .product-gallery__carousel-with-arrows .circle-button > svg {
+    .shopify-section--main-product .product-gallery__carousel-with-arrows .circle-button > svg {
       width: 0.875rem;
       stroke-width: 1.75;
       stroke-linecap: round;
@@ -120,12 +125,12 @@
       next. Reset to the grid width above. This is an override under this
       section's id, not an edit to theme.css.
     {%- endcomment -%}
-    #shopify-section-{{ section.settings.target_section }} .product-gallery__carousel-with-arrows .product-gallery__media {
+    .shopify-section--main-product .product-gallery__carousel-with-arrows .product-gallery__media {
       width: auto;
       margin-inline: 0;
     }
 
-    #shopify-section-{{ section.settings.target_section }} .product-gallery__carousel-with-arrows .product-gallery__media:last-child {
+    .shopify-section--main-product .product-gallery__carousel-with-arrows .product-gallery__media:last-child {
       margin-inline-end: {{ section.settings.mobile_inset }}px;
     }
   }
@@ -142,13 +147,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "Renders nothing. Adjusts the product gallery's presentation only. Set the product section's Desktop media layout to \"Grid (2 per row)\" and Mobile controls to \"Arrows\" for this to apply."
-    },
-    {
-      "type": "text",
-      "id": "target_section",
-      "label": "Product section ID",
-      "info": "The id of the main product section, e.g. template--123__main. Find it in the page source as shopify-section-<id>."
+      "content": "Renders nothing. Adjusts the product gallery's presentation only, and finds the product section automatically. Set the product section's Desktop media layout to \"Grid (2 per row)\" and Mobile controls to \"Arrows\" for this to apply."
     },
     {
       "type": "header",
