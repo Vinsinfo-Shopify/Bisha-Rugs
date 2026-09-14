@@ -115,14 +115,46 @@
       no negative margins. Desktop is untouched: this is inside a max-width
       query and the grid is left alone above it.
     {%- endcomment -%}
+    {%- comment -%}
+      A grid, not a flex column. In a column every child is its own line, so
+      the price and the savings pill - separate blocks - could never sit
+      together however they were styled. Two content-sized tracks let the pill
+      be placed beside the prices while every other block spans both.
+    {%- endcomment -%}
     .shopify-section--main-product .product {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      align-items: start;
+    }
+
+    .shopify-section--main-product .product-info__block-item,
+    .shopify-section--main-product .product-gallery,
+    .shopify-section--main-product .product-info__block-group {
+      grid-column: 1 / -1;
+    }
+
+    /* price in the first track, savings in the second - auto-placement keeps
+       them on one row because the pill follows the price */
+    .shopify-section--main-product .product-info__block-item[data-block-type='price'] {
+      grid-column: 1;
+      justify-self: start;
+    }
+
+    .shopify-section--main-product .product-info__block-item:has(.pdp-savings) {
+      grid-column: 2;
+      justify-self: start;
+      align-self: center;
+      margin-inline-start: {{ section.settings.price_gap }}px;
     }
 
     .shopify-section--main-product .product-info,
     .shopify-section--main-product .product-info__block-list {
       display: contents;
+    }
+
+    /* tighter rhythm on a narrow column */
+    .shopify-section--main-product .product-info {
+      --product-info-gap: {{ section.settings.info_row_gap_mobile }}px;
     }
 
     /* 1 - information, above the gallery */
@@ -161,6 +193,16 @@
     Shape and spacing only. The value comes from the pill snippet, which reuses
     the product card's own expression.
   {%- endcomment -%}
+  {%- comment -%}
+    Prestige stacks the information blocks with --product-info-gap, 1rem by
+    default - that is the space under the pill, the title, the rating and the
+    description. Reset once here rather than per block, so the rhythm stays
+    even and one setting moves them together.
+  {%- endcomment -%}
+  .shopify-section--main-product .product-info {
+    --product-info-gap: {{ section.settings.info_row_gap }}px;
+  }
+
   .shopify-section--main-product .pdp-pills {
     display: flex;
     flex-wrap: wrap;
@@ -214,6 +256,20 @@
   .shopify-section--main-product .product-info__block-item[data-block-type='description'] li + li::before {
     content: "\00B7";
     margin-inline: {{ section.settings.description_line_gap }}px;
+  }
+
+  {%- comment -%}
+    Only the first couple of lines are shown. The clamp counts rendered lines
+    rather than characters, so it holds at any column width and in any
+    language - 537px of desktop and 351px of mobile each fill exactly the
+    number of lines set here and end with an ellipsis. The product's full text
+    is untouched and still present for search engines and screen readers.
+  {%- endcomment -%}
+  .shopify-section--main-product .product-info__block-item[data-block-type='description'] .prose {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: {{ section.settings.description_lines }};
+    overflow: hidden;
   }
 
   {%- comment -%}
@@ -526,6 +582,35 @@
       "step": 2,
       "unit": "px",
       "default": 32
+    },
+    {
+      "type": "range",
+      "id": "info_row_gap",
+      "label": "Space between information rows (desktop)",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "info_row_gap_mobile",
+      "label": "Space between information rows (mobile)",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "description_lines",
+      "label": "Description lines shown",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 2
     },
     {
       "type": "range",
