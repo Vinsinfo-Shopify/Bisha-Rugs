@@ -195,13 +195,27 @@
       stroke-linejoin: round;
     }
 
-    /* Prestige hides a disabled prev/next entirely; at the first and last
-       media that leaves the control missing rather than inactive. Dimmed
-       instead, so the position stays stable. */
+    /* Arrow visibility follows the carousel's own state. ScrollCarousel sets
+       and clears the disabled attribute on the prev/next buttons as the
+       position changes, so display: none on a disabled button gives exactly
+       the required sequence with no JavaScript and no index tracking of our
+       own:
+
+         first media   prev disabled -> hidden, next visible
+         middle        neither disabled -> both visible
+         last media    next disabled -> hidden, prev visible
+         one media     both disabled -> both hidden
+
+       display, not opacity or visibility: the button is removed from the box
+       entirely rather than left transparent. The buttons are absolutely
+       positioned, so nothing reserves space for a hidden one and the media
+       does not shift.
+
+       Because the state is the carousel's, every navigation route updates it -
+       swipe, arrow click and thumbnail click all move the same carousel, so
+       the arrows and the active thumbnail can never disagree. */
     .shopify-section--main-product .product-gallery__carousel-with-thumb-arrows :is(carousel-prev-button, carousel-next-button) button[disabled] {
-      opacity: 0.35;
-      visibility: visible;
-      pointer-events: none;
+      display: none;
     }
 
     {%- comment -%}
@@ -242,7 +256,7 @@
       "max": 40,
       "step": 1,
       "unit": "px",
-      "default": 12
+      "default": 16
     },
     {
       "type": "header",
