@@ -83,6 +83,12 @@
             "show_taxes_notice": false
           }
         },
+        "liquid_WK9Eei": {
+          "type": "liquid",
+          "settings": {
+            "liquid": "{% render 'pdp-price-savings' %}"
+          }
+        },
         "payment_terms": {
           "type": "payment_terms",
           "settings": {}
@@ -135,6 +141,7 @@
         "rating_e7H76A",
         "description",
         "price",
+        "liquid_WK9Eei",
         "payment_terms",
         "separator",
         "variant_picker",
