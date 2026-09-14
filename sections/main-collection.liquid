@@ -39,6 +39,14 @@
     assign production_filters = sidebar_allow
   endif
 
+  # Driven by the existing gate rather than a new setting: the checkbox is
+  # part of the new filter design, so it appears exactly when that design does.
+  assign hide_facet_checkbox = true
+
+  if section.settings.enable_new_filters
+    assign hide_facet_checkbox = false
+  endif
+
   assign count_allow_list = ''
 
   if production_filters != blank
@@ -317,25 +325,31 @@
 
       /* Checkbox values keep the same size and weight whether active or not;
          only the colour changes, exactly as specified. */
-      #shopify-section-{{ section.id }} .facets .checkbox-container {
-        font-size: 16px;
-        line-height: 22px;
-        font-weight: 500;
-        color: #696969;
+      /* Checkbox values.
+         The real markup is snippets/checkbox.liquid: a .checkbox-control
+         wrapper holding <input class="checkbox"> and a sibling <label>. My
+         earlier attempt targeted .checkbox-container, which does not exist in
+         this theme, so none of it applied.
+
+         Measured off the Figma: 18px square, olive #55583C when checked with a
+         white tick, light outline when not, 12px to the label, 18px between
+         rows.
+
+         The input is styled directly rather than replaced, so it stays a real
+         control: keyboard focus, screen readers and the theme's own change
+         handler all keep working, and filtering still goes through the
+         existing form. */
+      #shopify-section-{{ section.id }} .facets .checkbox-control {
+        display: flex;
+        align-items: center;
+        gap: {{ section.settings.pf_checkbox_gap }}px;
       }
 
-      #shopify-section-{{ section.id }} .facets .checkbox-container:has(input:checked) {
-        color: #000000;
+      #shopify-section-{{ section.id }} .facets .checkbox-control + .checkbox-control {
+        margin-block-start: {{ section.settings.pf_checkbox_row_gap }}px;
       }
 
-      /* Checkbox, measured off the Figma: 18px square, olive #55583C when
-         checked with a white tick, a light outline when not. The olive is the
-         same value as REMOVE ALL, so the sidebar uses one accent throughout.
-
-         The input is styled directly rather than hidden behind a pseudo
-         element, so it stays a real control: keyboard focus, screen readers and
-         the theme's own change handler all keep working. */
-      #shopify-section-{{ section.id }} .facets .checkbox-container input[type='checkbox'] {
+      #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox {
         appearance: none;
         -webkit-appearance: none;
         flex: none;
@@ -349,32 +363,35 @@
         transition: background-color 0.15s ease, border-color 0.15s ease;
       }
 
-      #shopify-section-{{ section.id }} .facets .checkbox-container input[type='checkbox']:checked {
+      #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox:checked {
         background-color: {{ section.settings.pf_checkbox_checked }};
         border-color: {{ section.settings.pf_checkbox_checked }};
-        /* The tick is a background image so no extra element is needed and the
-           input keeps its native semantics. */
+        /* The tick is a background image, so no extra element is needed in
+           markup this section does not own. */
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 5l3.5 3.5L11 1.5'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: center;
         background-size: 62%;
       }
 
-      #shopify-section-{{ section.id }} .facets .checkbox-container input[type='checkbox']:focus-visible {
+      #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox:focus-visible {
         outline: 2px solid {{ section.settings.pf_checkbox_checked }};
         outline-offset: 2px;
       }
 
-      /* Row rhythm: 22px line-height on a 40px pitch leaves 18px between rows. */
-      #shopify-section-{{ section.id }} .facets .checkbox-container {
-        display: flex;
-        align-items: center;
-        gap: {{ section.settings.pf_checkbox_gap }}px;
+      /* Label typography: same size and weight whether active or not, only the
+         colour changes. :has() on the wrapper keeps it tied to the real input
+         state rather than a class the theme would have to maintain. */
+      #shopify-section-{{ section.id }} .facets .checkbox-control label {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 500;
+        color: #696969;
+        cursor: pointer;
       }
 
-      #shopify-section-{{ section.id }} .facets .checkbox-container + .checkbox-container,
-      #shopify-section-{{ section.id }} .facets li + li {
-        margin-block-start: {{ section.settings.pf_checkbox_row_gap }}px;
+      #shopify-section-{{ section.id }} .facets .checkbox-control:has(input:checked) label {
+        color: #000000;
       }
 
       /* Image and swatch values: three per row, 67px media. */
@@ -742,6 +759,7 @@
                   update_on_change: false,
                   quick_links_menu: section.settings.quick_links_menu,
                   allowed_filters: production_filters,
+                  hide_facet_checkbox: hide_facet_checkbox,
                   context: 'drawer'
                 -%}
 
@@ -773,6 +791,7 @@
                     update_on_change: true,
                     quick_links_menu: section.settings.quick_links_menu,
                     allowed_filters: production_filters,
+                    hide_facet_checkbox: hide_facet_checkbox,
                     context: 'sidebar'
                   -%}
 
