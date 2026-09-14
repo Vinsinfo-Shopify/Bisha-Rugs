@@ -337,6 +337,46 @@
         }
       {%- endif -%}
 
+      /* Rug Type. Styled to sit with the other sidebar groups: the same
+         heading treatment, and values using the checkbox-value typography from
+         the spec since these are text rows, not image swatches. */
+      #shopify-section-{{ section.id }} .pf-rugtype {
+        border-block-start: 1px solid rgb(0 0 0 / 0.08);
+        padding-block-start: {{ section.settings.rt_group_gap }}px;
+        margin-block-start: {{ section.settings.rt_group_gap }}px;
+      }
+
+      #shopify-section-{{ section.id }} .pf-rugtype__heading {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 600;
+        color: #000000;
+        margin: 0 0 {{ section.settings.rt_heading_gap }}px;
+      }
+
+      #shopify-section-{{ section.id }} .pf-rugtype__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: {{ section.settings.rt_row_gap }}px;
+      }
+
+      #shopify-section-{{ section.id }} .pf-rugtype__item {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 6px;
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 500;
+        color: #696969;
+        text-decoration: none;
+      }
+
+      #shopify-section-{{ section.id }} .pf-rugtype__item.is-active {
+        color: #000000;
+      }
+
       /* The toolbar in the design carries no rules. */
       {%- if section.settings.pf_hide_toolbar_rules -%}
         #shopify-section-{{ section.id }} .collection-toolbar {
@@ -652,6 +692,120 @@
                     allowed_filters: production_filters,
                     context: 'sidebar'
                   -%}
+
+                  {%- comment -%}
+                    ---------------- Rug Type ----------------
+                    Sourced from a navigation menu, not from Search & Discovery,
+                    because the rug types are Shopify collections and Shopify has
+                    no collection filter source. Titles, URLs and order all come
+                    from the menu, so adding a collection there adds it here.
+
+                    Behaviour, as specified: on a collection that appears in the
+                    menu, only that one is listed and marked active. Anywhere
+                    else, including Shop All Types, the full list is shown.
+
+                    These are links rather than checkboxes because this is
+                    navigation: you are in one collection at a time. The current
+                    filter query string is carried across, so switching type
+                    keeps any Color, Style or Shape selection.
+                  {%- endcomment -%}
+                  {%- if section.settings.enable_new_filters -%}
+                    {%- liquid
+                      assign rt_menu = section.settings.rt_menu
+                      assign rt_parent = section.settings.rt_parent_item | downcase | strip
+                      assign rt_links = null
+
+                      if rt_parent != blank
+                        for l1 in rt_menu.links
+                          if rt_links == null
+                            assign t1 = l1.title | downcase | strip
+                            assign h1 = l1.handle | downcase | strip
+
+                            if t1 == rt_parent or h1 == rt_parent
+                              assign rt_links = l1.links
+                            endif
+                          endif
+
+                          if rt_links == null
+                            for l2 in l1.links
+                              if rt_links == null
+                                assign t2 = l2.title | downcase | strip
+                                assign h2 = l2.handle | downcase | strip
+
+                                if t2 == rt_parent or h2 == rt_parent
+                                  assign rt_links = l2.links
+                                endif
+                              endif
+                            endfor
+                          endif
+                        endfor
+                      else
+                        assign rt_links = rt_menu.links
+                      endif
+
+                      # Which of the menu's collections is the page we are on.
+                      # Compared on handle, taken from the link's own object
+                      # rather than parsed out of the URL.
+                      assign rt_current = null
+
+                      for l in rt_links
+                        if l.object.handle == collection.handle
+                          assign rt_current = l
+                        endif
+                      endfor
+
+                      # Carry the active filters across, so changing type does
+                      # not silently drop a Color or Style selection.
+                      assign rt_query = ''
+
+                      for f in collection.filters
+                        for v in f.active_values
+                          assign rt_query = rt_query | append: '&' | append: v.param_name | append: '=' | append: v.value | url_encode
+                        endfor
+                      endfor
+                    -%}
+
+                    {%- if rt_links.size > 0 -%}
+                      <div class="pf-rugtype">
+                        <p class="pf-rugtype__heading">{{ section.settings.rt_heading }}</p>
+
+                        <ul class="pf-rugtype__list">
+                          {%- for l in rt_links -%}
+                            {%- comment -%}
+                              Option B: on a matched collection only that entry
+                              renders; everywhere else the whole list does.
+                            {%- endcomment -%}
+                            {%- if rt_current == null or l.object.handle == collection.handle -%}
+                              {%- liquid
+                                assign rt_active = false
+                                if l.object.handle == collection.handle
+                                  assign rt_active = true
+                                endif
+
+                                assign rt_href = l.url
+                                if rt_query != blank
+                                  assign rt_href = l.url | append: '?' | append: rt_query | remove_first: '&'
+                                endif
+                              -%}
+                              <li>
+                                <a
+                                  class="pf-rugtype__item {% if rt_active %}is-active{% endif %}"
+                                  href="{{ rt_href }}"
+                                  {% if rt_active %}aria-current="page"{% endif %}
+                                >
+                                  <span class="pf-rugtype__label">{{ l.title }}</span>
+
+                                  {%- if section.settings.rt_show_counts and l.object.all_products_count > 0 -%}
+                                    <span class="pf-rugtype__count">({{ l.object.all_products_count }})</span>
+                                  {%- endif -%}
+                                </a>
+                              </li>
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                    {%- endif -%}
+                  {%- endif -%}
                 </safe-sticky>
               {%- endif -%}
             {%- endif -%}
@@ -924,6 +1078,71 @@
       "step": 1,
       "unit": "px",
       "default": 27
+    },
+    {
+      "type": "header",
+      "content": "Rug Type (from a menu)"
+    },
+    {
+      "type": "paragraph",
+      "content": "The rug types are Shopify collections, and Shopify has no collection filter source, so this group is built from a navigation menu instead. Titles, links and order all come from the menu. On a collection that appears in the menu only that entry is shown, marked as current; anywhere else the whole list is shown."
+    },
+    {
+      "type": "text",
+      "id": "rt_heading",
+      "label": "Group heading",
+      "info": "Leave empty to hide the whole group.",
+      "default": "Rug Type"
+    },
+    {
+      "type": "link_list",
+      "id": "rt_menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "text",
+      "id": "rt_parent_item",
+      "label": "Parent menu item",
+      "info": "The entry whose child links are the rug types, for example Shop By Type. Leave empty if the selected menu's own items are the rug types. Searched two levels deep, by title or handle.",
+      "default": "Shop By Type"
+    },
+    {
+      "type": "checkbox",
+      "id": "rt_show_counts",
+      "label": "Show product counts",
+      "info": "Counts are the collection totals, so they do not narrow as other filters are applied.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rt_group_gap",
+      "label": "Space above the group",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "rt_heading_gap",
+      "label": "Heading gap",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "rt_row_gap",
+      "label": "Row gap",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 12
     },
     {
       "type": "checkbox",
