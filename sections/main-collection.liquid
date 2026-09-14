@@ -47,6 +47,15 @@
     assign hide_facet_checkbox = false
   endif
 
+  # The design shows the groups open on load. Derived from the gate rather than
+  # asking for the merchant setting to be flipped, and it only changes the
+  # INITIAL state: the accordion still expands and collapses on click.
+  assign open_filters = section.settings.open_filters_by_default
+
+  if section.settings.enable_new_filters
+    assign open_filters = true
+  endif
+
   assign count_allow_list = ''
 
   if production_filters != blank
@@ -190,7 +199,14 @@
       align-items: center;
       gap: 38px;
       min-width: 0;
-      margin-block-end: {{ section.settings.color_strip_gap }}px;
+    }
+
+    /* The space below the strip came from the wrapping v-stack's own
+       sm:gap-12, which is 3rem = 48px, with my 49px margin stacking on top of
+       it for roughly 97px. The margin is gone and the wrapper's gap is set
+       directly instead, so there is one value controlling one boundary. */
+    #shopify-section-{{ section.id }} .v-stack.gap-6 {
+      gap: {{ section.settings.color_strip_gap }}px;
     }
 
     #shopify-section-{{ section.id }} .pf-colors__heading {
@@ -318,6 +334,27 @@
         color: #000000;
       }
 
+      /* Accordion chevron. facets.liquid already passes show_arrow: true, so
+         the existing accordion component supplies it; only its size and colour
+         are corrected here. Measured off the Figma at roughly 13 x 7 css px in
+         a mid grey, against Prestige's larger default. No Style-specific icon:
+         this applies to every group in the sidebar. */
+      #shopify-section-{{ section.id }} .facets .accordion__toggle svg {
+        width: {{ section.settings.pf_accordion_icon_width }}px;
+        height: auto;
+        color: {{ section.settings.pf_accordion_icon_color }};
+        flex: none;
+      }
+
+      /* Keeps the chevron on the heading's optical centre rather than its
+         text baseline. */
+      #shopify-section-{{ section.id }} .facets .accordion__toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
       /* A rule between groups, not beneath every heading. */
       #shopify-section-{{ section.id }} .facets .accordion + .accordion {
         border-block-start: 1px solid rgb(0 0 0 / 0.08);
@@ -339,10 +376,23 @@
          control: keyboard focus, screen readers and the theme's own change
          handler all keep working, and filtering still goes through the
          existing form. */
+      /* theme.css:1296 sets align-items: flex-start on .checkbox-control, which
+         top-aligns an 18px box against a 22px line and reads as misaligned.
+         Centred here, and the theme's --checkbox-control-gap is replaced by an
+         explicit gap so the two cannot disagree. */
       #shopify-section-{{ section.id }} .facets .checkbox-control {
         display: flex;
         align-items: center;
+        column-gap: {{ section.settings.pf_checkbox_gap }}px;
         gap: {{ section.settings.pf_checkbox_gap }}px;
+      }
+
+      /* The label is the other half of the row; without a matching line-height
+         the box and the text sit on different baselines. */
+      #shopify-section-{{ section.id }} .facets .checkbox-control label {
+        display: flex;
+        align-items: center;
+        min-height: {{ section.settings.pf_checkbox_size }}px;
       }
 
       #shopify-section-{{ section.id }} .facets .checkbox-control + .checkbox-control {
@@ -460,10 +510,15 @@
         gap: {{ section.settings.rt_row_gap }}px;
       }
 
+      /* Same row shape and the same checkbox values as the real filter
+         checkboxes, so the group is visually indistinguishable from them. The
+         values are read from the same settings, so changing the checkbox size
+         or colour moves both together. */
       #shopify-section-{{ section.id }} .pf-rugtype__item {
-        display: inline-flex;
-        align-items: baseline;
-        gap: 6px;
+        display: flex;
+        align-items: center;
+        gap: {{ section.settings.pf_checkbox_gap }}px;
+        min-height: {{ section.settings.pf_checkbox_size }}px;
         font-size: 16px;
         line-height: 22px;
         font-weight: 500;
@@ -471,8 +526,32 @@
         text-decoration: none;
       }
 
+      #shopify-section-{{ section.id }} .pf-rugtype__box {
+        flex: none;
+        width: {{ section.settings.pf_checkbox_size }}px;
+        height: {{ section.settings.pf_checkbox_size }}px;
+        border: 1px solid {{ section.settings.pf_checkbox_border }};
+        border-radius: {{ section.settings.pf_checkbox_radius }}px;
+        background: #ffffff;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
+      }
+
       #shopify-section-{{ section.id }} .pf-rugtype__item.is-active {
         color: #000000;
+      }
+
+      #shopify-section-{{ section.id }} .pf-rugtype__item.is-active .pf-rugtype__box {
+        background-color: {{ section.settings.pf_checkbox_checked }};
+        border-color: {{ section.settings.pf_checkbox_checked }};
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 5l3.5 3.5L11 1.5'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 62%;
+      }
+
+      #shopify-section-{{ section.id }} .pf-rugtype__item:focus-visible {
+        outline: 2px solid {{ section.settings.pf_checkbox_checked }};
+        outline-offset: 2px;
       }
 
       /* The toolbar in the design carries no rules. */
@@ -755,7 +834,7 @@
                 {%- render 'facets',
                   results: collection,
                   show_filters: section.settings.show_filters,
-                  open_filters_by_default: section.settings.open_filters_by_default,
+                  open_filters_by_default: open_filters,
                   update_on_change: false,
                   quick_links_menu: section.settings.quick_links_menu,
                   allowed_filters: production_filters,
@@ -787,7 +866,7 @@
                   {%- render 'facets',
                     results: collection,
                     show_filters: section.settings.show_filters,
-                    open_filters_by_default: section.settings.open_filters_by_default,
+                    open_filters_by_default: open_filters,
                     update_on_change: true,
                     quick_links_menu: section.settings.quick_links_menu,
                     allowed_filters: production_filters,
@@ -890,11 +969,20 @@
                                 endif
                               -%}
                               <li>
+                                {%- comment -%}
+                                  Rendered as a checkbox row so the group reads
+                                  the same as the other non-image filters. The
+                                  box is a span, not an input: this is still a
+                                  link to a collection, so a screen reader is
+                                  told the truth about what activating it does,
+                                  and aria-current marks the one you are on.
+                                {%- endcomment -%}
                                 <a
                                   class="pf-rugtype__item {% if rt_active %}is-active{% endif %}"
                                   href="{{ rt_href }}"
                                   {% if rt_active %}aria-current="page"{% endif %}
                                 >
+                                  <span class="pf-rugtype__box" aria-hidden="true"></span>
                                   <span class="pf-rugtype__label">{{ l.title }}</span>
 
                                   {%- if section.settings.rt_show_counts and l.object.all_products_count > 0 -%}
@@ -1245,6 +1333,23 @@
       "step": 1,
       "unit": "px",
       "default": 12
+    },
+    {
+      "type": "range",
+      "id": "pf_accordion_icon_width",
+      "label": "Accordion chevron width",
+      "info": "Measured at about 13px on the 1440 frame.",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "pf_accordion_icon_color",
+      "label": "Accordion chevron colour",
+      "default": "#807E7A"
     },
     {
       "type": "checkbox",
