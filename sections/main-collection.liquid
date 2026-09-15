@@ -209,6 +209,7 @@
       gap: 38px;
       min-width: 0;
       margin-block-start: {{ section.settings.color_strip_gap_top }}px;
+      margin-block-end: {{ section.settings.color_strip_gap }}px;
     }
 
     /* The space below the strip came from the wrapping v-stack's own
@@ -1641,6 +1642,17 @@
       "step": 1,
       "unit": "px",
       "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pf_toolbar_gap",
+      "label": "Space below the toolbar",
+      "info": "Toolbar row to the first product row.",
+      "min": 0,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 49
     },
     {
       "type": "range",
