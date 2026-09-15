@@ -223,36 +223,6 @@
         justify-self: end;
         z-index:1;
       }
-      #shopify-section-{{ section.id }} .collection-toolbar__button-container {
-        border: 0;
-        box-shadow: none;
-        padding-inline: 0;
-        position: relative;
-      }
-
-      #shopify-section-{{ section.id }} .collection-toolbar__button[aria-controls="sort-by-popover"] {
-        font-size: 16px;
-        line-height: 22px;
-        font-weight: 600;
-        color: #000000;
-        text-transform: none;
-        letter-spacing: normal;
-        white-space: nowrap;
-      }
-
-      #shopify-section-{{ section.id }} .pf-sort-value {
-        font-weight: 400;
-      }
-
-      #shopify-section-{{ section.id }} .collection-toolbar__button .text-with-icon {
-        gap: 8px;
-      }
-
-      #shopify-section-{{ section.id }} .collection-toolbar__button svg {
-        width: 13px;
-        height: auto;
-        color: #807E7A;
-      }
     }
 
     @media screen and (max-width: 699px) {
@@ -907,21 +877,22 @@
               {%- endif -%}
 
               {%- if section.settings.show_sort_by -%}
+                {%- assign selected_sort_by_value = collection.sort_by | default: collection.default_sort_by -%}
+
+                <div class="collection-toolbar__button-container">
+                  <button type="button" aria-controls="sort-by-popover" class="collection-toolbar__button heading text-xxs w-full">
                     <span class="text-with-icon justify-center">
                       {{- 'collection.faceting.sort_by' | t -}}
-                      {%- if section.settings.enable_new_filters -%}
-                        {%- liquid
-                          assign pf_sort_label = ''
-                          for sort_option in collection.sort_options
-                            if sort_option.value == selected_sort_by_value
-                              assign pf_sort_label = sort_option.name
-                            endif
-                          endfor
-                        -%}
-                        <span class="pf-sort-value">{{ pf_sort_label }}</span>
-                      {%- endif -%}
                       {%- render 'icon' with 'chevron-down' -%}
                     </span>
+                  </button>
+
+                  <facets-sort-popover
+                    id="sort-by-popover"
+                    section-id="{{ section.id }}"
+                    class="popover popover--bottom-end color-scheme color-scheme--dialog"
+                    close-on-listbox-select
+                  >
                     <p class="h4" slot="header">{{ 'collection.faceting.sort_by' | t }}</p>
 
                     <x-listbox class="popover__value-list">
