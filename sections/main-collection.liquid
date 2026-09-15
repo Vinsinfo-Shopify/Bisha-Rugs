@@ -442,11 +442,10 @@
         min-height: {{ section.settings.pf_checkbox_size }}px;
       }
 
-      /* The theme nudges the input down to sit on the first text line. With a
-         centred row that nudge is what puts it out of line. */
       #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox {
         margin-block: 0;
         align-self: center;
+        transform: translateY({{ section.settings.pf_checkbox_nudge }}px);
       }
 
       #shopify-section-{{ section.id }} .facets .checkbox-control label {
