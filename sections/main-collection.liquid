@@ -188,12 +188,6 @@
 
   {%- if section.settings.enable_new_filters -%}
 
-    #shopify-section-{{ section.id }} .collection-toolbar.full-bleed {
-      width: 100%;
-      max-width: none;
-      margin-inline: 0;
-    }
-
     @media screen and (min-width: 1000px) {
       #shopify-section-{{ section.id }} .container {
         --container-max-width: 1300px;
@@ -201,7 +195,7 @@
       }
       #shopify-section-{{ section.id }} .collection-toolbar {
         display: grid;
-        grid-template-columns: {{ 332 }}px minmax(0, 1fr);
+        grid-template-columns: {{ 396 }}px minmax(0, 1fr);
         align-items: center;
       }
 
@@ -223,11 +217,128 @@
         justify-self: end;
         z-index:1;
       }
+
+      #shopify-section-{{ section.id }} .collection-toolbar__button-container:has([aria-controls="sort-by-popover"]) {
+        border: 0;
+        box-shadow: none;
+      }
+      #shopify-section-{{ section.id }} .collection__main {
+        row-gap: 16px;
+      }
+
+      /* Chips: rounded outline, black border, per the design. Prestige draws
+         these with box-shadow rather than border in places, so both are
+         stated. */
+      #shopify-section-{{ section.id }} .active-facets .removable-facet {
+        border: 1px solid #000000;
+        border-radius: 999px;
+        box-shadow: none;
+        padding: 6px 14px;
+        flex-direction: row-reverse;
+      }
+       #shopify-section-{{ section.id }} .active-facets {
+        margin-block-start: 3px;
+      }
     }
 
-    @media screen and (max-width: 699px) {
+    @media screen and (max-width: 749px) {
       #shopify-section-{{ section.id }} .container {
         --container-gutter: 12px;
+      }
+      #shopify-section-{{ section.id }} .collection-toolbar.full-bleed {
+        width: 100%;
+        max-width: none;
+        margin-inline: 0;
+      }
+       #shopify-section-{{ section.id }} .collection,
+      #shopify-section-{{ section.id }} .collection__main,
+      #shopify-section-{{ section.id }} .product-list {
+        margin-inline: 0;
+        width: auto;
+        max-width: none;
+      }
+            /* Mobile Filter/Sort bar. Prestige's own buttons and the grid-density
+         switcher are hidden and this replaces them. State comes from
+         active_values_count and collection.sort_options, so both lines are
+         real, not static text. */
+      #shopify-section-{{ section.id }} .collection-toolbar__button-list,
+      #shopify-section-{{ section.id }} collection-layout-switch {
+        display: none;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar {
+        display: grid;
+        grid-template-columns: 1fr 1px 1fr;
+        align-items: center;
+        min-height: 66px;
+        background: #EFE8E2;
+        margin-inline: calc(var(--container-gutter) * -1);
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar::before {
+        content: '';
+        grid-column: 2;
+        grid-row: 1;
+        width: 1px;
+        height: 45px;
+        background: #B9B0A7;
+        align-self: center;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__half {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px;
+        background: none;
+        border: 0;
+        text-align: start;
+        cursor: pointer;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__half:first-of-type { grid-column: 1; }
+      #shopify-section-{{ section.id }} .pf-mobilebar__half:last-of-type  { grid-column: 3; }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__icon {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        color: #202020;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__icon svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__text {
+        display: grid;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__label {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 500;
+        color: #202020;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__value {
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 400;
+        color: #666666;
+      }
+      #shopify-section-{{ section.id }} .pf-mobilebar {
+        width: 100%;
+      }
+      #shopify-section-{{ section.id }} .collection-toolbar {
+        overflow: visible;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar {
+        width: calc(100% + (var(--container-gutter) * 2));
       }
     }
     /* ---------- Shop by Color (Phase 1) ----------
@@ -373,6 +484,9 @@
         font-weight: 700;
         color: #000000;
         margin: 0 0 {{ section.settings.pf_filters_heading_gap }}px;
+      }
+      #shopify-section-{{ section.id }} .pf-mobilebar {
+        display: none;
       }
 
       /* Layout.
@@ -691,7 +805,13 @@
       {%- endif -%}
     }
 
-    @media screen and (max-width: 699px) {
+    @media screen and (min-width: 749px) {
+      #shopify-section-{{ section.id }} .pf-mobilebar {
+        display: none;
+      }
+    }
+
+    @media screen and (max-width: 749px) {
       #shopify-section-{{ section.id }} .pf-colors {
         display: block;
         margin-block-start: {{ section.settings.color_strip_gap_top_mobile }}px;
@@ -866,7 +986,69 @@
       {%- else -%}
         {%- if show_filters or section.settings.show_sort_by or section.settings.show_grid_mode_selector or section.settings.show_results_count -%}
           <height-observer variable="collection-toolbar" class="collection-toolbar full-bleed">
-            <div class="collection-toolbar__button-list">
+            {%- if section.settings.enable_new_filters -%}
+                {%- liquid
+                  assign pf_sort_label = ''
+                  assign selected_sort_by_value = collection.sort_by | default: collection.default_sort_by
+                  for sort_option in collection.sort_options
+                    if sort_option.value == selected_sort_by_value
+                      assign pf_sort_label = sort_option.name
+                    endif
+                  endfor
+
+                  if active_values_count == 0
+                    assign pf_filter_state = 'No Filter Applied'
+                  elsif active_values_count == 1
+                    assign pf_filter_state = '1 Filter Applied'
+                  else
+                    assign pf_filter_state = active_values_count | append: ' Filters Applied'
+                  endif
+                -%}
+
+                <div class="pf-mobilebar">
+                  <button type="button" aria-controls="facets-drawer" class="pf-mobilebar__half">
+                    <span class="pf-mobilebar__icon" aria-hidden="true">
+                      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+                        <path d="M1 4.5h3M7 4.5h10M1 13.5h10M14 13.5h3"/>
+                        <circle cx="5.5" cy="4.5" r="1.8"/><circle cx="12.5" cy="13.5" r="1.8"/>
+                      </svg>
+                    </span>
+                    <span class="pf-mobilebar__text">
+                      <span class="pf-mobilebar__label">Filter</span>
+                      <span class="pf-mobilebar__value">{{ pf_filter_state }}</span>
+                    </span>
+                  </button>
+
+                  <button type="button" aria-controls="sort-by-popover" class="pf-mobilebar__half">
+                    <span class="pf-mobilebar__icon" aria-hidden="true">
+                      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 2v14M5 2L2.5 4.5M5 2l2.5 2.5M13 16V2M13 16l2.5-2.5M13 16l-2.5-2.5"/>
+                      </svg>
+                    </span>
+                    <span class="pf-mobilebar__text">
+                      <span class="pf-mobilebar__label">Sort By</span>
+                      <span class="pf-mobilebar__value">{{ pf_sort_label }}</span>
+                    </span>
+                  </button>
+                </div>
+              {%- endif -%}
+                        <div class="collection-toolbar__button-list">
+              {%- comment -%}
+                Mobile Filter / Sort bar.
+
+                Replaces Prestige's mobile buttons and grid-density switcher on
+                small screens; the stock buttons below are kept for desktop and
+                are untouched. Both halves reuse the existing aria-controls, so
+                the drawer and the sort popover open exactly as before and no
+                new JavaScript is involved.
+
+                Both secondary lines are real state: the filter count comes from
+                active_values_count, which is already resolved at the top of this
+                file and respects the production allow-list, and the sort label
+                comes from collection.sort_options.
+              {%- endcomment -%}
+              
+
               {%- if show_filters -%}
                 <div class="collection-toolbar__button-container {% if section.settings.filter_layout == 'sidebar' %}md:hidden{% endif %}">
                   <button type="button" aria-controls="facets-drawer" class="collection-toolbar__button heading text-xxs w-full">
@@ -877,25 +1059,21 @@
               {%- endif -%}
 
               {%- if section.settings.show_sort_by -%}
-                    <span class="text-with-icon justify-center">
-                      {{- 'collection.faceting.sort_by' | t -}}
-                      {%- if section.settings.enable_new_filters -%}
-                        {%- liquid
-                          assign pf_sort_label = ''
-                          for sort_option in collection.sort_options
-                            if sort_option.value == selected_sort_by_value
-                              assign pf_sort_label = sort_option.name
-                            endif
-                          endfor
-                        -%}
-                        <span class="pf-sort-value">{{ pf_sort_label }}</span>
-                      {%- endif -%}
-                      {%- render 'icon' with 'chevron-down' -%}
-                    </span>
                 <div class="collection-toolbar__button-container">
                   <button type="button" aria-controls="sort-by-popover" class="collection-toolbar__button heading text-xxs w-full">
                     <span class="text-with-icon justify-center">
                       {{- 'collection.faceting.sort_by' | t -}}
+                      {%- if section.settings.enable_new_filters -%}
+                        {%- liquid
+                          assign pf_sort_value_label = ''
+                          for sort_option in collection.sort_options
+                            if sort_option.value == selected_sort_by_value
+                              assign pf_sort_value_label = sort_option.name
+                            endif
+                          endfor
+                        -%}
+                        <span class="pf-sort-value">{{ pf_sort_value_label }}</span>
+                      {%- endif -%}
                       {%- render 'icon' with 'chevron-down' -%}
                     </span>
                   </button>
