@@ -213,10 +213,19 @@
       #shopify-section-{{ section.id }} .collection-list--sbs .container {
           --container-max-width: 1300px;
         }
+      /* The carousel bleeds out of the container to the page edges. 50vw counts
+         the vertical scrollbar, so calc(50% - 50vw) made this box 100vw wide
+         against a page that is only 100vw - scrollbar, which put ~8px of
+         horizontal overflow (and a scrollbar) on the whole document. Container
+         query units measure the section wrapper instead, which is the real page
+         width, so the bleed lands exactly on the edges at every viewport. */
+      #shopify-section-{{ section.id }} .collection-list--sbs {
+          container-type: inline-size;
+        }
       #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area {
-          margin-inline: calc(50% - 50vw);
-          padding-inline: calc(50vw - 50%);
-          scroll-padding-inline: calc(50vw - 50%);
+          margin-inline: calc(50% - 50cqw);
+          padding-inline: calc(50cqw - 50%);
+          scroll-padding-inline: calc(50cqw - 50%);
         }
     }
 

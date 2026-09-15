@@ -245,6 +245,8 @@
 /* Service Strip */
 
 .cart-drawer-marquee {
+  display: block;
+  overflow: clip;
   background: var(--cart-drawer-strip-background);
   color: var(--cart-drawer-strip-text);
   font-family: var(--text-font-family);
