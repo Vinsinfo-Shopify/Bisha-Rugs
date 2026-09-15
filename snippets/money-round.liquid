@@ -1,0 +1,17 @@
+{%- doc -%}
+  Renders a currency amount rounded to the nearest whole unit, with no decimal places.
+
+  @param {number} amount - amount in cents
+  @param {boolean} [with_currency] - use money_with_currency instead of money
+{%- enddoc -%}
+
+{%- liquid
+  assign rounded_amount = amount | divided_by: 100.0 | round | times: 100
+
+  if with_currency
+    assign formatted_amount = rounded_amount | money_with_currency
+  else
+    assign formatted_amount = rounded_amount | money
+  endif
+-%}
+{{- formatted_amount | replace: '.00', '' | replace: ',00', '' -}}

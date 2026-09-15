@@ -48,7 +48,7 @@
     {%- for discount_application in cart.cart_level_discount_applications -%}
       <li class="discount-badge cart-drawer__discount-badge">
         {%- render 'icon' with 'discount', width: 11 -%}
-        {{ discount_application.title }} (-{{ discount_application.total_allocated_amount | money }})
+        {{ discount_application.title }} (-{%- render 'money-round', amount: discount_application.total_allocated_amount -%})
 
         {%- if section.settings.allow_discount_application and discount_application.type != '' -%}
           <cart-discount-remove-button

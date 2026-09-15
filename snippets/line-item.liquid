@@ -74,21 +74,13 @@
     <div class="cart-drawer-line__prices">
       <span class="cart-drawer-line__price">
         <span class="sr-only">{{ 'product.price.sale_price' | t }}</span>
-        {%- if settings.currency_code_enabled -%}
-          {{- line_item.final_line_price | money_with_currency -}}
-        {%- else -%}
-          {{- line_item.final_line_price | money -}}
-        {%- endif -%}
+        {%- render 'money-round', amount: line_item.final_line_price, with_currency: settings.currency_code_enabled -%}
       </span>
 
       {%- if show_compare_at -%}
         <s class="cart-drawer-line__compare-at">
           <span class="sr-only">{{ 'product.price.regular_price' | t }}</span>
-          {%- if settings.currency_code_enabled -%}
-            {{- line_compare_at_price | money_with_currency -}}
-          {%- else -%}
-            {{- line_compare_at_price | money -}}
-          {%- endif -%}
+          {%- render 'money-round', amount: line_compare_at_price, with_currency: settings.currency_code_enabled -%}
         </s>
 
         <span class="cart-drawer-line__badge">{{ 'general.product.save' | t: percentage: saving_percentage }}</span>
@@ -112,7 +104,7 @@
         {%- for discount_allocation in line_item.line_level_discount_allocations -%}
           <li class="discount-badge cart-drawer__discount-badge">
             {%- render 'icon' with 'discount', width: 11 -%}
-            {{ discount_allocation.discount_application.title }} (-{{ discount_allocation.amount | money }})
+            {{ discount_allocation.discount_application.title }} (-{%- render 'money-round', amount: discount_allocation.amount -%})
 
             {%- if section.settings.allow_discount_application and discount_allocation.discount_application.type != '' -%}
               <cart-discount-remove-button

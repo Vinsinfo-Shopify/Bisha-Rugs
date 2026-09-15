@@ -32,6 +32,10 @@
     assign standard_shipping = section.settings.shipping_standard_amount | times: 100
   endif
 
+  if section.settings.shipping_percentage > 0
+    assign standard_shipping = cart.items_subtotal_price | times: section.settings.shipping_percentage | divided_by: 10000.0 | round | times: 100
+  endif
+
   assign sticky_style = section.settings.sticky_cta_style
   assign summary_in_footer = false
   if sticky_style == 'total' or sticky_style == 'shipping_total'
@@ -182,10 +186,10 @@
         {%- endif -%}
 
         {%- if section.settings.show_savings and total_savings > 0 -%}
-          {%- assign savings_money = total_savings | money -%}
+          {%- assign savings_money = total_savings | divided_by: 100.0 | round | times: 100 | money | replace: '.00', '' | replace: ',00', '' -%}
           {%- capture savings_money -%}<strong>{{ savings_money }}</strong>{%- endcapture -%}
           <p class="cart-drawer__savings">
-            {{- section.settings.savings_text | replace: '[amount]', savings_money -}}
+            {{- section.settings.savings_text | replace: '[amount]', savings_amount_html -}}
           </p>
         {%- endif -%}
 
@@ -206,7 +210,7 @@
             {%- capture checkout_button -%}
               {{- 'cart.general.checkout' | t -}}
               {%- if show_price_in_button -%}
-                <span class="cart-drawer__button-price">{{- cart.total_price | money -}}</span>
+                <span class="cart-drawer__button-price">{%- render 'money-round', amount: cart.total_price -%}</span>
               {%- endif -%}
             {%- endcapture -%}
 
@@ -218,9 +222,6 @@
           {%- render 'cart-drawer-service-list', section: section -%}
         {%- endif -%}
 
-        {%- if section.settings.show_shipping_text and standard_shipping > 0 -%}
-          <p class="cart-drawer__tax-note">{{ 'cart.general.taxes_and_shipping_at_checkout' | t }}</p>
-        {%- endif -%}
       </form>
     </div>
   {%- endif -%}
@@ -548,6 +549,17 @@
       "default": "Free Shipping"
     },
     {
+      "type": "range",
+      "id": "promo_tier_1_position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "First milestone position",
+      "info": "Where the first marker sits on the track. Set to 0 to position it from the thresholds instead.",
+      "default": 35
+    },
+    {
       "type": "number",
       "id": "promo_tier_1_threshold",
       "label": "First reward threshold",
@@ -705,10 +717,21 @@
       "default": "Shipping"
     },
     {
+      "type": "range",
+      "id": "shipping_percentage",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Shipping rate as a percentage of subtotal",
+      "info": "Recalculates on every cart change and rounds to a whole number. Set to 0 to use the fixed amount below instead.",
+      "default": 30
+    },
+    {
       "type": "number",
       "id": "shipping_standard_amount",
-      "label": "Standard shipping amount",
-      "info": "Struck through once the first promotion threshold is met. Leave empty to show the checkout notice instead.",
+      "label": "Fixed shipping amount",
+      "info": "Used only when the percentage above is 0. Leave empty to show the checkout notice instead.",
       "default": 0
     },
     {

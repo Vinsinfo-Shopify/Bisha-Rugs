@@ -62,7 +62,7 @@
             <a href="{{ product.url }}" class="cart-drawer-recommendation__title">{{ product.title }}</a>
 
             <div class="cart-drawer-recommendation__prices">
-              {%- render 'price-list', product: product, context: 'card', hide_unit_price: true -%}
+              {%- render 'price-list', product: product, context: 'card', hide_unit_price: true, round_to_whole: true -%}
 
               {%- if section.settings.cross_sell_show_save_badge and saving_percentage > 0 -%}
                 <span class="cart-drawer-recommendation__badge">
