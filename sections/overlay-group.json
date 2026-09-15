@@ -57,7 +57,11 @@
         "promo_tier_2_threshold": 1000,
         "promo_locked_text": "Add [amount] more to get [reward]",
         "promo_unlocked_text": "Congratulations, you've unlocked [reward]",
-        "cross_sell_products": [],
+        "cross_sell_products": [
+          "l-010-agatha-hand-knotted-rug",
+          "hand-knotted-turkish-oushak-rug-8x10-pastel-floral-wool-carpet",
+          "l-013-agnes-hand-knotted-rug"
+        ],
         "cross_sell_title": "Customers Also Bought:",
         "cross_sell_card_width": 368,
         "cross_sell_show_save_badge": true,
