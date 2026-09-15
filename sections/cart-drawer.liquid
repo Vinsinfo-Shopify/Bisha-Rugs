@@ -222,9 +222,6 @@
           {%- render 'cart-drawer-service-list', section: section -%}
         {%- endif -%}
 
-        {%- if section.settings.show_shipping_text and standard_shipping > 0 -%}
-          <p class="cart-drawer__tax-note">{{ 'cart.general.taxes_and_shipping_at_checkout' | t }}</p>
-        {%- endif -%}
       </form>
     </div>
   {%- endif -%}
