@@ -224,21 +224,24 @@
         z-index:1;
       }
             /* Prestige separates toolbar controls with a border. The design has none. */
-      #shopify-section-{{ section.id }} .collection-toolbar__button-container {
+            /* Scoped to the sort control specifically. The button list also holds
+         the mobile filter button, which Prestige hides with md:hidden;
+         styling every .collection-toolbar__button in the list was bringing it
+         back at desktop width as a second, non-functional "Sort by". */
+      #shopify-section-{{ section.id }} .collection-toolbar__button-container:not(.md\:hidden) {
         border: 0;
         box-shadow: none;
         padding-inline: 0;
       }
 
-      /* "Sort by:" at 16/22/600 and the selected value at 16/22/400, both
-         black, against Prestige's small uppercase heading style. */
-      #shopify-section-{{ section.id }} .collection-toolbar__button-list .collection-toolbar__button {
+      #shopify-section-{{ section.id }} .collection-toolbar__button-container:not(.md\:hidden) .collection-toolbar__button {
         font-size: 16px;
         line-height: 22px;
         font-weight: 600;
         color: #000000;
         text-transform: none;
         letter-spacing: normal;
+        white-space: nowrap;
       }
 
       #shopify-section-{{ section.id }} .pf-sort-value {
