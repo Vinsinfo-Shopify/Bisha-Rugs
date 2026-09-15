@@ -1,0 +1,29 @@
+{%- doc -%}
+  PDP product pill.
+
+  Uses the same expression the product card already uses, at
+  snippets/product-card.liquid:231 -
+
+    product.metafields.custom.pile_type.value | default: product.type
+
+  so the PDP pill and the card pill can never disagree: one source of truth,
+  the existing Pile type metaobject with the product type as the fallback. No
+  new field, no new logic, nothing hardcoded.
+
+  Renders nothing when neither value is set, so a product without a pile type
+  or a type shows no empty pill.
+
+  Usage - a "Liquid" block at the top of the product information column:
+
+    {% render 'pdp-product-pill' %}
+{%- enddoc -%}
+
+{%- liquid
+  assign product_tag = product.metafields.custom.pile_type.value | default: product.type
+-%}
+
+{%- if product_tag != blank -%}
+  <div class="pdp-pills">
+    <span class="pdp-pill">{{ product_tag }}</span>
+  </div>
+{%- endif -%}

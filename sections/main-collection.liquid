@@ -187,6 +187,49 @@
   }
 
   {%- if section.settings.enable_new_filters -%}
+
+    #shopify-section-{{ section.id }} .collection-toolbar.full-bleed {
+      width: 100%;
+      max-width: none;
+      margin-inline: 0;
+    }
+
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .container {
+        --container-max-width: 1300px;
+        --container-gutter: 70px;
+      }
+      #shopify-section-{{ section.id }} .collection-toolbar {
+        display: grid;
+        grid-template-columns: {{ 332 }}px minmax(0, 1fr);
+        align-items: center;
+      }
+
+      #shopify-section-{{ section.id }} .collection-toolbar__products-count {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: start;
+        margin: 0;
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 400;
+        color: #000000;
+        width: 100%;
+      }
+
+      #shopify-section-{{ section.id }} .collection-toolbar__button-list {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+        z-index:1;
+      }
+    }
+
+    @media screen and (max-width: 699px) {
+      #shopify-section-{{ section.id }} .container {
+        --container-gutter: 12px;
+      }
+    }
     /* ---------- Shop by Color (Phase 1) ----------
        Only emitted while the development gate is on. */
     /* Measured from the 1440 frame: label inline to the left of the row, not
@@ -194,11 +237,22 @@
     /* Measured from the 1440 frame: label inline to the left of the row, not
        stacked above it, and vertically centred against the circles. The heading
        sits 38px clear of the first swatch. */
+    /* Space above the strip.
+       Nothing was setting it: the strip is the first child of the section, the
+       section has no top padding, and the wrapping v-stack's gap only applies
+       BETWEEN children. So the swatches sat hard against the collection banner,
+       about 1px, against 24px in the Figma (banner edge at 28, circle top at
+       51).
+
+       Applied to the strip itself rather than to the section, so it cannot
+       disturb the banner above or the 49px below. */
     #shopify-section-{{ section.id }} .pf-colors {
       display: flex;
       align-items: center;
       gap: 38px;
       min-width: 0;
+      margin-block-start: {{ section.settings.color_strip_gap_top }}px;
+      margin-block-end: {{ section.settings.color_strip_gap }}px;
     }
 
     /* The space below the strip came from the wrapping v-stack's own
@@ -206,7 +260,7 @@
        it for roughly 97px. The margin is gone and the wrapper's gap is set
        directly instead, so there is one value controlling one boundary. */
     #shopify-section-{{ section.id }} .v-stack.gap-6 {
-      gap: {{ section.settings.color_strip_gap }}px;
+      gap: 0;
     }
 
     #shopify-section-{{ section.id }} .pf-colors__heading {
@@ -231,7 +285,13 @@
       overflow: auto hidden;
       overscroll-behavior-x: contain;
       scrollbar-width: none;
+      /* overflow-x: auto clips at the padding edge, which cut the outer 2px of
+         the active ring on the first swatch and made it look broken on the
+         left. The padding gives the ring room; the negative margin puts the row
+         back where it was, so nothing shifts. */
       padding-block: 4px;
+      padding-inline: {{ section.settings.color_ring_bleed }}px;
+      margin-inline: -{{ section.settings.color_ring_bleed }}px;
     }
 
     #shopify-section-{{ section.id }} .pf-colors__track::-webkit-scrollbar {
@@ -261,11 +321,6 @@
       color: #000000;
     }
 
-    /* One box whether it holds a metaobject image, a swatch image or a plain
-       colour, so the row keeps its rhythm regardless of what Shopify returns. */
-    /* One box whatever Shopify returns: a metaobject image, a swatch image or
-       a plain colour. Keeps the row's rhythm regardless of which branch a value
-       takes, and stops a missing swatch collapsing the pill. */
     #shopify-section-{{ section.id }} .pf-color__media {
       display: block;
       width: {{ section.settings.color_swatch_size }}px;
@@ -274,9 +329,25 @@
       object-fit: cover;
       background-size: cover;
       background-position: center;
-      box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+      /* Matches the homepage Shop by Shade swatch: a real 1px border at
+         0.12, not an inset shadow, so the inset active ring below has the
+         shadow layer to itself. */
+      border: 1px solid rgb(0 0 0 / 0.12);
+      transition: box-shadow 0.15s ease-in-out;
     }
 
+    /* Active ring copied from the homepage Shop by Shade section: two INSET
+       bands rather than the outset rings used previously. 2.5px in the text
+       colour at the edge, then 3px of page background inside it. Inset means
+       the swatch keeps its exact diameter, so the row cannot shift and the
+       ring can never be clipped by the scroll track. */
+    #shopify-section-{{ section.id }} .pf-color:hover .pf-color__media,
+    #shopify-section-{{ section.id }} .pf-color:focus-visible .pf-color__media,
+    #shopify-section-{{ section.id }} .pf-color.is-active .pf-color__media {
+      box-shadow:
+        inset 0 0 0 1.5px rgb(var(--text-color)),
+        inset 0 0 0 4px rgb(var(--background-without-opacity));
+    }
     /* The cleared state when no image is set for it. A conic sweep reads as
        "any colour" without naming one. */
     #shopify-section-{{ section.id }} .pf-color__media--all {
@@ -284,20 +355,6 @@
         from 180deg,
         #c9d6df, #e8d5c4, #d9c3a9, #b8c4a0, #d4a5a5, #a8b8c8, #c9d6df
       );
-    }
-
-    /* Active is a thin ring sitting just outside the swatch, measured at about
-       3px clear of it. Drawn with box-shadow so it adds no layout width and the
-       row cannot shift when the selection changes. */
-    /* Active is a thin ring just outside the swatch. Measured at 4px total
-       across the diameter, so roughly 2px a side: a 1px breathing gap and a 1px
-       ring. Drawn with box-shadow so it adds no layout width and the row cannot
-       shift when the selection changes. */
-    #shopify-section-{{ section.id }} .pf-color.is-active .pf-color__media {
-      box-shadow:
-        inset 0 0 0 1px rgb(0 0 0 / 0.08),
-        0 0 0 1px rgb(var(--background-without-opacity)),
-        0 0 0 2px #000000;
     }
 
     /* ---------------- PHASE 2: desktop filter sidebar ----------------
@@ -416,6 +473,9 @@
          regardless of how long the label wraps.
 
          Typography is untouched: this is purely the row structure. */
+      #shopify-section-{{ section.id }} .facets .v-stack:has(> .checkbox-control) {
+        gap: 0;
+      }
       #shopify-section-{{ section.id }} .facets .checkbox-control {
         display: grid;
         grid-template-columns: auto minmax(0, 1fr);
@@ -425,11 +485,10 @@
         min-height: {{ section.settings.pf_checkbox_size }}px;
       }
 
-      /* The theme nudges the input down to sit on the first text line. With a
-         centred row that nudge is what puts it out of line. */
       #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox {
         margin-block: 0;
         align-self: center;
+        transform: translateY({{ section.settings.pf_checkbox_nudge }}px);
       }
 
       #shopify-section-{{ section.id }} .facets .checkbox-control label {
@@ -592,6 +651,22 @@
         color: #000000;
       }
 
+            /* The colour was declared on the <a> and inherited by the spans, which
+         lets Prestige's own rules on `a` take it. Stated on the spans that
+         actually hold the text, the same way the Style labels do, so both
+         groups resolve their colour the same way and the inactive grey is not
+         at the mercy of anchor styling. */
+      #shopify-section-{{ section.id }} .pf-rugtype__item .pf-rugtype__label,
+      #shopify-section-{{ section.id }} .pf-rugtype__item .pf-rugtype__count {
+        color: #696969;
+        opacity: 0.7;
+      }
+
+      #shopify-section-{{ section.id }} .pf-rugtype__item.is-active .pf-rugtype__label,
+      #shopify-section-{{ section.id }} .pf-rugtype__item.is-active .pf-rugtype__count {
+        color: #000000;
+      }
+
       #shopify-section-{{ section.id }} .pf-rugtype__item.is-active .pf-rugtype__box {
         background-color: {{ section.settings.pf_checkbox_checked }};
         border-color: {{ section.settings.pf_checkbox_checked }};
@@ -619,10 +694,34 @@
     @media screen and (max-width: 699px) {
       #shopify-section-{{ section.id }} .pf-colors {
         display: block;
+        margin-block-start: {{ section.settings.color_strip_gap_top_mobile }}px;
       }
 
-      #shopify-section-{{ section.id }} .pf-colors__heading {
-        margin-block-end: 10px;
+      /* No heading on mobile. */
+      {%- if section.settings.color_hide_heading_mobile -%}
+        #shopify-section-{{ section.id }} .pf-colors__heading {
+          display: none;
+        }
+      {%- else -%}
+        #shopify-section-{{ section.id }} .pf-colors__heading {
+          margin-block-end: 10px;
+        }
+      {%- endif -%}
+
+      /* Edge to edge scrolling.
+         The track breaks out of the container with a negative margin, then puts
+         the gutter back as padding. The result: at rest the first swatch sits
+         on the normal left margin while the row runs off the right edge, and
+         scrolled to the end the last swatch has the same margin on the right
+         while the row runs off the left. The scroll surface itself is the full
+         screen width the whole time.
+
+         scroll-padding keeps the first item aligned to that margin rather than
+         to the bleed when the row snaps or is scrolled back. */
+      #shopify-section-{{ section.id }} .pf-colors__track {
+        margin-inline: calc(var(--container-gutter) * -1);
+        padding-inline: var(--container-gutter);
+        scroll-padding-inline-start: var(--container-gutter);
       }
 
       #shopify-section-{{ section.id }} .pf-color {
@@ -778,8 +877,21 @@
               {%- endif -%}
 
               {%- if section.settings.show_sort_by -%}
-                {%- assign selected_sort_by_value = collection.sort_by | default: collection.default_sort_by -%}
-
+                    <span class="text-with-icon justify-center">
+                      {{- 'collection.faceting.sort_by' | t -}}
+                      {%- if section.settings.enable_new_filters -%}
+                        {%- liquid
+                          assign pf_sort_label = ''
+                          for sort_option in collection.sort_options
+                            if sort_option.value == selected_sort_by_value
+                              assign pf_sort_label = sort_option.name
+                            endif
+                          endfor
+                        -%}
+                        <span class="pf-sort-value">{{ pf_sort_label }}</span>
+                      {%- endif -%}
+                      {%- render 'icon' with 'chevron-down' -%}
+                    </span>
                 <div class="collection-toolbar__button-container">
                   <button type="button" aria-controls="sort-by-popover" class="collection-toolbar__button heading text-xxs w-full">
                     <span class="text-with-icon justify-center">
@@ -1523,6 +1635,17 @@
       "default": 18
     },
     {
+      "type": "range",
+      "id": "pf_checkbox_nudge",
+      "label": "Checkbox vertical nudge",
+      "info": "Positive moves the box down. Corrects for the label's line box being taller than its cap height.",
+      "min": -10,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
       "type": "color",
       "id": "pf_checkbox_checked",
       "label": "Checkbox checked colour",
@@ -1572,14 +1695,63 @@
     },
     {
       "type": "range",
+      "id": "color_strip_gap_top",
+      "label": "Space above Shop by Color",
+      "info": "Measured at 24px between the collection banner and the swatches.",
+      "min": 0,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "color_strip_gap_top_mobile",
+      "label": "Space above Shop by Color (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
       "id": "color_strip_gap",
       "label": "Space below Shop by Color",
-      "info": "Measured at 49px between the colour labels and the toolbar row beneath.",
+      "info": "Sets the wrapping v-stack gap, which is the space between the colour labels and the toolbar row beneath.",
+      "min": 0,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "pf_toolbar_gap",
+      "label": "Space below the toolbar",
+      "info": "Toolbar row to the first product row.",
       "min": 0,
       "max": 96,
       "step": 1,
       "unit": "px",
       "default": 49
+    },
+    {
+      "type": "range",
+      "id": "color_ring_bleed",
+      "label": "Active ring bleed",
+      "info": "Room inside the scroll container so the active ring is not clipped on the first swatch.",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "color_hide_heading_mobile",
+      "label": "Hide the heading on mobile",
+      "default": true
     },
     {
       "type": "range",
