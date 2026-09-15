@@ -200,19 +200,26 @@
         --container-gutter: 70px;
       }
       #shopify-section-{{ section.id }} .collection-toolbar {
-        display: flex;
-        flex-direction: row-reverse;
+        display: grid;
+        grid-template-columns: {{ 332 }}px minmax(0, 1fr);
         align-items: center;
-        justify-content: space-between;
       }
 
       #shopify-section-{{ section.id }} .collection-toolbar__products-count {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: start;
         margin: 0;
-        margin-inline-start: 332px;
         font-size: 16px;
         line-height: 22px;
         font-weight: 400;
         color: #000000;
+      }
+
+      #shopify-section-{{ section.id }} .collection-toolbar__button-list {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
       }
     }
 
