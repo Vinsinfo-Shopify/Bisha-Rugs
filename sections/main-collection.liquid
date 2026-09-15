@@ -241,7 +241,13 @@
       overflow: auto hidden;
       overscroll-behavior-x: contain;
       scrollbar-width: none;
+      /* overflow-x: auto clips at the padding edge, which cut the outer 2px of
+         the active ring on the first swatch and made it look broken on the
+         left. The padding gives the ring room; the negative margin puts the row
+         back where it was, so nothing shifts. */
       padding-block: 4px;
+      padding-inline: {{ section.settings.color_ring_bleed }}px;
+      margin-inline: -{{ section.settings.color_ring_bleed }}px;
     }
 
     #shopify-section-{{ section.id }} .pf-colors__track::-webkit-scrollbar {
@@ -632,8 +638,31 @@
         margin-block-start: {{ section.settings.color_strip_gap_top_mobile }}px;
       }
 
-      #shopify-section-{{ section.id }} .pf-colors__heading {
-        margin-block-end: 10px;
+      /* No heading on mobile. */
+      {%- if section.settings.color_hide_heading_mobile -%}
+        #shopify-section-{{ section.id }} .pf-colors__heading {
+          display: none;
+        }
+      {%- else -%}
+        #shopify-section-{{ section.id }} .pf-colors__heading {
+          margin-block-end: 10px;
+        }
+      {%- endif -%}
+
+      /* Edge to edge scrolling.
+         The track breaks out of the container with a negative margin, then puts
+         the gutter back as padding. The result: at rest the first swatch sits
+         on the normal left margin while the row runs off the right edge, and
+         scrolled to the end the last swatch has the same margin on the right
+         while the row runs off the left. The scroll surface itself is the full
+         screen width the whole time.
+
+         scroll-padding keeps the first item aligned to that margin rather than
+         to the bleed when the row snaps or is scrolled back. */
+      #shopify-section-{{ section.id }} .pf-colors__track {
+        margin-inline: calc(var(--container-gutter) * -1);
+        padding-inline: var(--container-gutter);
+        scroll-padding-inline-start: var(--container-gutter);
       }
 
       #shopify-section-{{ section.id }} .pf-color {
@@ -1606,12 +1635,29 @@
       "type": "range",
       "id": "color_strip_gap",
       "label": "Space below Shop by Color",
-      "info": "Measured at 49px between the colour labels and the toolbar row beneath.",
+      "info": "Sets the wrapping v-stack gap, which is the space between the colour labels and the toolbar row beneath.",
       "min": 0,
       "max": 96,
       "step": 1,
       "unit": "px",
-      "default": 49
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "color_ring_bleed",
+      "label": "Active ring bleed",
+      "info": "Room inside the scroll container so the active ring is not clipped on the first swatch.",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "color_hide_heading_mobile",
+      "label": "Hide the heading on mobile",
+      "default": true
     },
     {
       "type": "range",
