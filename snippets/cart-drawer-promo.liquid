@@ -1,0 +1,121 @@
+{%- doc -%}
+  @param {object} section - the cart drawer section
+  @param {number} tier_1_amount - first threshold in cents, 0 when unset
+  @param {number} tier_2_amount - second threshold in cents, 0 when unset
+  @param {boolean} tier_1_reached
+{%- enddoc -%}
+
+{%- liquid
+  assign promo_goal = tier_2_amount
+  if promo_goal == 0
+    assign promo_goal = tier_1_amount
+  endif
+-%}
+
+{%- if section.settings.show_promo_bar and promo_goal > 0 -%}
+  {%- liquid
+    assign promo_progress = cart.total_price | times: 100 | divided_by: promo_goal
+    if promo_progress > 100
+      assign promo_progress = 100
+    endif
+
+    assign tier_1_position = 100
+    if tier_2_amount > 0
+      assign tier_1_position = tier_1_amount | times: 100 | divided_by: promo_goal
+    endif
+
+    assign tier_2_reached = false
+    if tier_2_amount > 0 and cart.total_price >= tier_2_amount
+      assign tier_2_reached = true
+    endif
+
+    assign promo_all_unlocked = false
+    assign promo_remaining = 0
+    assign promo_reward = section.settings.promo_tier_2_label
+
+    if tier_1_amount > 0 and tier_1_reached == false
+      assign promo_remaining = tier_1_amount | minus: cart.total_price
+      assign promo_reward = section.settings.promo_tier_1_label
+    elsif tier_2_amount > 0 and tier_2_reached == false
+      assign promo_remaining = tier_2_amount | minus: cart.total_price
+      assign promo_reward = section.settings.promo_tier_2_label
+    else
+      assign promo_all_unlocked = true
+      if tier_2_amount == 0
+        assign promo_reward = section.settings.promo_tier_1_label
+      endif
+    endif
+
+    if promo_all_unlocked
+      assign promo_message = section.settings.promo_unlocked_text | replace: '[reward]', promo_reward
+    else
+      assign promo_remaining_money = promo_remaining | money
+      assign promo_message = section.settings.promo_locked_text | replace: '[amount]', promo_remaining_money | replace: '[reward]', promo_reward
+    endif
+  -%}
+
+  <div class="cart-drawer-promo {% if promo_all_unlocked %}cart-drawer-promo--unlocked{% endif %}">
+    <p class="cart-drawer-promo__message">
+      {%- if section.settings.promo_icon != blank -%}
+        {{-
+          section.settings.promo_icon
+          | image_url: width: 96
+          | image_tag: alt: '', widths: '24,48,96', class: 'cart-drawer-promo__logo', loading: 'lazy'
+        -}}
+      {%- elsif promo_all_unlocked -%}
+        {%- render 'icon' with 'success', width: 12, class: 'cart-drawer-promo__icon' -%}
+      {%- endif -%}
+      <span>{{ promo_message }}</span>
+    </p>
+
+    <div class="cart-drawer-promo__meter">
+      <div
+        class="cart-drawer-promo__track"
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="{{ promo_progress }}"
+        aria-label="{{ promo_message | strip_html | escape }}"
+        style="--cart-drawer-promo-progress: {{ promo_progress }}%;"
+      >
+        <span class="cart-drawer-promo__fill"></span>
+
+        {%- if tier_1_amount > 0 -%}
+          <span
+            class="cart-drawer-promo__node {% if tier_1_reached %}is-reached{% endif %}"
+            style="--cart-drawer-promo-node: {{ tier_1_position }}%;"
+          >
+            {%- if tier_1_reached -%}
+              {%- render 'icon' with 'success', width: 8, class: 'cart-drawer-promo__tick' -%}
+            {%- endif -%}
+          </span>
+        {%- endif -%}
+
+        {%- if tier_2_amount > 0 -%}
+          <span
+            class="cart-drawer-promo__node {% if tier_2_reached %}is-reached{% endif %}"
+            style="--cart-drawer-promo-node: 100%;"
+          >
+            {%- if tier_2_reached -%}
+              {%- render 'icon' with 'success', width: 8, class: 'cart-drawer-promo__tick' -%}
+            {%- endif -%}
+          </span>
+        {%- endif -%}
+      </div>
+
+      <div class="cart-drawer-promo__labels">
+        {%- if tier_1_amount > 0 and section.settings.promo_tier_1_label != blank -%}
+          <span class="cart-drawer-promo__label" style="--cart-drawer-promo-node: {{ tier_1_position }}%;">
+            {{- section.settings.promo_tier_1_label -}}
+          </span>
+        {%- endif -%}
+
+        {%- if tier_2_amount > 0 and section.settings.promo_tier_2_label != blank -%}
+          <span class="cart-drawer-promo__label cart-drawer-promo__label--end">
+            {{- section.settings.promo_tier_2_label -}}
+          </span>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}

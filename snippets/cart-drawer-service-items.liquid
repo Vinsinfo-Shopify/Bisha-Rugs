@@ -1,0 +1,53 @@
+{%- doc -%}
+  @param {object} section - the cart drawer section
+  @param {string} tag - wrapper element for each item, "span" or "li"
+  @param {string} item_class
+  @param {string} icon_class
+{%- enddoc -%}
+
+{%- for i in (1..4) -%}
+  {%- liquid
+    case i
+      when 1
+        assign item_text = section.settings.service_item_1_text
+        assign item_icon = section.settings.service_item_1_icon
+        assign item_image = section.settings.service_item_1_image
+      when 2
+        assign item_text = section.settings.service_item_2_text
+        assign item_icon = section.settings.service_item_2_icon
+        assign item_image = section.settings.service_item_2_image
+      when 3
+        assign item_text = section.settings.service_item_3_text
+        assign item_icon = section.settings.service_item_3_icon
+        assign item_image = section.settings.service_item_3_image
+      when 4
+        assign item_text = section.settings.service_item_4_text
+        assign item_icon = section.settings.service_item_4_icon
+        assign item_image = section.settings.service_item_4_image
+    endcase
+  -%}
+
+  {%- if item_text != blank -%}
+    <{{ tag }} class="{{ item_class }}">
+      {%- if section.settings.service_custom_icons and item_image != blank -%}
+        {%- if section.settings.service_icon_recolor -%}
+          <span
+            class="{{ icon_class }} {{ icon_class }}--masked"
+            style="--cart-drawer-icon-mask: url({{ item_image | image_url: width: 96 }});"
+            role="presentation"
+          ></span>
+        {%- else -%}
+          {{-
+            item_image
+            | image_url: width: 96
+            | image_tag: alt: '', widths: '32,64,96', class: icon_class, loading: 'lazy'
+          -}}
+        {%- endif -%}
+      {%- else -%}
+        {%- render 'icon' with item_icon, class: icon_class -%}
+      {%- endif -%}
+
+      <span>{{ item_text }}</span>
+    </{{ tag }}>
+  {%- endif -%}
+{%- endfor -%}

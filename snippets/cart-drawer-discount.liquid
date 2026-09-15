@@ -1,0 +1,66 @@
+{%- doc -%}
+  @param {object} section - the cart drawer section
+  @param {string} cart_form_id - id of the checkout form the hidden input belongs to
+{%- enddoc -%}
+
+{%- if section.settings.show_discount_field -%}
+  {%- assign discount_input_id = 'cart-drawer-discount-' | append: section.id -%}
+
+  <cart-drawer-discount class="cart-drawer-discount">
+    <label class="cart-drawer__section-title" for="{{ discount_input_id }}">
+      {{- section.settings.discount_heading -}}
+    </label>
+
+    <cart-discount-field class="cart-discount-field cart-drawer-discount__field">
+      <input
+        type="hidden"
+        name="discount"
+        form="{{ cart_form_id }}"
+        value="{{ cart.discount_codes | map: 'code' | join: ',' | escape }}"
+      >
+
+      <input
+        id="{{ discount_input_id }}"
+        class="cart-drawer-discount__input"
+        type="text"
+        autocomplete="off"
+        autocapitalize="characters"
+        spellcheck="false"
+        enterkeyhint="done"
+        placeholder="{{ section.settings.discount_placeholder | escape }}"
+      >
+
+      <button type="button" class="cart-drawer-discount__button" data-discount-apply>
+        {{- section.settings.discount_button_label -}}
+      </button>
+
+      {%- render 'icon' with 'loader', width: 12, class: 'cart-discount-field__loader' -%}
+    </cart-discount-field>
+
+    <cart-discount-banner class="cart-drawer-discount__error" role="alert" hidden>
+      {{- section.settings.discount_error_text -}}
+    </cart-discount-banner>
+  </cart-drawer-discount>
+{%- endif -%}
+
+{%- if cart.cart_level_discount_applications.size > 0 -%}
+  <ul class="cart-drawer__discount-list unstyled-list" role="list">
+    {%- for discount_application in cart.cart_level_discount_applications -%}
+      <li class="discount-badge cart-drawer__discount-badge">
+        {%- render 'icon' with 'discount', width: 11 -%}
+        {{ discount_application.title }} (-{{ discount_application.total_allocated_amount | money }})
+
+        {%- if section.settings.allow_discount_application and discount_application.type != '' -%}
+          <cart-discount-remove-button
+            discount-code="{{ discount_application.title | escape }}"
+            class="h-stack align-center"
+          >
+            <button type="button" aria-label="{{ 'cart.order.remove' | t | escape }}">
+              {%- render 'icon' with 'close', width: 7 -%}
+            </button>
+          </cart-discount-remove-button>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

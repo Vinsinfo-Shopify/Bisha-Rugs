@@ -1,0 +1,51 @@
+{%- doc -%}
+  @param {object} section - the cart drawer section
+  @param {string} item_word - already pluralised item label
+  @param {number} standard_shipping - presentational shipping amount in cents, 0 when unset
+  @param {boolean} tier_1_reached
+  @param {string} rows - "all", "shipping_total" or "total"
+{%- enddoc -%}
+
+<div class="cart-drawer-summary {% if rows != 'all' %}cart-drawer-summary--compact{% endif %}">
+  {%- if rows == 'all' -%}
+    <div class="cart-drawer-summary__row">
+      <span>{{ 'cart.general.subtotal' | t }} ({{ cart.item_count }} {{ item_word }})</span>
+      <span>
+        {%- if settings.currency_code_enabled -%}
+          {{- cart.items_subtotal_price | money_with_currency -}}
+        {%- else -%}
+          {{- cart.items_subtotal_price | money -}}
+        {%- endif -%}
+      </span>
+    </div>
+  {%- endif -%}
+
+  {%- if rows == 'all' or rows == 'shipping_total' -%}
+    <div class="cart-drawer-summary__row">
+      <span>{{ section.settings.shipping_label }}</span>
+      <span class="cart-drawer-summary__shipping">
+        {%- if standard_shipping > 0 -%}
+          {%- if tier_1_reached -%}
+            <s>{{ standard_shipping | money }}</s>
+            <strong>{{ 0 | money }}</strong>
+          {%- else -%}
+            {{ standard_shipping | money }}
+          {%- endif -%}
+        {%- else -%}
+          <span class="cart-drawer-summary__note">{{ 'cart.general.taxes_and_shipping_at_checkout' | t }}</span>
+        {%- endif -%}
+      </span>
+    </div>
+  {%- endif -%}
+
+  <div class="cart-drawer-summary__row cart-drawer-summary__row--total">
+    <span>{{ 'cart.general.total' | t }}</span>
+    <span>
+      {%- if settings.currency_code_enabled -%}
+        {{- cart.total_price | money_with_currency -}}
+      {%- else -%}
+        {{- cart.total_price | money -}}
+      {%- endif -%}
+    </span>
+  </div>
+</div>

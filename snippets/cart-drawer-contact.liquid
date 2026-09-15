@@ -1,0 +1,38 @@
+{%- doc -%}
+  @param {object} section - the cart drawer section
+{%- enddoc -%}
+
+{%- if section.settings.contact_heading != blank
+    or section.settings.contact_text != blank
+    or section.settings.contact_phone != blank
+    or section.settings.contact_email != blank
+-%}
+  <div class="cart-drawer-contact">
+    {%- if section.settings.contact_heading != blank -%}
+      <p class="cart-drawer__section-title">{{ section.settings.contact_heading }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.contact_text != blank -%}
+      <p class="cart-drawer-contact__text">{{ section.settings.contact_text }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.contact_phone != blank or section.settings.contact_email != blank -%}
+      <div class="cart-drawer-contact__links">
+        {%- if section.settings.contact_phone != blank -%}
+          {%- assign tel_href = section.settings.contact_phone | replace: ' ', '' | replace: '-', '' | replace: '(', '' | replace: ')', '' -%}
+          <a class="cart-drawer-contact__link" href="tel:{{ tel_href }}">
+            {%- render 'icon' with 'picto-phone', width: 14 -%}
+            <span>{{ section.settings.contact_phone }}</span>
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.contact_email != blank -%}
+          <a class="cart-drawer-contact__link" href="mailto:{{ section.settings.contact_email }}">
+            {%- render 'icon' with 'picto-envelope', width: 14 -%}
+            <span>{{ section.settings.contact_email }}</span>
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
