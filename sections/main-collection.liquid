@@ -608,6 +608,21 @@
         color: #000000;
       }
 
+            /* The colour was declared on the <a> and inherited by the spans, which
+         lets Prestige's own rules on `a` take it. Stated on the spans that
+         actually hold the text, the same way the Style labels do, so both
+         groups resolve their colour the same way and the inactive grey is not
+         at the mercy of anchor styling. */
+      #shopify-section-{{ section.id }} .pf-rugtype__item .pf-rugtype__label,
+      #shopify-section-{{ section.id }} .pf-rugtype__item .pf-rugtype__count {
+        color: #696969;
+      }
+
+      #shopify-section-{{ section.id }} .pf-rugtype__item.is-active .pf-rugtype__label,
+      #shopify-section-{{ section.id }} .pf-rugtype__item.is-active .pf-rugtype__count {
+        color: #000000;
+      }
+
       #shopify-section-{{ section.id }} .pf-rugtype__item.is-active .pf-rugtype__box {
         background-color: {{ section.settings.pf_checkbox_checked }};
         border-color: {{ section.settings.pf_checkbox_checked }};
