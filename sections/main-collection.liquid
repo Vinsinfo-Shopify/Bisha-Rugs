@@ -223,6 +223,11 @@
         justify-self: end;
         z-index:1;
       }
+
+      #shopify-section-{{ section.id }} .collection-toolbar__button-container:has([aria-controls="sort-by-popover"]) {
+        border: 0;
+        box-shadow: none;
+      }
     }
 
     @media screen and (max-width: 699px) {
