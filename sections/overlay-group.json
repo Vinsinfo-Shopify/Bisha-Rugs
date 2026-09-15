@@ -47,6 +47,7 @@
         "service_strip_icon_size_mobile": 14,
         "show_promo_bar": true,
         "promo_accent_color": "#56583d",
+        "promo_icon": "shopify://shop_images/iconamoon_discount.png",
         "promo_icon_size": 16,
         "promo_unlocked_background": "#e3e0d4",
         "promo_tier_1_label": "Free Shipping",
