@@ -59,6 +59,7 @@
     if promo_all_unlocked
       assign promo_message = section.settings.promo_unlocked_text | replace: '[reward]', promo_reward
     else
+      assign promo_remaining_money = promo_remaining | divided_by: 100.0 | round | times: 100 | money | replace: '.00', '' | replace: ',00', ''
       assign promo_message = section.settings.promo_locked_text | replace: '[amount]', promo_remaining_money | replace: '[reward]', promo_reward
     endif
   -%}

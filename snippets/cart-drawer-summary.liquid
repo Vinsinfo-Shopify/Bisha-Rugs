@@ -10,7 +10,9 @@
   {%- if rows == 'all' -%}
     <div class="cart-drawer-summary__row">
       <span>{{ 'cart.general.subtotal' | t }} ({{ cart.item_count }} {{ item_word }})</span>
-      <span>{%- render 'cart-drawer-money', amount: cart.items_subtotal_price -%}</span>
+      <span>
+        {%- render 'money-round', amount: cart.items_subtotal_price, with_currency: settings.currency_code_enabled -%}
+      </span>
     </div>
   {%- endif -%}
 
@@ -20,10 +22,10 @@
       <span class="cart-drawer-summary__shipping">
         {%- if standard_shipping > 0 -%}
           {%- if tier_1_reached -%}
-            <s>{%- render 'cart-drawer-money', amount: standard_shipping -%}</s>
-            <strong>{%- render 'cart-drawer-money', amount: 0 -%}</strong>
+            <s>{%- render 'money-round', amount: standard_shipping -%}</s>
+            <strong>{%- render 'money-round', amount: 0 -%}</strong>
           {%- else -%}
-            {%- render 'cart-drawer-money', amount: standard_shipping -%}
+            {%- render 'money-round', amount: standard_shipping -%}
           {%- endif -%}
         {%- else -%}
           <span class="cart-drawer-summary__note">{{ 'cart.general.taxes_and_shipping_at_checkout' | t }}</span>
@@ -34,6 +36,8 @@
 
   <div class="cart-drawer-summary__row cart-drawer-summary__row--total">
     <span>{{ 'cart.general.total' | t }}</span>
-    <span>{%- render 'cart-drawer-money', amount: cart.total_price -%}</span>
+    <span>
+      {%- render 'money-round', amount: cart.total_price, with_currency: settings.currency_code_enabled -%}
+    </span>
   </div>
 </div>

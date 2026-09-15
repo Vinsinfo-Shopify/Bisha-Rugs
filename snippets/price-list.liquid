@@ -6,6 +6,7 @@
   @param {object} [line_item] - if provided, then the price from this line item is rendered (used on cart or order)
   @param {boolean} [hide_unit_price] - if set to true unit prices are hidden (mostly useful for size constrained elements)
   @param {string} [context] - can be "product", "line_item" or "card". This controls how the prices are displayed
+  @param {boolean} [round_to_whole] - if set to true, prices are rounded to the nearest whole currency unit and rendered with no decimals (used by the cart drawer)
 {%- enddoc -%}
 
 {%- liquid
@@ -40,7 +41,9 @@
     <sale-price class="{% if variant.compare_at_price > variant.price %}{{ on_sale_price_classes }}{% else %}{{ regular_price_classes }}{% endif %}">
       <span class="sr-only">{{ 'product.price.sale_price' | t }}</span>
 
-      {%- if settings.currency_code_enabled -%}
+      {%- if round_to_whole -%}
+        {%- render 'money-round', amount: variant.price, with_currency: settings.currency_code_enabled -%}
+      {%- elsif settings.currency_code_enabled -%}
         {{- variant.price | money_with_currency -}}
       {%- else -%}
         {{- variant.price | money -}}
@@ -51,7 +54,9 @@
       <compare-at-price class="{{ compare_at_price_classes }}">
         <span class="sr-only">{{ 'product.price.regular_price' | t }}</span>
 
-        {%- if settings.currency_code_enabled -%}
+        {%- if round_to_whole -%}
+          {%- render 'money-round', amount: variant.compare_at_price, with_currency: settings.currency_code_enabled -%}
+        {%- elsif settings.currency_code_enabled -%}
           {{- variant.compare_at_price | money_with_currency -}}
         {%- else -%}
           {{- variant.compare_at_price | money -}}
@@ -67,7 +72,9 @@
     <sale-price class="{% if line_item.original_price > line_item.final_price %}{{ on_sale_price_classes }}{% else %}{{ regular_price_classes }}{% endif %}">
       <span class="sr-only">{{ 'product.price.sale_price' | t }}</span>
 
-      {%- if settings.currency_code_enabled -%}
+      {%- if round_to_whole -%}
+        {%- render 'money-round', amount: line_item.final_price, with_currency: settings.currency_code_enabled -%}
+      {%- elsif settings.currency_code_enabled -%}
         {{- line_item.final_price | money_with_currency -}}
       {%- else -%}
         {{- line_item.final_price | money -}}
@@ -78,7 +85,9 @@
       <compare-at-price class="{{ compare_at_price_classes }}">
         <span class="sr-only">{{ 'product.price.regular_price' | t }}</span>
 
-        {%- if settings.currency_code_enabled -%}
+        {%- if round_to_whole -%}
+          {%- render 'money-round', amount: line_item.original_price, with_currency: settings.currency_code_enabled -%}
+        {%- elsif settings.currency_code_enabled -%}
           {{- line_item.original_price | money_with_currency -}}
         {%- else -%}
           {{- line_item.original_price | money -}}
@@ -98,7 +107,14 @@
         assign variant = product.variants | sort: 'price' | first | default: product.selected_or_first_available_variant
       endif
 
-      if settings.currency_code_enabled
+      if round_to_whole
+        capture variant_price
+          render 'money-round', amount: variant.price, with_currency: settings.currency_code_enabled
+        endcapture
+        capture variant_compare_at_price
+          render 'money-round', amount: variant.compare_at_price, with_currency: settings.currency_code_enabled
+        endcapture
+      elsif settings.currency_code_enabled
         assign variant_price = variant.price | money_with_currency
         assign variant_compare_at_price = variant.compare_at_price | money_with_currency
       else
