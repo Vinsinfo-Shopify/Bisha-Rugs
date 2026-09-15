@@ -1,0 +1,16 @@
+{%- doc -%}
+  @param {object} section - the cart drawer section
+{%- enddoc -%}
+
+{%- capture service_items -%}
+  {%- render 'cart-drawer-service-items',
+    section: section,
+    tag: 'li',
+    item_class: 'cart-drawer-service-list__item',
+    icon_class: 'cart-drawer-service-list__icon'
+  -%}
+{%- endcapture -%}
+
+{%- if service_items != blank -%}
+  <ul class="cart-drawer-service-list unstyled-list" role="list">{{ service_items }}</ul>
+{%- endif -%}

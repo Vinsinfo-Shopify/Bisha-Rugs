@@ -1,0 +1,43 @@
+{% comment %} {%- doc -%}
+  Renders the order summary breakdown (subtotal, shipping, total, savings) shown above
+  the checkout button in the cart drawer / cart page.
+{%- enddoc -%}
+
+{%- liquid
+  assign total_savings = 0
+
+  for line_item in cart.items
+    assign line_saving = line_item.original_line_price | minus: line_item.final_line_price
+    assign total_savings = total_savings | plus: line_saving
+  endfor
+
+  for discount_application in cart.cart_level_discount_applications
+    assign total_savings = total_savings | plus: discount_application.total_allocated_amount
+  endfor
+-%}
+
+<div class="cart-order-summary v-stack gap-2">
+  <div class="h-stack justify-between">
+    <span class="text-subdued">{{ 'cart.general.subtotal' | t }}</span>
+    <span>{{ cart.original_total_price | money }}</span>
+  </div>
+
+  {%- if section.settings.checkout_cta_style == 'with_shipping' -%}
+    <div class="h-stack justify-between">
+      <span class="text-subdued">{{ 'cart.general.shipping' | t }}</span>
+      <span class="text-subdued">{{ 'cart.general.calculated_at_checkout' | t }}</span>
+    </div>
+  {%- endif -%}
+
+  <div class="h-stack justify-between">
+    <span class="h6">{{ 'cart.general.total' | t }}</span>
+    <span class="h6">{{ cart.total_price | money }}</span>
+  </div>
+
+  {%- if section.settings.show_savings_message and total_savings > 0 -%}
+    {%- assign total_savings_formatted = total_savings | money -%}
+    <p class="text-subdued text-sm">
+      {{ 'cart.general.savings_message_html' | t: amount: total_savings_formatted }}
+    </p>
+  {%- endif -%}
+</div> {% endcomment %}

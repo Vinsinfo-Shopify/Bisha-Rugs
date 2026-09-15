@@ -1,0 +1,36 @@
+{%- doc -%}
+  PDP savings pill.
+
+  The same calculation the product card already performs at
+  snippets/product-card.liquid:277-285 - percentage, rounded, from the
+  product's own compare-at and current price - rendered with the same
+  .badge.badge--custom class so the PDP pill and the card pill look and read
+  identically.
+
+  It is stated here rather than shared because extracting it would mean editing
+  product-card.liquid, which this project's scope rules exclude. The trade-off
+  is real: the calculation now exists in two files, so a change to one must be
+  mirrored in the other. Extracting both into one snippet later is the better
+  end state.
+
+  Note this is deliberately NOT product-badges.liquid: that snippet follows
+  settings.discount_mode, which is set to the amount on this store and produces
+  "SAVE $319.00". The card's inline version is always a percentage, and the
+  design calls for the percentage.
+
+  Renders nothing when the product is not on sale.
+
+  Usage - a "Liquid" block directly after the Price block:
+
+    {% render 'pdp-price-savings' %}
+{%- enddoc -%}
+
+{%- liquid
+  assign compare_price = product.compare_at_price
+  assign current_price = product.price
+-%}
+
+{%- if compare_price > current_price -%}
+  {%- assign discount_percentage = compare_price | minus: current_price | times: 100.0 | divided_by: compare_price | round -%}
+  <span class="badge badge--custom pdp-savings">{{ 'general.product.save' | t: percentage: discount_percentage }}</span>
+{%- endif -%}

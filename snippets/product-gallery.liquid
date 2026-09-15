@@ -113,8 +113,30 @@
       ----------------------------------------------------------------------------------------------------------------------
     {%- endcomment -%}
 
-    <div class="{% if mobile_controls == 'arrows' %}product-gallery__carousel-with-arrows{% else %}contents{% endif %}">
-      {%- if mobile_controls == 'arrows' -%}
+    {%- comment -%}
+      The prev/next buttons were gated on mobile_controls == 'arrows', so a
+      gallery set to 'thumbnails' rendered no buttons at all - nothing for CSS
+      to reveal. They now render for 'thumbnails' too, so a mobile gallery can
+      have a thumbnail strip AND arrows over the media, which no single value
+      of the setting provides.
+
+      Every other value behaves exactly as before: 'dots' and 'free_scroll'
+      still render no buttons, and 'arrows' still gets the
+      product-gallery__carousel-with-arrows wrapper and its centred 45vw item.
+      Under 'thumbnails' the wrapper is deliberately NOT applied, so the
+      carousel keeps its full-bleed behaviour and the buttons are positioned by
+      the product template's own scoped CSS instead.
+    {%- endcomment -%}
+    {%- liquid
+      assign show_mobile_arrows = false
+
+      if mobile_controls == 'arrows' or mobile_controls == 'thumbnails'
+        assign show_mobile_arrows = true
+      endif
+    -%}
+
+    <div class="{% if mobile_controls == 'arrows' %}product-gallery__carousel-with-arrows{% else %}contents{% endif %}{% if mobile_controls == 'thumbnails' %} product-gallery__carousel-with-thumb-arrows{% endif %}">
+      {%- if show_mobile_arrows -%}
         <carousel-prev-button aria-controls="{{ product_gallery_carousel_id }}" class="contents">
           <button type="button" class="tap-area sm:hidden">
             <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
@@ -174,6 +196,44 @@
               {%- endif -%}
 
               {%- comment -%}
+                Product badges, over the first media item only.
+
+                This gallery never rendered them - its only "badge" markup is
+                the 3D and video media icons - which is why the PDP showed
+                nothing while the homepage card did. The card renders the same
+                snippet at product-card.liquid:63, so the data and the markup
+                are shared and there is one source of truth: custom.badges for
+                custom labels, plus the snippet's own sold-out and discount
+                logic. "ON SALE" comes from that discount branch, computed from
+                the price, which is why it needs no metafield.
+
+                context: 'product' rather than 'card' so the discount branch
+                compares the SELECTED variant's prices - on a product with 102
+                variants the badge then follows the chosen size, which is the
+                correct behaviour on a product page.
+              {%- endcomment -%}
+              {%- if forloop.first -%}
+                <div class="pdp-media-badges">
+                  {%- comment -%}
+                    The discount type is excluded on purpose. With
+                    context: 'product' the shared snippet always echoes
+                    discount_badge_html, which follows settings.discount_mode -
+                    the amount on this store, "SAVE $319.00". The design wants a
+                    plain on-sale label, so the theme's own on_sale_badge string
+                    is used instead. Custom badges and sold-out still come from
+                    the shared snippet, unchanged.
+                  {%- endcomment -%}
+                  {%- render 'product-badges', product: product, vertical: true, context: 'product', types: 'custom, sold_out' -%}
+
+                  {%- if product.compare_at_price > product.price -%}
+                    <on-sale-badge class="badge badge--on-sale">
+                      {{- 'product.general.on_sale_badge' | t -}}
+                    </on-sale-badge>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
+              {%- comment -%}
                 NOTE: for the product gallery, the autoplay does not work in a similar way. It is always false at the product level,
                 and the product-gallery component itself will autoplay (if needed)
               {%- endcomment -%}
@@ -208,7 +268,7 @@
         {%- endif -%}
       </scroll-carousel>
 
-      {%- if mobile_controls == 'arrows' -%}
+      {%- if show_mobile_arrows -%}
         <carousel-next-button aria-controls="{{ product_gallery_carousel_id }}" class="contents">
           <button type="button" class="tap-area sm:hidden">
             <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>

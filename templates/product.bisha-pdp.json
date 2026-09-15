@@ -9,54 +9,18 @@
  */
 {
   "sections": {
-    "pdp_breadcrumb_bar_6Fx63X": {
-      "type": "pdp-breadcrumb-bar",
-      "name": "Breadcrumb",
-      "settings": {
-        "space_top": 16,
-        "space_bottom": 16,
-        "space_top_mobile": 12,
-        "space_bottom_mobile": 12
-      }
-    },
-    "pdp_gallery_presentation_CbT3gF": {
-      "type": "pdp-gallery-presentation",
-      "name": "PDP gallery presentation",
-      "settings": {
-        "info_width": 537,
-        "info_gap": 32,
-        "rating_gap": 6,
-        "info_row_gap": 8,
-        "info_row_gap_mobile": 6,
-        "description_points": 2,
-        "description_line_gap": 6,
-        "price_gap": 12,
-        "pill_gap": 12,
-        "pill_background": "#f3eee4",
-        "badge_top": 10,
-        "badge_left": 0,
-        "grid_gap": 16,
-        "lock_ratio": false,
-        "media_ratio": "4 / 5",
-        "mobile_media_width": 88,
-        "mobile_gap": 8,
-        "mobile_inset": 12,
-        "arrow_size": 26,
-        "arrow_position": 40,
-        "arrow_inset": 0,
-        "arrow_background": "#2b2724",
-        "arrow_color": "#ffffff",
-        "arrow_border": "#ffffff"
-      }
-    },
     "main": {
       "type": "main-product",
       "blocks": {
-        "liquid_e7CWYC": {
+        "liquid_CFRfcc": {
           "type": "liquid",
           "settings": {
-            "liquid": "{% render 'pdp-product-pill' %}"
+            "liquid": "{% render 'pdp-breadcrumb' %}"
           }
+        },
+        "vendor": {
+          "type": "vendor",
+          "settings": {}
         },
         "title": {
           "type": "title",
@@ -64,28 +28,10 @@
             "heading_tag": "h3"
           }
         },
-        "liquid_VxkgFD": {
-          "type": "liquid",
-          "settings": {
-            "liquid": "{% render 'pdp-rating' %}"
-          }
-        },
-        "liquid_kWJCec": {
-          "type": "liquid",
-          "settings": {
-            "liquid": "{% render 'pdp-short-description' %}"
-          }
-        },
         "price": {
           "type": "price",
           "settings": {
             "show_taxes_notice": false
-          }
-        },
-        "liquid_WK9Eei": {
-          "type": "liquid",
-          "settings": {
-            "liquid": "{% render 'pdp-price-savings' %}"
           }
         },
         "payment_terms": {
@@ -95,6 +41,13 @@
         "separator": {
           "type": "separator",
           "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "collapse_content": false,
+            "show_below_gallery": false
+          }
         },
         "variant_picker": {
           "type": "variant_picker",
@@ -134,14 +87,13 @@
         }
       },
       "block_order": [
-        "liquid_e7CWYC",
+        "liquid_CFRfcc",
+        "vendor",
         "title",
-        "liquid_VxkgFD",
-        "liquid_kWJCec",
         "price",
-        "liquid_WK9Eei",
         "payment_terms",
         "separator",
+        "description",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
@@ -152,15 +104,15 @@
         "allow_transparent_header": false,
         "transparent_header_use_primary_colors": false,
         "container_size": "lg",
-        "product_info_size": 40,
+        "product_info_size": 35,
         "show_sticky_add_to_cart": true,
         "center_basic_info": false,
-        "desktop_media_layout": "grid_2x",
-        "desktop_media_grid_gap": 16,
-        "mobile_controls": "thumbnails",
+        "desktop_media_layout": "grid",
+        "desktop_media_grid_gap": 30,
+        "mobile_controls": "dots",
         "enable_media_autoplay": false,
-        "enable_video_looping": false,
-        "enable_image_zoom": false,
+        "enable_video_looping": true,
+        "enable_image_zoom": true,
         "max_image_zoom_level": 3
       }
     },
@@ -184,8 +136,6 @@
     }
   },
   "order": [
-    "pdp_breadcrumb_bar_6Fx63X",
-    "pdp_gallery_presentation_CbT3gF",
     "main",
     "related-products"
   ]

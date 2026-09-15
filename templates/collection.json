@@ -33,14 +33,18 @@
           "type": "icon_with_text",
           "settings": {
             "icon": "shopify://shop_images/Group_1.png",
-            "text": "Free Insured Shipping"
+            "text": "Free Insured Shipping",
+            "icon_size": 20,
+            "text_size": 16
           }
         },
         "icon_with_text_8g93pM": {
           "type": "icon_with_text",
           "settings": {
             "icon": "shopify://shop_images/Group_2.png",
-            "text": "30 Day Easy Returns"
+            "text": "30 Day Easy Returns",
+            "icon_size": 20,
+            "text_size": 16
           }
         }
       },
@@ -69,6 +73,16 @@
         "reveal_on_scroll": true,
         "image_position": "end",
         "content_width": "lg",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
+        "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
       }
@@ -94,7 +108,9 @@
           "repeater": "{{ collection.metafields.custom.icon_text_item.value }}",
           "settings": {
             "icon": "{{ block.repeater.icon.value }}",
-            "text": "{{ block.repeater.text.value }}"
+            "text": "{{ block.repeater.text.value }}",
+            "icon_size": 20,
+            "text_size": 16
           }
         }
       },
@@ -122,6 +138,16 @@
         "reveal_on_scroll": true,
         "image_position": "end",
         "content_width": "lg",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
+        "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
       }
@@ -160,11 +186,53 @@
         "filter_layout": "sidebar",
         "quick_links_menu": "",
         "show_sort_by": true,
+        "enable_new_filters": true,
+        "production_filters": "Availability, Price",
+        "pf_filters_heading": "Filters",
+        "pf_filters_heading_gap": 26,
+        "pf_sidebar_width": 294,
+        "pf_sidebar_gap": 32,
+        "pf_sidebar_inset": 8,
+        "pf_products_per_row": 3,
+        "pf_value_columns": 3,
+        "pf_value_media_size": 67,
+        "pf_value_col_gap": 37,
+        "pf_value_row_gap": 27,
+        "rt_heading": "Rug Type",
+        "rt_menu": "prestige-main-menu",
+        "rt_parent_item": "Shop By Type",
+        "rt_show_counts": true,
+        "rt_group_gap": 24,
+        "rt_heading_gap": 16,
+        "rt_row_gap": 12,
+        "pf_accordion_icon_width": 13,
+        "pf_accordion_icon_color": "#807e7a",
+        "pf_hide_color_in_sidebar": true,
+        "pf_checkbox_size": 18,
+        "pf_checkbox_radius": 2,
+        "pf_checkbox_gap": 12,
+        "pf_checkbox_row_gap": 10,
+        "pf_checkbox_nudge": -7,
+        "pf_checkbox_checked": "#55583c",
+        "pf_checkbox_border": "#d9d7d0",
+        "pf_hide_view_switcher": true,
+        "pf_hide_toolbar_rules": true,
+        "color_filter_heading": "Shop by Color:",
+        "color_filter_label": "Color",
+        "color_swatch_size": 56,
+        "color_strip_gap_top": 24,
+        "color_strip_gap_top_mobile": 20,
+        "color_strip_gap": 0,
+        "pf_toolbar_gap": 10,
+        "color_ring_bleed": 4,
+        "color_hide_heading_mobile": true,
+        "color_swatch_gap": 28,
+        "color_all_label": "All",
         "show_filters": true,
         "show_results_count": true,
         "show_filter_group_name": false,
         "show_filter_values_count": true,
-        "open_filters_by_default": false
+        "open_filters_by_default": true
       }
     },
     "image_with_text_zkLCMr": {
@@ -224,6 +292,16 @@
         "reveal_on_scroll": true,
         "image_position": "start",
         "content_width": "sm",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
+        "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
       }
@@ -234,6 +312,7 @@
         "collection_6m4Nhf": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "scheme-4",
             "collection": "oushak-rugs",
             "image": "shopify://shop_images/Oushak_Rugs_bdb6cd46-c650-45b2-9254-35779a65dfcc.png",
@@ -251,6 +330,7 @@
         "collection_Kbhdbz": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "scheme-4",
             "collection": "new-arrivals",
             "image": "shopify://shop_images/Best_Sellers.png",
@@ -268,6 +348,7 @@
         "collection_KdHw9q": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "",
             "collection": "new-arrivals",
             "image": "shopify://shop_images/New_Arrivals.png",
@@ -285,6 +366,7 @@
         "collection_VHBk3i": {
           "type": "collection",
           "settings": {
+            "sbs_item": "",
             "color_scheme": "",
             "collection": "all",
             "image": "shopify://shop_images/Shop_All.png",
@@ -308,6 +390,20 @@
       ],
       "name": "t:sections.collection_list.presets.collection_list.name",
       "settings": {
+        "layout_variant": "",
+        "sbs_menu": "",
+        "sbs_background": "#f3eee4",
+        "sbs_parent_item": "",
+        "sbs_subheading_mobile": "",
+        "sbs_title_mobile": "",
+        "sbs_heading_gap": 24,
+        "sbs_mobile_fill": "paired",
+        "sbs_mobile_gap": 5,
+        "sbs_show_image": true,
+        "sbs_show_title": true,
+        "sbs_show_arrow": true,
+        "sbs_show_nav": true,
+        "sbs_show_progress": true,
         "color_scheme": "scheme-1",
         "separate_section_with_border": true,
         "image_size": "auto",
@@ -439,6 +535,7 @@
             "icon": "shopify://shop_images/Vector_7.png",
             "title": "Give Us a Call",
             "heading_tag": "h3",
+            "custom_heading_size": 24,
             "content": "<p>Our experts are just a call away to help you find your perfect rug.</p>",
             "link_url": "tel:+1 (415) 980-7774",
             "link_text": "+1 (415) 980-7774"
@@ -450,6 +547,7 @@
             "icon": "shopify://shop_images/tabler_video_1.png",
             "title": "Virtual Appointment",
             "heading_tag": "h3",
+            "custom_heading_size": 24,
             "content": "<p>Schedule a call to explore designs, ask questions and shop online with our experts.</p>",
             "link_url": "#",
             "link_text": "Book Now"
@@ -461,6 +559,7 @@
             "icon": "shopify://shop_images/Vector_8.png",
             "title": "Send Us an Email",
             "heading_tag": "h3",
+            "custom_heading_size": 24,
             "content": "<p>Prefer email? Send your query and our team will respond with all the details you need.</p>",
             "link_url": "mailto:love@bisharugs.com",
             "link_text": "love@bisharugs.com"
@@ -484,6 +583,7 @@
         "content_alignment": "center",
         "text_alignment": "start",
         "spacing": "sm",
+        "media_height": "379px",
         "subheading": "CONTACT US",
         "title": "Still Have Questions?",
         "heading_style": "h2",

@@ -17,6 +17,11 @@
   #shopify-section-{{ section.id }} .image-with-text-container {
     margin-inline: auto;
   }
+
+  .image-with-text--the-craft {
+    border: 0;
+  }
+ 
  
   /* --- Icon with text list --- */
   #shopify-section-{{ section.id }} .icon-with-text-list {
@@ -69,6 +74,11 @@
     #shopify-section-{{ section.id }} .image-with-text > .prose {
       order: 1;
     }
+
+    #shopify-section-{{ section.id }} .Custom_rugs .image-with-text > .prose {
+      margin:0;
+      padding: 0px 16px 20px; 
+    }
  
     #shopify-section-{{ section.id }} .icon-with-text-item {
       font-size: calc(var(--icon-text-size, 16px) - 2px);
@@ -97,6 +107,11 @@
       --section-padding-left: {{ section.settings.padding_left_mobile | default: 12 }}px;
       --section-padding-right: {{ section.settings.padding_right_mobile | default: 12 }}px;
     }
+    .image-with-text--the-craft .section-custom-padding {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
   }
  
   {%- comment -%}
@@ -147,11 +162,45 @@
     --border-color: 0 0 0;
   }
 
-  /* The page background around this section is #FFFBF3. Without the
-     line below the panel shows that instead of #F3EEE4 — which is
-     exactly the "wrong cream" that started this. */
+  /* The cream belongs to the PANEL, not to the section element.
+     Painting the section itself would colour the 50px bands too; the
+     brief wants those transparent so the page background shows through:
+
+       page background
+       -> 50px transparent
+       -> #F3EEE4 panel
+       -> 50px transparent
+
+     The panel is the section's own first child - the div carrying
+     section-spacing and the colour-scheme classes - so its internal
+     padding, and the whole layout inside it, are untouched. */
   #shopify-section-{{ section.id }} {
+    background-color: transparent;
+    padding-block: {{ section.settings.trade_outer_spacing }}px;
+  }
+
+  #shopify-section-{{ section.id }} > .color-scheme {
     background-color: rgb(var(--background));
+  }
+
+  /* theme.css draws the line with
+       .shopify-section:not(:first-child) .bordered-section {
+         border-block-start-width: 1px }
+     and this instance has separate_section_with_border on. Zeroed here
+     rather than by unticking the setting, so the border stays off
+     whatever that checkbox is later set to. Only the block-start width
+     is touched: every other border on the section is untouched. */
+  #shopify-section-{{ section.id }} .bordered-section {
+    border-block-start-width: 0;
+  }
+
+  /* theme.css sets .image-with-text { display: grid; gap: 22px } globally.
+     That declaration is left exactly as it is; this only overrides the
+     computed value under THIS section's id, and the id only exists on the
+     homepage trade instance. Craft (the-craft), Custom Rugs and every
+     Image with Text on About Us, Craftsmanship and Collection keep 22px. */
+  #shopify-section-{{ section.id }} .image-with-text {
+    gap: {{ section.settings.trade_media_gap }}px;
   }
 
   /* -- Layout ------------------------------------------------------ */
@@ -199,7 +248,7 @@
     font-family: var(--text-font-family);
     font-size: 14px;
     font-weight: 500;
-    line-height: 1.2;         /* 16.8px */
+    line-height: 20px;
     letter-spacing: 0;
     text-transform: uppercase;
   }
@@ -251,13 +300,18 @@
   /* -- Button ------------------------------------------------------ */
   /* 12px/28px padding + 16px/1.4 line-height reproduces Figma's
      158 x 46 exactly: 28 + 102.0 + 28 = 158, 12 + 22.4 + 12 = 46.4 */
-  #shopify-section-{{ section.id }} .prose .button,
-  #shopify-section-{{ section.id }} .prose .button:hover,
-  #shopify-section-{{ section.id }} .prose .button:focus,
-  #shopify-section-{{ section.id }} .prose .button:visited {
-    background: rgb(var(--accent-color));
-    color: #ffffff;
-    border: 0;
+  /* Colours go through the component's OWN custom properties, and the
+     :hover / :focus / :visited overrides are gone. theme.css animates
+     .button with a gradient wipe driven by --button-background plus a
+     background-size transition; setting the background shorthand on
+     :hover destroys background-image and background-size and kills that
+     animation, which is why this button behaved unlike the other
+     sections' CTAs. Nothing global is modified - only these variables
+     are reassigned, inside the trade variant. */
+  #shopify-section-{{ section.id }} .prose .button {
+    --button-background: {{ section.settings.trade_button_background | color_extract: 'red' }} {{ section.settings.trade_button_background | color_extract: 'green' }} {{ section.settings.trade_button_background | color_extract: 'blue' }};
+    --button-text-color: {{ section.settings.trade_button_text | color_extract: 'red' }} {{ section.settings.trade_button_text | color_extract: 'green' }} {{ section.settings.trade_button_text | color_extract: 'blue' }};
+    --button-outline-color: {{ section.settings.trade_button_background | color_extract: 'red' }} {{ section.settings.trade_button_background | color_extract: 'green' }} {{ section.settings.trade_button_background | color_extract: 'blue' }};
     border-radius: 0;
     padding: 12px 28px;
     font-family: var(--text-font-family);
@@ -273,70 +327,6 @@
   /* Figma: 375 wide, 12px side padding -> 351px content column.
      Confirmed by the heading: "…Interior Designers" measures 350.8px
      and breaks before "&", which only works at 351. */
-  @media screen and (max-width: 999px) {
-    #shopify-section-{{ section.id }} {
-      --section-padding-left: 12px;
-      --section-padding-right: 12px;
-    }
-
-    #shopify-section-{{ section.id }} .image-with-text {
-      display: flex;
-      flex-direction: column;
-    }
-
-    #shopify-section-{{ section.id }} .image-with-text > picture {
-      margin-inline: calc(-1 * var(--section-padding-left)) calc(-1 * var(--section-padding-right));
-      width: calc(100% + var(--section-padding-left) + var(--section-padding-right));
-    }
-
-    #shopify-section-{{ section.id }} .image-with-text > picture img {
-      width: 100%;
-      aspect-ratio: 375 / 253;
-      object-fit: cover;
-      display: block;
-    }
-
-    #shopify-section-{{ section.id }} .image-with-text > .prose {
-      margin-top: 26px;       /* derived 25.6 (image ends 253, eyebrow box 278.6) */
-    }
-
-    #shopify-section-{{ section.id }} .image_with_text_heading {
-      font-size: 24px;
-      line-height: 29px;      /* baseline pitch 322.796 -> 351.796 */
-    }
-
-    #shopify-section-{{ section.id }} .image_with_text_content {
-      margin-top: 12px;
-    }
-
-    #shopify-section-{{ section.id }} .image_with_text_content,
-    #shopify-section-{{ section.id }} .image_with_text_content > * {
-      font-size: 16px;
-      line-height: 22px;      /* baseline pitch 387.6 -> 409.6 */
-      max-width: 300px;       /* SEE NOTE 1 — controls the wrap */
-    }
-
-    #shopify-section-{{ section.id }} .icon-with-text-list {
-      margin-top: 14px;       /* was 16 */
-      column-gap: 16px;       /* SEE NOTE 2 — derived 18.1 */
-      row-gap: 10px;
-    }
-
-    #shopify-section-{{ section.id }} .icon-with-text-item {
-      font-size: 16px;
-      line-height: 22px;
-    }
-
-    #shopify-section-{{ section.id }} .icon-with-text-item img,
-    #shopify-section-{{ section.id }} .icon-with-text-item svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    #shopify-section-{{ section.id }} .prose .button {
-      margin-top: 18px;       /* was 16 */
-    }
-  }
 
   /* -- Desktop: 1000px and up -------------------------------------- */
   @media screen and (min-width: 1000px) {
@@ -385,8 +375,19 @@
       line-height: 34px;      /* 28 x 1.208 */
     }
 
-    #shopify-section-{{ section.id }} .image_with_text_content {
-      margin-top: 16px;
+    /* Selector deliberately matches the shape of the reset on line ~191,
+       #id .image-with-text > .prose > * { margin: 0 }, which is (1,2,0).
+       A plain #id .image_with_text_content is (1,1,0) and loses to it no
+       matter the source order, so the margins were being discarded - the
+       reason changing these values did nothing. Adding the two ancestors
+       makes this (1,3,0), which wins cleanly without !important. */
+    #shopify-section-{{ section.id }} .image-with-text > .prose > .image_with_text_content {
+      margin-top: {{ section.settings.trade_para_top }}px;
+      /* The gap BELOW the paragraph used to live on the icon list's
+         margin-top. It is owned by the paragraph now so both sides of
+         it are adjustable in one place; the list's own row-gap and
+         column-gap - the spacing between feature rows - are untouched. */
+      margin-bottom: {{ section.settings.trade_para_bottom }}px;
     }
 
     #shopify-section-{{ section.id }} .image_with_text_content,
@@ -397,7 +398,7 @@
     }
 
     #shopify-section-{{ section.id }} .icon-with-text-list {
-      margin-top: 24px;
+      margin-top: 0;          /* now carried by the paragraph above */
       column-gap: 20px;       /* derived 20.6, was 24 */
       row-gap: 14px;
     }
@@ -417,10 +418,354 @@
       margin-top: 24px;
     }
   }
+
+  @media screen and (max-width: 999px) {
+    #shopify-section-{{ section.id }} {
+      --section-padding-left: 12px;
+      --section-padding-right: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text > picture {
+      margin-inline: calc(-1 * var(--section-padding-left)) calc(-1 * var(--section-padding-right));
+      width: calc(100% + var(--section-padding-left) + var(--section-padding-right));
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text > picture img {
+      width: 100%;
+      aspect-ratio: 375 / 253;
+      object-fit: cover;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text > .prose {
+      margin-top: 26px;       /* derived 25.6 (image ends 253, eyebrow box 278.6) */
+    }
+
+    #shopify-section-{{ section.id }} .image_with_text_heading {
+      font-size: 24px;
+      line-height: 29px;      /* baseline pitch 322.796 -> 351.796 */
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text > .prose > .image_with_text_content {
+      margin-top: {{ section.settings.trade_para_top_mobile }}px;
+      margin-bottom: {{ section.settings.trade_para_bottom_mobile }}px;
+    }
+
+    #shopify-section-{{ section.id }} .image_with_text_content,
+    #shopify-section-{{ section.id }} .image_with_text_content > * {
+      font-size: 16px;
+      line-height: 22px;      /* baseline pitch 387.6 -> 409.6 */
+      max-width: 300px;       /* SEE NOTE 1 — controls the wrap */
+    }
+
+    /* Two features on row one, the third on row two - by structure, not by
+       whatever happens to fit. Flex-wrap decided the rows from available
+       width, so the break moved with the label text. Grid pins it: two
+       content-sized columns, and item three spans both.
+       Icon size, icon-to-text gap and typography are untouched. */
+    #shopify-section-{{ section.id }} .icon-with-text-list {
+      margin-top: 0;          /* now carried by the paragraph above */
+      display: grid;
+      /* minmax(0, max-content), not bare max-content: theme.css sets
+         .image-with-text { overflow: hidden }, so if the two labels were
+         ever a few pixels too wide the second column would be CLIPPED
+         rather than pushed - a silently missing feature. minmax lets the
+         column shrink, and the label below is allowed to wrap, so the
+         worst case is two lines instead of vanished text. */
+      grid-template-columns: minmax(0, max-content) minmax(0, max-content);
+      justify-content: start;
+      column-gap: {{ section.settings.trade_feature_gap_mobile }}px;
+      row-gap: 10px;
+    }
+
+    #shopify-section-{{ section.id }} .icon-with-text-item:nth-child(3) {
+      grid-column: 1 / -1;
+    }
+
+    /* Mobile only. nowrap is kept on desktop where there is room. */
+    #shopify-section-{{ section.id }} .icon-with-text-item {
+      white-space: normal;
+      min-width: 0;
+    }
+
+    #shopify-section-{{ section.id }} .icon-with-text-item {
+      font-size: 16px;
+      line-height: 22px;
+    }
+
+    #shopify-section-{{ section.id }} .icon-with-text-item img,
+    #shopify-section-{{ section.id }} .icon-with-text-item svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .prose .button {
+      margin-top: 18px;       /* was 16 */
+    }
+    
+    #shopify-section-{{ section.id }} .Custom_rugs .image-with-text > .prose {
+      padding-inline-end: 16px;
+    }
+  }
+
+  @media screen and (max-width: 700px){
+    #shopify-section-{{ section.id }} .prose .button {
+      margin-bottom: 24px;
+    }
+  }
+
+  @media screen and (max-width: 500px){
+    #shopify-section-{{ section.id }} .prose .button {
+      margin-bottom: 0;
+    }
+  }
+
 {%- endif -%}
 
 
 </style>
+
+{%- comment -%}
+  ------------------------------------------------------------------------
+  PLP Collection Banner
+  ------------------------------------------------------------------------
+  Emitted only for the instance whose custom_class contains
+  collection_banner, which on this theme is image_with_text_9TrLX9 on the
+  collection template. Custom Rugs, Crafted in India, Trade and every other
+  image-with-text instance never render this block at all, so they cannot be
+  affected by it.
+
+  The equivalent rules already in assets/theme.css (around line 8893) are left
+  alone. These come later in the cascade and carry the same or higher
+  specificity, so they win without !important and without a global edit.
+{%- endcomment -%}
+{%- if section.settings.custom_class contains 'collection_banner' -%}
+  <style>
+    /* Number of lines shown before Read more. Changing these two values is the
+       only edit needed to retune the collapsed height at either breakpoint. */
+    #shopify-section-{{ section.id }} .collection_banner {
+      --cb-lines: 2;
+    }
+
+    /* ---------- Desktop typography ---------- */
+    #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_heading {
+      font-size: 28px;
+      line-height: 36px;
+      font-weight: 400;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_content,
+    #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_content > * {
+      font-size: 16px;
+      line-height: 140%;
+      font-weight: 400;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .icon-with-text-item {
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: 500;
+    }
+
+    /* ---------- Desktop image ----------
+       562 x 223. The ratio is set rather than a height so the box cannot be
+       distorted; cover crops to fill it. theme.css already caps the width at
+       562px, which is left in place. */
+    #shopify-section-{{ section.id }} .collection_banner .image-with-text picture {
+      max-width: 562px;
+      aspect-ratio: 562 / 223;
+      max-height: none;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .image-with-text picture :is(img, svg) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ---------- Read more ----------
+       The description is clamped to --cb-lines. The control is a sibling of the
+       text, never a copy of it, so the rich text is rendered exactly once and
+       whatever HTML the collection description contains survives untouched.
+
+       Collapsed, the control sits at the end of the last visible line with a
+       short fade behind it, so it reads as part of the text rather than as a
+       row underneath. The fade is built from the colour scheme's own
+       background variable, so it matches whatever scheme the section uses. */
+    /* Height and the button's reserved space animate together, so the service
+       icons below move smoothly instead of jumping a line. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc {
+      position: relative;
+      transition: padding-block-end 320ms ease;
+    }
+
+    /* Open reserves one line below the text for the control, which is why the
+       button never changes positioning mode and so never jumps. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-open {
+      padding-block-end: 1.5em;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc__text {
+      overflow: hidden;
+      transition: max-height 320ms ease;
+    }
+
+    /* The clamp hangs off a class rather than the expanded state, so it can be
+       lifted for the whole animation and reapplied only once it has finished.
+       Toggling the clamp mid-transition is what made the text snap. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-clamped .cb-desc__text {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: var(--cb-lines);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #shopify-section-{{ section.id }} .collection_banner .cb-desc,
+      #shopify-section-{{ section.id }} .collection_banner .cb-desc__text {
+        transition: none;
+      }
+    }
+
+    /* With no .is-clamped there is nothing to clear: the text is a plain block
+       at its natural height. max-height is only ever an inline value during an
+       animation, and it is removed when the animation ends. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc:not(.is-clamped) .cb-desc__text {
+      display: block;
+      max-height: none;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .cb-toggle {
+      display: none;
+      position: absolute;
+      inset-inline-end: 0;
+      inset-block-end: 0;
+      align-items: baseline;
+      gap: 4px;
+      appearance: none;
+      background: none;
+      border: 0;
+      padding: 0;
+      font-family: inherit;
+      font-size: 16px;
+      line-height: 140%;
+      font-weight: 700;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* Only shown once the script has confirmed the text actually overflows, so
+       a short description never gets a pointless control. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-truncatable .cb-toggle {
+      display: flex;
+    }
+
+    /* Masks the end of the clamped line so the control never prints on top of
+       the description.
+
+       --background carries its own alpha ("85 88 60 / 1"), so
+       rgb(var(--background) / 0) expanded to a three-part colour, the whole
+       declaration was dropped, and no mask was painted at all - which is why
+       the label sat over the text. --background-without-opacity is the plain
+       triplet and is what the theme itself uses for solid fills. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc.is-clamped .cb-toggle {
+      padding-inline-start: 30px;
+      background: linear-gradient(
+        to right,
+        rgb(var(--background-without-opacity) / 0) 0,
+        rgb(var(--background-without-opacity)) 26px
+      );
+    }
+
+    /* The ellipsis belongs to the control, not to the clamp: the browser's own
+       ellipsis sits under the mask, so this is the one that is seen. It is not
+       underlined, matching the design. */
+    #shopify-section-{{ section.id }} .collection_banner .cb-toggle__dots {
+      text-decoration: none;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .cb-desc:not(.is-clamped) .cb-toggle__dots {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .cb-toggle__label {
+      text-decoration: underline;
+      text-decoration-line: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+
+    #shopify-section-{{ section.id }} .collection_banner .cb-toggle:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 3px;
+    }
+
+    /* ---------- Mobile ----------
+       699px is the theme's own mobile breakpoint: 20 rules in theme.css and
+       every section written for this build use it. The banner rules in
+       theme.css break at 1100px instead; that tier is deliberately left as it
+       is, and this one sits inside it so the 700-1100 range keeps its current
+       behaviour rather than changing underneath the rest of the page. */
+    @media screen and (max-width: 699px) {
+      #shopify-section-{{ section.id }} .collection_banner {
+        --cb-lines: 2;
+      }
+
+      #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_heading {
+        font-size: 26px;
+        line-height: 34px;
+        font-weight: 400;
+      }
+
+      #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_content,
+      #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_content > * {
+        font-size: 14px;
+        line-height: 140%;
+      }
+
+      #shopify-section-{{ section.id }} .collection_banner .cb-toggle {
+        font-size: 14px;
+        line-height: 140%;
+        font-weight: 700;
+      }
+
+      #shopify-section-{{ section.id }} .collection_banner .icon-with-text-item {
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 500;
+      }
+
+      /* Edge to edge: 375px at a 375px viewport, 155px tall.
+         The instance already sets its mobile side padding to 0, so the image
+         only needs its ratio and full width here. The text keeps the container
+         padding, which is why the padding is not removed from the section. */
+      #shopify-section-{{ section.id }} .collection_banner .image-with-text picture {
+        max-width: none;
+        width: 100%;
+        aspect-ratio: 375 / 155;
+      }
+
+      /* Balanced 12px either side of the text column, giving 351px of content
+         at a 375px viewport. The instance sets its own mobile side padding to
+         0 so the image can stay edge to edge; that stays as it is, and the
+         spacing is put on the text column alone. Applies to the title, the
+         description, Read more and the service rows, because they all live
+         inside this one element. */
+      #shopify-section-{{ section.id }} .collection_banner .image-with-text > .prose {
+        box-sizing: border-box;
+        padding-inline: 12px;
+        max-width: none;
+      }
+    }
+  </style>
+{%- endif -%}
 
   {%- comment -%}
     ------------------------------------------------------------------------------------------------------------------------
@@ -474,9 +819,31 @@
 
             {%- when 'richtext' -%}
               {%- if block.settings.content != blank -%}
-                <div class="image_with_text_content" {{ block.shopify_attributes }}>
-                  {{- block.settings.content -}}
-                </div>
+                {%- comment -%}
+                  The collection banner needs a wrapper and a toggle around this
+                  content. Every other image-with-text instance falls through to
+                  the original markup unchanged.
+
+                  The content itself is printed once, in both branches. There is
+                  no second copy for mobile and no plain-text duplicate, so rich
+                  text from the collection description is preserved exactly.
+                {%- endcomment -%}
+                {%- if section.settings.custom_class contains 'collection_banner' -%}
+                  <div class="cb-desc is-clamped" data-cb-desc>
+                    <div class="image_with_text_content cb-desc__text" {{ block.shopify_attributes }}>
+                      {{- block.settings.content -}}
+                    </div>
+
+                    <button type="button" class="cb-toggle" data-cb-toggle aria-expanded="false">
+                      <span class="cb-toggle__dots" aria-hidden="true">&hellip;</span>
+                      <span class="cb-toggle__label">Read more</span>
+                    </button>
+                  </div>
+                {%- else -%}
+                  <div class="image_with_text_content" {{ block.shopify_attributes }}>
+                    {{- block.settings.content -}}
+                  </div>
+                {%- endif -%}
               {%- endif -%}
 
             {%- when 'page' -%}
@@ -568,6 +935,168 @@
   </div>
 {%- endif -%}
 
+{%- if section.settings.custom_class contains 'collection_banner' -%}
+  {%- comment -%}
+    Read more, scoped to this instance.
+
+    Two jobs only: decide whether the description actually overflows its clamp,
+    and toggle the expanded class. The clamping itself is CSS, so the collapsed
+    height follows the breakpoint without the script knowing anything about
+    viewport sizes.
+
+    The check is re-run on resize because a description that fits three lines on
+    desktop may need four on a phone, and vice versa. If it stops overflowing
+    while expanded, the control is removed and the expansion reset, so the
+    panel never keeps a dead button.
+
+    Everything is found by querySelector inside the element itself, so a second
+    banner on another template cannot be reached, and no global listener is left
+    behind on disconnect.
+  {%- endcomment -%}
+  <script>
+    if (!customElements.get('collection-banner-readmore')) {
+      customElements.define(
+        'collection-banner-readmore',
+        class extends HTMLElement {
+          connectedCallback() {
+            this.wrap = this.querySelector('[data-cb-desc]');
+            this.text = this.wrap && this.wrap.querySelector('.cb-desc__text');
+            this.toggle = this.wrap && this.wrap.querySelector('[data-cb-toggle]');
+
+            // Connecting before the children exist is recoverable: try again on
+            // the next frame rather than giving up for the life of the page.
+            if (!this.wrap || !this.text || !this.toggle) {
+              if (!this.retried) {
+                this.retried = true;
+                requestAnimationFrame(() => this.connectedCallback());
+              }
+              return;
+            }
+
+            this.label = this.toggle.querySelector('.cb-toggle__label') || this.toggle;
+            // Read from the markup so the two stay in step: whatever the button
+            // is rendered with is what it returns to on collapse.
+            this.moreLabel = this.label.textContent.trim();
+            this.lessLabel = 'Read less';
+            this.clampedHeight = 0;
+
+            this.onToggle = () => {
+              const el = this.text;
+              const isOpen = this.wrap.classList.contains('is-open');
+              const from = el.getBoundingClientRect().height;
+
+              // The label and the reserved space change first so the control
+              // responds immediately; the height then animates to match.
+              if (isOpen) {
+                this.wrap.classList.remove('is-open');
+                this.label.textContent = this.moreLabel;
+                this.toggle.setAttribute('aria-expanded', 'false');
+              } else {
+                this.wrap.classList.remove('is-clamped');
+                this.wrap.classList.add('is-open');
+                this.label.textContent = this.lessLabel;
+                this.toggle.setAttribute('aria-expanded', 'true');
+              }
+
+              // Pin the old height, force a reflow, then set the new one, so the
+              // browser has two values to interpolate between. Without the
+              // reflow both assignments land in the same frame and it cuts.
+              el.style.maxHeight = from + 'px';
+              void el.offsetHeight;
+              el.style.maxHeight = (isOpen ? this.clampedHeight : el.scrollHeight) + 'px';
+
+              const finish = () => {
+                clearTimeout(this.fallback);
+                el.removeEventListener('transitionend', finish);
+                // The clamp is only reapplied once the height has finished
+                // moving, otherwise the text would reflow mid-animation.
+                if (isOpen) this.wrap.classList.add('is-clamped');
+                el.style.maxHeight = '';
+              };
+
+              el.addEventListener('transitionend', finish);
+              // prefers-reduced-motion removes the transition, so transitionend
+              // never fires and the inline height would stick.
+              this.fallback = setTimeout(finish, 420);
+            };
+
+            this.measure = () => {
+              const wasOpen = this.wrap.classList.contains('is-open');
+
+              // Measure from a clean collapsed state, with no inline height
+              // left over from an animation.
+              this.text.style.maxHeight = '';
+              this.wrap.classList.remove('is-open');
+              this.wrap.classList.add('is-clamped');
+
+              // scrollHeight is unreliable on a -webkit-box that is being
+              // line-clamped: several browsers report it as equal to
+              // clientHeight, so the overflow test silently returned false and
+              // the control was never shown. The clamp is lifted for one
+              // synchronous measurement and put straight back.
+              this.clampedHeight = this.text.clientHeight;
+              this.wrap.classList.remove('is-clamped');
+              const natural = this.text.scrollHeight;
+              this.wrap.classList.add('is-clamped');
+
+              const overflows = natural - this.clampedHeight > 1;
+              this.wrap.classList.toggle('is-truncatable', overflows);
+
+              if (overflows && wasOpen) {
+                // Restore the open state without animating it back.
+                this.wrap.classList.remove('is-clamped');
+                this.wrap.classList.add('is-open');
+              } else if (!overflows) {
+                // Short description: no control, nothing left open.
+                this.wrap.classList.remove('is-clamped');
+                this.toggle.setAttribute('aria-expanded', 'false');
+                this.label.textContent = this.moreLabel;
+              }
+            };
+
+            this.toggle.addEventListener('click', this.onToggle);
+            window.addEventListener('resize', this.measure, { passive: true });
+
+            // Fonts change the line box, so measuring before they land can
+            // misjudge the overflow by a line.
+            if (document.fonts && document.fonts.ready) {
+              document.fonts.ready.then(this.measure);
+            }
+            requestAnimationFrame(this.measure);
+          }
+
+          disconnectedCallback() {
+            if (this.toggle) this.toggle.removeEventListener('click', this.onToggle);
+            window.removeEventListener('resize', this.measure);
+          }
+        }
+      );
+    }
+
+    // Upgrade the banner's prose container in place. Wrapping the markup in the
+    // custom element in Liquid would have meant touching the shared layout for
+    // every instance; this only ever runs inside this section.
+    (function () {
+      var root = document.getElementById('shopify-section-{{ section.id }}');
+      if (!root) return;
+      var desc = root.querySelector('[data-cb-desc]');
+      if (!desc || desc.closest('collection-banner-readmore')) return;
+      var host = document.createElement('collection-banner-readmore');
+
+      // Order matters. connectedCallback fires the moment the host enters the
+      // document, so inserting it first and filling it afterwards meant the
+      // callback ran against an empty element, found no [data-cb-desc], and
+      // returned before binding the click. That is why Read more did nothing.
+      // The description is moved into the host while the host is still
+      // detached, so by the time it connects its children are already there.
+      var parent = desc.parentNode;
+      var next = desc.nextSibling;
+      host.appendChild(desc);
+      parent.insertBefore(host, next);
+    })();
+  </script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "t:sections.image_with_text.name",
@@ -584,7 +1113,9 @@
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
     },
-      {
+  
+
+    {
       "type": "text",
       "id": "custom_class",
       "label": "Custom CSS class",
@@ -748,6 +1279,91 @@
         }
       ],
       "default": "sm"
+    },
+    {
+      "type": "range",
+      "id": "trade_media_gap",
+      "label": "Trade: gap between image and content",
+      "info": "Overrides the theme's 22px only for this section.",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "trade_feature_gap_mobile",
+      "label": "Trade: gap between features (mobile)",
+      "info": "Horizontal space between the first two features. Reduce it if their labels do not fit on one line.",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "trade_para_top",
+      "label": "Trade: space above the paragraph (desktop)",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "trade_para_bottom",
+      "label": "Trade: space below the paragraph (desktop)",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "trade_para_top_mobile",
+      "label": "Trade: space above the paragraph (mobile)",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "trade_para_bottom_mobile",
+      "label": "Trade: space below the paragraph (mobile)",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "id": "trade_outer_spacing",
+      "label": "Trade: spacing above and below",
+      "info": "Transparent space outside the cream panel. Applies only to the Trade layout variant.",
+      "type": "range",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "color",
+      "id": "trade_button_background",
+      "label": "Trade: button background",
+      "default": "#4f5b3f"
+    },
+    {
+      "type": "color",
+      "id": "trade_button_text",
+      "label": "Trade: button text",
+      "default": "#ffffff"
     },
     {
       "type": "select",

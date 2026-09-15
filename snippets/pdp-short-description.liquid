@@ -1,0 +1,78 @@
+{%- doc -%}
+  PDP short description.
+
+  Renders the first few points of the product's own description as one run-on
+  line, separated by dots:
+
+    100% New Zealand Wool · Colored with natural, vegetable dyes.
+
+  Built in Liquid rather than with CSS on purpose. The description is authored
+  rich text and its shape varies between products - some points are list items,
+  some are paragraphs, and the products here begin with a bold "Description"
+  label that is neither a heading nor a list item. CSS can only target what it
+  can predict, so it kept missing one or the other. Splitting the HTML on its
+  block boundaries handles every shape the same way.
+
+  The text itself is never rewritten: points are taken whole, in order, exactly
+  as written in Shopify. Nothing is hardcoded.
+
+  Usage - a "Liquid" block where the short description should appear:
+
+    {% render 'pdp-short-description' %}
+
+  Optional overrides:
+
+    {% render 'pdp-short-description', points: 3, separator: '|' %}
+{%- enddoc -%}
+
+{%- liquid
+  assign points_wanted = points | default: 2
+  assign separator = separator | default: '·'
+
+  # Mark every block boundary before the tags are stripped, so each list item
+  # and each paragraph survives as its own point. strip_html alone would run
+  # them into a single string with no way to tell them apart.
+  assign raw = product.description
+  assign raw = raw | replace: '</li>', '|||' | replace: '</p>', '|||'
+  assign raw = raw | replace: '<br>', '|||' | replace: '<br/>', '|||' | replace: '<br />', '|||'
+  assign raw = raw | strip_html
+  assign chunks = raw | split: '|||'
+
+  assign kept = ''
+  assign kept_count = 0
+
+  for chunk in chunks
+    if kept_count >= points_wanted
+      break
+    endif
+
+    assign point = chunk | strip
+
+    # Skip empties left by the tag stripping.
+    assign point_size = point | size
+    if point_size == 0
+      continue
+    endif
+
+    # Skip a leading "Description" label. Products here open with one, written
+    # as bold body text rather than a heading, so it is part of the content and
+    # would otherwise count as the first point. Compared case-insensitively and
+    # only when it is the whole of the line, so a sentence that merely contains
+    # the word is kept.
+    assign point_downcase = point | downcase | strip | replace: ':', ''
+    if point_downcase == 'description'
+      continue
+    endif
+
+    if kept_count > 0
+      assign kept = kept | append: ' ' | append: separator | append: ' '
+    endif
+
+    assign kept = kept | append: point
+    assign kept_count = kept_count | plus: 1
+  endfor
+-%}
+
+{%- if kept != blank -%}
+  <div class="pdp-short-description">{{ kept }}</div>
+{%- endif -%}

@@ -1,0 +1,1395 @@
+{%- doc -%}
+  Row 10 - "Find the Perfect Look".
+
+  An editorial image grid where each image carries up to three product hotspots.
+  Tapping a hotspot opens a compact product card anchored to that dot; the card
+  is a link to the product. The image itself never navigates.
+
+  Reused rather than rebuilt:
+    snippets/section-header.liquid   eyebrow + heading, native typography
+    snippets/price-list.liquid       price, compare-at, sale state, currency
+    snippets/product-rating.liquid   "4.8 (54)" from the reviews metafields
+    snippets/product-badges.liquid   the discount pill, honouring theme settings
+    snippets/button.liquid           the CTA, colour overridden per section
+
+  Not reused, and why:
+    sections/shop-the-look.liquid is a single-image viewer with a product
+    carousel beside it and a full-screen popover on mobile. Different layout,
+    different interaction, and it belongs to another developer.
+    x-popover in theme.js is an overlay/drawer, not a card anchored to a point.
+
+  One block is one image plus all of its hotspots, so the whole configuration
+  travels together when the block is reordered. Nothing global is touched;
+  every selector and the custom element name are namespaced to this section.
+{%- enddoc -%}
+
+{%- liquid
+  assign hotspot_count = 3
+  assign ns = 'fpl-' | append: section.id
+  assign carousel_id = 'fpl-carousel-' | append: section.id
+
+  # A select returns a string. Coerced once here so the arithmetic below
+  # (column position, image sizes) is done on a number, not on text.
+  assign mobile_columns = section.settings.columns_mobile | plus: 0
+-%}
+
+{%- if section.blocks.size > 0 -%}
+  <style>
+    /* Every rule is prefixed with this section's id. No other section, product
+       card or popover can be reached from here. */
+    #shopify-section-{{ section.id }} .fpl {
+      background: {{ section.settings.background }};
+      /* The anchored card is nudged back inside the viewport by JS, but clip
+         guarantees that nothing here can ever widen the document. clip rather
+         than hidden: it does not create a scroll container, so it cannot
+         capture page scroll or break position: sticky elsewhere. */
+      overflow-x: clip;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__inner {
+      padding-block-start: {{ section.settings.padding_top }}px;
+      padding-block-end: {{ section.settings.padding_bottom }}px;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__header {
+      margin-block-end: {{ section.settings.header_gap }}px;
+    }
+
+    /* section-header.liquid carries the theme's own vertical rhythm, which is
+       looser than this design. Overridden here only, by section id, so every
+       other section that renders the same snippet is untouched. */
+    #shopify-section-{{ section.id }} .fpl__header .section-header {
+      gap: 0;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__header .section_header_subheading {
+      margin-block: 0 {{ section.settings.eyebrow_gap }}px;
+      line-height: 1.3;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__header .section_header_heading {
+      font-weight: {{ section.settings.heading_weight }};
+      margin-block: 0;
+    }
+
+    /* ---------- Gallery carousel ----------
+       The carousel cell is a COLUMN, not an image and not a page. Each column
+       is a flex stack of its two images, so the second image starts directly
+       after the first image in THAT column: no shared row, so no cream gap.
+
+       Prestige's own scroll-carousel drives it. With the group-cells attribute
+       omitted its groupCells getter returns 1, so prev/next advance exactly one
+       cell, and a cell is a direct child. One click, one column, both its
+       images. Nothing in theme.js is modified; the component is used as-is. */
+    #shopify-section-{{ section.id }} .fpl__carousel {
+      position: relative;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__track {
+      --fpl-visible: {{ section.settings.columns }};
+      --fpl-gap: {{ section.settings.grid_gap }}px;
+      display: flex;
+      align-items: flex-start;
+      gap: var(--fpl-gap);
+      overflow: auto hidden;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Widths are a fraction of the track, never fixed pixels, so the row cannot
+       exceed its container and cannot widen the document. */
+    #shopify-section-{{ section.id }} .fpl__column {
+      flex: 0 0 calc((100% - (var(--fpl-visible) - 1) * var(--fpl-gap)) / var(--fpl-visible));
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--fpl-gap);
+      scroll-snap-align: start;
+      /* One swipe moves one column. Without this a momentum flick sails past
+         several snap points. */
+      scroll-snap-stop: always;
+    }
+
+    /* ---------- Arrows ----------
+       Row 08's own pattern: the theme's floating-controls-container positions
+       the buttons, so size, inset, vertical centring, hover reveal and the
+       hide-when-not-scrollable behaviour all come from theme.css rather than
+       from numbers invented here. Only the colours are reassigned, under this
+       section's id. collection-list.liquid is untouched.
+
+       .circle-button's default box-shadow is tinted with the text colour, so a
+       white chevron would draw a white halo - hence none, exactly as Row 08. */
+    /* The arrow outranks everything inside the track. The dots sit at z-index 2
+       and the open item at 3, all in the same stacking context as the controls
+       (nothing between them sets a z-index), so without this a hotspot painted
+       over the arrow and the two read as one merged blob. */
+    #shopify-section-{{ section.id }} .floating-controls-container__control {
+      z-index: 5;
+    }
+
+    #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+      --circle-button-size: 2.375rem; /* 38px, same as Row 08 */
+      --circle-button-background: 43 39 36;
+      --circle-button-text-color: 255 255 255;
+      box-sizing: border-box;
+      background: #2b2724;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      box-shadow: none;
+    }
+
+    #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+      width: 0.875rem;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* The custom element is inline by default, which would break the bleed
+       margins on the carousel inside it. */
+    #shopify-section-{{ section.id }} find-perfect-look {
+      display: block;
+    }
+
+    /* ---------- Mobile progress bar ----------
+       Row 08's proportional thumb, reproduced here rather than borrowed: its
+       element is defined inside collection-list.liquid, so depending on it would
+       mean this section silently loses its indicator if Row 08 is ever removed
+       from the page. Same markup, same maths, own element name. */
+    #shopify-section-{{ section.id }} .fpl__progress {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__item {
+      position: relative;
+      min-width: 0;
+    }
+
+    /* The open card must sit above every later item in the grid. */
+    #shopify-section-{{ section.id }} .fpl__item.is-open {
+      z-index: 3;
+    }
+
+    /* The frame clips the image only. The card is deliberately a sibling of the
+       frame, not a child, because overflow: hidden here would cut it off. */
+    #shopify-section-{{ section.id }} .fpl__frame {
+      position: relative;
+      aspect-ratio: var(--fpl-ratio, 4 / 5);
+      overflow: hidden;
+      border-radius: {{ section.settings.image_radius }}px;
+      background: rgb(var(--text-color) / 0.06);
+    }
+
+    #shopify-section-{{ section.id }} .fpl__frame :is(img, svg) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ---------- Hotspot ---------- */
+    #shopify-section-{{ section.id }} .fpl__dot {
+      position: absolute;
+      left: var(--fpl-x);
+      top: var(--fpl-y);
+      width: {{ section.settings.hotspot_size }}px;
+      height: {{ section.settings.hotspot_size }}px;
+      padding: 0;
+      margin: 0;
+      transform: translate(-50%, -50%);
+      border-radius: var(--rounded-full);
+      background: {{ section.settings.hotspot_color }};
+      /* No outer ring. The only dark element is a soft drop shadow, which is
+         what keeps a white dot readable on a pale wall or a cream rug without
+         turning into a glow. */
+      border: 0;
+      box-shadow: 0 1px 5px rgb(0 0 0 / 0.45);
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+      z-index: 2;
+    }
+
+    /* The dot stays visually small to match the design, but the pressable area
+       is 44px so it is not a fiddly target on a phone. */
+    #shopify-section-{{ section.id }} .fpl__dot::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 44px;
+      height: 44px;
+      transform: translate(-50%, -50%);
+    }
+
+    /* A single expanding ring. Subtle enough to read as a cue rather than an
+       animation, and it keeps the dot legible on both light and dark images. */
+    #shopify-section-{{ section.id }} .fpl__dot::after {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: var(--rounded-full);
+      border: 1px solid {{ section.settings.hotspot_color }};
+      animation: fpl-pulse-{{ section.id }} 2.4s ease-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes fpl-pulse-{{ section.id }} {
+      0% { transform: scale(0.85); opacity: 0.9; }
+      70% { transform: scale(1.7); opacity: 0; }
+      100% { transform: scale(1.7); opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #shopify-section-{{ section.id }} .fpl__dot::after {
+        animation: none;
+      }
+    }
+
+    #shopify-section-{{ section.id }} .fpl__dot:is(:hover, :focus-visible) {
+      transform: translate(-50%, -50%) scale(1.25);
+    }
+
+    /* Visible on a pale wall and on a dark rug alike: white ring, dark halo. */
+    #shopify-section-{{ section.id }} .fpl__dot:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 4px rgb(0 0 0 / 0.5);
+    }
+
+    /* The dot is white at rest, so the open state reads through size and a
+       firmer shadow rather than a colour change. */
+    #shopify-section-{{ section.id }} .fpl__dot[aria-expanded='true'] {
+      transform: translate(-50%, -50%) scale(1.3);
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.55);
+    }
+
+    #shopify-section-{{ section.id }} .fpl__dot[aria-expanded='true']::after {
+      animation: none;
+    }
+
+    /* ---------- Product card ----------
+       Anchored to the dot's own percentage position, so it follows the hotspot
+       at every width without any JS on resize. JS only nudges it back inside
+       the viewport via --fpl-shift when a dot sits near an edge. */
+    #shopify-section-{{ section.id }} .fpl__card {
+      position: absolute;
+      /* Centred on its own image, not on the dot's X. The card is a share of
+         the image width, so centring leaves balanced space either side and the
+         JS edge clamp then almost never has to shift it. It stays tied to the
+         hotspot vertically and by which image it belongs to; only the
+         horizontal tracking is dropped, which is what stopped it sliding left
+         or right with each dot. */
+      left: 50%;
+      top: var(--fpl-y);
+      z-index: 4;
+      box-sizing: border-box;
+      /* Sized from the lifestyle image it sits on, not from a fixed pixel
+         value, so it keeps the same visual proportion as the columns grow.
+         .fpl__item is the positioned ancestor -- the card is its child, not the
+         frame's -- so the percentage is a share of the column, which is the same
+         width as the image. Measured off the 1440 reference: 78% of a 440px
+         column, i.e. about 343px.
+
+         The floor stops it collapsing on narrow columns, the ceiling stops it
+         dominating a wide one, and the viewport term is a final guard against
+         horizontal page scroll. */
+      width: min(
+        max({{ section.settings.card_min_width }}px, {{ section.settings.card_width_share }}%),
+        {{ section.settings.card_width_max }}px,
+        calc(100vw - 32px)
+      );
+      transform: translate(calc(-50% + var(--fpl-shift, 0px)), calc(-100% - 16px));
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      padding: 8px;
+      /* Translucent off-white, not opaque, so the lifestyle image reads faintly
+         through it. No backdrop-filter: the brief rules out glassmorphism, and
+         a blur on a scrolling carousel is expensive on mobile. */
+      background: rgb(255 255 255 / {{ section.settings.card_opacity_pct | divided_by: 100.0 }});
+      border: 1px solid {{ section.settings.card_border_color }};
+      border-radius: {{ section.settings.card_radius }}px;
+      box-shadow: 0 2px 10px rgb(0 0 0 / 0.08);
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Flipped below the dot when there is no room above it. */
+    #shopify-section-{{ section.id }} .fpl__card.is-below {
+      transform: translate(calc(-50% + var(--fpl-shift, 0px)), 16px);
+    }
+
+    #shopify-section-{{ section.id }} .fpl__card[hidden] {
+      display: none;
+    }
+
+    /* A fixed thumbnail box, not a percentage: the image keeps the same
+       footprint whatever the card width does, which is what stops it ballooning
+       when the card goes full width on mobile. cover crops, never distorts. */
+    #shopify-section-{{ section.id }} .fpl__card-image {
+      width: {{ section.settings.thumb_width }}px;
+      /* 68 / 56 from the desktop Figma. With 8px padding top and bottom the
+         thumbnail is the tallest element, so the card lands at 84px without
+         any height being declared. */
+      height: calc({{ section.settings.thumb_width }}px * 1.214);
+      object-fit: cover;
+      border-radius: 2px;
+      display: block;
+      flex: none;
+    }
+
+    /* One line, clipped. A long title must not make the card taller than the
+       Figma, and the ellipsis is what holds the height constant. */
+    #shopify-section-{{ section.id }} .fpl__card-title {
+      font-family: var(--text-font-family);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__card-rating {
+      display: block;
+      margin-block-start: 3px;
+    }
+
+    /* price-list and product-badges still produce the prices, the sale state
+       and the discount figure. Only size and rhythm are restated here. */
+    #shopify-section-{{ section.id }} .fpl__card-prices {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-block-start: 4px;
+      white-space: nowrap;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__card-prices .price-list {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__card-prices .price-list > * {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__card-prices compare-at-price {
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    #shopify-section-{{ section.id }} .fpl__card-prices .badge {
+      font-size: 10px;
+      line-height: 1.4;
+      padding-block: 2px;
+      padding-inline: 6px;
+      border-radius: var(--rounded-full);
+    }
+
+    /* ---------- CTA ---------- */
+    #shopify-section-{{ section.id }} .fpl__cta {
+      display: flex;
+      justify-content: center;
+      margin-block-start: {{ section.settings.cta_gap }}px;
+    }
+
+    /* ---------- Mobile ---------- */
+    @media screen and (max-width: 699px) {
+      /* Full available width on mobile.
+         .fpl__inner carries .container container--xl, and .container sets its
+         own margin-inline from max(--container-gutter, 50% - --container-max-width / 2).
+         Those two together were what inset the whole section and left the unused
+         band on the right. Both are neutralised here and replaced with one
+         explicit gutter.
+
+         --container-gutter is set on the same element on purpose: .bleed on the
+         track derives --distance-to-bleed from it, so the track's negative
+         margin now cancels this padding exactly and the carousel reaches both
+         screen edges while the header stays inset. Desktop is untouched. */
+      #shopify-section-{{ section.id }} .fpl__inner {
+        --container-max-width: 100%;
+        --container-gutter: {{ section.settings.gutter_mobile }}px;
+        max-width: none;
+        margin-inline: 0;
+        padding-inline: {{ section.settings.gutter_mobile }}px;
+        padding-block-start: {{ section.settings.padding_top | divided_by: 2 }}px;
+        padding-block-end: {{ section.settings.padding_bottom | divided_by: 2 }}px;
+      }
+
+      /* Nothing between the section root and the track may impose a width.
+         .fpl__inner is already neutralised above, but .fpl__carousel also
+         carries .floating-controls-container, and find-perfect-look is a custom
+         element with no default width. Any of them sitting at less than 100%
+         narrows everything inside it. All of them are pinned here. */
+      #shopify-section-{{ section.id }} .fpl,
+      #shopify-section-{{ section.id }} .fpl__carousel,
+      #shopify-section-{{ section.id }} find-perfect-look {
+        width: 100%;
+        max-width: none;
+        box-sizing: border-box;
+      }
+
+      #shopify-section-{{ section.id }} .fpl__track {
+        max-width: none;
+        box-sizing: border-box;
+      }
+
+      #shopify-section-{{ section.id }} .fpl__carousel {
+        padding-inline: 0;
+        margin-inline: 0;
+      }
+
+      /* Same carousel, same column sequence, fewer columns in view and no
+         arrows: the finger is the control.
+
+         The track escapes .fpl__inner's gutter and drops .bleed's padding, so
+         the first column sits hard against the left edge at rest and the last
+         column against the right edge at the end. Nothing is centred: the snap
+         alignment is start, and with no inline padding the scroller's own
+         extremes are the screen's extremes. width: auto is required -- with an
+         explicit 100% the negative margins would push the right edge out
+         instead of widening the box. */
+      #shopify-section-{{ section.id }} .fpl__track {
+        --fpl-visible: {{ mobile_columns }};
+        --fpl-gap: {{ section.settings.grid_gap_mobile }}px;
+        /* Column width is stated in vw here, not as a share of the track. The
+           track needs asymmetric padding below, and a percentage flex-basis
+           resolves against the track's CONTENT box, so padding would shrink the
+           columns and the padding depends on the column width: circular. vw
+           breaks the loop. */
+        --fpl-colw: calc(
+          (100vw - 2 * {{ section.settings.gutter_mobile }}px - (var(--fpl-visible) - 1) * var(--fpl-gap))
+          / var(--fpl-visible)
+        );
+        width: auto;
+        margin-inline: calc(-1 * {{ section.settings.gutter_mobile }}px);
+        /* The same gutter on both sides. Column 1 starts where the Figma puts
+           it, and the scroller stops with the last column against the right
+           gutter -- no dead space at the end.
+
+           This deliberately does NOT leave trailing room for the last column to
+           travel to the left edge. With the gutter on both sides the row of
+           columns fills the track exactly, so the start and end states are
+           mirror images and nothing is centred. */
+        padding-inline: {{ section.settings.gutter_mobile }}px;
+        scroll-padding-inline: {{ section.settings.gutter_mobile }}px;
+      }
+
+      #shopify-section-{{ section.id }} .fpl__column {
+        flex-basis: var(--fpl-colw);
+      }
+
+      #shopify-section-{{ section.id }} .fpl__header {
+        margin-block-end: {{ section.settings.header_gap | times: 0.7 | round }}px;
+      }
+
+      /* Every column the same overall height: same top edge, same bottom edge,
+         no stagger and no leftover blank space.
+
+         stretch makes the columns match the tallest one. The top image keeps
+         its own aspect ratio from its block; the bottom image gives up its
+         ratio and takes whatever height is left, so the column fills exactly
+         rather than ending short. object-fit: cover means it crops instead of
+         distorting. No nudge and no per-item offset are applied here. */
+      #shopify-section-{{ section.id }} .fpl__track {
+        align-items: stretch;
+      }
+
+      #shopify-section-{{ section.id }} .fpl__item:last-child {
+        flex: 1 1 auto;
+        display: flex;
+        min-height: 0;
+      }
+
+      #shopify-section-{{ section.id }} .fpl__item:last-child .fpl__frame {
+        aspect-ratio: auto;
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+
+      /* Edge behaviour is now the theme's own bleed class on the track, so no
+         section-specific margin correction is needed on either side. */
+
+      #shopify-section-{{ section.id }} .fpl__progress {
+        display: block;
+        position: relative;
+        height: 3px;
+        margin-block-start: 16px;
+        border-radius: 2px;
+        background: rgb(var(--text-color) / 0.14);
+      }
+
+      #shopify-section-{{ section.id }} .fpl__progress__thumb {
+        position: absolute;
+        inset-block: 0;
+        border-radius: inherit;
+        background: rgb(var(--text-color) / 0.85);
+        width: calc(var(--fpl-progress-size, 0.4) * 100%);
+        inset-inline-start: calc(var(--fpl-progress-position, 0) * (100% - var(--fpl-progress-size, 0.4) * 100%));
+      }
+
+      /* The measured mobile width, not a viewport fill. The min() is a guard,
+         not the design: on a narrow phone it keeps the card inside the screen
+         less its margins, so the card can never widen the document. */
+      #shopify-section-{{ section.id }} .fpl__card {
+        width: min(
+          {{ section.settings.card_width_mobile_px }}px,
+          calc(100vw - {{ section.settings.card_margin_mobile_px | times: 2 }}px)
+        );
+        gap: 10px;
+      }
+
+      /* 54 x 60 from the mobile Figma: slightly smaller and slightly squarer
+         than desktop, and still a fixed box rather than a share of the card. */
+      #shopify-section-{{ section.id }} .fpl__card-image {
+        width: {{ section.settings.thumb_width | minus: 2 }}px;
+        height: calc({{ section.settings.thumb_width | minus: 2 }}px * 1.111);
+      }
+
+      /* No arrows on mobile. The theme only positions these under
+         (pointer: fine), so they are hidden outright here rather than left to
+         render in normal flow on a touch device. */
+      #shopify-section-{{ section.id }} .floating-controls-container__control {
+        display: none;
+      }
+      #shopify-section-{{ section.id }} .fpl__header,
+      #shopify-section-{{ section.id }} .fpl__header .section-header {
+        justify-items: start;
+        justify-self: start;
+        text-align: left;
+      }
+    }
+  </style>
+
+  <div class="fpl color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="fpl__inner container container--xl">
+      <div class="fpl__header">
+        {%- render 'section-header',
+          subheading: section.settings.subheading,
+          heading: section.settings.title,
+          heading_style: section.settings.heading_style
+        -%}
+      </div>
+
+      {%- comment -%}
+        Column grouping, derived from Theme Editor block order and nothing else.
+
+        A page is one screenful: columns_per_page columns of two images. Inside
+        a page, the column at slot s takes the block at slot s and the block one
+        row down. With three columns that is 1+4, 2+5, 3+6, then the next page
+        gives 7+10, 8+11, 9+12, and so on for as many blocks as exist.
+
+        Nothing is hardcoded: change the column count and the grouping follows.
+        The block itself is never split -- image, hotspots and products stay in
+        one block and move together when it is reordered.
+      {%- endcomment -%}
+      {%- liquid
+        assign per_page = section.settings.columns | times: 2
+        # Column count comes from the number of PAGES, not from the block count.
+        # Deriving it from blocks/2 loses the last block of a partial page: with
+        # nine blocks and three columns it produced five columns, and block 9
+        # was never rendered. Ceiling division, then columns per page.
+        assign total_pages = section.blocks.size | plus: per_page | minus: 1 | divided_by: per_page
+        assign total_columns = total_pages | times: section.settings.columns
+      -%}
+
+      <div class="fpl__carousel floating-controls-container floating-controls-container--inside floating-controls-container--on-hover">
+        <carousel-prev-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
+          <button type="button" class="prev-next-button prev-next-button--prev circle-button circle-button--lg hover:animate-icon-inline" disabled>
+            <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+            {%- render 'icon' with 'arrow-left', direction_aware: true -%}
+          </button>
+        </carousel-prev-button>
+
+        <find-perfect-look>
+          {%- comment -%}
+            group-cells is deliberately omitted. ScrollCarousel's groupCells
+            getter returns 1 without it, which is one column per arrow click
+            rather than a whole page of three.
+          {%- endcomment -%}
+          <scroll-carousel id="{{ carousel_id }}" allow-drag class="fpl__track bleed" data-fpl-track>
+            {%- for column in (1..total_columns) -%}
+              {%- liquid
+                assign column_index = forloop.index0
+                assign page = column_index | divided_by: section.settings.columns
+                assign slot = column_index | modulo: section.settings.columns
+                assign top_index = page | times: per_page | plus: slot
+                assign bottom_index = top_index | plus: section.settings.columns
+
+                assign index_pair = top_index | append: ',' | append: bottom_index | split: ','
+                assign top_block = section.blocks[top_index]
+              -%}
+
+              {%- comment -%}
+                A partial last page leaves trailing columns with no blocks at
+                all. Those are skipped rather than rendered as empty cells the
+                carousel would still scroll to.
+              {%- endcomment -%}
+              {%- if top_block != blank -%}
+              <div class="fpl__column">
+                {%- for index_string in index_pair -%}
+                  {%- liquid
+                    assign block_index = index_string | plus: 0
+                    assign block = section.blocks[block_index]
+                  -%}
+
+                  {%- if block != blank -%}
+          <div class="fpl__item" {{ block.shopify_attributes }}>
+            <div class="fpl__frame" style="--fpl-ratio: {{ block.settings.ratio }};">
+              {%- if block.settings.image != blank -%}
+                {%- capture image_sizes -%}
+                  (max-width: 699px) {{ 100 | divided_by: mobile_columns }}vw, {{ 100 | divided_by: section.settings.columns }}vw
+                {%- endcapture -%}
+
+                {{-
+                  block.settings.image
+                  | image_url: width: 1400
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '200,300,400,500,600,800,1000,1200,1400',
+                    sizes: image_sizes,
+                    alt: block.settings.image.alt
+                -}}
+              {%- else -%}
+                {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder' -}}
+              {%- endif -%}
+
+              {%- comment -%}
+                Dots live inside the clipped frame. The cards do not, because the
+                frame clips its overflow and would cut them off.
+              {%- endcomment -%}
+              {%- for i in (1..hotspot_count) -%}
+                {%- liquid
+                  capture product_key
+                    echo 'product_' | append: i
+                  endcapture
+                  capture x_key
+                    echo 'product_' | append: i | append: '_horizontal_position'
+                  endcapture
+                  capture y_key
+                    echo 'product_' | append: i | append: '_vertical_position'
+                  endcapture
+
+                  assign hotspot_product = block.settings[product_key]
+                -%}
+
+                {%- if hotspot_product != blank -%}
+                  <button
+                    type="button"
+                    class="fpl__dot"
+                    style="--fpl-x: {{ block.settings[x_key] }}%; --fpl-y: {{ block.settings[y_key] }}%;"
+                    aria-expanded="false"
+                    aria-controls="{{ ns }}-{{ block.id }}-{{ i }}"
+                    aria-label="{{ 'sections.shop_the_look.view_product' | t }}: {{ hotspot_product.title | escape }}"
+                    data-fpl-dot
+                  ></button>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+
+            {%- for i in (1..hotspot_count) -%}
+              {%- liquid
+                capture product_key
+                  echo 'product_' | append: i
+                endcapture
+                capture x_key
+                  echo 'product_' | append: i | append: '_horizontal_position'
+                endcapture
+                capture y_key
+                  echo 'product_' | append: i | append: '_vertical_position'
+                endcapture
+
+                assign hotspot_product = block.settings[product_key]
+              -%}
+
+              {%- if hotspot_product != blank -%}
+                <a
+                  id="{{ ns }}-{{ block.id }}-{{ i }}"
+                  class="fpl__card"
+                  href="{{ hotspot_product.url }}"
+                  style="--fpl-x: {{ block.settings[x_key] }}%; --fpl-y: {{ block.settings[y_key] }}%;"
+                  hidden
+                  data-fpl-card
+                >
+                  {%- if hotspot_product.featured_media != blank -%}
+                    {%- comment -%}
+                      sizes is built with capture first: an output tag cannot
+                      contain another {{ }}, so interpolating the setting inline
+                      is a Liquid syntax error.
+                    {%- endcomment -%}
+                    {%- capture thumb_sizes -%}{{ section.settings.thumb_width }}px{%- endcapture -%}
+
+                    {{-
+                      hotspot_product.featured_media
+                      | image_url: width: 220
+                      | image_tag:
+                        class: 'fpl__card-image',
+                        loading: 'lazy',
+                        widths: '110,160,220',
+                        sizes: thumb_sizes,
+                        alt: ''
+                    -}}
+                  {%- endif -%}
+
+                  <div>
+                    <p class="fpl__card-title">{{- hotspot_product.title -}}</p>
+
+                    <span class="fpl__card-rating">
+                      {%- render 'product-rating', product: hotspot_product, display_mode: 'rating_with_count' -%}
+                    </span>
+
+                    <div class="fpl__card-prices">
+                      {%- render 'price-list', product: hotspot_product, context: 'card', hide_unit_price: true -%}
+                      {%- render 'product-badges', product: hotspot_product, types: 'discount', context: 'card' -%}
+                    </div>
+                  </div>
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </scroll-carousel>
+        </find-perfect-look>
+
+        <carousel-next-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
+          <button type="button" class="prev-next-button prev-next-button--next circle-button circle-button--lg hover:animate-icon-inline">
+            <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+            {%- render 'icon' with 'arrow-right', direction_aware: true -%}
+          </button>
+        </carousel-next-button>
+      </div>
+
+      <fpl-scroll-progress class="fpl__progress" aria-hidden="true" data-carousel="{{ carousel_id }}">
+        <span class="fpl__progress__thumb"></span>
+      </fpl-scroll-progress>
+
+      {%- if section.settings.cta_text != blank -%}
+        <div class="fpl__cta">
+          {%- render 'button',
+            href: section.settings.cta_link,
+            content: section.settings.cta_text,
+            size: 'sm',
+            background: section.settings.cta_background,
+            text_color: section.settings.cta_text_color
+          -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%}
+    Interaction, scoped to this section.
+
+    The cards are already anchored to their hotspot's percentage position in
+    CSS, so they track the image at every viewport with no JS. JS does three
+    things only: open and close one card at a time, nudge a card back inside the
+    viewport when its dot sits near an edge, and flip it below the dot when
+    there is no room above. Nothing global is registered except the two
+    document listeners, which are removed on disconnect.
+  {%- endcomment -%}
+  <script>
+    if (!customElements.get('fpl-scroll-progress')) {
+      customElements.define(
+        'fpl-scroll-progress',
+        class extends HTMLElement {
+          connectedCallback() {
+            this.carousel = document.getElementById(this.dataset.carousel);
+            if (!this.carousel) return;
+
+            this.update = () => {
+              const el = this.carousel;
+              const travel = el.scrollWidth - el.clientWidth;
+              const size = el.scrollWidth > 0 ? el.clientWidth / el.scrollWidth : 1;
+              this.style.setProperty('--fpl-progress-size', Math.min(1, size));
+              this.style.setProperty('--fpl-progress-position', travel > 0 ? el.scrollLeft / travel : 0);
+            };
+
+            this.carousel.addEventListener('scroll', this.update, { passive: true });
+            window.addEventListener('resize', this.update, { passive: true });
+            this.update();
+          }
+
+          disconnectedCallback() {
+            if (!this.carousel) return;
+            this.carousel.removeEventListener('scroll', this.update);
+            window.removeEventListener('resize', this.update);
+          }
+        }
+      );
+    }
+
+    if (!customElements.get('find-perfect-look')) {
+      customElements.define(
+        'find-perfect-look',
+        class extends HTMLElement {
+          connectedCallback() {
+            this.margin = {{ section.settings.card_margin_mobile_px }};
+            this.open = null;
+
+            this.onClick = (event) => {
+              const dot = event.target.closest('[data-fpl-dot]');
+              if (dot && this.contains(dot)) {
+                event.preventDefault();
+                this.toggle(dot);
+                return;
+              }
+
+              // Clicks inside the open card are navigation, so they pass through.
+              if (this.open && !this.open.card.contains(event.target)) this.close();
+            };
+
+            this.onKeydown = (event) => {
+              if (event.key !== 'Escape' || !this.open) return;
+              const dot = this.open.dot;
+              this.close();
+              dot.focus();
+            };
+
+            this.onReflow = () => {
+              if (this.open) this.place(this.open.card);
+            };
+
+            const track = this.querySelector('[data-fpl-track]');
+            if (track) track.addEventListener('scroll', this.onReflow, { passive: true });
+
+            document.addEventListener('click', this.onClick);
+            document.addEventListener('keydown', this.onKeydown);
+            window.addEventListener('resize', this.onReflow, { passive: true });
+          }
+
+          disconnectedCallback() {
+            document.removeEventListener('click', this.onClick);
+            document.removeEventListener('keydown', this.onKeydown);
+            window.removeEventListener('resize', this.onReflow);
+          }
+
+          toggle(dot) {
+            const isOpen = this.open && this.open.dot === dot;
+            this.close();
+            if (isOpen) return;
+
+            const card = this.querySelector('#' + CSS.escape(dot.getAttribute('aria-controls')));
+            if (!card) return;
+
+            dot.setAttribute('aria-expanded', 'true');
+            dot.closest('.fpl__item').classList.add('is-open');
+            card.hidden = false;
+            this.open = { dot, card };
+            this.place(card);
+          }
+
+          close() {
+            if (!this.open) return;
+            const { dot, card } = this.open;
+            dot.setAttribute('aria-expanded', 'false');
+            dot.closest('.fpl__item').classList.remove('is-open');
+            card.hidden = true;
+            card.classList.remove('is-below');
+            card.style.removeProperty('--fpl-shift');
+            this.open = null;
+          }
+
+          place(card) {
+            // Measure from the unshifted position, otherwise each reflow would
+            // compound the previous correction.
+            card.style.setProperty('--fpl-shift', '0px');
+            card.classList.remove('is-below');
+
+            // The track is a scroll container, so it clips its own overflow.
+            // The card has to stay inside BOTH the track and the viewport,
+            // otherwise a dot near the top of an image opens a card that is cut
+            // off by the carousel edge rather than by the screen.
+            const track = this.querySelector('[data-fpl-track]');
+            const bounds = track ? track.getBoundingClientRect() : null;
+
+            let rect = card.getBoundingClientRect();
+            const left = Math.max(this.margin, bounds ? bounds.left + 2 : this.margin);
+            const right = Math.min(
+              document.documentElement.clientWidth - this.margin,
+              bounds ? bounds.right - 2 : Infinity
+            );
+
+            let shift = 0;
+            if (rect.left < left) shift = left - rect.left;
+            else if (rect.right > right) shift = right - rect.right;
+
+            if (shift !== 0) card.style.setProperty('--fpl-shift', shift + 'px');
+
+            // Flip below only if there is genuinely no room above, and only if
+            // flipping down does not push it off the bottom instead.
+            rect = card.getBoundingClientRect();
+            const ceiling = Math.max(this.margin, bounds ? bounds.top : this.margin);
+            const spaceBelow = window.innerHeight - rect.bottom - rect.height - 32;
+            if (rect.top < ceiling && spaceBelow > 0) card.classList.add('is-below');
+          }
+        }
+      );
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Find the perfect look",
+  "class": "shopify-section--find-perfect-look",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Section background",
+      "info": "Applied only to this section. Global colour schemes are not affected.",
+      "default": "#fffbf3"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:global.text.subheading",
+      "default": "GET INSPIRED"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:global.text.heading",
+      "default": "Find the Perfect Look"
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "Large" },
+        { "value": "h2", "label": "Medium" },
+        { "value": "h3", "label": "Small" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_gap",
+      "label": "Eyebrow to heading gap",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "header_gap",
+      "label": "Heading to gallery gap",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "header",
+      "content": "Gallery"
+    },
+    {
+      "type": "paragraph",
+      "content": "Each image is one block. Its hotspots are configured inside that block, so they always move with their image."
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns (desktop)",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Image gap (desktop)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_mobile",
+      "label": "Image gap (mobile)",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Hotspots"
+    },
+    {
+      "type": "range",
+      "id": "hotspot_size",
+      "label": "Hotspot size",
+      "info": "The pressable area stays at 44px whatever this is set to, so the dot can be small without being hard to tap.",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "hotspot_color",
+      "label": "Hotspot colour",
+      "info": "The dot and its pulse ripple.",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "card_width_max",
+      "label": "Product card maximum width",
+      "info": "The card is a share of the lifestyle image, capped here so it never dominates a wide column.",
+      "min": 200,
+      "max": 400,
+      "step": 2,
+      "unit": "px",
+      "default": 344
+    },
+    {
+      "type": "range",
+      "id": "card_width_share",
+      "label": "Product card width",
+      "info": "As a share of the lifestyle image it sits on. 78 matches the 1440 reference.",
+      "min": 40,
+      "max": 95,
+      "step": 1,
+      "unit": "%",
+      "default": 78
+    },
+    {
+      "type": "range",
+      "id": "card_min_width",
+      "label": "Product card minimum width",
+      "min": 180,
+      "max": 320,
+      "step": 2,
+      "unit": "px",
+      "default": 260
+    },
+    {
+      "type": "range",
+      "id": "card_width_mobile_px",
+      "label": "Product card width (mobile)",
+      "min": 200,
+      "max": 400,
+      "step": 2,
+      "unit": "px",
+      "default": 344
+    },
+    {
+      "type": "range",
+      "id": "card_opacity_pct",
+      "label": "Product card opacity",
+      "info": "Below 100 the lifestyle image reads faintly through the card, as in the design.",
+      "min": 60,
+      "max": 100,
+      "step": 2,
+      "unit": "%",
+      "default": 82
+    },
+    {
+      "type": "range",
+      "id": "thumb_width",
+      "label": "Product thumbnail width",
+      "info": "Height follows automatically. Stays fixed when the card widens on mobile.",
+      "min": 40,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "card_margin_mobile_px",
+      "label": "Product card side margin (mobile)",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "gutter_mobile",
+      "label": "Mobile side spacing",
+      "info": "Space between the section content and the screen edges. The carousel still reaches the edges.",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Product card corner radius",
+      "min": 0,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Product card border",
+      "default": "#e6e6e6"
+    },
+    {
+      "type": "header",
+      "content": "Call to action"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button label",
+      "default": "SEE ALL INSPIRATION"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "cta_background",
+      "label": "Button background",
+      "default": "#4f5b3f"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "cta_gap",
+      "label": "Gallery to button gap",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "ratio",
+          "label": "Image shape",
+          "info": "Sets how tall this image is relative to its column.",
+          "options": [
+            { "value": "3 / 4", "label": "Tall portrait" },
+            { "value": "4 / 5", "label": "Portrait" },
+            { "value": "1 / 1", "label": "Square" },
+            { "value": "5 / 4", "label": "Landscape" }
+          ],
+          "default": "4 / 5"
+        },
+        {
+          "type": "header",
+          "content": "Hotspot 1"
+        },
+        {
+          "type": "product",
+          "id": "product_1",
+          "label": "Product",
+          "info": "Leave empty to hide this hotspot."
+        },
+        {
+          "type": "range",
+          "id": "product_1_horizontal_position",
+          "label": "Horizontal position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "product_1_vertical_position",
+          "label": "Vertical position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 70
+        },
+        {
+          "type": "header",
+          "content": "Hotspot 2"
+        },
+        {
+          "type": "product",
+          "id": "product_2",
+          "label": "Product",
+          "info": "Leave empty to hide this hotspot."
+        },
+        {
+          "type": "range",
+          "id": "product_2_horizontal_position",
+          "label": "Horizontal position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 65
+        },
+        {
+          "type": "range",
+          "id": "product_2_vertical_position",
+          "label": "Vertical position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 45
+        },
+        {
+          "type": "header",
+          "content": "Hotspot 3"
+        },
+        {
+          "type": "product",
+          "id": "product_3",
+          "label": "Product",
+          "info": "Leave empty to hide this hotspot."
+        },
+        {
+          "type": "range",
+          "id": "product_3_horizontal_position",
+          "label": "Horizontal position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 45
+        },
+        {
+          "type": "range",
+          "id": "product_3_vertical_position",
+          "label": "Vertical position",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 25
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Find the perfect look",
+      "blocks": [
+        { "type": "image", "settings": { "ratio": "4 / 5" } },
+        { "type": "image", "settings": { "ratio": "4 / 5" } },
+        { "type": "image", "settings": { "ratio": "4 / 5" } },
+        { "type": "image", "settings": { "ratio": "1 / 1" } },
+        { "type": "image", "settings": { "ratio": "1 / 1" } },
+        { "type": "image", "settings": { "ratio": "1 / 1" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
