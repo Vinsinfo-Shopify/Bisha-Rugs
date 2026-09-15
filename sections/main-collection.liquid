@@ -241,7 +241,7 @@
       }
     }
 
-    @media screen and (max-width: 699px) {
+    @media screen and (max-width: 749px) {
       #shopify-section-{{ section.id }} .container {
         --container-gutter: 12px;
       }
@@ -256,6 +256,76 @@
         margin-inline: 0;
         width: auto;
         max-width: none;
+      }
+            /* Mobile Filter/Sort bar. Prestige's own buttons and the grid-density
+         switcher are hidden and this replaces them. State comes from
+         active_values_count and collection.sort_options, so both lines are
+         real, not static text. */
+      #shopify-section-{{ section.id }} .collection-toolbar__button-list,
+      #shopify-section-{{ section.id }} collection-layout-switch {
+        display: none;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar {
+        display: grid;
+        grid-template-columns: 1fr 1px 1fr;
+        align-items: center;
+        min-height: 66px;
+        background: #EFE8E2;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar::before {
+        content: '';
+        grid-column: 2;
+        width: 1px;
+        height: 45px;
+        background: #B9B0A7;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__half {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px;
+        background: none;
+        border: 0;
+        text-align: start;
+        cursor: pointer;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__half:first-of-type { grid-column: 1; }
+      #shopify-section-{{ section.id }} .pf-mobilebar__half:last-of-type  { grid-column: 3; }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__icon {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        color: #202020;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__icon svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__text {
+        display: grid;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__label {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 500;
+        color: #202020;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__value {
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: 400;
+        color: #666666;
       }
     }
     /* ---------- Shop by Color (Phase 1) ----------
@@ -719,7 +789,7 @@
       {%- endif -%}
     }
 
-    @media screen and (max-width: 699px) {
+    @media screen and (max-width: 749px) {
       #shopify-section-{{ section.id }} .pf-colors {
         display: block;
         margin-block-start: {{ section.settings.color_strip_gap_top_mobile }}px;
