@@ -24,6 +24,10 @@
       assign tier_1_position = tier_1_amount | times: 100 | divided_by: promo_goal
     endif
 
+    if section.settings.promo_tier_1_position > 0
+      assign tier_1_position = section.settings.promo_tier_1_position
+    endif
+
     assign tier_2_reached = false
     if tier_2_amount > 0 and cart.total_price >= tier_2_amount
       assign tier_2_reached = true
@@ -45,11 +49,16 @@
         assign promo_reward = section.settings.promo_tier_1_label
       endif
     endif
+  -%}
+
+  {%- capture promo_remaining_money %}{% render 'cart-drawer-money', amount: promo_remaining %}{% endcapture -%}
+
+  {%- liquid
+    assign promo_remaining_money = promo_remaining_money | strip
 
     if promo_all_unlocked
       assign promo_message = section.settings.promo_unlocked_text | replace: '[reward]', promo_reward
     else
-      assign promo_remaining_money = promo_remaining | money
       assign promo_message = section.settings.promo_locked_text | replace: '[amount]', promo_remaining_money | replace: '[reward]', promo_reward
     endif
   -%}

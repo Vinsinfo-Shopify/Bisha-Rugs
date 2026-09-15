@@ -1,26 +1,16 @@
 {%- doc -%}
   @param {object} section - the cart drawer section
   @param {string} item_word - already pluralised item label
-  @param {number} standard_shipping - presentational shipping amount in cents, 0 when unset
+  @param {number} standard_shipping - shipping amount in cents, 0 when unset
   @param {boolean} tier_1_reached
   @param {string} rows - "all", "shipping_total" or "total"
 {%- enddoc -%}
-
-{%- liquid
-  assign dynamic_shipping_amount = cart.items_subtotal_price | times: 0.3 | round
--%}
 
 <div class="cart-drawer-summary {% if rows != 'all' %}cart-drawer-summary--compact{% endif %}">
   {%- if rows == 'all' -%}
     <div class="cart-drawer-summary__row">
       <span>{{ 'cart.general.subtotal' | t }} ({{ cart.item_count }} {{ item_word }})</span>
-      <span>
-        {%- if settings.currency_code_enabled -%}
-          {{- cart.items_subtotal_price | money_with_currency -}}
-        {%- else -%}
-          {{- cart.items_subtotal_price | money -}}
-        {%- endif -%}
-      </span>
+      <span>{%- render 'cart-drawer-money', amount: cart.items_subtotal_price -%}</span>
     </div>
   {%- endif -%}
 
@@ -30,10 +20,10 @@
       <span class="cart-drawer-summary__shipping">
         {%- if standard_shipping > 0 -%}
           {%- if tier_1_reached -%}
-            <s>{{ dynamic_shipping_amount | money }}</s>
-            <strong>{{ 0 | money }}</strong>
+            <s>{%- render 'cart-drawer-money', amount: standard_shipping -%}</s>
+            <strong>{%- render 'cart-drawer-money', amount: 0 -%}</strong>
           {%- else -%}
-            {{ dynamic_shipping_amount | money }}
+            {%- render 'cart-drawer-money', amount: standard_shipping -%}
           {%- endif -%}
         {%- else -%}
           <span class="cart-drawer-summary__note">{{ 'cart.general.taxes_and_shipping_at_checkout' | t }}</span>
@@ -44,12 +34,6 @@
 
   <div class="cart-drawer-summary__row cart-drawer-summary__row--total">
     <span>{{ 'cart.general.total' | t }}</span>
-    <span>
-      {%- if settings.currency_code_enabled -%}
-        {{- cart.total_price | money_with_currency -}}
-      {%- else -%}
-        {{- cart.total_price | money -}}
-      {%- endif -%}
-    </span>
+    <span>{%- render 'cart-drawer-money', amount: cart.total_price -%}</span>
   </div>
 </div>
