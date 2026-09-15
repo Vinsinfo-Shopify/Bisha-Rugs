@@ -333,6 +333,13 @@
       #shopify-section-{{ section.id }} .pf-mobilebar {
         width: 100%;
       }
+      #shopify-section-{{ section.id }} .collection-toolbar {
+        overflow: visible;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar {
+        width: calc(100% + (var(--container-gutter) * 2));
+      }
     }
     /* ---------- Shop by Color (Phase 1) ----------
        Only emitted while the development gate is on. */
