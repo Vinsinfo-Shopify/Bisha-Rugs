@@ -6,6 +6,10 @@
   @param {string} rows - "all", "shipping_total" or "total"
 {%- enddoc -%}
 
+{%- liquid
+  assign dynamic_shipping_amount = cart.items_subtotal_price | times: 0.3 | round
+-%}
+
 <div class="cart-drawer-summary {% if rows != 'all' %}cart-drawer-summary--compact{% endif %}">
   {%- if rows == 'all' -%}
     <div class="cart-drawer-summary__row">
@@ -26,10 +30,10 @@
       <span class="cart-drawer-summary__shipping">
         {%- if standard_shipping > 0 -%}
           {%- if tier_1_reached -%}
-            <s>{{ standard_shipping | money }}</s>
+            <s>{{ dynamic_shipping_amount | money }}</s>
             <strong>{{ 0 | money }}</strong>
           {%- else -%}
-            {{ standard_shipping | money }}
+            {{ dynamic_shipping_amount | money }}
           {%- endif -%}
         {%- else -%}
           <span class="cart-drawer-summary__note">{{ 'cart.general.taxes_and_shipping_at_checkout' | t }}</span>

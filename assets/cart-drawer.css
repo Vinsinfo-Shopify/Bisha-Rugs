@@ -98,7 +98,7 @@
 
 .cart-drawer-line__info {
   display: grid;
-  gap: 5px;
+  gap: 10px;
   min-width: 0;
 }
 
@@ -211,7 +211,7 @@
   font-size: 14px;
   line-height: 140%;
   font-weight: 500;
-  color: var(--cart-drawer-muted);
+  color: #717171;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -547,6 +547,7 @@
 .cart-drawer-promo__node.is-reached {
   background: var(--cart-drawer-promo-accent);
   color: var(--cart-drawer-accent-text);
+  border: 2px solid #ffffff;
 }
 
 .cart-drawer-promo__tick {
@@ -607,14 +608,17 @@
   align-items: center;
   gap: 6px;
   font-family: var(--text-font-family);
-  font-size: 12px;
-  line-height: 17px;
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 600;
+  color: #56583D;
 }
 
 .cart-drawer-contact__link svg {
-  width: 14px;
-  height: 14px;
+  width: 21px;
+  height: 21px;
   flex: none;
+  color: #000000;
 }
 
 .cart-drawer-contact__link span {
@@ -840,7 +844,7 @@
 .cart-drawer-service-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 9px 12px;
+  gap: 9px 70px;
   margin-block-start: 4px;
 }
 
@@ -851,6 +855,7 @@
   font-family: var(--text-font-family);
   font-size: var(--cart-drawer-service-font-size);
   line-height: 1.35;
+  font-weight: 500;
 }
 
 .cart-drawer-service-list__icon {
