@@ -82,17 +82,17 @@
         "show_savings": true,
         "savings_text": "You saved [amount] on this order",
         "savings_background_color": "#d9d6c7",
-        "savings_text_color": "#1c1c1c",
+        "savings_text_color": "#000000",
         "show_shipping_text": true,
         "sticky_cta_style": "full",
         "show_checkout_button": true,
         "show_price_in_checkout_button": false,
         "show_view_cart_button": false,
         "show_cart_note": false,
-        "service_list_text_size_desktop": 11,
-        "service_list_text_size_mobile": 10,
-        "service_list_icon_size_desktop": 17,
-        "service_list_icon_size_mobile": 15
+        "service_list_text_size_desktop": 14,
+        "service_list_text_size_mobile": 14,
+        "service_list_icon_size_desktop": 22,
+        "service_list_icon_size_mobile": 22
       }
     },
     "newsletter-popup": {
