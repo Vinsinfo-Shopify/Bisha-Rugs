@@ -194,11 +194,21 @@
     /* Measured from the 1440 frame: label inline to the left of the row, not
        stacked above it, and vertically centred against the circles. The heading
        sits 38px clear of the first swatch. */
+    /* Space above the strip.
+       Nothing was setting it: the strip is the first child of the section, the
+       section has no top padding, and the wrapping v-stack's gap only applies
+       BETWEEN children. So the swatches sat hard against the collection banner,
+       about 1px, against 24px in the Figma (banner edge at 28, circle top at
+       51).
+
+       Applied to the strip itself rather than to the section, so it cannot
+       disturb the banner above or the 49px below. */
     #shopify-section-{{ section.id }} .pf-colors {
       display: flex;
       align-items: center;
       gap: 38px;
       min-width: 0;
+      margin-block-start: {{ section.settings.color_strip_gap_top }}px;
     }
 
     /* The space below the strip came from the wrapping v-stack's own
@@ -619,6 +629,7 @@
     @media screen and (max-width: 699px) {
       #shopify-section-{{ section.id }} .pf-colors {
         display: block;
+        margin-block-start: {{ section.settings.color_strip_gap_top_mobile }}px;
       }
 
       #shopify-section-{{ section.id }} .pf-colors__heading {
@@ -1569,6 +1580,27 @@
       "step": 2,
       "unit": "px",
       "default": 56
+    },
+    {
+      "type": "range",
+      "id": "color_strip_gap_top",
+      "label": "Space above Shop by Color",
+      "info": "Measured at 24px between the collection banner and the swatches.",
+      "min": 0,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "color_strip_gap_top_mobile",
+      "label": "Space above Shop by Color (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 20
     },
     {
       "type": "range",
