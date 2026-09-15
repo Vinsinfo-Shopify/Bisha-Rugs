@@ -926,20 +926,6 @@
                       {%- endif -%}
                       {%- render 'icon' with 'chevron-down' -%}
                     </span>
-                <div class="collection-toolbar__button-container">
-                  <button type="button" aria-controls="sort-by-popover" class="collection-toolbar__button heading text-xxs w-full">
-                    <span class="text-with-icon justify-center">
-                      {{- 'collection.faceting.sort_by' | t -}}
-                      {%- render 'icon' with 'chevron-down' -%}
-                    </span>
-                  </button>
-
-                  <facets-sort-popover
-                    id="sort-by-popover"
-                    section-id="{{ section.id }}"
-                    class="popover popover--bottom-end color-scheme color-scheme--dialog"
-                    close-on-listbox-select
-                  >
                     <p class="h4" slot="header">{{ 'collection.faceting.sort_by' | t }}</p>
 
                     <x-listbox class="popover__value-list">
