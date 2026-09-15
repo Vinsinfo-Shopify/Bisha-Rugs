@@ -278,11 +278,6 @@
       color: #000000;
     }
 
-    /* One box whether it holds a metaobject image, a swatch image or a plain
-       colour, so the row keeps its rhythm regardless of what Shopify returns. */
-    /* One box whatever Shopify returns: a metaobject image, a swatch image or
-       a plain colour. Keeps the row's rhythm regardless of which branch a value
-       takes, and stops a missing swatch collapsing the pill. */
     #shopify-section-{{ section.id }} .pf-color__media {
       display: block;
       width: {{ section.settings.color_swatch_size }}px;
@@ -291,9 +286,25 @@
       object-fit: cover;
       background-size: cover;
       background-position: center;
-      box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.08);
+      /* Matches the homepage Shop by Shade swatch: a real 1px border at
+         0.12, not an inset shadow, so the inset active ring below has the
+         shadow layer to itself. */
+      border: 1px solid rgb(0 0 0 / 0.12);
+      transition: box-shadow 0.15s ease-in-out;
     }
 
+    /* Active ring copied from the homepage Shop by Shade section: two INSET
+       bands rather than the outset rings used previously. 2.5px in the text
+       colour at the edge, then 3px of page background inside it. Inset means
+       the swatch keeps its exact diameter, so the row cannot shift and the
+       ring can never be clipped by the scroll track. */
+    #shopify-section-{{ section.id }} .pf-color:hover .pf-color__media,
+    #shopify-section-{{ section.id }} .pf-color:focus-visible .pf-color__media,
+    #shopify-section-{{ section.id }} .pf-color.is-active .pf-color__media {
+      box-shadow:
+        inset 0 0 0 2.5px rgb(var(--text-color)),
+        inset 0 0 0 5.5px rgb(var(--background-without-opacity));
+    }
     /* The cleared state when no image is set for it. A conic sweep reads as
        "any colour" without naming one. */
     #shopify-section-{{ section.id }} .pf-color__media--all {
@@ -301,20 +312,6 @@
         from 180deg,
         #c9d6df, #e8d5c4, #d9c3a9, #b8c4a0, #d4a5a5, #a8b8c8, #c9d6df
       );
-    }
-
-    /* Active is a thin ring sitting just outside the swatch, measured at about
-       3px clear of it. Drawn with box-shadow so it adds no layout width and the
-       row cannot shift when the selection changes. */
-    /* Active is a thin ring just outside the swatch. Measured at 4px total
-       across the diameter, so roughly 2px a side: a 1px breathing gap and a 1px
-       ring. Drawn with box-shadow so it adds no layout width and the row cannot
-       shift when the selection changes. */
-    #shopify-section-{{ section.id }} .pf-color.is-active .pf-color__media {
-      box-shadow:
-        inset 0 0 0 1px rgb(0 0 0 / 0.08),
-        0 0 0 1px rgb(var(--background-without-opacity)),
-        0 0 0 2px #000000;
     }
 
     /* ---------------- PHASE 2: desktop filter sidebar ----------------
