@@ -187,6 +187,25 @@
   }
 
   {%- if section.settings.enable_new_filters -%}
+
+    #shopify-section-{{ section.id }} .collection-toolbar.full-bleed {
+      width: 100%;
+      max-width: none;
+      margin-inline: 0;
+    }
+
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .container {
+        --container-max-width: 1300px;
+        --container-gutter: 70px;
+      }
+    }
+
+    @media screen and (max-width: 699px) {
+      #shopify-section-{{ section.id }} .container {
+        --container-gutter: 12px;
+      }
+    }
     /* ---------- Shop by Color (Phase 1) ----------
        Only emitted while the development gate is on. */
     /* Measured from the 1440 frame: label inline to the left of the row, not
