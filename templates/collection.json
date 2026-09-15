@@ -211,7 +211,7 @@
         "pf_checkbox_size": 18,
         "pf_checkbox_radius": 2,
         "pf_checkbox_gap": 12,
-        "pf_checkbox_row_gap": 18,
+        "pf_checkbox_row_gap": 10,
         "pf_checkbox_checked": "#55583c",
         "pf_checkbox_border": "#d9d7d0",
         "pf_hide_view_switcher": true,
