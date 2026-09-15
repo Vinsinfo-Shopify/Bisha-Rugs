@@ -186,8 +186,7 @@
         {%- endif -%}
 
         {%- if section.settings.show_savings and total_savings > 0 -%}
-          {%- assign savings_money = total_savings | divided_by: 100.0 | round | times: 100 | money | replace: '.00', '' | replace: ',00', '' -%}
-          {%- capture savings_money -%}<strong>{{ savings_money }}</strong>{%- endcapture -%}
+          {%- capture savings_amount_html -%}<strong>{%- render 'money-round', amount: total_savings -%}</strong>{%- endcapture -%}
           <p class="cart-drawer__savings">
             {{- section.settings.savings_text | replace: '[amount]', savings_amount_html -}}
           </p>
