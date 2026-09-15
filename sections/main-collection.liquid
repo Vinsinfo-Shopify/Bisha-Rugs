@@ -228,6 +228,19 @@
         border: 0;
         box-shadow: none;
       }
+      #shopify-section-{{ section.id }} .collection__main {
+        row-gap: 16px;
+      }
+
+      /* Chips: rounded outline, black border, per the design. Prestige draws
+         these with box-shadow rather than border in places, so both are
+         stated. */
+      #shopify-section-{{ section.id }} .active-facets .removable-facet {
+        border: 1px solid #000000;
+        border-radius: 999px;
+        box-shadow: none;
+        padding: 6px 14px;
+      }
     }
 
     @media screen and (max-width: 699px) {
