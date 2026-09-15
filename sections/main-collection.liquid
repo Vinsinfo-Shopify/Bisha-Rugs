@@ -223,6 +223,37 @@
         justify-self: end;
         z-index:1;
       }
+            /* Prestige separates toolbar controls with a border. The design has none. */
+      #shopify-section-{{ section.id }} .collection-toolbar__button-container {
+        border: 0;
+        box-shadow: none;
+        padding-inline: 0;
+      }
+
+      /* "Sort by:" at 16/22/600 and the selected value at 16/22/400, both
+         black, against Prestige's small uppercase heading style. */
+      #shopify-section-{{ section.id }} .collection-toolbar__button-list .collection-toolbar__button {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 600;
+        color: #000000;
+        text-transform: none;
+        letter-spacing: normal;
+      }
+
+      #shopify-section-{{ section.id }} .pf-sort-value {
+        font-weight: 400;
+      }
+
+      #shopify-section-{{ section.id }} .collection-toolbar__button .text-with-icon {
+        gap: 8px;
+      }
+
+      #shopify-section-{{ section.id }} .collection-toolbar__button svg {
+        width: 13px;
+        height: auto;
+        color: #807E7A;
+      }
     }
 
     @media screen and (max-width: 699px) {
