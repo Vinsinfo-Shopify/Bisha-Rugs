@@ -430,6 +430,9 @@
          regardless of how long the label wraps.
 
          Typography is untouched: this is purely the row structure. */
+      #shopify-section-{{ section.id }} .facets .v-stack:has(> .checkbox-control) {
+        gap: 0;
+      }
       #shopify-section-{{ section.id }} .facets .checkbox-control {
         display: grid;
         grid-template-columns: auto minmax(0, 1fr);
