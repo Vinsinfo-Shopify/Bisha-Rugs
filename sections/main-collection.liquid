@@ -894,7 +894,67 @@
       {%- else -%}
         {%- if show_filters or section.settings.show_sort_by or section.settings.show_grid_mode_selector or section.settings.show_results_count -%}
           <height-observer variable="collection-toolbar" class="collection-toolbar full-bleed">
-            <div class="collection-toolbar__button-list">
+                        <div class="collection-toolbar__button-list">
+              {%- comment -%}
+                Mobile Filter / Sort bar.
+
+                Replaces Prestige's mobile buttons and grid-density switcher on
+                small screens; the stock buttons below are kept for desktop and
+                are untouched. Both halves reuse the existing aria-controls, so
+                the drawer and the sort popover open exactly as before and no
+                new JavaScript is involved.
+
+                Both secondary lines are real state: the filter count comes from
+                active_values_count, which is already resolved at the top of this
+                file and respects the production allow-list, and the sort label
+                comes from collection.sort_options.
+              {%- endcomment -%}
+              {%- if section.settings.enable_new_filters -%}
+                {%- liquid
+                  assign pf_sort_label = ''
+                  for sort_option in collection.sort_options
+                    if sort_option.value == selected_sort_by_value
+                      assign pf_sort_label = sort_option.name
+                    endif
+                  endfor
+
+                  if active_values_count == 0
+                    assign pf_filter_state = 'No Filter Applied'
+                  elsif active_values_count == 1
+                    assign pf_filter_state = '1 Filter Applied'
+                  else
+                    assign pf_filter_state = active_values_count | append: ' Filters Applied'
+                  endif
+                -%}
+
+                <div class="pf-mobilebar sm:hidden">
+                  <button type="button" aria-controls="facets-drawer" class="pf-mobilebar__half">
+                    <span class="pf-mobilebar__icon" aria-hidden="true">
+                      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+                        <path d="M1 4.5h3M7 4.5h10M1 13.5h10M14 13.5h3"/>
+                        <circle cx="5.5" cy="4.5" r="1.8"/><circle cx="12.5" cy="13.5" r="1.8"/>
+                      </svg>
+                    </span>
+                    <span class="pf-mobilebar__text">
+                      <span class="pf-mobilebar__label">Filter</span>
+                      <span class="pf-mobilebar__value">{{ pf_filter_state }}</span>
+                    </span>
+                  </button>
+
+                  <button type="button" aria-controls="sort-by-popover" class="pf-mobilebar__half">
+                    <span class="pf-mobilebar__icon" aria-hidden="true">
+                      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 2v14M5 2L2.5 4.5M5 2l2.5 2.5M13 16V2M13 16l2.5-2.5M13 16l-2.5-2.5"/>
+                      </svg>
+                    </span>
+                    <span class="pf-mobilebar__text">
+                      <span class="pf-mobilebar__label">Sort By</span>
+                      <span class="pf-mobilebar__value">{{ pf_sort_label }}</span>
+                    </span>
+                  </button>
+                </div>
+              {%- endif -%}
+
               {%- if show_filters -%}
                 <div class="collection-toolbar__button-container {% if section.settings.filter_layout == 'sidebar' %}md:hidden{% endif %}">
                   <button type="button" aria-controls="facets-drawer" class="collection-toolbar__button heading text-xxs w-full">
@@ -905,12 +965,21 @@
               {%- endif -%}
 
               {%- if section.settings.show_sort_by -%}
-                {%- assign selected_sort_by_value = collection.sort_by | default: collection.default_sort_by -%}
-
                 <div class="collection-toolbar__button-container">
                   <button type="button" aria-controls="sort-by-popover" class="collection-toolbar__button heading text-xxs w-full">
                     <span class="text-with-icon justify-center">
                       {{- 'collection.faceting.sort_by' | t -}}
+                      {%- if section.settings.enable_new_filters -%}
+                        {%- liquid
+                          assign pf_sort_value_label = ''
+                          for sort_option in collection.sort_options
+                            if sort_option.value == selected_sort_by_value
+                              assign pf_sort_value_label = sort_option.name
+                            endif
+                          endfor
+                        -%}
+                        <span class="pf-sort-value">{{ pf_sort_value_label }}</span>
+                      {%- endif -%}
                       {%- render 'icon' with 'chevron-down' -%}
                     </span>
                   </button>
