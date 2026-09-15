@@ -973,22 +973,7 @@
       {%- else -%}
         {%- if show_filters or section.settings.show_sort_by or section.settings.show_grid_mode_selector or section.settings.show_results_count -%}
           <height-observer variable="collection-toolbar" class="collection-toolbar full-bleed">
-                        <div class="collection-toolbar__button-list">
-              {%- comment -%}
-                Mobile Filter / Sort bar.
-
-                Replaces Prestige's mobile buttons and grid-density switcher on
-                small screens; the stock buttons below are kept for desktop and
-                are untouched. Both halves reuse the existing aria-controls, so
-                the drawer and the sort popover open exactly as before and no
-                new JavaScript is involved.
-
-                Both secondary lines are real state: the filter count comes from
-                active_values_count, which is already resolved at the top of this
-                file and respects the production allow-list, and the sort label
-                comes from collection.sort_options.
-              {%- endcomment -%}
-              {%- if section.settings.enable_new_filters -%}
+            {%- if section.settings.enable_new_filters -%}
                 {%- liquid
                   assign pf_sort_label = ''
                   for sort_option in collection.sort_options
@@ -1033,6 +1018,22 @@
                   </button>
                 </div>
               {%- endif -%}
+                        <div class="collection-toolbar__button-list">
+              {%- comment -%}
+                Mobile Filter / Sort bar.
+
+                Replaces Prestige's mobile buttons and grid-density switcher on
+                small screens; the stock buttons below are kept for desktop and
+                are untouched. Both halves reuse the existing aria-controls, so
+                the drawer and the sort popover open exactly as before and no
+                new JavaScript is involved.
+
+                Both secondary lines are real state: the filter count comes from
+                active_values_count, which is already resolved at the top of this
+                file and respects the production allow-list, and the sort label
+                comes from collection.sort_options.
+              {%- endcomment -%}
+              
 
               {%- if show_filters -%}
                 <div class="collection-toolbar__button-container {% if section.settings.filter_layout == 'sidebar' %}md:hidden{% endif %}">
