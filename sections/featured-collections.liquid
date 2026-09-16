@@ -396,6 +396,10 @@
   text-align: start;
 }
 
+#shopify-section-{{ section.id }} .rating-badge__stars > svg {
+  width: 13px;              /* up from 11 — check Figma's actual size */
+  shape-rendering: geometricPrecision;
+}
       /* ---------- 375px mobile ---------- */
       @media screen and (max-width: 699px) {
         #shopify-section-{{ section.id }} {
