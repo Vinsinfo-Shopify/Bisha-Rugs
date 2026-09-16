@@ -285,7 +285,7 @@
       "settings": {
         "color_scheme": "scheme-1",
         "separate_section_with_border": false,
-        "padding_top": 20,
+        "padding_top": 10,
         "padding_bottom": 46,
         "subheading": "COLOR PALETTE",
         "title": "Shop by Shade",
