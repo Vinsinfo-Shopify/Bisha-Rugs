@@ -266,38 +266,53 @@
         display: none;
       }
 
+           /* Mobile Filter / Sort bar. Measured from the 375 frame: 66 tall,
+         divider 45 at centre, halves 24px icon + 14 gap + a 4px text stack. */
       #shopify-section-{{ section.id }} .pf-mobilebar {
         display: grid;
         grid-template-columns: 1fr 1px 1fr;
         align-items: center;
         min-height: 66px;
         background: #EFE8E2;
+        border-block-start: 0.5px solid #D4D4D4;
+        /* Full screen width while the grid and chips stay in the gutter. */
         margin-inline: calc(var(--container-gutter) * -1);
+        width: calc(100% + (var(--container-gutter) * 2));
       }
 
       #shopify-section-{{ section.id }} .pf-mobilebar::before {
         content: '';
         grid-column: 2;
         grid-row: 1;
+        align-self: center;
         width: 1px;
         height: 45px;
         background: #B9B0A7;
-        align-self: center;
       }
 
       #shopify-section-{{ section.id }} .pf-mobilebar__half {
+        grid-row: 1;
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 9px;
-        background: none;
+        gap: 14px;
+        padding: 0;
         border: 0;
+        background: none;
         text-align: start;
         cursor: pointer;
       }
 
-      #shopify-section-{{ section.id }} .pf-mobilebar__half:first-of-type { grid-column: 1; }
-      #shopify-section-{{ section.id }} .pf-mobilebar__half:last-of-type  { grid-column: 3; }
+      /* Measured: the Filter icon sits at x=20, the Sort icon at x=220 against
+         a divider at 188. The two halves are not symmetrically inset. */
+      #shopify-section-{{ section.id }} .pf-mobilebar__half:first-of-type {
+        grid-column: 1;
+        padding-inline-start: 20px;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__half:last-of-type {
+        grid-column: 3;
+        padding-inline-start: 32px;
+      }
 
       #shopify-section-{{ section.id }} .pf-mobilebar__icon {
         flex: none;
@@ -315,30 +330,21 @@
 
       #shopify-section-{{ section.id }} .pf-mobilebar__text {
         display: grid;
+        gap: 4px;
       }
 
       #shopify-section-{{ section.id }} .pf-mobilebar__label {
         font-size: 16px;
-        line-height: 22px;
+        line-height: 1.4;
         font-weight: 500;
         color: #202020;
       }
 
       #shopify-section-{{ section.id }} .pf-mobilebar__value {
         font-size: 14px;
-        line-height: 20px;
+        line-height: 1.4;
         font-weight: 400;
         color: #666666;
-      }
-      #shopify-section-{{ section.id }} .pf-mobilebar {
-        width: 100%;
-      }
-      #shopify-section-{{ section.id }} .collection-toolbar {
-        overflow: visible;
-      }
-
-      #shopify-section-{{ section.id }} .pf-mobilebar {
-        width: calc(100% + (var(--container-gutter) * 2));
       }
     }
     /* ---------- Shop by Color (Phase 1) ----------
