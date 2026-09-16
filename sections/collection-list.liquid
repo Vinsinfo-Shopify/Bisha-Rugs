@@ -406,6 +406,11 @@
       padding-block-start: 20px;
       padding-block-end: 50px;
   }
+  .with-overlay:after {
+  content: "";
+  background: var(--gradient-overlay, rgb(var(--overlay, 0 0 0 / .3)));
+  ...
+}
   </style>
 
   {%- if is_sbs -%}
