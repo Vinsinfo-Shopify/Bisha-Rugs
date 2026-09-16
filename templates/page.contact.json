@@ -26,7 +26,7 @@
           "settings": {
             "heading_text_block": "Customer Support",
             "description_text_block": "<p>Have a question? Please contact us using the customer support channels below. (We'll connect with you within 24 hours)</p>",
-            "content": "<p><strong>Customer Care:<br/></strong>Email: Love@bisharugs.com<br/>Working hours: Everyday 10:00am - 5:00pm</p><p><strong>Trade Program:<br/></strong>Email: bisharugs@gmail.com<br/><br/></p>"
+            "content": "<p><strong>Customer Care:<br/></strong>Email: <a href=\"mailto:Love@bisharugs.com\" title=\"mailto:Love@bisharugs.com\">Love@bisharugs.com</a><br/>Working hours: Everyday 10:00am - 5:00pm</p><p><strong>Trade Program:<br/></strong>Email: <a href=\"mailto:bisharugs@gmail.com\" title=\"mailto:bisharugs@gmail.com\">bisharugs@gmail.com</a><br/><br/></p>"
           }
         },
         "contact_AXn63T": {
@@ -56,8 +56,8 @@
         "content": "<p>Please use the below form or connect us on Mail.</p>",
         "iframe": "",
         "column_gap": 100,
-        "padding_top": 0,
-        "padding_bottom": 0,
+        "padding_top": 20,
+        "padding_bottom": 20,
         "reset_spacing": false,
         "custom_class": "contact_us"
       }
