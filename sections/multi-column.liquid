@@ -51,6 +51,49 @@
       flex-direction: column;
     }
 
+    /* --- Mobile carousel (opt-in) ---
+       Desktop keeps the grid untouched; below 699px the same markup becomes a
+       native horizontal scroller. One card per view at full container width,
+       with the track bleeding to the screen edges so the next card peeks. */
+    #shopify-section-{{ section.id }} .multi-column__dots {
+      display: none;
+    }
+
+    @media screen and (max-width: 698px) {
+      #shopify-section-{{ section.id }} .multi-column--carousel {
+        grid-template: none;
+        grid-auto-flow: column;
+        grid-auto-columns: 100%;
+        justify-content: start;
+        overflow: auto hidden;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        margin-inline: calc(-1 * var(--distance-to-bleed));
+        padding-inline: var(--distance-to-bleed);
+        scroll-padding-inline: var(--distance-to-bleed);
+      }
+
+      #shopify-section-{{ section.id }} .multi-column--carousel::-webkit-scrollbar {
+        display: none;
+      }
+
+      #shopify-section-{{ section.id }} .multi-column--carousel .multi-column__item {
+        min-width: 0;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+      }
+
+      #shopify-section-{{ section.id }} .multi-column__dots {
+        display: flex;
+      }
+
+      /* Figma shows the current item as a pill rather than a dot */
+      #shopify-section-{{ section.id }} .multi-column__dots > *[aria-current='true'] {
+        width: 1.125rem;
+      }
+    }
+
     /* Equal-height media regardless of the source image/video's natural dimensions */
     #shopify-section-{{ section.id }} .multi-column__media {
       width: 100%;
@@ -125,9 +168,10 @@
         /* --- Step number: base (safe everywhere) --- */
 #shopify-section-{{ section.id }} .multi-column-card_number {
   margin: 0 0 8px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  line-height: 20.8px;
+  letter-spacing: 1.82px;
 }
 
 /* --- Scoped to application_process only; other section instances unaffected --- */
@@ -179,7 +223,20 @@
 }
   </style>
 
-  {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
+  {%- liquid
+    assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5
+
+    comment
+      When the carousel is on, the track becomes the theme's own scroll-carousel so
+      that carousel-navigation can drive the dots. Both already ship in theme.js, and
+      scroll-carousel keeps the theme-editor block-select behaviour multi-column has.
+    endcomment
+    assign track_tag = 'multi-column'
+    assign carousel_id = 'multi-column-carousel-' | append: section.id
+    if section.settings.enable_carousel
+      assign track_tag = 'scroll-carousel'
+    endif
+  -%}
 
 <div class="{% unless section.settings.remove_section_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_class }}">
     <div class="container">
@@ -192,7 +249,10 @@
           text_alignment: section.settings.content_alignment
         -%}
 
-        <multi-column class="multi-column {% if section.settings.stack_on_mobile %}multi-column--stack-mobile{% endif %}">
+        <{{ track_tag }}
+          {% if section.settings.enable_carousel %}id="{{ carousel_id }}"{% endif %}
+          class="multi-column {% if section.settings.stack_on_mobile %}multi-column--stack-mobile{% endif %} {% if section.settings.enable_carousel %}multi-column--carousel{% endif %}"
+        >
           {%- for block in section.blocks -%}
             <div
               class="multi-column__item {% if section.settings.overlap_image and block.settings.title != blank %}multi-column__item--overlap{% endif %} {% if block.settings.review_layout %}multi-column__item--review{% endif %} group"
@@ -324,7 +384,17 @@
               {%- endif -%}
             </div>
           {%- endfor -%}
-        </multi-column>
+        </{{ track_tag }}>
+
+        {%- if section.settings.enable_carousel and section.blocks.size > 1 -%}
+          <carousel-navigation aria-controls="{{ carousel_id }}" class="page-dots multi-column__dots">
+            {%- for i in (1..section.blocks.size) -%}
+              <button type="button" class="tap-area" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+                <span class="sr-only">{{ 'general.accessibility.go_to_item' | t: index: forloop.index }}</span>
+              </button>
+            {%- endfor -%}
+          </carousel-navigation>
+        {%- endif -%}
       </div>
     </div>
   </div>
@@ -375,6 +445,13 @@
       "type": "checkbox",
       "id": "stack_on_mobile",
       "label": "t:sections.multi_column.stack_on_mobile",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_carousel",
+      "label": "Enable mobile carousel",
+      "info": "On mobile only, scrolls the columns horizontally one card at a time with a peek of the next, and shows position dots. Desktop keeps the grid.",
       "default": false
     },
     {

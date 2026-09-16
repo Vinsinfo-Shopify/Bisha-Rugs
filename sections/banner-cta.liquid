@@ -1,0 +1,676 @@
+{%- comment -%}
+  Banner CTA — BISHA RUGS
+  Reusable full-width promo banner: image with heading + text on the start side and a button on the end side.
+
+  - Desktop: content overlays the image, text start / button end, vertically centered.
+  - Mobile: two Figma variants — "Background color" (content below the image, default) or "Image overlay".
+{%- endcomment -%}
+
+{%- liquid
+  assign overlay_alpha = section.settings.overlay_opacity | divided_by: 100.0
+
+  assign has_content = false
+  if section.settings.heading != blank or section.settings.text != blank or section.settings.button_label != blank
+    assign has_content = true
+  endif
+
+  # Select values are literal percentages, so they drop straight into object-position
+  assign position_x = section.settings.image_position_x
+  if position_x == 'custom'
+    assign position_x = section.settings.image_position_x_custom | append: '%'
+  endif
+
+  assign position_y = section.settings.image_position_y
+  if position_y == 'custom'
+    assign position_y = section.settings.image_position_y_custom | append: '%'
+  endif
+
+  assign mobile_position_x = section.settings.mobile_image_position_x
+  if mobile_position_x == 'custom'
+    assign mobile_position_x = section.settings.mobile_image_position_x_custom | append: '%'
+  endif
+
+  assign mobile_position_y = section.settings.mobile_image_position_y
+  if mobile_position_y == 'custom'
+    assign mobile_position_y = section.settings.mobile_image_position_y_custom | append: '%'
+  endif
+
+  # Optional mobile button colours. Left transparent, the button keeps the colours
+  # it already had on mobile (the colour scheme's when stacked, the desktop ones when overlaid).
+  assign mobile_button_background = false
+  if section.settings.button_background_mobile != blank and section.settings.button_background_mobile != 'rgba(0,0,0,0)'
+    assign mobile_button_background = section.settings.button_background_mobile
+  endif
+
+  assign mobile_button_text = false
+  if section.settings.button_text_color_mobile != blank and section.settings.button_text_color_mobile != 'rgba(0,0,0,0)'
+    assign mobile_button_text = section.settings.button_text_color_mobile
+  endif
+-%}
+
+<style>
+  #BannerCta-{{ section.id }} {
+    /* Appearance used whenever the content sits over the image */
+    --banner-cta-content-color: {{ section.settings.overlay_text_color.rgb }};
+    --banner-cta-button-background: {{ section.settings.button_background.rgb }};
+    --banner-cta-button-text: {{ section.settings.button_text_color.rgb }};
+    --banner-cta-overlay: {{ section.settings.overlay_color.rgb }} / {{ overlay_alpha }};
+
+    --banner-cta-media-height: {{ section.settings.desktop_height }}px;
+    --banner-cta-image-position: {{ position_x }} {{ position_y }};
+    --banner-cta-gutter: {% if section.settings.full_width %}0px{% else %}var(--container-gutter){% endif %};
+
+    --banner-cta-heading-size: {{ section.settings.heading_size }}px;
+    --banner-cta-text-size: {{ section.settings.text_size }}px;
+    --banner-cta-button-size: {{ section.settings.button_size }}px;
+
+    padding-block: {{ section.settings.padding_top }}px {{ section.settings.padding_bottom }}px;
+  }
+
+  #BannerCta-{{ section.id }} .banner-cta__inner {
+    display: grid;
+    grid-template-areas: 'media';
+    margin-inline: var(--banner-cta-gutter);
+  }
+
+  #BannerCta-{{ section.id }} .banner-cta__media {
+    grid-area: media;
+    position: relative;
+    overflow: hidden;
+    min-height: var(--banner-cta-media-height);
+  }
+
+  #BannerCta-{{ section.id }} .banner-cta__media :is(img, .placeholder) {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--banner-cta-image-position);
+  }
+
+  #BannerCta-{{ section.id }} .banner-cta__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgb(var(--banner-cta-overlay));
+    pointer-events: none;
+  }
+
+  #BannerCta-{{ section.id }} .banner-cta__content {
+    grid-area: media;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 40px;
+    color: #ffffff;
+  }
+
+  #BannerCta-{{ section.id }} .banner-cta__text {
+    max-width: {{ section.settings.content_width }}px;
+  }
+
+  #BannerCta-{{ section.id }} .banner-cta__heading {
+    margin: 0;
+    font-family: 'Forum';
+    font-weight: 400;
+    font-size: var(--banner-cta-heading-size);
+    line-height: 100%;
+  }
+
+  #BannerCta-{{ section.id }} .banner-cta__description {
+    margin-block-start: 10px;
+    font-size: var(--banner-cta-text-size);
+    line-height: 1.5;
+  }
+
+  #BannerCta-{{ section.id }} .banner-cta__description > * {
+    margin: 0;
+  }
+
+  #BannerCta-{{ section.id }} .banner-cta__description > * + * {
+    margin-block-start: 0.5em;
+  }
+
+  #BannerCta-{{ section.id }} .banner-cta__actions {
+    --button-background: var(--banner-cta-button-background);
+    --button-outline-color: var(--banner-cta-button-background);
+    --button-text-color: var(--banner-cta-button-text);
+
+    flex: none;
+  }
+
+  #BannerCta-{{ section.id }} .banner-cta__actions .button {
+    font-size: var(--banner-cta-button-size);
+  }
+
+  @media screen and (max-width: 999px) {
+    #BannerCta-{{ section.id }} .banner-cta__content {
+      padding: 32px;
+      gap: 20px;
+    }
+
+    #BannerCta-{{ section.id }} .banner-cta__text {
+      max-width: 50%;
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    #BannerCta-{{ section.id }} {
+      --banner-cta-media-height: {{ section.settings.mobile_height }}px;
+      --banner-cta-image-position: {{ mobile_position_x }} {{ mobile_position_y }};
+      --banner-cta-gutter: 0px;
+
+      --banner-cta-heading-size: {{ section.settings.heading_size_mobile }}px;
+      --banner-cta-text-size: {{ section.settings.text_size_mobile }}px;
+      --banner-cta-button-size: {{ section.settings.button_size_mobile }}px;
+    }
+
+    #BannerCta-{{ section.id }} .banner-cta__content {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-end;
+      gap: 16px;
+      padding: 24px var(--container-gutter);
+    }
+
+    #BannerCta-{{ section.id }} .banner-cta__text {
+      max-width: none;
+    }
+
+    /* Background colour variant: content moves below the image and uses the scheme text/button colours */
+    #BannerCta-{{ section.id }}.banner-cta--mobile-stacked {
+      --banner-cta-content-color: var(--text-color);
+      --banner-cta-button-background: var(--button-background);
+      --banner-cta-button-text: var(--button-text-color);
+      --banner-cta-overlay: 0 0 0 / 0;
+    }
+
+    #BannerCta-{{ section.id }}.banner-cta--mobile-stacked .banner-cta__inner {
+      grid-template-areas: 'media' 'content';
+    }
+
+    #BannerCta-{{ section.id }}.banner-cta--mobile-stacked .banner-cta__content {
+      grid-area: content;
+      justify-content: flex-start;
+      background-color: {{ section.settings.mobile_background_color | default: 'transparent' }};
+    }
+    {%- if mobile_button_background or mobile_button_text -%}
+
+    /* Mobile button colour overrides. Last in the block and matching the stacked
+       rule's specificity, so they win in both mobile layouts. */
+    #BannerCta-{{ section.id }}.banner-cta {
+      {% if mobile_button_background %}--banner-cta-button-background: {{ mobile_button_background.rgb }};{% endif %}
+      {% if mobile_button_text %}--banner-cta-button-text: {{ mobile_button_text.rgb }};{% endif %}
+    }
+    {%- endif -%}
+  }
+</style>
+
+<div
+  id="BannerCta-{{ section.id }}"
+  class="banner-cta banner-cta--mobile-{{ section.settings.mobile_layout }} color-scheme color-scheme--{{ section.settings.color_scheme.id }}"
+>
+  <div class="banner-cta__inner">
+    <div class="banner-cta__media">
+      {%- if section.settings.image != blank -%}
+        <picture>
+          {%- if section.settings.mobile_image != blank -%}
+            <source
+              media="(max-width: 699px)"
+              srcset="{{ section.settings.mobile_image | image_url: width: 500 }} 500w, {{ section.settings.mobile_image | image_url: width: 750 }} 750w, {{ section.settings.mobile_image | image_url: width: 1000 }} 1000w, {{ section.settings.mobile_image | image_url: width: 1400 }} 1400w"
+              width="{{ section.settings.mobile_image.width }}"
+              height="{{ section.settings.mobile_image.height }}"
+            >
+          {%- endif -%}
+
+          {{-
+            section.settings.image
+            | image_url: width: section.settings.image.width
+            | image_tag: loading: 'lazy', sizes: '100vw', widths: '400,600,800,1000,1200,1400,1600,1800,2000,2400,2800'
+          -}}
+        </picture>
+      {%- else -%}
+        {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder' | replace: '<svg', '<svg preserveAspectRatio="xMidYMid slice"' -}}
+      {%- endif -%}
+    </div>
+
+    {%- if has_content -%}
+      <div class="banner-cta__content">
+        {%- if section.settings.heading != blank or section.settings.text != blank -%}
+          <div class="banner-cta__text">
+            {%- if section.settings.heading != blank -%}
+              <h2 class="banner-cta__heading">{{ section.settings.heading }}</h2>
+            {%- endif -%}
+
+            {%- if section.settings.text != blank -%}
+              <div class="banner-cta__description">{{ section.settings.text }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <div class="banner-cta__actions">
+            {%- render 'button', content: section.settings.button_label, href: section.settings.button_link -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Banner CTA",
+  "class": "shopify-section--banner-cta",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:global.image.image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:global.image.image",
+      "info": "Recommended: 2600 x 600px"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "t:global.image.mobile_image",
+      "info": "Recommended: 800 x 520px"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "min": 180,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "label": "Desktop image height",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "min": 140,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile image height",
+      "default": 260
+    },
+    {
+      "type": "header",
+      "content": "Image position",
+      "info": "Which part of the image stays visible once it is cropped to the banner height."
+    },
+    {
+      "type": "select",
+      "id": "image_position_x",
+      "label": "Desktop horizontal position",
+      "options": [
+        {
+          "value": "0%",
+          "label": "t:global.position.left"
+        },
+        {
+          "value": "50%",
+          "label": "t:global.position.center"
+        },
+        {
+          "value": "100%",
+          "label": "t:global.position.right"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "50%"
+    },
+    {
+      "type": "range",
+      "id": "image_position_x_custom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Desktop horizontal position (custom)",
+      "default": 50,
+      "visible_if": "{{ section.settings.image_position_x == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "image_position_y",
+      "label": "Desktop vertical position",
+      "options": [
+        {
+          "value": "0%",
+          "label": "t:global.position.top"
+        },
+        {
+          "value": "50%",
+          "label": "t:global.position.center"
+        },
+        {
+          "value": "100%",
+          "label": "t:global.position.bottom"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "50%"
+    },
+    {
+      "type": "range",
+      "id": "image_position_y_custom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Desktop vertical position (custom)",
+      "default": 50,
+      "visible_if": "{{ section.settings.image_position_y == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_position_x",
+      "label": "Mobile horizontal position",
+      "options": [
+        {
+          "value": "0%",
+          "label": "t:global.position.left"
+        },
+        {
+          "value": "50%",
+          "label": "t:global.position.center"
+        },
+        {
+          "value": "100%",
+          "label": "t:global.position.right"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "50%"
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_position_x_custom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Mobile horizontal position (custom)",
+      "default": 50,
+      "visible_if": "{{ section.settings.mobile_image_position_x == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_position_y",
+      "label": "Mobile vertical position",
+      "options": [
+        {
+          "value": "0%",
+          "label": "t:global.position.top"
+        },
+        {
+          "value": "50%",
+          "label": "t:global.position.center"
+        },
+        {
+          "value": "100%",
+          "label": "t:global.position.bottom"
+        },
+        {
+          "value": "custom",
+          "label": "Custom"
+        }
+      ],
+      "default": "50%"
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_position_y_custom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Mobile vertical position (custom)",
+      "default": 50,
+      "visible_if": "{{ section.settings.mobile_image_position_y == 'custom' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:global.text.content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:global.text.heading",
+      "default": "Woven by weavers we've worked with for 2 decades."
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 14,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size (desktop)",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 12,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading size (mobile)",
+      "default": 20
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:global.text.content",
+      "default": "<p>Get the highest quality rugs at our best rates. Join the trade program.</p>"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size (desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size (mobile)",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "min": 280,
+      "max": 720,
+      "step": 20,
+      "unit": "px",
+      "label": "t:global.sizes.content_width",
+      "default": 440
+    },
+    {
+      "type": "color",
+      "id": "overlay_text_color",
+      "label": "Text color over image",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:global.text.button_text",
+      "default": "Apply for the trade program"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:global.text.link"
+    },
+    {
+      "type": "range",
+      "id": "button_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Button text size (desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_size_mobile",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Button text size (mobile)",
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "t:global.colors.background",
+      "info": "Used while the button sits over the image.",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "t:global.colors.text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_background_mobile",
+      "label": "Background (mobile)",
+      "info": "Leave transparent to keep the mobile button as it is today: the color scheme's button color when the text sits below the image, or the color above when it sits over the image.",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color_mobile",
+      "label": "Text (mobile)",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile background",
+      "options": [
+        {
+          "value": "stacked",
+          "label": "Background color (text below image)"
+        },
+        {
+          "value": "overlay",
+          "label": "Image overlay (text over image)"
+        }
+      ],
+      "default": "stacked"
+    },
+    {
+      "type": "color",
+      "id": "mobile_background_color",
+      "label": "Mobile background color",
+      "info": "Leave transparent to use the color scheme background. Text and button colors follow the color scheme.",
+      "default": "rgba(0,0,0,0)",
+      "visible_if": "{{ section.settings.mobile_layout == 'stacked' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "t:global.sizes.full_width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:global.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:global.padding.padding_bottom",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "t:global.colors.overlay_color"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "t:global.colors.overlay_color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:global.colors.overlay_opacity",
+      "default": 30
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner CTA",
+      "category": "t:global.categories.call_to_action"
+    }
+  ]
+}
+{% endschema %}
