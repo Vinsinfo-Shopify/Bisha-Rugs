@@ -593,6 +593,22 @@
         #shopify-section-{{ section.id }} .product-card__media-pagination > button[aria-current='true']::after {
           background: rgb(43 39 36 / 0.9);
         }
+        #shopify-section-{{ section.id }} .floating-controls-container > carousel-next-button.floating-controls-container__control {
+  inset-inline-end: -13px;
+  inset-inline-start: auto;
+}
+
+#shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+  --circle-button-size: 1.625rem;   /* 26px */
+  background: #55583c;
+  border: 2.17px solid #ffffff;
+  box-sizing: border-box;
+}
+
+#shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+  width: 0.6963rem;                 /* 11.14px */
+  stroke-width: 1.23;
+}
       }
 
       /* Below 375px stay fluid rather than overflowing */
