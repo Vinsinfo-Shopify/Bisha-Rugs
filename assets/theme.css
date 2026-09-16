@@ -8775,6 +8775,10 @@ ul {
   display: block;
 }
 
+.contact-container .prose :first-child,
+.prose .sr-only:first-child+* {
+  margin-block-start: 8px !important;
+}
 
 @media screen and (min-width: 1000px) {
   .footer__block.footer__block--contact_us {

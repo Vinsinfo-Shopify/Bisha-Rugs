@@ -11,7 +11,9 @@
   "sections": {
     "main": {
       "type": "main-cart",
-      "settings": {}
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
     }
   },
   "order": [
