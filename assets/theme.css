@@ -5145,7 +5145,7 @@ product-rerender {
 }
 
 .featured-collections-carousel__item {
-  gap: var(--section-stack-gap);
+  gap: 8px;
   grid-template-columns: minmax(0, 1fr);
   display: grid;
 }
