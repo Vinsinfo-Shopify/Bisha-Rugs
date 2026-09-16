@@ -204,13 +204,7 @@
        the outer 2.5px, leaving a 3px band of the section background showing
        through beneath it. The element never changes size, so neighbours cannot
        move and the swatch colour itself is untouched. */
-    #shopify-section-{{ section.id }} .color-palette__item:hover .color-palette__swatch,
-    #shopify-section-{{ section.id }} .color-palette__item:focus-visible .color-palette__swatch,
-    #shopify-section-{{ section.id }} .color-palette__item[aria-current='page'] .color-palette__swatch {
-      box-shadow:
-        inset 0 0 0 2.5px rgb(var(--text-color)),
-        inset 0 0 0 5.5px rgb(var(--background-without-opacity));
-    }
+
     #shopify-section-{{ section.id }} .section-stack {
     gap: 20px;
   }
@@ -253,13 +247,7 @@
         font-size: 12px;
       }
 
-      #shopify-section-{{ section.id }} .color-palette__item:hover .color-palette__swatch,
-      #shopify-section-{{ section.id }} .color-palette__item:focus-visible .color-palette__swatch,
-      #shopify-section-{{ section.id }} .color-palette__item[aria-current='page'] .color-palette__swatch {
-        box-shadow:
-          inset 0 0 0 2px rgb(var(--text-color)),
-          inset 0 0 0 4.5px rgb(var(--background-without-opacity));
-      }
+
     }
   </style>
 
