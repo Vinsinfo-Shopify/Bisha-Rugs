@@ -382,8 +382,8 @@
       }
 
       #shopify-section-{{ section.id }} .active-facets .removable-facet svg {
-        width: 15px;
-        height: 15px;
+        width: 9.72px;
+        height: 9.72px;
         color: #000000;
       }
             #shopify-section-{{ section.id }} .facets-clear-all {
@@ -399,6 +399,15 @@
         margin-block: 16px 12px;
         box-shadow: none;
         border: 0;
+      }
+      #shopify-section-{{ section.id }} .active-facets .removable-facet .tap-area {
+        display: grid;
+        place-items: center;
+        width: 15px;
+        height: 15px;
+        min-width: 0;
+        min-height: 0;
+        padding: 0;
       }
     }
     /* ---------- Shop by Color (Phase 1) ----------
