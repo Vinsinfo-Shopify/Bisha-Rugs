@@ -250,7 +250,7 @@
 
       proto.createOnChangeAnimationControls = function (fromSlide, toSlide, { direction } = {}) {
         const rtl  = getComputedStyle(this).direction === 'rtl' ? -1 : 1;
-        const sign = direction === 'previous' ? -1 : 1;
+        const sign = direction === 'previous' ? 1 : -1;
         const d    = OFFSET * sign * rtl;
 
         return {
