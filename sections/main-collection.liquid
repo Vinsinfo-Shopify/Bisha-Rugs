@@ -278,6 +278,9 @@
         /* Full screen width while the grid and chips stay in the gutter. */
         margin-inline: calc(var(--container-gutter) * -1);
         width: calc(100% + (var(--container-gutter) * 2));
+        position: sticky;
+        top: var(--header-height, 0px);
+        z-index: 3;
       }
 
       #shopify-section-{{ section.id }} .pf-mobilebar::before {
@@ -345,6 +348,14 @@
         line-height: 1.4;
         font-weight: 400;
         color: #666666;
+      }
+      #shopify-section-{{ section.id }} .collection-toolbar__products-count {
+        display: block;
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.4;
+        font-weight: 400;
+        color: #000000;
       }
     }
     /* ---------- Shop by Color (Phase 1) ----------
@@ -1046,8 +1057,8 @@
 
                   <button type="button" aria-controls="sort-by-popover" class="pf-mobilebar__half">
                     <span class="pf-mobilebar__icon" aria-hidden="true">
-                      <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 2v14M5 2L2.5 4.5M5 2l2.5 2.5M13 16V2M13 16l2.5-2.5M13 16l-2.5-2.5"/>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 3v18M7 21l-4-4M7 21l4-4M17 21V3M17 3l-4 4M17 3l4 4"/>
                       </svg>
                     </span>
                     <span class="pf-mobilebar__text">
