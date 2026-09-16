@@ -357,6 +357,35 @@
         font-weight: 400;
         color: #000000;
       }
+            #shopify-section-{{ section.id }} .active-facets {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+      }
+
+      #shopify-section-{{ section.id }} .active-facets .removable-facet {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        gap: 8px;
+        min-height: 29px;
+        padding: 6px 16px;
+        border: 1px solid rgb(85 88 60 / 0.1);
+        border-radius: 1000px;
+        background: rgb(85 88 60 / 0.1);
+        box-shadow: none;
+        font-size: 12px;
+        line-height: 1.4;
+        font-weight: 400;
+        color: #000000;
+      }
+
+      #shopify-section-{{ section.id }} .active-facets .removable-facet svg {
+        width: 15px;
+        height: 15px;
+        color: #000000;
+      }
     }
     /* ---------- Shop by Color (Phase 1) ----------
        Only emitted while the development gate is on. */
