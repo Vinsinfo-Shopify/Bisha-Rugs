@@ -389,7 +389,7 @@ height-observer {
   justify-content: center;
   align-items: center;
   column-gap: 1.125rem;
-  padding: .65rem 1.75rem;
+  padding: 12px 10px;
   transition: background-size .45s cubic-bezier(.785, .135, .15, .86), background-position .45s step-end, color .45s cubic-bezier(.785, .135, .15, .86), border .45s cubic-bezier(.785, .135, .15, .86);
   display: inline-flex;
   position: relative;
