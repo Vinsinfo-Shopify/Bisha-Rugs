@@ -389,8 +389,10 @@
 #shopify-section-{{ section.id }} .product-card-title {
   min-height: calc(25px * 2);   /* line-height × 2 */
 }
-#shopify-section-{{ section.id }} .product-card__tag-wrapper--empty {
+
+#shopify-section-{{ section.id }} .product-card__tag-wrapper.is-empty {
   background: transparent;
+  visibility: hidden;
 }
 
 
