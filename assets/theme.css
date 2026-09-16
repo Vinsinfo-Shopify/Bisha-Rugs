@@ -90,6 +90,10 @@ button,
   background-image: none;
 }
 
+button:hover {
+  opacity: .85;
+}
+
 button,
 label,
 summary,
@@ -8976,7 +8980,6 @@ ul {
 .contact_us .form-control .input,
 .contact_us .form-control .textarea {
   padding: 10px 20px;
-  border-radius: 30px;
 }
 
 .newsletter-disclaimer.text-caption p {
