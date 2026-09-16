@@ -240,6 +240,32 @@
       '--announcement-bar-height',
       `${document.getElementById('shopify-section-{{ section.id }}').clientHeight.toFixed(2)}px`
     );
+    (() => {
+    customElements.whenDefined('announcement-bar-carousel').then(() => {
+      const proto = customElements.get('announcement-bar-carousel').prototype;
+      if (proto._bishaHorizontal) return;
+      proto._bishaHorizontal = true;
+
+      const OFFSET = 24; // px of horizontal travel
+
+      proto.createOnChangeAnimationControls = function (fromSlide, toSlide, { direction } = {}) {
+        const rtl  = getComputedStyle(this).direction === 'rtl' ? -1 : 1;
+        const sign = direction === 'previous' ? -1 : 1;
+        const d    = OFFSET * sign * rtl;
+
+        return {
+          leaveControls: () => fromSlide.animate(
+            { opacity: [1, 0], transform: ['translateX(0)', `translateX(${-d}px)`] },
+            { duration: 250, easing: 'cubic-bezier(0.55, 0.055, 0.675, 0.19)', fill: 'forwards' }
+          ),
+          enterControls: () => toSlide.animate(
+            { opacity: [0, 1], transform: [`translateX(${d}px)`, 'translateX(0)'] },
+            { duration: 400, easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)', fill: 'forwards' }
+          )
+        };
+      };
+    });
+  })();
   </script>
 {%- endif -%}
 
