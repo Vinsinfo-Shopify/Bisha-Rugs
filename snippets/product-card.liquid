@@ -238,11 +238,13 @@
     {%- if settings.product_card_text_font == 'heading' -%}
       {%- assign text_class = 'h6' -%}
     {%- endif -%}
-      {%- if product_tag != blank and hide_product_information != true -%}
-    <div class="product-card__tag-wrapper">
-    <p class="product-card__tag smallcaps text-subdued">{{ product_tag }}</p>
-    </div>
-  {%- endif -%} 
+      {%- unless hide_product_information -%}
+  <div class="product-card__tag-wrapper{% if product_tag == blank %} product-card__tag-wrapper--empty{% endif %}">
+    {%- if product_tag != blank -%}
+      <p class="product-card__tag smallcaps text-subdued">{{ product_tag }}</p>
+    {%- endif -%}
+  </div>
+{%- endunless -%}
     {%- if show_title or show_prices or show_vendor and product.vendor != blank -%}
       <div class="v-stack justify-items-center gap-2">
         {%- if show_vendor and product.vendor != blank -%}
