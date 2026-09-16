@@ -120,6 +120,15 @@
         "reveal_on_scroll": true,
         "image_position": "end",
         "content_width": "lg",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
         "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
@@ -314,37 +323,58 @@
         "image_with_text_qL9dee": {
           "type": "image_with_text",
           "settings": {
-            "image": "shopify://shop_images/CWP-2.png",
+            "image": "shopify://shop_images/bf44da0037debc9a0475225927d7a0987a6c104c_1.png",
             "title": "<strong>Step 1: Premium New Zealand Wool</strong>",
+            "subheading": "",
             "heading_tag": "custom",
             "custom_heading_size": 24,
             "content": "<p>We begin with carefully selected New Zealand wool, chosen for its softness, durability, and ability to absorb rich natural dyes.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "review_layout": false
           }
         },
         "image_with_text_CeVrhX": {
           "type": "image_with_text",
           "settings": {
-            "image": "shopify://shop_images/CWP-3.png",
+            "image": "shopify://shop_images/2eec04e2807a52d80a0b48a2d95adced7618cc38_2.png",
             "title": "<strong>Step 2: Naturally Dyed</strong>",
+            "subheading": "",
             "heading_tag": "custom",
             "custom_heading_size": 24,
             "content": "<p>Traditional dyeing techniques create the soft, earthy tones that make every Oushak rug unique. Gentle variations in colour are a hallmark of authentic craftsmanship.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "review_layout": false
           }
         },
         "image_with_text_TmR3me": {
           "type": "image_with_text",
           "settings": {
-            "image": "shopify://shop_images/d32ac65c516f1c324c1b42db7699e39b9bfbbe3c_1.png",
+            "image": "shopify://shop_images/d32ac65c516f1c324c1b42db7699e39b9bfbbe3c_3.png",
             "title": "<strong>Step 3: Hand Knotting</strong>",
+            "subheading": "",
             "heading_tag": "custom",
             "custom_heading_size": 24,
             "content": "<p>Every individual knot is tied entirely by hand on a traditional loom. Depending on the size and complexity, a single rug may require hundreds of thousands of knots.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "review_layout": false
           }
         },
         "image_with_text_qUwkh9": {
@@ -352,11 +382,18 @@
           "settings": {
             "image": "shopify://shop_images/ba9b8b83c2da2ba751ce438b650856ff12a2a56c.png",
             "title": "<strong>Step 4: Timeless Motifs</strong>",
+            "subheading": "",
             "heading_tag": "custom",
             "custom_heading_size": 24,
             "content": "<p>Inspired by the historic city of Oushak in Türkiye, these rugs feature large-scale motifs and balanced compositions that bring elegance to any interior.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "review_layout": false
           }
         },
         "image_with_text_wiAegE": {
@@ -364,11 +401,18 @@
           "settings": {
             "image": "shopify://shop_images/9aaa18f2caf9fec11b13037c586fe1a5847951a7.png",
             "title": "<strong>Step 5: Finishing</strong>",
+            "subheading": "",
             "heading_tag": "custom",
             "custom_heading_size": 24,
             "content": "<p>Each rug is carefully washed, trimmed, softened, and inspected to ensure exceptional quality before leaving our workshop.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "review_layout": false
           }
         },
         "image_with_text_YdCnFk": {
@@ -376,11 +420,18 @@
           "settings": {
             "image": "shopify://shop_images/2655df5f97946c8fc798be6e840610fabeef002d.png",
             "title": "<strong>Step 6: From Our Loom to Your Home</strong>",
+            "subheading": "",
             "heading_tag": "custom",
             "custom_heading_size": 24,
             "content": "<p>Once complete, your rug is carefully packed and delivered, ready to become a lasting part of your home and a piece to be cherished for generations.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "review_layout": false
           }
         }
       },
@@ -476,6 +527,15 @@
         "reveal_on_scroll": true,
         "image_position": "start",
         "content_width": "lg",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
         "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
