@@ -583,7 +583,7 @@
           "settings": {
             "style": "solid",
             "text": "GET IN TOUCH",
-            "url": "",
+            "url": "shopify://pages/contact",
             "background": "",
             "text_color": ""
           }
