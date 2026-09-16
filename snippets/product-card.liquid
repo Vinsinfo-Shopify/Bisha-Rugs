@@ -239,9 +239,11 @@
       {%- assign text_class = 'h6' -%}
     {%- endif -%}
       {%- unless hide_product_information -%}
-  <div class="product-card__tag-wrapper{% if product_tag == blank %} product-card__tag-wrapper--empty{% endif %}">
+  <div class="product-card__tag-wrapper{% if product_tag == blank %} is-empty{% endif %}">
     {%- if product_tag != blank -%}
       <p class="product-card__tag smallcaps text-subdued">{{ product_tag }}</p>
+    {%- else -%}
+      <p class="product-card__tag smallcaps text-subdued" aria-hidden="true">&nbsp;</p>
     {%- endif -%}
   </div>
 {%- endunless -%}
