@@ -137,21 +137,22 @@
     }
 
     #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
-      --circle-button-size: 2.375rem; /* 38px, same as Row 08 */
-      --circle-button-background: 43 39 36;
-      --circle-button-text-color: 255 255 255;
-      box-sizing: border-box;
-      background: #2b2724;
-      color: #ffffff;
-      border: 2px solid #ffffff;
-      box-shadow: none;
+      --circle-button-size: 2.25rem;   /* was 2.375rem */
+        --circle-button-background: 43 39 36;
+        --circle-button-text-color: 255 255 255;
+        box-sizing: border-box;
+        background: #2b2724;
+        color: #ffffff;
+        border: 3px solid #ffffff;       /* was 2px */
+        box-shadow: none;
     }
 
     #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
-      width: 0.875rem;
-      stroke-width: 1.75;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      width: 0.965rem;      /* was 0.875rem */
+  height: 0.965rem;
+  stroke-width: 1.7;    /* was 1.75 */
+  stroke-linecap: round;
+  stroke-linejoin: round;
     }
     #shopify-section-{{ section.id }} .button{      --button-background: 79 91 63;
   --button-text-color: 255 255 255;
