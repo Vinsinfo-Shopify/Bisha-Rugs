@@ -149,36 +149,45 @@
     padding: 0;
     cursor: pointer;
     transition: background 0.2s ease;
-  }
+   display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    transition: background 0.2s ease, transform 0.2s ease;
+    }}
   .hero-slideshow__dot.is-active {
     background: var(--hero-dot-active);
   }
 
-  .hero-slideshow__arrow {
+    .hero-slideshow__arrow {
     position: absolute;
     top: 50%;
     right: 1.5rem;
     transform: translateY(-50%);
-    width: 38px;
-    height: 38px;
+    width: 38.85px;
+    height: 38.85px;
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.4);
     color: #ffffff;
-    border: none;
+    border: 1px solid #ffffff;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 3;
     transition: background 0.2s ease, transform 0.2s ease;
-    }
+  }
+
+  .hero-slideshow__arrow svg {
+    width: 15.04px;
+    height: 7.11px;
+    stroke-width: 1.84;
+  }
     .hero-slideshow__arrow:hover {
     background: rgba(0, 0, 0, 0.6);
     transform: translateY(-50%) scale(1.05);
-    }
-    .hero-slideshow__arrow svg {
-    width: 14px;
-    height: 14px;
     }
     
     .hero-slide__img--desktop { display: block; }
@@ -263,16 +272,15 @@
 
   /* Arrow — 22px on the seam */
   .hero-slideshow__arrow {
-    width: 38px;
-    height: 38px;
+    width: 22px;
+    height: 22px;
     top: calc((100vw * 2480 / 2728) - 11px);  /* seam position based on image ratio */
     bottom: auto;
     right: 1rem;
     transform: none;
-    background: rgba(0, 0, 0, 0.4);    /* was 0.4 */
-    border: 1px solid #ffffff;        /* missing entirely */
+    background: rgba(0, 0, 0, 0.5);    /* was 0.4 */
+    border: 0.5px solid #ffffff;        /* missing entirely */
     box-sizing: border-box;
-    border-radius: 50%;
   }
   .hero-slideshow__arrow svg {
     width: 10px;                      /* was 10 */
