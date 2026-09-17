@@ -1,6 +1,4 @@
 (() => {
-  const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
-
   class CartDrawerMarquee extends HTMLElement {
     connectedCallback() {
       this.track = this.querySelector('.cart-drawer-marquee__track');
@@ -20,7 +18,7 @@
     }
 
     measure() {
-      if (REDUCED_MOTION.matches || !this.clientWidth) return;
+      if (!this.clientWidth) return;
 
       const group = this.track.firstElementChild;
       if (!group) return;
