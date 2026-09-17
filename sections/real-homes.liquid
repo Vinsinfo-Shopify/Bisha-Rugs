@@ -195,7 +195,7 @@
        formatting and localisation. Only the weight is restyled here. */
     #shopify-section-{{ section.id }} .real-homes__price,
     #shopify-section-{{ section.id }} .real-homes__price .price-list > * {
-      font-size: 12px;
+      font-size: 16px;
       line-height: 1.4;
       font-weight: 700;
     }
@@ -231,6 +231,12 @@
        Same markup and the same block order. Only the card size changes, so the
        active card stays centred with its neighbours peeking either side. */
     @media screen and (max-width: 699px) {
+      #shopify-section-{{ section.id }} .real-homes__price .price-list > * {
+      font-size: 12px;
+    }
+    #shopify-section-{{ section.id }} .real-homes__price .price-list > * {
+      font-size: 11px;
+    }
         #shopify-section-{{ section.id }} .real-homes__arrow {
 width: 28px;
       height: 28px; }
