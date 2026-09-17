@@ -881,7 +881,7 @@
         'find-perfect-look',
         class extends HTMLElement {
           connectedCallback() {
-            this.margin = 9px;
+            this.margin = {{ section.settings.card_margin_mobile_px }};
             this.open = null;
 
             this.onClick = (event) => {
