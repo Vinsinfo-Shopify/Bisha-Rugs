@@ -282,11 +282,26 @@
          touch device they would fall into normal flow. Positioning is restated
          here. No display, visibility or opacity is used to hide them. */
       #shopify-section-{{ section.id }} .floating-controls-container__control {
-        position: absolute;
-        display: grid;
-        place-items: center;
-        inset-block-start: {{ section.settings.arrow_offset }}%;
-      }
+  position: absolute;
+  display: grid;
+  place-items: center;
+  inset-block-start: {{ section.settings.arrow_offset }}%;
+  /* on-hover reveal only sets opacity:1 under (pointer: fine); forced
+     visible here since touch has no hover to trigger it */
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+#shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+  --circle-button-size: 26px;
+  border-width: 0.74px;
+  border-color: #e5e5e5;
+}
+
+#shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+  width: 11px;
+  stroke-width: 1.23;
+}
 
       #shopify-section-{{ section.id }} carousel-prev-button.floating-controls-container__control {
         inset-inline-start: {{ section.settings.arrow_inset_mobile }}px;
