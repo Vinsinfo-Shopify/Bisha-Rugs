@@ -98,7 +98,7 @@
           "settings": {
             "text": "<p>{{ collection.title }}</p>",
             "padding_top": 4,
-            "padding_bottom": 12,
+            "padding_bottom": 8,
             "heading_tag": "h1"
           }
         },
