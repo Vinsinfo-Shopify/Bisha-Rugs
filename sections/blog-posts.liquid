@@ -275,8 +275,21 @@
      snapping changes; only the control is taken out of the layout. */
   @media screen and (min-width: 700px) {
     #shopify-section-{{ section.id }} .floating-controls-container__control {
-      display: none;
-    }
+  z-index: 3;
+  inset-block-start: {{ section.settings.arrow_offset }}%;
+  transform: translateY(-50%);
+}
+
+#shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+  --circle-button-size: {{ section.settings.arrow_size }}px;
+  --circle-button-background: 43 39 36;
+  --circle-button-text-color: 255 255 255;
+  box-sizing: border-box;
+  background: {{ section.settings.arrow_background }};
+  color: {{ section.settings.arrow_color }};
+  border: 2px solid {{ section.settings.arrow_border }};
+  box-shadow: none;
+}
   }
 
   @media screen and (pointer: fine) {
