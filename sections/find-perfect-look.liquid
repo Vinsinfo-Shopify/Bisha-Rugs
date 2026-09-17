@@ -46,6 +46,12 @@
       overflow-x: clip;
     }
 
+    @media screen and (pointer: fine) {
+  #shopify-section-{{ section.id }} .floating-controls-container--inside {
+    --floating-controls-inset-inline: -1.125rem;
+  }
+}
+
     #shopify-section-{{ section.id }} .fpl__inner {
       padding-block-start: {{ section.settings.padding_top }}px;
       padding-block-end: {{ section.settings.padding_bottom }}px;
