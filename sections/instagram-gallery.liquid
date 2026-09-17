@@ -306,11 +306,7 @@
           <p class="ig__tagline">
             {{- section.settings.tagline_before }}
             {% if section.settings.handle != blank -%}
-              {%- if section.settings.instagram_url != blank -%}
-                <a class="ig__handle" href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener">{{ section.settings.handle }}</a>
-              {%- else -%}
                 <span class="ig__handle">{{ section.settings.handle }}</span>
-              {%- endif -%}
             {%- endif %}
             {{ section.settings.tagline_after -}}
           </p>
@@ -510,12 +506,6 @@
       "id": "tagline_after",
       "label": "Tagline, after the handle",
       "default": "to get featured"
-    },
-    {
-      "type": "url",
-      "id": "instagram_url",
-      "label": "Instagram profile URL",
-      "info": "Links the handle. Leave empty for plain text."
     },
     {
       "type": "header",
