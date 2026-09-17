@@ -252,7 +252,7 @@
       }
 
       #shopify-section-{{ section.id }} .ig__header {
-        margin-block-end: {{ section.settings.header_gap | times: 0.7 | round }}px;
+        margin-block-end: 26px;
       }
 
       /* 24 x 1.208 = 29, 14 x 1.571 = 22. The eyebrow is unchanged at 14/20. */
@@ -264,6 +264,7 @@
       #shopify-section-{{ section.id }} .ig__tagline {
         font-size: {{ section.settings.tagline_size_mobile }}px;
         line-height: 1.571;
+        margin-block: 2px 0;
       }
 
       #shopify-section-{{ section.id }} .ig__track {
