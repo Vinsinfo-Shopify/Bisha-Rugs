@@ -209,24 +209,24 @@
     }
 
         #shopify-section-{{ section.id }} .real-homes__arrow {
-      width: 33px;
-      height: 33px;
-      display: grid;
-      place-items: center;
-      border-radius: var(--rounded-full);
-      background: #55583c;
-      border: 1px solid #55583c;
-      color: #ffffff;
-      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-    }
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--rounded-full);
+  background: transparent;
+  border: 1px solid {{ section.settings.info_border_color }};
+  color: #2b2724;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
 
-    #shopify-section-{{ section.id }} .real-homes__card.is-active .real-homes__arrow,
-    #shopify-section-{{ section.id }} .real-homes__info:hover .real-homes__arrow,
-    #shopify-section-{{ section.id }} .real-homes__info:focus-visible .real-homes__arrow {
-      background: #55583c;
-      border-color: #55583c;
-      color: #ffffff;
-    }
+#shopify-section-{{ section.id }} .real-homes__card.is-active .real-homes__arrow,
+#shopify-section-{{ section.id }} .real-homes__info:hover .real-homes__arrow,
+#shopify-section-{{ section.id }} .real-homes__info:focus-visible .real-homes__arrow {
+  background: #55583c;
+  border-color: #55583c;
+  color: #ffffff;
+}
 
     /* ---------- Mobile ----------
        Same markup and the same block order. Only the card size changes, so the
