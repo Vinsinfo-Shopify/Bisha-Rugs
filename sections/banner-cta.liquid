@@ -104,8 +104,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
-    padding: 40px;
     color: #ffffff;
   }
 
@@ -148,10 +146,6 @@
   }
 
   @media screen and (max-width: 999px) {
-    #BannerCta-{{ section.id }} .banner-cta__content {
-      padding: 32px;
-      gap: 20px;
-    }
 
     #BannerCta-{{ section.id }} .banner-cta__text {
       max-width: 50%;
@@ -174,7 +168,6 @@
       align-items: flex-start;
       justify-content: flex-end;
       gap: 16px;
-      padding: 24px var(--container-gutter);
     }
 
     #BannerCta-{{ section.id }} .banner-cta__text {
@@ -212,7 +205,7 @@
 
 <div
   id="BannerCta-{{ section.id }}"
-  class="banner-cta banner-cta--mobile-{{ section.settings.mobile_layout }} color-scheme color-scheme--{{ section.settings.color_scheme.id }}"
+  class="banner-cta banner-cta--mobile-{{ section.settings.mobile_layout }} color-scheme color-scheme--{{ section.settings.color_scheme.id }}{% if section.settings.custom_class != blank %} {{ section.settings.custom_class }}{% endif %}"
 >
   <div class="banner-cta__inner">
     <div class="banner-cta__media">
@@ -276,6 +269,12 @@
       "id": "color_scheme",
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class",
+      "info": "Adds a class to the section for custom styling."
     },
     {
       "type": "header",

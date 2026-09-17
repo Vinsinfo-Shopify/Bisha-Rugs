@@ -1,7 +1,8 @@
 {%- if section.blocks.size > 0 -%}
   <style>
     #shopify-section-{{ section.id }} {
-      --multi-column-gap: {% if section.settings.spacing == 'xs' %}9px{% elsif section.settings.spacing == 'sm' %}18px{% elsif section.settings.spacing == 'md' %}32px{% else %}48rem{% endif %};
+      --multi-column-gap: {{ section.settings.column_gap_mobile }}px;
+      --multi-column-row-gap: {{ section.settings.row_gap_mobile }}px;
       /* Mobile-first: default to a 2-column grid (matches Figma mobile layout) */
       --multi-column-columns-per-row: 2;
       --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
@@ -26,7 +27,8 @@
     /* Desktop: use the merchant-configured columns-per-row and padding */
     @media screen and (min-width: 999px) {
       #shopify-section-{{ section.id }} {
-        --multi-column-gap: {% if section.settings.spacing == 'xs' %}1rem{% elsif section.settings.spacing == 'sm' %}2rem{% elsif section.settings.spacing == 'md' %}3rem{% else %}4rem{% endif %};
+        --multi-column-gap: {{ section.settings.column_gap_desktop }}px;
+        --multi-column-row-gap: {{ section.settings.row_gap_desktop }}px;
         --multi-column-columns-per-row: {{ section.settings.columns_per_row }};
         --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
 
@@ -41,7 +43,7 @@
       display: grid;
       grid-template: var(--multi-column-grid);
       gap: var(--multi-column-gap);
-      row-gap : 43.5px;
+      row-gap: var(--multi-column-row-gap);
       align-items: start;
       justify-content: var(--multi-column-content-alignment);
     }
@@ -51,15 +53,27 @@
       flex-direction: column;
     }
 
-    /* --- Mobile carousel (opt-in) ---
-       Desktop keeps the grid untouched; below 699px the same markup becomes a
-       native horizontal scroller. One card per view at full container width,
-       with the track bleeding to the screen edges so the next card peeks. */
     #shopify-section-{{ section.id }} .multi-column__dots {
       display: none;
     }
 
+    /* Mobile-only detail line (e.g. "Interior designer: Maya Bennett").
+       Hidden by default; only revealed on mobile below, and only output
+       at all when the merchant has filled in the field for a given block. */
+    #shopify-section-{{ section.id }} .multi-column-card_mobile-detail {
+      display: none;
+    }
+
     @media screen and (max-width: 698px) {
+      #shopify-section-{{ section.id }} .multi-column-card_mobile-detail {
+        display: block;
+        margin-top: 4px;
+      }
+
+      #shopify-section-{{ section.id }} .multi-column-card_mobile-detail p {
+        margin: 0;
+      }
+
       #shopify-section-{{ section.id }} .multi-column--carousel {
         grid-template: none;
         grid-auto-flow: column;
@@ -163,64 +177,8 @@
                     }
                         #shopify-section-{{ section.id }} .multi-column-card_rating {
                     margin-bottom: 6px;
-                  }
+           }
         }
-        /* --- Step number: base (safe everywhere) --- */
-#shopify-section-{{ section.id }} .multi-column-card_number {
-  margin: 0 0 8px;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 20.8px;
-  letter-spacing: 1.82px;
-}
-
-/* --- Scoped to application_process only; other section instances unaffected --- */
-#shopify-section-{{ section.id }} .application_process .multi-column-card_heading-group {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: 12px;
-}
-
-#shopify-section-{{ section.id }} .application_process .multi-column-card_number,
-#shopify-section-{{ section.id }} .application_process .multi-column-card_heading-wrapper {
-  margin: 0;
-}
-
-#shopify-section-{{ section.id }} .application_process .multi-column-card_subheading {
-  flex-basis: 100%;
-}
-
-#shopify-section-{{ section.id }} .application_process .multi-column__item {
-  padding: 20px 0;
-  border-top: 1px solid rgba(var(--color-foreground), 0.12);
-}
-
-#shopify-section-{{ section.id }} .application_process .multi-column__item:first-child {
-  border-top: 0;
-  padding-top: 0;
-}
-
-@media screen and (min-width: 999px) {
-  #shopify-section-{{ section.id }} .application_process .multi-column-card_heading-group {
-    display: block;
-  }
-
-  #shopify-section-{{ section.id }} .application_process .multi-column__item {
-    padding: 0;
-    border-top: 0;
-    position: relative;
-  }
-
-  #shopify-section-{{ section.id }} .application_process .multi-column__item:not(:first-child)::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -24px;
-    border-left: 1px dashed rgba(var(--color-foreground), 0.35);
-  }
-}
   </style>
 
   {%- liquid
@@ -358,6 +316,10 @@
                   {{- block.settings.content -}}
                   </div>
 
+                  {%- if block.settings.mobile_detail_text != blank -%}
+                    <div class="multi-column-card_mobile-detail">{{ block.settings.mobile_detail_text }}</div>
+                  {%- endif -%}
+
                   {%- if block.settings.review_layout and block.settings.title != blank -%}
                     <div class="multi-column-card_heading-wrapper multi-column-card_heading-wrapper--review">
                       {%- if block.settings.icon != blank -%}
@@ -483,16 +445,48 @@
       "default": "start"
     },
     {
-      "type": "select",
-      "id": "spacing",
-      "label": "t:global.spacing.column_spacing",
-      "options": [
-        { "value": "xs", "label": "t:global.sizes.x_small" },
-        { "value": "sm", "label": "t:global.sizes.small" },
-        { "value": "md", "label": "t:global.sizes.medium" },
-        { "value": "lg", "label": "t:global.sizes.large" }
-      ],
-      "default": "md"
+      "type": "header",
+      "content": "Column & row spacing"
+    },
+    {
+      "type": "range",
+      "id": "column_gap_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Column gap (mobile)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Row gap (mobile)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "column_gap_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Column gap (desktop)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "row_gap_desktop",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Row gap (desktop)",
+      "default": 48
     },
    {
           "type": "text",
@@ -737,6 +731,16 @@
         },
         {
           "type": "header",
+          "content": "Mobile-only detail"
+        },
+        {
+          "type": "richtext",
+          "id": "mobile_detail_text",
+          "label": "Detail line (mobile only)",
+          "info": "Optional. Shown only on mobile, below the content — e.g. 'Interior designer: Maya Bennett'. Leave blank to hide; desktop is unaffected."
+        },
+        {
+          "type": "header",
           "content": "Review card layout"
         },
         {
@@ -850,6 +854,16 @@
           "label": "Star color",
           "default": "#E8B923",
           "visible_if": "{{ block.settings.show_rating }}"
+        },
+        {
+          "type": "header",
+          "content": "Mobile-only detail"
+        },
+        {
+          "type": "richtext",
+          "id": "mobile_detail_text",
+          "label": "Detail line (mobile only)",
+          "info": "Optional. Shown only on mobile, below the content — e.g. 'Interior designer: Maya Bennett'. Leave blank to hide; desktop is unaffected."
         },
         {
           "type": "header",
