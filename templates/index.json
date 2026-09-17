@@ -598,7 +598,7 @@
       "name": "t:sections.image_with_text.presets.image_with_text.name",
       "settings": {
         "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
-        "custom_class": "Custom_rugs",
+        "custom_class": "home_craft_row",
         "separate_section_with_border": true,
         "padding_top": 0,
         "padding_bottom": 0,
