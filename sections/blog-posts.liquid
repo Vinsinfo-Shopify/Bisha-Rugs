@@ -298,6 +298,16 @@
       opacity: 1;
       transform: translateY(-50%);
     }
+    #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control,
+  #shopify-section-{{ section.id }} .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
+
+  /* Straddles the container edge, half in / half out, like Row 08 */
+  #shopify-section-{{ section.id }} .floating-controls-container--inside {
+    --floating-controls-inset-inline: calc(-1 * {{ section.settings.arrow_size | divided_by: 2.0 }}px);
+  }
   }
 
   /* ---------- Mobile ---------- */
