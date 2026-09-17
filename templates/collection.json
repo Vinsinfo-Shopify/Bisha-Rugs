@@ -189,7 +189,7 @@
         "enable_new_filters": true,
         "production_filters": "Availability, Price",
         "pf_filters_heading": "Filters",
-        "pf_filters_heading_gap": 26,
+        "pf_filters_heading_gap": 18,
         "pf_sidebar_width": 294,
         "pf_sidebar_gap": 32,
         "pf_sidebar_inset": 8,
