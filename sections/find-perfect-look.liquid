@@ -156,8 +156,12 @@
       stroke-linecap: round;
       stroke-linejoin: round;
     }
-    #shopify-section-{{ section.id }} .button{     padding: 12px 28px;
-    font-weight: 700;
+    #shopify-section-{{ section.id }} .button{      --button-background: 79 91 63;
+  --button-text-color: 255 255 255;
+  --button-outline-color: 79 91 63;
+  border-radius: 0;
+  padding: 12px 28px;
+  font-weight: 700;
     }
 
     /* The custom element is inline by default, which would break the bleed
