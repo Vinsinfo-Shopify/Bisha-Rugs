@@ -243,7 +243,7 @@
 
     #shopify-section-{{ section.id }} .section-spacing {
       padding-block-start: 35px;
-      padding-block-end: 50px;
+      padding-block-end: var(--container-gutter);
       border: 0;
     } 
 
@@ -414,6 +414,9 @@
       /* Responsive header text: one heading element, one eyebrow element */
       #shopify-section-{{ section.id }} .collection-list--sbs .sbs-text--mobile {
         display: none;
+      }
+      #shopify-section-{{ section.id }} .collection-list--sbs.section-spacing {
+        padding-block-end: 50px;
       }
 
       /* Card arrow: the base rules above already give a transparent circle with a
