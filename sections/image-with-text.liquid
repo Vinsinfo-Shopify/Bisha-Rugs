@@ -767,6 +767,14 @@
   </style>
 {%- endif -%}
 
+{%- if section.settings.custom_class contains 'home_craft_row' -%}
+  <style>
+    #shopify-section-{{ section.id }} .home_craft_row .prose .image_with_text_heading {
+      font-size: 28px;
+    }
+  </style>
+{%- endif -%}
+
   {%- comment -%}
     ------------------------------------------------------------------------------------------------------------------------
     LIQUID
