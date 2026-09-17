@@ -273,6 +273,10 @@
         --ig-item: calc((100% - {{ section.settings.items_mobile | floor }} * var(--ig-gap)) / var(--ig-visible));
       }
 
+      #shopify-section-{{ section.id }} .ig__item :is(img, svg, video) {
+        max-width: 265px;
+      }
+
       /* theme.css only positions these controls under (pointer: fine), so on a
          touch device they would fall into normal flow. Positioning is restated
          here. No display, visibility or opacity is used to hide them. */
