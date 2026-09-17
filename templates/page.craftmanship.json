@@ -336,6 +336,7 @@
             "rating_color": "#e8b923",
             "number": "",
             "number_color": "#b76e45",
+            "mobile_detail_text": "",
             "review_layout": false
           }
         },
@@ -355,6 +356,7 @@
             "rating_color": "#e8b923",
             "number": "",
             "number_color": "#b76e45",
+            "mobile_detail_text": "",
             "review_layout": false
           }
         },
@@ -374,6 +376,7 @@
             "rating_color": "#e8b923",
             "number": "",
             "number_color": "#b76e45",
+            "mobile_detail_text": "",
             "review_layout": false
           }
         },
@@ -393,6 +396,7 @@
             "rating_color": "#e8b923",
             "number": "",
             "number_color": "#b76e45",
+            "mobile_detail_text": "",
             "review_layout": false
           }
         },
@@ -412,6 +416,7 @@
             "rating_color": "#e8b923",
             "number": "",
             "number_color": "#b76e45",
+            "mobile_detail_text": "",
             "review_layout": false
           }
         },
@@ -431,6 +436,7 @@
             "rating_color": "#e8b923",
             "number": "",
             "number_color": "#b76e45",
+            "mobile_detail_text": "",
             "review_layout": false
           }
         }
@@ -451,10 +457,14 @@
         "remove_section_spacing": false,
         "columns_per_row": 3,
         "stack_on_mobile": false,
+        "enable_carousel": false,
         "overlap_image": false,
         "content_alignment": "center",
         "text_alignment": "start",
-        "spacing": "xs",
+        "column_gap_mobile": 9,
+        "row_gap_mobile": 16,
+        "column_gap_desktop": 16,
+        "row_gap_desktop": 46,
         "media_height": "445px",
         "subheading": "The Making",
         "title": "From Wool to Woven Masterpiece.",
