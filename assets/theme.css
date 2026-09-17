@@ -6299,6 +6299,7 @@ shopify-account::part(signed-out-avatar) {
   align-content: start;
   gap: 16px;
   display: grid;
+  height: 100%;
 }
 
 .multi-column__item--overlap:has(.multi-column__media) {
