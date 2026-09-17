@@ -269,10 +269,14 @@
     bottom: auto;
     right: 1rem;
     transform: none;
+    background: rgba(0, 0, 0, 0.5);    /* was 0.4 */
+    border: 0.5px solid #ffffff;        /* missing entirely */
+    box-sizing: border-box;
   }
   .hero-slideshow__arrow svg {
-    width: 10px;
-    height: 10px;
+    width: 8.89px;                      /* was 10 */
+    height: 4.05px;
+    stroke-width: 1.05;
   }
   .hero-slideshow__arrow:hover {
     transform: scale(1.05);
