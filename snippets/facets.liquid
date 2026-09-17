@@ -130,8 +130,22 @@
               {%- case filter.type -%}
                 {%- when 'list' -%}
                   {%- liquid
+                    # A "swatch" filter whose values carry an image (Search &
+                    # Discovery's "Swatch pattern" set to an image field, e.g.
+                    # a metaobject thumbnail) is presented the same way as a
+                    # true "image" filter: a grid of photo tiles with a
+                    # visible label and count, rather than the small colour
+                    # dot used for plain colour swatches.
+                    assign is_image_grid = false
+
                     if filter.presentation == 'image'
-                      assign wrapper_class_list = 'v-stack gap-2'
+                      assign is_image_grid = true
+                    elsif filter.presentation == 'swatch' and filter.values.first.swatch.image != blank
+                      assign is_image_grid = true
+                    endif
+
+                    if is_image_grid
+                      assign wrapper_class_list = 'option-value-list'
                     elsif filter.presentation == 'swatch' or color_label_list contains downcase_label
                       assign wrapper_class_list = 'h-stack wrap gap-2'
                     else
@@ -144,8 +158,8 @@
                       for filter_value in filter.values
                         assign value_id_prefix = id_prefix | append: '-' | append: forloop.index
 
-                        if filter.presentation == 'image'
-                          render 'option-value', type: 'image_filter', filter_value: filter_value, id_prefix: value_id_prefix
+                        if is_image_grid
+                          render 'option-value', type: 'image_filter', filter_value: filter_value, id_prefix: value_id_prefix, show_count: section.settings.show_filter_values_count
                         elsif filter.presentation == 'swatch' or color_label_list contains downcase_label
                           render 'option-value', type: 'swatch', filter_value: filter_value, show_tooltip: true, id_prefix: value_id_prefix
                         else

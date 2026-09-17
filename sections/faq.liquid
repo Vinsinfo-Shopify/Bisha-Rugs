@@ -38,6 +38,12 @@
     text-align: start;
     justify-items: start;
   }
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .container {
+      --container-max-width: 1300px;
+      --container-gutter: 70px;
+    }
+  }
   #shopify-section-{{ section.id }} .faq-layout--with-sidebar .section-header > * {
     margin-inline: 0;
   }
@@ -114,8 +120,8 @@
       align-items: start;
     }
     #shopify-section-{{ section.id }} .faq-layout--with-image {
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-      column-gap: 60px;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      column-gap: 50px;
       row-gap: 0;
       align-items: start;
     }

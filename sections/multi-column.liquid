@@ -30,11 +30,39 @@
       --multi-column-row-gap: {{ section.settings.row_gap_desktop }}px;
       --multi-column-columns-per-row: {{ section.settings.columns_per_row }};
       --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
+    }
+  }
 
-      padding-top: {{ section.settings.padding_top_desktop }}px;
-      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
-      padding-left: {{ section.settings.padding_left_desktop }}px;
-      padding-right: {{ section.settings.padding_right_desktop }}px;
+  @media screen and (max-width: 698px) {
+    #shopify-section-{{ section.id }} .multi-column.multi-column--stack-mobile {
+      --multi-column-columns-per-row: 1;
+      --multi-column-column-width: 100%;
+      --multi-column-grid: auto / repeat(auto-fit, var(--multi-column-column-width));
+    }
+  }
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .container {
+      --container-max-width: 1300px;
+      --container-gutter: 70px;
+    }
+  } 
+  @media screen and (min-width: 1440px) {
+    .image-with-text-container {
+        max-width: 1300px;
+        margin-inline: auto;
+      }
+    }
+  /* Desktop: use the merchant-configured columns-per-row and padding */
+  @media screen and (min-width: 999px) {
+    #shopify-section-{{ section.id }} {
+      --multi-column-gap: {% if section.settings.spacing == 'xs' %}1rem{% elsif section.settings.spacing == 'sm' %}2rem{% elsif section.settings.spacing == 'md' %}3rem{% else %}4rem{% endif %};
+      --multi-column-columns-per-row: {{ section.settings.columns_per_row }};
+      --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
+
+        padding-top: {{ section.settings.padding_top_desktop }}px;
+        padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+        padding-left: {{ section.settings.padding_left_desktop }}px;
+        padding-right: {{ section.settings.padding_right_desktop }}px;
     }
   }
 

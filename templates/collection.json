@@ -187,7 +187,7 @@
         "quick_links_menu": "",
         "show_sort_by": true,
         "enable_new_filters": true,
-        "production_filters": "Availability, Price",
+        "production_filters": "Availability, Price, Style",
         "pf_filters_heading": "Filters",
         "pf_filters_heading_gap": 18,
         "pf_sidebar_width": 294,

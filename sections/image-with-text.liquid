@@ -23,12 +23,33 @@
   }
  
  
+  /* --- Character-limit paragraph truncation --- */
+  #shopify-section-{{ section.id }} .char-limit-content__full[hidden],
+  #shopify-section-{{ section.id }} .char-limit-content__short[hidden] {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .char-limit-toggle {
+    display: inline;
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    margin-inline-start: 4px;
+    font: inherit;
+    font-weight: 700;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+
   /* --- Icon with text list --- */
   #shopify-section-{{ section.id }} .icon-with-text-list {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 28px;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 22px;
     list-style: none;
     padding: 0;
   }
@@ -103,7 +124,7 @@
     }
   }
  
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 768px) {
     #shopify-section-{{ section.id }} {
       --section-padding-top: {{ section.settings.padding_top_mobile | default: section.settings.padding_top }}px;
       --section-padding-bottom: {{ section.settings.padding_bottom_mobile | default: section.settings.padding_bottom }}px;
@@ -207,8 +228,6 @@
   }
 
   /* theme.css draws the line with
-       .shopify-section:not(:first-child) .bordered-section {
-         border-block-start-width: 1px }
      and this instance has separate_section_with_border on. Zeroed here
      rather than by unticking the setting, so the border stays off
      whatever that checkbox is later set to. Only the block-start width
@@ -597,6 +616,20 @@
       --cb-lines: 2;
     }
 
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .collection_banner {
+        --container-max-width: 1300px;
+        --container-gutter: 70px;
+      }
+
+      #shopify-section-{{ section.id }} .collection_banner .image-with-text-container {
+        --distance-to-bleed: max(var(--container-gutter), 50% - var(--container-max-width) / 2);
+        margin-inline-start: max(var(--container-gutter), 50% - var(--container-max-width) / 2);
+        margin-inline-end: max(var(--container-gutter), 50% - var(--container-max-width) / 2);
+        padding: 0px
+      }
+    }
+
     /* ---------- Desktop typography ---------- */
     #shopify-section-{{ section.id }} .collection_banner .prose .image_with_text_heading {
       font-size: 28px;
@@ -901,7 +934,11 @@
 
             {%- when 'heading' -%}
               {%- if block.settings.text != blank -%}
-                <h2 class="{{ block.settings.heading_tag }} image_with_text_heading" {{ block.shopify_attributes }}>{{ block.settings.text }}</h2>
+                <h2
+                  class="{{ block.settings.heading_tag }} image_with_text_heading"
+                  style="padding-top: {{ block.settings.padding_top }}px; padding-bottom: {{ block.settings.padding_bottom }}px;"
+                  {{ block.shopify_attributes }}
+                >{{ block.settings.text }}</h2>
               {%- endif -%}
 
             {%- when 'richtext' -%}
@@ -915,7 +952,16 @@
                   no second copy for mobile and no plain-text duplicate, so rich
                   text from the collection description is preserved exactly.
                 {%- endcomment -%}
-                {%- if section.settings.custom_class contains 'collection_banner' -%}
+                {%- if block.settings.character_limit > 0 -%}
+                  {%- assign char_limit_plain_text = block.settings.content | strip_html | strip_newlines -%}
+                {%- endif -%}
+                {%- if block.settings.character_limit > 0 and char_limit_plain_text.size > block.settings.character_limit -%}
+                  {%- assign char_limit_short_text = char_limit_plain_text | truncate: block.settings.character_limit, '' -%}
+                  <div class="image_with_text_content char-limit-content" data-char-limit {{ block.shopify_attributes }}>
+                    <span class="char-limit-content__short" data-char-limit-short>{{ char_limit_short_text }}&hellip;<button type="button" class="char-limit-toggle" data-char-limit-toggle aria-expanded="false">Read more</button></span>
+                    <span class="char-limit-content__full" data-char-limit-full hidden>{{ block.settings.content }} <button type="button" class="char-limit-toggle" data-char-limit-toggle aria-expanded="true">Read less</button></span>
+                  </div>
+                {%- elsif section.settings.custom_class contains 'collection_banner' -%}
                   <div class="cb-desc is-clamped" data-cb-desc>
                     <div class="image_with_text_content cb-desc__text" {{ block.shopify_attributes }}>
                       {{- block.settings.content -}}
@@ -1181,6 +1227,32 @@
       host.appendChild(desc);
       parent.insertBefore(host, next);
     })();
+  </script>
+{%- endif -%}
+
+{%- assign has_char_limit_block = false -%}
+{%- for block in section.blocks -%}
+  {%- if block.type == 'richtext' and block.settings.character_limit > 0 -%}
+    {%- assign has_char_limit_block = true -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- if has_char_limit_block -%}
+  <script>
+    if (!window.__imageWithTextCharLimitBound) {
+      window.__imageWithTextCharLimitBound = true;
+      document.addEventListener('click', function (event) {
+        var toggle = event.target.closest('[data-char-limit-toggle]');
+        if (!toggle) return;
+        var wrap = toggle.closest('[data-char-limit]');
+        if (!wrap) return;
+        var short = wrap.querySelector('[data-char-limit-short]');
+        var full = wrap.querySelector('[data-char-limit-full]');
+        if (!short || !full) return;
+        var expand = full.hidden;
+        short.hidden = expand;
+        full.hidden = !expand;
+      });
+    }
   </script>
 {%- endif -%}
 
@@ -1548,6 +1620,26 @@
           "default": "<p>Heading</p>"
         },
         {
+          "type": "range",
+          "id": "padding_top",
+          "label": "Padding Top title",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "label": "Padding Bottom title",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "default": 0
+        },
+        {
           "type": "select",
           "id": "heading_tag",
           "label": "t:global.text.style",
@@ -1590,6 +1682,17 @@
           "id": "content",
           "label": "t:global.text.content",
           "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+          "type": "range",
+          "id": "character_limit",
+          "label": "Character limit",
+          "info": "Truncate the paragraph after this many characters and show a Read more toggle. Set to 0 for no limit.",
+          "min": 0,
+          "max": 500,
+          "step": 10,
+          "unit": "ch",
+          "default": 0
         }
       ]
     },
