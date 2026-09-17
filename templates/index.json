@@ -1863,7 +1863,7 @@
         "card_width_mobile": 219,
         "image_height_mobile": 242,
         "card_gap": 16,
-        "card_gap_mobile": 12,
+        "card_gap_mobile": 10,
         "end_gap": 0,
         "words_per_minute": 200,
         "read_time_label": "min read",
