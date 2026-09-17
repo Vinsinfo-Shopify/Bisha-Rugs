@@ -28,7 +28,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-top: 22px;
+    margin-top: 28px;
     list-style: none;
     padding: 0;
   }
@@ -40,6 +40,9 @@
     font-size: var(--icon-text-size, 16px);
     line-height: 140%;
     font-weight: 500;
+  }
+  #shopify-section-{{ section.id }} .icon-with-text-item:where(ol,ul):not(.unstyled-list) li {
+    padding:0;
   }
  
   #shopify-section-{{ section.id }} .icon-with-text-item img,
@@ -124,15 +127,35 @@
  
   {%- if section.settings.layout_variant == 'the-craft' -%}
     @media screen and (min-width: 1000px) {
-      #shopify-section-{{ section.id }} .image-with-text > picture,
-      #shopify-section-{{ section.id }} .image-with-text > picture img {
-        height: 380px;
+       #shopify-section-{{ section.id }} .image-with-text > picture,
+    #shopify-section-{{ section.id }} .image-with-text > picture img {
+      height: 380px;
+      width: 640px;
+      max-width: 640px;
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text > picture {
+      margin-inline-start: auto;
+    }
+
+    #shopify-section-{{ section.id }} .image-with-text > picture img {
+      object-fit: cover;
+      display: block;
+    }
+    }
+    @media screen and (max-width: 749px) {
+      #shopify-section-{{ section.id }} .image-with-text {
+        gap: 20px;
       }
- 
-      #shopify-section-{{ section.id }} .image-with-text > picture img {
-        width: 100%;
-        object-fit: cover;
-        display: block;
+      #shopify-section-{{ section.id }} .icon-with-text-list {
+        gap: 6px; 
+        margin-top: 10px;
+      }
+      #shopify-section-{{ section.id }} .icon-with-text-item img {
+        width: 14px;
+      }
+      #shopify-section-{{ section.id }} .icon-with-text-item span{
+        font-size: 14px;
       }
     }
   {%- endif -%}
