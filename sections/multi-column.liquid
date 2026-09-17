@@ -22,7 +22,18 @@
         --multi-column-grid: auto / repeat(auto-fit, var(--multi-column-column-width));
       }
     }
-
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .container {
+        --container-max-width: 1300px;
+        --container-gutter: 70px;
+      }
+    } 
+    @media screen and (min-width: 1440px) {
+      .image-with-text-container {
+          max-width: 1300px;
+          margin-inline: auto;
+        }
+      }
     /* Desktop: use the merchant-configured columns-per-row and padding */
     @media screen and (min-width: 999px) {
       #shopify-section-{{ section.id }} {
