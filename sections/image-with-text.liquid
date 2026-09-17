@@ -783,10 +783,11 @@
         font-weight: 700;
         padding: 12px 28px;
     }
-
-    #shopify-section-{{ section.id }} .home_craft_row .image-with-text-container{
-          margin: 0;
-          padding-top: 0;
+    @media screen and (max-width: 749px){
+      #shopify-section-{{ section.id }} .home_craft_row .image-with-text-container{
+            margin: 0;
+            padding-top: 0;
+      }
     }
   </style>
 {%- endif -%}
