@@ -400,6 +400,9 @@
   width: 15px;              /* up from 11 — check Figma's actual size */
   shape-rendering: geometricPrecision;
 }
+#shopify-section-{{ section.id }} {
+    --container-gutter: 70px;
+  }
       /* ---------- 375px mobile ---------- */
       @media screen and (max-width: 699px) {
         #shopify-section-{{ section.id }} {
@@ -639,9 +642,6 @@
   #shopify-section-{{ section.id }} .product-card-title {
     min-height: calc(18px * 2);
   }
-  #shopify-section-{{ section.id }} .floating-controls-container--inside {
-  --floating-controls-inset-inline: -3.8125rem;
-}
 
       }
 
