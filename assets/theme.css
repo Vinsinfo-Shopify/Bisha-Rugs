@@ -3433,8 +3433,8 @@ tr[onclick]:hover {
   padding: 2px 7px;
   gap: 4px;
   font-size: 12px;
-  line-height: 160%;
-  font-weight: 600;
+  line-height: 140%;
+  font-weight: 500;
   text-transform: capitalize;
 }
 
