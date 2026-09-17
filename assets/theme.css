@@ -368,7 +368,7 @@ height-observer {
 .button, .shopify-challenge__button, .shopify-payment-button__button--unbranded {
   --initial-gradient: linear-gradient(rgb(var(--button-background)), rgb(var(--button-background)));
   --hover-gradient: linear-gradient(transparent, transparent);
-  --initial-background-position: var(--transform-origin-end);
+  --initial-background-position: left center;
   --hover-background-position: var(--transform-origin-start);
   -webkit-appearance: none;
   appearance: none;
