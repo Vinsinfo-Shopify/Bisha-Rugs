@@ -1,185 +1,183 @@
 {%- if section.blocks.size > 0 -%}
-  <style>
+<style>
+  #shopify-section-{{ section.id }} {
+    --multi-column-gap: {{ section.settings.column_gap_mobile }}px;
+    --multi-column-row-gap: {{ section.settings.row_gap_mobile }}px;
+    --multi-column-columns-per-row: 2;
+    --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
+    --multi-column-grid: auto / repeat(var(--multi-column-columns-per-row), var(--multi-column-column-width));
+    --multi-column-content-alignment: safe {{ section.settings.content_alignment }};
+
+    /* Mobile section padding (theme setting driven) */
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    padding-left: {{ section.settings.padding_left_mobile }}px;
+    padding-right: {{ section.settings.padding_right_mobile }}px;
+  }
+
+  @media screen and (max-width: 698px) {
+    #shopify-section-{{ section.id }} .multi-column.multi-column--stack-mobile {
+      --multi-column-columns-per-row: 1;
+      --multi-column-column-width: 100%;
+      --multi-column-grid: auto / repeat(auto-fit, var(--multi-column-column-width));
+    }
+  }
+
+  /* Desktop: use the merchant-configured columns-per-row and padding */
+  @media screen and (min-width: 999px) {
     #shopify-section-{{ section.id }} {
-      --multi-column-gap: {{ section.settings.column_gap_mobile }}px;
-      --multi-column-row-gap: {{ section.settings.row_gap_mobile }}px;
-      /* Mobile-first: default to a 2-column grid (matches Figma mobile layout) */
-      --multi-column-columns-per-row: 2;
+      --multi-column-gap: {{ section.settings.column_gap_desktop }}px;
+      --multi-column-row-gap: {{ section.settings.row_gap_desktop }}px;
+      --multi-column-columns-per-row: {{ section.settings.columns_per_row }};
       --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
-      --multi-column-grid: auto / repeat(var(--multi-column-columns-per-row), var(--multi-column-column-width));
-      --multi-column-content-alignment: safe {{ section.settings.content_alignment }};
 
-      /* Mobile section padding (theme setting driven) */
-      padding-top: {{ section.settings.padding_top_mobile }}px;
-      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
-      padding-left: {{ section.settings.padding_left_mobile }}px;
-      padding-right: {{ section.settings.padding_right_mobile }}px;
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+      padding-left: {{ section.settings.padding_left_desktop }}px;
+      padding-right: {{ section.settings.padding_right_desktop }}px;
     }
+  }
 
-    @media screen and (max-width: 698px) {
-      #shopify-section-{{ section.id }} .multi-column.multi-column--stack-mobile {
-        --multi-column-columns-per-row: 1;
-        --multi-column-column-width: 100%;
-        --multi-column-grid: auto / repeat(auto-fit, var(--multi-column-column-width));
-      }
-    }
+  #shopify-section-{{ section.id }} .multi-column {
+    display: grid;
+    grid-template: var(--multi-column-grid);
+    gap: var(--multi-column-gap);
+    row-gap: var(--multi-column-row-gap);
+    align-items: start;
+    justify-content: var(--multi-column-content-alignment);
+  }
 
-    /* Desktop: use the merchant-configured columns-per-row and padding */
-    @media screen and (min-width: 999px) {
-      #shopify-section-{{ section.id }} {
-        --multi-column-gap: {{ section.settings.column_gap_desktop }}px;
-        --multi-column-row-gap: {{ section.settings.row_gap_desktop }}px;
-        --multi-column-columns-per-row: {{ section.settings.columns_per_row }};
-        --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
+  #shopify-section-{{ section.id }} .multi-column__item {
+    display: flex;
+    flex-direction: column;
+  }
 
-        padding-top: {{ section.settings.padding_top_desktop }}px;
-        padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
-        padding-left: {{ section.settings.padding_left_desktop }}px;
-        padding-right: {{ section.settings.padding_right_desktop }}px;
-      }
-    }
+  #shopify-section-{{ section.id }} .multi-column__dots {
+    display: none;
+  }
 
-    #shopify-section-{{ section.id }} .multi-column {
-      display: grid;
-      grid-template: var(--multi-column-grid);
-      gap: var(--multi-column-gap);
-      row-gap: var(--multi-column-row-gap);
-      align-items: start;
-      justify-content: var(--multi-column-content-alignment);
-    }
+  #shopify-section-{{ section.id }} .multi-column-card_mobile-detail {
+    display: none;
+  }
 
-    #shopify-section-{{ section.id }} .multi-column__item {
-      display: flex;
-      flex-direction: column;
-    }
-
-    #shopify-section-{{ section.id }} .multi-column__dots {
-      display: none;
-    }
-
-    /* Mobile-only detail line (e.g. "Interior designer: Maya Bennett").
-       Hidden by default; only revealed on mobile below, and only output
-       at all when the merchant has filled in the field for a given block. */
+  @media screen and (max-width: 698px) {
     #shopify-section-{{ section.id }} .multi-column-card_mobile-detail {
-      display: none;
-    }
-
-    @media screen and (max-width: 698px) {
-      #shopify-section-{{ section.id }} .multi-column-card_mobile-detail {
-        display: block;
-        margin-top: 4px;
-      }
-
-      #shopify-section-{{ section.id }} .multi-column-card_mobile-detail p {
-        margin: 0;
-      }
-
-      #shopify-section-{{ section.id }} .multi-column--carousel {
-        grid-template: none;
-        grid-auto-flow: column;
-        grid-auto-columns: 100%;
-        justify-content: start;
-        overflow: auto hidden;
-        overscroll-behavior-x: contain;
-        scroll-snap-type: x mandatory;
-        scrollbar-width: none;
-        margin-inline: calc(-1 * var(--distance-to-bleed));
-        padding-inline: var(--distance-to-bleed);
-        scroll-padding-inline: var(--distance-to-bleed);
-      }
-
-      #shopify-section-{{ section.id }} .multi-column--carousel::-webkit-scrollbar {
-        display: none;
-      }
-
-      #shopify-section-{{ section.id }} .multi-column--carousel .multi-column__item {
-        min-width: 0;
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
-      }
-
-      #shopify-section-{{ section.id }} .multi-column__dots {
-        display: flex;
-      }
-
-      /* Figma shows the current item as a pill rather than a dot */
-      #shopify-section-{{ section.id }} .multi-column__dots > *[aria-current='true'] {
-        width: 1.125rem;
-      }
-    }
-
-    /* Equal-height media regardless of the source image/video's natural dimensions */
-    #shopify-section-{{ section.id }} .multi-column__media {
-      width: 100%;
-      height: {{ section.settings.media_height | default: '400px' }};
-      overflow: hidden;
-      border-radius: var(--multi-column-media-radius, 0);
-    }
-    @media screen and (min-width: 1600px) {
-      #shopify-section-{{ section.id }} .multi-column__media {
-        height: 700px;
-      }
-    }
-    @media screen and (max-width: 500px) {
-      #shopify-section-{{ section.id }} .multi-column__media {
-        height: 220px;
-      }
-    }
-
-    #shopify-section-{{ section.id }} .multi-column__media img,
-    #shopify-section-{{ section.id }} .multi-column__media video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
       display: block;
+      margin-top: 4px;
     }
 
-    /* --- Review card layout (opt-in via block setting, does not affect existing blocks) --- */
-    #shopify-section-{{ section.id }} .multi-column__item--review {
-      border: 1px solid rgba(var(--color-foreground), 0.08);
-      border-radius: 12px;
-    }
-
-    #shopify-section-{{ section.id }} .multi-column-card_rating {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      margin-bottom: 18px;
-    }
-
-    #shopify-section-{{ section.id }} .multi-column-card_star {
-      flex-shrink: 0;
+    #shopify-section-{{ section.id }} .multi-column-card_mobile-detail p {
       margin: 0;
     }
 
-    #shopify-section-{{ section.id }} .multi-column-card_heading-wrapper--review {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-top: 24px;
+    #shopify-section-{{ section.id }} .multi-column--carousel {
+      grid-template: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 100%;
+      justify-content: start;
+      overflow: auto hidden;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      margin-inline: calc(-1 * var(--distance-to-bleed));
+      padding-inline: var(--distance-to-bleed);
+      scroll-padding-inline: var(--distance-to-bleed);
     }
 
-    #shopify-section-{{ section.id }} .multi-column-card_icon--avatar {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      object-fit: cover;
-      flex-shrink: 0;
+    #shopify-section-{{ section.id }} .multi-column--carousel::-webkit-scrollbar {
+      display: none;
     }
-        @media screen and (max-width: 768px){
-          #shopify-section-{{ section.id }} .multi-column-card_icon--avatar {
-                width: 34px;
-                height: 34px;
-              }
-                  #shopify-section-{{ section.id }} .multi-column-card_heading-wrapper--review {
-                      gap: 12px;
-                      margin-top: 14.5px;
-                    }
-                        #shopify-section-{{ section.id }} .multi-column-card_rating {
-                    margin-bottom: 6px;
-           }
-        }
-  </style>
+
+    #shopify-section-{{ section.id }} .multi-column--carousel .multi-column__item {
+      min-width: 0;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column__dots {
+      display: flex;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column__dots > *[aria-current='true'] {
+      width: 1.125rem;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .multi-column__media {
+    width: 100%;
+    height: {{ section.settings.media_height | default: '400px' }};
+    overflow: hidden;
+    border-radius: var(--multi-column-media-radius, 0);
+  }
+
+  @media screen and (min-width: 1600px) {
+    #shopify-section-{{ section.id }} .multi-column__media {
+      height: 700px;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    #shopify-section-{{ section.id }} .multi-column__media {
+      height: 220px;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .multi-column__media img,
+  #shopify-section-{{ section.id }} .multi-column__media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .multi-column__item--review {
+    border: 1px solid rgba(var(--color-foreground), 0.08);
+    border-radius: 12px;
+  }
+
+  #shopify-section-{{ section.id }} .multi-column-card_rating {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 18px;
+  }
+
+  #shopify-section-{{ section.id }} .multi-column-card_star {
+    flex-shrink: 0;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .multi-column-card_heading-wrapper--review {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  #shopify-section-{{ section.id }} .multi-column-card_icon--avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .multi-column-card_icon--avatar {
+      width: 34px;
+      height: 34px;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column-card_heading-wrapper--review {
+      gap: 12px;
+      margin-top: 14.5px;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column-card_rating {
+      margin-bottom: 6px;
+    }
+  }
+</style>
 
   {%- liquid
     assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5

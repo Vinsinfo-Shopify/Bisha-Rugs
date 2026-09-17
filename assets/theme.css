@@ -9483,45 +9483,6 @@ ul {
 .blog-sidebar__widget .text-subdued {
   font-size: 12px;
 }
-
-@media (max-width: 749px) {
-  .blog-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .collection_banner .image-with-text {
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 70px;
-    align-items: self-start;
-  }
-
-  .collection_banner .image-with-text>.prose {
-    max-width: 100%;
-    margin-top: 0;
-    margin-bottom: 0;
-    text-align: start;
-    padding: 15px 12px 25px 14px;
-  }
-
-  .collection_banner .prose .image_with_text_heading {
-    font-size: 24px;
-    line-height: 126%;
-  }
-
-  .collection_banner .prose .image_with_text_content,
-  .collection_banner .icon-with-text-list {
-    font-size: 16px;
-    margin-top: 8px;
-  }
-
-  .collection_banner .image-with-text picture {
-    max-width: 100%;
-    width: 100%;
-    max-height: 220px;
-  }
-}
-
 /* Sidebar */
 .blog-sidebar__tags {
   display: flex;
@@ -9584,8 +9545,42 @@ ul {
 .blog-post-card--horizontal .blog-post-card__excerpt {
   color: rgb(var(--text-color) / .75);
 }
+@media (max-width: 749px) {
+  .blog-layout {
+    grid-template-columns: 1fr;
+  }
 
-@media screen and (max-width: 749px) {
+  .collection_banner .image-with-text {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 70px;
+    align-items: self-start;
+  }
+
+  .collection_banner .image-with-text>.prose {
+    max-width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: start;
+    padding: 15px 12px 25px 14px;
+  }
+
+  .collection_banner .prose .image_with_text_heading {
+    font-size: 24px;
+    line-height: 126%;
+  }
+
+  .collection_banner .prose .image_with_text_content,
+  .collection_banner .icon-with-text-list {
+    font-size: 16px;
+    margin-top: 8px;
+  }
+
+  .collection_banner .image-with-text picture {
+    max-width: 100%;
+    width: 100%;
+    max-height: 220px;
+  }
   .blog-post-card--horizontal {
     grid-template-columns: 1fr;
   }
@@ -9697,6 +9692,46 @@ ul {
   will-change: transform;
   display: block;
 }
+.custom_rugs .image-with-text picture {
+  max-height: 357px;
+}
+
+.custom_rugs .prose .image_with_text_content {
+  margin-top: 16px;
+  font-size: 18px;
+  line-height: 140%;
+  font-weight: 400;
+}
+
+.custom_rugs .prose .image_with_text_heading {
+  font-size: 28px;
+  line-height: 120%;
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+.custom_rugs .image_with_text_subheading {
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 500;
+}
+
+.custom_rugs .image-with-text>.prose {
+  max-width: 100%;
+}
+
+.custom_rugs .prose .button {
+  margin-top: 24px !important;
+  padding: 12px 28px 12px 28px;
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 700;
+}
+
+.custom_rugs .image-with-text {
+  gap: 39px;
+}
+
 
 @media (min-width: 1025px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .blog-post-card__img-wrap:hover .blog-post-card__image {
@@ -9719,21 +9754,21 @@ ul {
   .collection_banner .image-with-text picture {
     max-height: 180px;
   }
+    .custom_rugs .image-with-text {
+    gap: 0px;
+  }
+
+  .custom_rugs .image-with-text>.prose {
+    padding: 0px 12px;
+  }
 }
 
-/* =====================================================
-   GLOBAL TYPOGRAPHY OVERRIDE FOR ARTICLE RTE CONTENT
-   Wins over any per-article inline <style> block
-   ===================================================== */
-
-/* 1) Catch-all — everything inside article body defaults to Figtree */
 .template-article .prose,
 .template-article .prose * {
   font-family: 'Figtree' !important;
   color: rgb(var(--text-color));
 }
 
-/* 2) Headings always use Forum (higher specificity: element selector beats the catch-all) */
 .template-article .prose h1,
 .template-article .prose h2,
 .template-article .prose h3,
@@ -9744,7 +9779,6 @@ ul {
   color: rgb(var(--text-color));
 }
 
-/* 3) In case an RTE author wraps heading text in <span>/<em>/<strong>, keep it Forum too */
 .template-article .prose h1 *,
 .template-article .prose h2 *,
 .template-article .prose h3 *,
@@ -9755,7 +9789,6 @@ ul {
   color: rgb(var(--text-color));
 }
 
-/* 4) Explicit for p/a since they're the most common inline-styled tags in RTE content */
 .template-article .prose p,
 .template-article .prose a {
   font-family: 'Figtree' !important;
@@ -9960,46 +9993,6 @@ ul {
   letter-spacing: 0%;
 }
 
-.custom_rugs .image-with-text picture {
-  max-height: 357px;
-}
-
-.custom_rugs .prose .image_with_text_content {
-  margin-top: 16px;
-  font-size: 18px;
-  line-height: 140%;
-  font-weight: 400;
-}
-
-.custom_rugs .prose .image_with_text_heading {
-  font-size: 28px;
-  line-height: 120%;
-  font-weight: 400;
-  margin-top: 4px;
-}
-
-.custom_rugs .image_with_text_subheading {
-  font-size: 14px;
-  line-height: 140%;
-  font-weight: 500;
-}
-
-.custom_rugs .image-with-text>.prose {
-  max-width: 100%;
-}
-
-.custom_rugs .prose .button {
-  margin-top: 24px !important;
-  padding: 12px 28px 12px 28px;
-  font-size: 16px;
-  line-height: 140%;
-  font-weight: 700;
-}
-
-.custom_rugs .image-with-text {
-  gap: 39px;
-}
-
 @media screen and (max-width: 768px) {
   .custom_rugs .image-with-text {
     gap: 15px;
@@ -10016,16 +10009,6 @@ ul {
 
   .custom_rugs .prose .image_with_text_content {
     font-size: 16px;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .custom_rugs .image-with-text {
-    gap: 0px;
-  }
-
-  .custom_rugs .image-with-text>.prose {
-    padding: 0px 12px;
   }
 }
 
