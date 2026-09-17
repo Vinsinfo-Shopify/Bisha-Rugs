@@ -208,8 +208,8 @@
     }
 
         #shopify-section-{{ section.id }} .real-homes__arrow {
-      width: 28px;
-      height: 28px;
+      width: 33px;
+      height: 33px;
       display: grid;
       place-items: center;
       border-radius: var(--rounded-full);
@@ -231,6 +231,9 @@
        Same markup and the same block order. Only the card size changes, so the
        active card stays centred with its neighbours peeking either side. */
     @media screen and (max-width: 699px) {
+        #shopify-section-{{ section.id }} .real-homes__arrow {
+width: 28px;
+      height: 28px; }
       #shopify-section-{{ section.id }} .real-homes__inner {
         padding-block-start: 45px;
         padding-block-end: 45px;
