@@ -505,6 +505,7 @@
           (100vw - 2 * {{ section.settings.gutter_mobile }}px - (var(--fpl-visible) - 1) * var(--fpl-gap))
           / var(--fpl-visible)
         );
+        
         width: auto;
         margin-inline: calc(-1 * {{ section.settings.gutter_mobile }}px);
         /* The same gutter on both sides. Column 1 starts where the Figma puts
@@ -518,7 +519,9 @@
         padding-inline: {{ section.settings.gutter_mobile }}px;
         scroll-padding-inline: {{ section.settings.gutter_mobile }}px;
       }
-
+      #shopify-section-{{ section.id }} .fpl__track {
+        --fpl-colw: 229px;
+      }
       #shopify-section-{{ section.id }} .fpl__column {
         flex-basis: var(--fpl-colw);
       }
