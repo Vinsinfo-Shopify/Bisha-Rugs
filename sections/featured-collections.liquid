@@ -296,18 +296,13 @@
          overridden with the longhand at higher specificity. Size, radius,
          colour and centring are untouched. */
       #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center .button {
-        --button-background: 85 88 60; /* #55583C */
-        --button-outline-color: 85 88 60;
-        --button-text-color: 255 255 255;
+        --button-background: 79 91 63;
+  --button-text-color: 255 255 255;
+  --button-outline-color: 79 91 63;
+  border-radius: 0;
+  padding: 12px 28px;
         min-width: 232px;
-        padding-block: 7px;
         font-weight: 700;
-          background-size: 102% 102%, 0 102%;
-      }
-      @media screen and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-        .features--button-transition #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center .button:not([disabled]):hover {
-          background-size: 0 102%, 102% 102%;
-        }
       }
 
       /* ---------- Carousel arrows ----------
