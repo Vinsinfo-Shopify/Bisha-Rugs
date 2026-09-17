@@ -111,7 +111,12 @@
       display: none;
     }
 
-
+    #shopify-section-{{ section.id }} .real-homes__card {
+      flex: 0 0 var(--rh-card);
+      scroll-snap-align: center;
+      display: block;
+      transition: flex-basis 0.2s ease;
+    }
 
     /* The centre card is larger. Measured at 1.166x on both axes about a shared
        midpoint, which align-items: center on the track reproduces. */
