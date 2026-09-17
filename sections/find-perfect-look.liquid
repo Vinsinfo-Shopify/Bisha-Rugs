@@ -774,7 +774,14 @@
 
                     <div class="fpl__card-prices">
                       {%- render 'price-list', product: hotspot_product, context: 'card', hide_unit_price: true -%}
-                      {%- render 'product-badges', product: hotspot_product, types: 'discount', context: 'card' -%}
+                      {%- liquid
+    assign fpl_compare = hotspot_product.compare_at_price
+    assign fpl_current = hotspot_product.price
+  -%}
+  {%- if fpl_compare > fpl_current -%}
+    {%- assign fpl_discount = fpl_compare | minus: fpl_current | times: 100.0 | divided_by: fpl_compare | round -%}
+    <span class="badge badge--custom">{{ 'general.product.save' | t: percentage: fpl_discount }}</span>
+  {%- endif -%}
                     </div>
                   </div>
                 </a>
