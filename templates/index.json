@@ -862,7 +862,7 @@
         "card_width_mobile_px": 344,
         "card_opacity_pct": 82,
         "thumb_width": 66,
-        "card_margin_mobile_px": 16,
+        "card_margin_mobile_px": 10,
         "gutter_mobile": 16,
         "card_radius": 2,
         "card_border_color": "#e6e6e6",
