@@ -319,7 +319,15 @@
               <div class="hero-slide__description">{{ block.settings.description }}</div>
             {%- endif -%}
             {%- if block.settings.button_label != blank -%}
-              <a href="{{ block.settings.button_link | default: '#' }}" class="hero-slide__button">{{ block.settings.button_label }}</a>
+              {%- if block.settings.button_label != blank -%}
+  {%- render 'button',
+    content: block.settings.button_label,
+    href: block.settings.button_link | default: '#',
+    style: 'solid',
+    background: section.settings.button_bg,
+    text_color: section.settings.button_text_color
+  -%}
+{%- endif -%}
             {%- endif -%}
           </div>
         </div>
