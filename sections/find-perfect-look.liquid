@@ -572,13 +572,14 @@
           {{ section.settings.card_width_mobile_px }}px,
           calc(100vw - {{ section.settings.card_margin_mobile_px | times: 2 }}px)
         );
-        gap: 10px;
+        gap: 16px;
+        padding: 10px;
       }
 
       /* 54 x 60 from the mobile Figma: slightly smaller and slightly squarer
          than desktop, and still a fixed box rather than a share of the card. */
       #shopify-section-{{ section.id }} .fpl__card-image {
-        width: {{ section.settings.thumb_width | minus: 2 }}px;
+        width: {{ section.settings.thumb_width }}px;
         height: calc({{ section.settings.thumb_width | minus: 2 }}px * 1.111);
       }
 
