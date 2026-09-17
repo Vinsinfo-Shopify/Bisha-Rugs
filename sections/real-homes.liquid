@@ -207,25 +207,23 @@
       margin-block-start: 2px;
     }
 
-    /* Surrounding cards: transparent disc with a dark chevron. */
-    #shopify-section-{{ section.id }} .real-homes__arrow {
+        #shopify-section-{{ section.id }} .real-homes__arrow {
       width: 28px;
       height: 28px;
       display: grid;
       place-items: center;
       border-radius: var(--rounded-full);
-      background: transparent;
-      border: 1px solid {{ section.settings.info_border_color }};
-      color: #2b2724;
+      background: #55583c;
+      border: 1px solid #55583c;
+      color: #ffffff;
       transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
     }
 
-    /* Active centre card: dark disc with a white chevron. */
     #shopify-section-{{ section.id }} .real-homes__card.is-active .real-homes__arrow,
     #shopify-section-{{ section.id }} .real-homes__info:hover .real-homes__arrow,
     #shopify-section-{{ section.id }} .real-homes__info:focus-visible .real-homes__arrow {
-      background: #2b2724;
-      border-color: #2b2724;
+      background: #55583c;
+      border-color: #55583c;
       color: #ffffff;
     }
 
