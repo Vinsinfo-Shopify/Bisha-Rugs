@@ -857,7 +857,7 @@
         "hotspot_size": 14,
         "hotspot_color": "#ffffff",
         "card_width_max": 344,
-        "card_width_share": 78,
+        "card_width_share": 80,
         "card_min_width": 260,
         "card_width_mobile_px": 344,
         "card_opacity_pct": 82,
