@@ -3,6 +3,8 @@
   @param {string} tag - wrapper element for each item, "span" or "li"
   @param {string} item_class
   @param {string} icon_class
+  @param {boolean} show_dots - render a separator dot between items
+  @param {string} separator_class
 {%- enddoc -%}
 
 {%- for i in (1..4) -%}
@@ -28,6 +30,9 @@
   -%}
 
   {%- if item_text != blank -%}
+    {%- if show_dots -%}
+      <span class="{{ separator_class }}" aria-hidden="true">&bull;</span>
+    {%- endif -%}
     <{{ tag }} class="{{ item_class }}">
       {%- if section.settings.service_custom_icons and item_image != blank -%}
         {%- if section.settings.service_icon_recolor -%}

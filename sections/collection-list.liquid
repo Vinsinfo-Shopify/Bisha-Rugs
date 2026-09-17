@@ -207,16 +207,19 @@
         {%- if stack_mobile or stack_mobile_and_desktop -%}
           --collection-list-items-per-row: {{ 2 | at_most: section.settings.collections_per_row_desktop }};
         {%- else -%}
-          --collection-list-item-size: 62vw;
+          --collection-list-item-size: 62vw;.collection-list--sbs
         {%- endif -%}
       }
       #shopify-section-{{ section.id }} .collection-list--sbs .container {
           --container-max-width: 1300px;
         }
+        #shopify-section-{{ section.id }} .collection-list--sbs{
+          overflow-x: clip;
+        }
       #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area {
-          margin-inline: calc(50% - 50vw);
-          padding-inline: calc(50vw - 50%);
-          scroll-padding-inline: calc(50vw - 50%);
+          margin-inline: calc(50% - 50vw + var(--scrollbar-width, 0px) / 2);
+  padding-inline: calc(50vw - 50% - var(--scrollbar-width, 0px) / 2);
+  scroll-padding-inline: calc(50vw - 50% - var(--scrollbar-width, 0px) / 2);
         }
     }
 
@@ -238,11 +241,11 @@
     }
 
     #shopify-section-{{ section.id }} .section-stack {
-      gap: 24px;
+      gap: 18px;
     }
 
     #shopify-section-{{ section.id }} .section-spacing {
-      padding-block-start: var(--container-gutter);
+      padding-block-start: 35px;
       padding-block-end: var(--container-gutter);
       border: 0;
     } 
@@ -267,7 +270,7 @@
       font-family: 'Forum', serif;
       font-size: 28px;
       font-weight: 400;
-      line-height: 2;
+      line-height: 1.6;
       letter-spacing: 0;
       margin: 0;
     }
@@ -292,12 +295,7 @@
       width: 100%;
       max-width: none;
       padding: 60px 16px 20px;
-      background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.3) 0%,
-        rgba(0, 0, 0, 0.1) 31%,
-        rgba(0, 0, 0, 0) 100%
-      );
+      background: transparent;
     }
 
     #shopify-section-{{ section.id }} .collection-card__row {
@@ -327,8 +325,8 @@
       display: grid;
       place-items: center;
       flex: none;
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border: 1px solid #fff;
       border-radius: 50%;
       background-color: transparent;
@@ -373,8 +371,9 @@
       gap: 16px;
     }
 
-    #shopify-section-{{ section.id }} .section_header_heading {
+    #shopify-section-{{ section.id }} .section-header .section_header_heading {
       font-size: 24px;
+      line-height: 29px;
     }
 
     #shopify-section-{{ section.id }} .collection-card__content {
@@ -398,6 +397,12 @@
       width: 12px;
       height: 12px;
     }
+    #shopify-section-{{ section.id }} .section-header .section_header_subheading {
+      margin-bottom: 6px;
+    }
+    #shopify-section-{{ section.id }} .section-spacing {
+      padding-block-start: 20px;
+      padding-block-end: 50px;
   }
   </style>
 
@@ -412,6 +417,9 @@
       /* Responsive header text: one heading element, one eyebrow element */
       #shopify-section-{{ section.id }} .collection-list--sbs .sbs-text--mobile {
         display: none;
+      }
+      #shopify-section-{{ section.id }} .collection-list--sbs.section-spacing {
+        padding-block-end: 50px;
       }
 
       /* Card arrow: the base rules above already give a transparent circle with a
@@ -514,6 +522,9 @@
 
       /* ---------- Mobile: two-row horizontal carousel ---------- */
       @media screen and (max-width: 699px) {
+        #shopify-section-{{ section.id }} .collection-list--sbs.section-spacing {
+        padding-block-end: 30px;
+      }
         #shopify-section-{{ section.id }} .collection-list--sbs .sbs-text--desktop {
           display: none;
         }
@@ -567,7 +578,7 @@
           display: block;
           position: relative;
           height: 3px;
-          margin-block-start: 16px;
+          margin-block-start: calc(15px - {{ section.settings.sbs_heading_gap }}px);
           border-radius: 2px;
           background: rgb(var(--text-color) / 0.14);
         }

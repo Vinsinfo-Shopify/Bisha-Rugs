@@ -79,8 +79,8 @@
       }
 
       #shopify-section-{{ section.id }} .product-card__figure > .badge-list {
-        inset-block-start: 3px;
-        inset-inline-start: 3px;
+        inset-block-start: 7px;
+        inset-inline-start: 0px;
         gap: 3px;
       }
 
@@ -277,9 +277,9 @@
          explicitly in case anything upstream reintroduces one. */
       #shopify-section-{{ section.id }} .product-card-title {
         font-family: var(--text-font-family);
-        font-size: 16px;
-        line-height: 25px;
-        font-weight: 600;
+        font-size: 18px;
+        line-height: 24px;
+        font-weight: 700;
         min-height: 0;
         display: -webkit-box;
         -webkit-box-orient: vertical;
@@ -296,12 +296,14 @@
          overridden with the longhand at higher specificity. Size, radius,
          colour and centring are untouched. */
       #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center .button {
-        --button-background: 85 88 60; /* #55583C */
-        --button-outline-color: 85 88 60;
-        --button-text-color: 255 255 255;
+        --button-background: 79 91 63;
+  --button-text-color: 255 255 255;
+  --button-outline-color: 79 91 63;
+  border-radius: 0;
+  padding: 12px 28px;
         min-width: 232px;
-        padding-block: 7px;
         font-weight: 700;
+        font-size: 16px;
       }
 
       /* ---------- Carousel arrows ----------
@@ -318,14 +320,14 @@
       }
 
       #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
-        --circle-button-size: 2.375rem; /* 38px, same as Row 08 */
-        --circle-button-background: 43 39 36;
-        --circle-button-text-color: 255 255 255;
-        box-sizing: border-box;
-        background: #2b2724;
-        color: #ffffff;
-        border: 2px solid #ffffff;
-        box-shadow: none;
+        --circle-button-size: 2.25rem;   /* 36px, was 38px */
+  --circle-button-background: 43 39 36;
+  --circle-button-text-color: 255 255 255;
+  box-sizing: border-box;
+  background: #2b2724;
+  color: #ffffff;
+  border: 3px solid #ffffff;       /* was 2px */
+  box-shadow: none;
       }
 
       #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
@@ -369,18 +371,42 @@
            rather than overflowing. Nothing in the ancestor chain clips them:
            .featured-collections-carousel is position:relative with no overflow. */
         #shopify-section-{{ section.id }} .floating-controls-container--inside {
-          --row06-outer-gutter: max(1.2rem, (100vw - 81.25rem) / 2);
-          --floating-controls-inset-inline: calc(-1 * min(2.625rem, var(--row06-outer-gutter) - 0.5rem));
+          --floating-controls-inset-inline: -2.5rem;
+
         }
 
         /* Vertically centred on the product image. This belongs to the outer
            carousel container, not to any individual card. */
         #shopify-section-{{ section.id }} .floating-controls-container__control {
           inset-block-start: 173px; /* fallback */
-          inset-block-start: calc(((min(81.25rem, 100vw - 2.4rem) - 48px) / 4 * 380 / 313) / 2 - 1.03125rem);
+          inset-block-start: calc(((min(81.25rem, 100vw - 2.4rem) - 48px) / 4 * 380 / 313) / 2 - 1.125rem);
         }
       }
 
+/* Title: always reserve two lines so rating and price align across cards */
+#shopify-section-{{ section.id }} .product-card-title {
+  min-height: calc(25px * 2);   /* line-height × 2 */
+}
+
+#shopify-section-{{ section.id }} .product-card__tag-wrapper.is-empty {
+  background: transparent;
+  visibility: hidden;
+}
+#shopify-section-{{ section.id }} .product-card__tag-wrapper {
+  justify-self: start;
+  width: fit-content;
+  text-align: start;
+}
+
+#shopify-section-{{ section.id }} .rating-badge__stars > svg {
+  width: 15px;              /* up from 11 — check Figma's actual size */
+  shape-rendering: geometricPrecision;
+}
+@media screen and (min-width: 1000px) {
+#shopify-section-{{ section.id }} {
+    --container-gutter: 70px;
+  }
+}
       /* ---------- 375px mobile ---------- */
       @media screen and (max-width: 699px) {
         #shopify-section-{{ section.id }} {
@@ -409,18 +435,17 @@
 
         #shopify-section-{{ section.id }} .section-stack > .v-stack > .h6 {
           text-align: start;
-          font-size: 12px;
         }
 
         #shopify-section-{{ section.id }} .section-stack > .v-stack > h2 {
           text-align: start;
-          font-size: 22px;
+          font-size: 24px;
           line-height: 1.25;
         }
 
         #shopify-section-{{ section.id }} .product-card__figure > .badge-list {
-          inset-block-start: 2px;
-          inset-inline-start: 2px;
+          inset-block-start: 7px;
+          inset-inline-start: 0px;
         }
 
         #shopify-section-{{ section.id }} .product-card__figure .badge-list .badge--custom {
@@ -436,11 +461,11 @@
         }
 
         #shopify-section-{{ section.id }} .product-card__tag-wrapper {
-          padding: 3px 10px;
+          padding: 4px 14px;
         }
 
         #shopify-section-{{ section.id }} .product-card__tag {
-          font-size: 11px;
+          font-size: 12px;
         }
 
         #shopify-section-{{ section.id }} .product-card__info {
@@ -453,8 +478,9 @@
         }
 
         #shopify-section-{{ section.id }} .product-card-title {
-          font-size: 13px;
-          line-height: 18px;
+          font-size: 16px;
+          line-height: 22px;
+          font-weight:700;
         }
 
         #shopify-section-{{ section.id }} .rating-badge {
@@ -462,12 +488,8 @@
           flex-wrap: nowrap;
         }
 
-        #shopify-section-{{ section.id }} .rating-badge__stars > svg {
-          width: 11px;
-        }
-
         #shopify-section-{{ section.id }} .rating-badge .text-xxs {
-          font-size: 11px;
+          font-size: 12px;
         }
 
         #shopify-section-{{ section.id }} .price-list {
@@ -496,6 +518,9 @@
         #shopify-section-{{ section.id }} .featured-collections-carousel__item > .justify-self-center .button {
           min-width: 180px;
           padding-block: 6px;
+          font-size: 16px;
+          line-height: 22px;
+          font-weight: 700;
         }
 
         /* CONTROL B: the per-product image arrows are desktop-only. */
@@ -593,6 +618,35 @@
         #shopify-section-{{ section.id }} .product-card__media-pagination > button[aria-current='true']::after {
           background: rgb(43 39 36 / 0.9);
         }
+        #shopify-section-{{ section.id }} .floating-controls-container > carousel-next-button.floating-controls-container__control {
+  inset-inline-end: -13px;
+  inset-inline-start: auto;
+}
+
+#shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+  --circle-button-size: 1.625rem;   /* 26px */
+  background: #2B2724;
+  border: 2.17px solid #ffffff;
+  box-sizing: border-box;
+}
+
+#shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+  width: 0.6963rem;                 /* 11.14px */
+  stroke-width: 1.23;
+}
+#shopify-section-{{ section.id }} .floating-controls-container > carousel-prev-button.floating-controls-container__control {
+  inset-inline-start: -13px;
+  inset-inline-end: auto;
+}
+#shopify-section-{{ section.id }} .prev-next-button[disabled] {
+  opacity: 0.35;
+  visibility: visible;
+}
+
+  #shopify-section-{{ section.id }} .product-card-title {
+    min-height: calc(18px * 2);
+  }
+
       }
 
       /* Below 375px stay fluid rather than overflowing */
@@ -601,10 +655,7 @@
           --container-gutter: 0.5rem;
         }
 
-        #shopify-section-{{ section.id }} .product-card-title {
-          font-size: 12px;
-          line-height: 17px;
-        }
+
       }
     </style>
   {%- endif -%}
@@ -669,7 +720,7 @@
                   if section.settings.custom_class contains 'home_bestselling_rugs'
                     assign row06_image_carousel = true
                     assign row06_show_quick_buy = true
-                    assign row06_quick_buy_icon = 'picto-bag-handle'
+                    assign row06_quick_buy_icon = 'bag-minimal'
                     assign row06_show_swatches = false
                   endif
                 -%}
