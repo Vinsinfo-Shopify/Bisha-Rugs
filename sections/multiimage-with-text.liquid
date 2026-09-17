@@ -76,17 +76,6 @@
     justify-self: start;
   }
 
-  #shopify-section-{{ section.id }} .multiimage-with-text__eyebrow {
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-size: 12px;
-    margin: 0 0 12px;
-    opacity: 0.85;
-  }
-
-  #shopify-section-{{ section.id }} .multiimage-with-text__button-row {
-    margin-top: 28px;
-  }
 
   @media screen and (min-width: 1600px) {
     #shopify-section-{{ section.id }} .multiimage-with-text__media-wrapper img,
@@ -95,19 +84,10 @@
     }
   }
 
-  @media screen and (max-width: 1120px) {
-    #shopify-section-{{ section.id }} .multiimage-with-text__content-wrapper {
-      padding: 37px 38px 38px 28px;
-    }
-  }
-
   @media screen and (max-width: 500px) {
     #shopify-section-{{ section.id }} .multiimage-with-text__media-wrapper img,
     #shopify-section-{{ section.id }} .multiimage-with-text__media-wrapper .placeholder-svg {
       max-height: 190px;
-    }
-    #shopify-section-{{ section.id }} .multiimage-with-text__content-wrapper {
-      padding: 20px 12px;
     }
     #shopify-section-{{ section.id }} .multiimage-with-text {
       margin-bottom: 50px;
@@ -146,7 +126,7 @@
   {%- endif -%}
 {%- endcapture -%}
 
-<div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if has_media %}color-scheme--with-image-overlay{% else %}section-spacing {% if section.settings.separate_section_with_border %}bordered-section{% endif %}{% endif %}">
+<div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if has_media %}color-scheme--with-image-overlay{% else %}section-spacing {% if section.settings.separate_section_with_border %}bordered-section{% endif %}{% endif %}{% if section.settings.custom_class != blank %} {{ section.settings.custom_class }}{% endif %}">
   {%- if has_media -%}
     <div class="multiimage-with-text">
       <div class="multiimage-with-text__media-wrapper">
@@ -172,7 +152,7 @@
       </div>
 
       <div class="multiimage-with-text__content-wrapper">
-        <div class="multiimage-with-text__content section-stack gap-8 text-start">
+        <div class="multiimage-with-text__content section-stack text-start">
           {{- cta_content -}}
         </div>
       </div>
@@ -210,6 +190,12 @@
       "id": "separate_section_with_border",
       "label": "t:global.section.separate_section_with_border",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class",
+      "info": "Add one or more space-separated classes to target this section with custom CSS."
     },
     {
       "type": "header",

@@ -9614,7 +9614,43 @@ ul {
   color: rgb(var(--text-color) / .75);
 }
 
-@media screen and (max-width: 749px) {
+@media (max-width: 749px) {
+  .blog-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .collection_banner .image-with-text {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 70px;
+    align-items: self-start;
+  }
+
+  .collection_banner .image-with-text>.prose {
+    max-width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: start;
+    padding: 15px 12px 25px 14px;
+  }
+
+  .collection_banner .prose .image_with_text_heading {
+    font-size: 24px;
+    line-height: 126%;
+  }
+
+  .collection_banner .prose .image_with_text_content,
+  .collection_banner .icon-with-text-list {
+    font-size: 16px;
+    margin-top: 8px;
+  }
+
+  .collection_banner .image-with-text picture {
+    max-width: 100%;
+    width: 100%;
+    max-height: 220px;
+  }
+
   .blog-post-card--horizontal {
     grid-template-columns: 1fr;
   }
@@ -9727,6 +9763,47 @@ ul {
   display: block;
 }
 
+.custom_rugs .image-with-text picture {
+  max-height: 357px;
+}
+
+.custom_rugs .prose .image_with_text_content {
+  margin-top: 16px;
+  font-size: 18px;
+  line-height: 140%;
+  font-weight: 400;
+}
+
+.custom_rugs .prose .image_with_text_heading {
+  font-size: 28px;
+  line-height: 120%;
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+.custom_rugs .image_with_text_subheading {
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 500;
+}
+
+.custom_rugs .image-with-text>.prose {
+  max-width: 100%;
+}
+
+.custom_rugs .prose .button {
+  margin-top: 24px !important;
+  padding: 12px 28px 12px 28px;
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 700;
+}
+
+.custom_rugs .image-with-text {
+  gap: 39px;
+}
+
+
 @media (min-width: 1025px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .blog-post-card__img-wrap:hover .blog-post-card__image {
     transform: scale(1.05);
@@ -9748,21 +9825,22 @@ ul {
   .collection_banner .image-with-text picture {
     max-height: 180px;
   }
+
+  .custom_rugs .image-with-text {
+    gap: 0px;
+  }
+
+  .custom_rugs .image-with-text>.prose {
+    padding: 0px 12px;
+  }
 }
 
-/* =====================================================
-   GLOBAL TYPOGRAPHY OVERRIDE FOR ARTICLE RTE CONTENT
-   Wins over any per-article inline <style> block
-   ===================================================== */
-
-/* 1) Catch-all — everything inside article body defaults to Figtree */
 .template-article .prose,
 .template-article .prose * {
   font-family: 'Figtree' !important;
   color: rgb(var(--text-color));
 }
 
-/* 2) Headings always use Forum (higher specificity: element selector beats the catch-all) */
 .template-article .prose h1,
 .template-article .prose h2,
 .template-article .prose h3,
@@ -9773,7 +9851,6 @@ ul {
   color: rgb(var(--text-color));
 }
 
-/* 3) In case an RTE author wraps heading text in <span>/<em>/<strong>, keep it Forum too */
 .template-article .prose h1 *,
 .template-article .prose h2 *,
 .template-article .prose h3 *,
@@ -9784,7 +9861,6 @@ ul {
   color: rgb(var(--text-color));
 }
 
-/* 4) Explicit for p/a since they're the most common inline-styled tags in RTE content */
 .template-article .prose p,
 .template-article .prose a {
   font-family: 'Figtree' !important;
@@ -9989,46 +10065,6 @@ ul {
   letter-spacing: 0%;
 }
 
-.custom_rugs .image-with-text picture {
-  max-height: 357px;
-}
-
-.custom_rugs .prose .image_with_text_content {
-  margin-top: 16px;
-  font-size: 18px;
-  line-height: 140%;
-  font-weight: 400;
-}
-
-.custom_rugs .prose .image_with_text_heading {
-  font-size: 28px;
-  line-height: 120%;
-  font-weight: 400;
-  margin-top: 4px;
-}
-
-.custom_rugs .image_with_text_subheading {
-  font-size: 14px;
-  line-height: 140%;
-  font-weight: 500;
-}
-
-.custom_rugs .image-with-text>.prose {
-  max-width: 100%;
-}
-
-.custom_rugs .prose .button {
-  margin-top: 24px !important;
-  padding: 12px 28px 12px 28px;
-  font-size: 16px;
-  line-height: 140%;
-  font-weight: 700;
-}
-
-.custom_rugs .image-with-text {
-  gap: 39px;
-}
-
 @media screen and (max-width: 768px) {
   .custom_rugs .image-with-text {
     gap: 15px;
@@ -10045,16 +10081,6 @@ ul {
 
   .custom_rugs .prose .image_with_text_content {
     font-size: 16px;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .custom_rugs .image-with-text {
-    gap: 0px;
-  }
-
-  .custom_rugs .image-with-text>.prose {
-    padding: 0px 12px;
   }
 }
 
@@ -10306,6 +10332,40 @@ ul {
   display: none;
 }
 
+.application_process .section_header_subheading {
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 2.16px;
+}
+
+.application_process .section_header_heading {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 41.4px;
+  letter-spacing: -0.72px;
+  margin-top: 4px;
+  color: #1C1A17;
+}
+
+.application_proces .multi-column-card_heading {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.application_proces .multi-column-card_content {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  margin-top: 12px;
+}
+
+.application_proces .container .section-stack {
+  gap: 24px;
+}
+
 @media screen and (max-width: 1024px) {
   .trade_partnership .inner_container {
     padding-right: 30px;
@@ -10387,4 +10447,310 @@ ul {
     font-weight: 600;
     line-height: 15px;
   }
+
+  .member_stories {
+    padding-top: 44px;
+    padding-bottom: 40px;
+  }
+}
+
+/* Trade Program page — FAQ section only (scoped to .trade_program) */
+.trade_program .container--md {
+  --container-max-width: 690px;
+}
+
+.trade_program .container>.section-stack {
+  gap: 32px;
+}
+
+.trade_program .section-header {
+  justify-self: stretch;
+  text-align: left;
+}
+
+.trade_program .section_header_subheading {
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 2.16px;
+}
+
+.trade_program .section_header_heading {
+  font-family: 'Forum', serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 41.4px;
+  letter-spacing: -0.72px;
+  margin-top: 4px;
+  color: #1C1A17;
+}
+
+/* the heading's content div is rendered empty here - drop its prose margin */
+.trade_program .section_header_content:not(:has(*)) {
+  margin-block-start: 0;
+}
+
+.trade_program .faq__content {
+  flex-basis: 100%;
+}
+
+.trade_program .accordion {
+  border-color: rgb(var(--text-color) / .15);
+}
+
+.trade_program .accordion__toggle {
+  column-gap: 24px;
+  padding-block: 18px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 140%;
+  color: #1C1A17;
+}
+
+.trade_program .animated-plus {
+  --animated-plus-size: 12px;
+  color: #b35642;
+}
+
+.trade_program .accordion__content {
+  margin-block-start: -6px;
+  padding-block-end: 20px;
+  padding-inline-end: 36px;
+}
+
+.trade_program .faq__answer {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%;
+  color: rgb(var(--text-color) / .7);
+}
+
+.trade_program_footer .multiimage-with-text__content {
+  gap: 0px;
+}
+
+.trade_program_footer .multiimage-with-text__eyebrow {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19.2px;
+  letter-spacing: 2.16px;
+  color: #EEC274;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.trade_program_footer .section_header_heading {
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 41.4px;
+  letter-spacing: -0.72px;
+}
+
+.trade_program_footer .section_header_content {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 23px;
+  letter-spacing: 0;
+  margin-top: 12px;
+}
+
+.trade_program_footer .multiimage-with-text__button-row button {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 25.6px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  padding: 15px 37px 14px 38px;
+  border-radius: 4px;
+}
+
+.trade_program_footer .multiimage-with-text__button-row {
+  margin-top: 24px;
+}
+
+.trade_program_footer .multiimage-with-text__content-wrapper {
+  padding-left: 45px;
+}
+
+/* --- Step number: base --- */
+.multi-column-card_number {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20.8px;
+  letter-spacing: 1.82px;
+}
+
+/* --- Scoped to application_process --- */
+.application_process .multi-column-card_heading-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 12px;
+}
+
+.application_process .multi-column-card_number,
+.application_process .multi-column-card_heading-wrapper {
+  margin: 0;
+}
+
+.application_process .multi-column-card_subheading {
+  flex-basis: 100%;
+}
+
+.application_process .multi-column__item {
+  padding: 20px 0;
+  border-top: 1px solid rgba(var(--color-foreground), 0.12);
+}
+
+.application_process .section_header_content {
+  margin: 0px;
+}
+
+.application_process .section-stack {
+  gap: 24px;
+}
+
+.trade_program_banner_cta .banner-cta__content {
+  padding: 10px;
+}
+
+.bordered-section.trade_program {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.trade_program_banner_cta .banner-cta__actions .button {
+  font-weight: 700;
+  line-height: 140%;
+  text-transform: uppercase;
+  padding: 15px 28.5px;
+}
+
+.trade_work .multi-column-card_mobile-detail {
+  font-size: 12px;
+  line-height: 15px;
+  color: #000000;
+}
+
+@media screen and (min-width: 999px) {
+  .application_process .multi-column-card_heading-group {
+    display: block;
+  }
+
+  .application_process .multi-column__item {
+    padding: 0;
+    border-top: 0;
+    position: relative;
+  }
+
+  .application_process .multi-column__item:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -24px;
+    border-left: 1px dashed rgba(var(--color-foreground), 0.35);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .trade_program .container>.section-stack {
+    gap: 24px;
+  }
+
+  .trade_program .section_header_heading {
+    font-size: 24px;
+    line-height: 120%;
+  }
+
+  .trade_program .accordion__toggle {
+    column-gap: 16px;
+    padding-block: 16px;
+    font-size: 16px;
+  }
+
+  .trade_program .accordion__content {
+    padding-block-end: 16px;
+    padding-inline-end: 28px;
+  }
+
+  .application_process .section_header_heading {
+    font-size: 24px;
+    line-height: 120%;
+  }
+
+  .application_process .section_header_subheading {
+    letter-spacing: 0%;
+  }
+
+  .trade_program_banner_cta .banner-cta__content {
+    padding: 16px 12px 15px 13px;
+  }
+
+  .application_process .multi-column-card_heading {
+    line-height: 17.83px;
+  }
+
+  .application_process .prose .multi-column-card_content,
+  .trade_work .prose .multi-column-card_content,
+  .member_stories .prose .multi-column-card_content {
+    margin-top: 6px;
+  }
+
+  .member_stories .multi-column-card_content {
+    line-height: 140%;
+  }
+
+  .trade_program .section-header {
+    text-align: center;
+  }
+
+  .trade_program .section_header_subheading {
+    font-weight: 500;
+  }
+
+  .bordered-section.trade_program {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  .trade_program_footer .multiimage-with-text__content-wrapper {
+    padding: 20px 12.5px 33px 12.5px;
+  }
+
+  .trade_program_footer .multiimage-with-text__eyebrow {
+    line-height: 140%;
+    letter-spacing: 0;
+    margin-bottom: 8px;
+  }
+
+  .trade_program_footer .section_header_heading {
+    font-size: 24px;
+    line-height: 120%;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .trade_program_footer .section_header_content {
+    font-size: 14px;
+    line-height: 140%;
+    margin-top: 8px;
+  }
+
+  .trade_program_footer .multiimage-with-text__button-row {
+    margin-top: 16px;
+  }
+
+  .trade_program_footer .multiimage-with-text__button-row button {
+    line-height: 140%;
+    padding: 9px 31.5px;
+    border-radius: 0;
+  }
+
+  .trade_program_banner_cta .banner-cta__actions .button {
+    padding: 8.55px 19px 9.45px 19px;
+  }
+
 }

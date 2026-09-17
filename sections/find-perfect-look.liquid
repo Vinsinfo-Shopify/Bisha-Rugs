@@ -46,6 +46,12 @@
       overflow-x: clip;
     }
 
+    @media screen and (pointer: fine) {
+  #shopify-section-{{ section.id }} .floating-controls-container--inside {
+    --floating-controls-inset-inline: -1.125rem;
+  }
+}
+
     #shopify-section-{{ section.id }} .fpl__inner {
       padding-block-start: {{ section.settings.padding_top }}px;
       padding-block-end: {{ section.settings.padding_bottom }}px;
@@ -137,21 +143,22 @@
     }
 
     #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
-      --circle-button-size: 2.375rem; /* 38px, same as Row 08 */
-      --circle-button-background: 43 39 36;
-      --circle-button-text-color: 255 255 255;
-      box-sizing: border-box;
-      background: #2b2724;
-      color: #ffffff;
-      border: 2px solid #ffffff;
-      box-shadow: none;
+      --circle-button-size: 2.25rem;   /* was 2.375rem */
+        --circle-button-background: 43 39 36;
+        --circle-button-text-color: 255 255 255;
+        box-sizing: border-box;
+        background: #2b2724;
+        color: #ffffff;
+        border: 3px solid #ffffff;       /* was 2px */
+        box-shadow: none;
     }
 
     #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
-      width: 0.875rem;
-      stroke-width: 1.75;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      width: 0.965rem;      /* was 0.875rem */
+  height: 0.965rem;
+  stroke-width: 1.7;    /* was 1.75 */
+  stroke-linecap: round;
+  stroke-linejoin: round;
     }
     #shopify-section-{{ section.id }} .button{      --button-background: 79 91 63;
   --button-text-color: 255 255 255;
@@ -451,6 +458,14 @@
       font-size: 24px;
       line-height:29px;
     }
+    #shopify-section-{{ section.id }} .rating-badge .text-xxs.text-subdued {
+      font-size: 12px;
+      line-height: 17px;
+    }
+    #shopify-section-{{ section.id }} .fpl__card-prices .price-list > * {
+      font-weight: 500;
+      line-height: 1.4;
+    }
 
       /* Nothing between the section root and the track may impose a width.
          .fpl__inner is already neutralised above, but .fpl__carousel also
@@ -497,6 +512,7 @@
           (100vw - 2 * {{ section.settings.gutter_mobile }}px - (var(--fpl-visible) - 1) * var(--fpl-gap))
           / var(--fpl-visible)
         );
+        
         width: auto;
         margin-inline: calc(-1 * {{ section.settings.gutter_mobile }}px);
         /* The same gutter on both sides. Column 1 starts where the Figma puts
@@ -510,7 +526,9 @@
         padding-inline: {{ section.settings.gutter_mobile }}px;
         scroll-padding-inline: {{ section.settings.gutter_mobile }}px;
       }
-
+      #shopify-section-{{ section.id }} .fpl__track {
+        --fpl-colw: 229px;
+      }
       #shopify-section-{{ section.id }} .fpl__column {
         flex-basis: var(--fpl-colw);
       }
@@ -570,15 +588,16 @@
       #shopify-section-{{ section.id }} .fpl__card {
         width: min(
           {{ section.settings.card_width_mobile_px }}px,
-          calc(100vw - {{ section.settings.card_margin_mobile_px | times: 2 }}px)
+          calc(100vw - 18px)
         );
-        gap: 10px;
+        gap: 16px;
+        padding: 10px;
       }
 
       /* 54 x 60 from the mobile Figma: slightly smaller and slightly squarer
          than desktop, and still a fixed box rather than a share of the card. */
       #shopify-section-{{ section.id }} .fpl__card-image {
-        width: {{ section.settings.thumb_width | minus: 2 }}px;
+        width: {{ section.settings.thumb_width }}px;
         height: calc({{ section.settings.thumb_width | minus: 2 }}px * 1.111);
       }
 
@@ -949,10 +968,10 @@
             const bounds = track ? track.getBoundingClientRect() : null;
 
             let rect = card.getBoundingClientRect();
-            const left = Math.max(this.margin, bounds ? bounds.left + 2 : this.margin);
+            const left = Math.max(this.margin, bounds ? bounds.left + 9 : this.margin);
             const right = Math.min(
               document.documentElement.clientWidth - this.margin,
-              bounds ? bounds.right - 2 : Infinity
+              bounds ? bounds.right - 9 : Infinity
             );
 
             let shift = 0;
