@@ -141,9 +141,9 @@
           "type": "collection",
           "settings": {
             "sbs_item": "",
-            "color_scheme": "scheme-4",
+            "color_scheme": "scheme-2",
             "collection": "oushak-rugs",
-            "image": "shopify://shop_images/Oushak_Rugs_bdb6cd46-c650-45b2-9254-35779a65dfcc.png",
+            "image": "shopify://shop_images/Oushak_Rugs_2.png",
             "expand_collection": false,
             "content_position": "place-self-end-start text-start",
             "subheading": "",
@@ -152,7 +152,7 @@
             "button_link": "",
             "button_style": "solid",
             "overlay_color": "#000000",
-            "overlay_opacity": 30
+            "overlay_opacity": 0
           }
         },
         "collection_kk7GLD": {
@@ -161,7 +161,7 @@
             "sbs_item": "",
             "color_scheme": "scheme-4",
             "collection": "new-arrivals",
-            "image": "shopify://shop_images/Best_Sellers.png",
+            "image": "shopify://shop_images/Best_sellers_13294c00-ff10-480b-bd04-70e13dbb2e17.png",
             "expand_collection": false,
             "content_position": "place-self-end-start text-start",
             "subheading": "",
@@ -170,7 +170,7 @@
             "button_link": "",
             "button_style": "solid",
             "overlay_color": "#000000",
-            "overlay_opacity": 30
+            "overlay_opacity": 0
           }
         },
         "collection_6Dzxdj": {
@@ -179,7 +179,7 @@
             "sbs_item": "",
             "color_scheme": "",
             "collection": "new-arrivals",
-            "image": "shopify://shop_images/New_Arrivals.png",
+            "image": "shopify://shop_images/New_sellers.png",
             "expand_collection": false,
             "content_position": "place-self-end-start text-start",
             "subheading": "",
@@ -188,7 +188,7 @@
             "button_link": "",
             "button_style": "solid",
             "overlay_color": "#000000",
-            "overlay_opacity": 30
+            "overlay_opacity": 0
           }
         },
         "collection_kRWH6f": {
@@ -197,7 +197,7 @@
             "sbs_item": "",
             "color_scheme": "",
             "collection": "all",
-            "image": "shopify://shop_images/Shop_All.png",
+            "image": "shopify://shop_images/Shop_all_6b387a10-02d2-4d65-8a5d-38d60958e74c.png",
             "expand_collection": false,
             "content_position": "place-self-end-start text-start",
             "subheading": "",
@@ -206,7 +206,7 @@
             "button_link": "",
             "button_style": "solid",
             "overlay_color": "#000000",
-            "overlay_opacity": 30
+            "overlay_opacity": 0
           }
         }
       },
@@ -242,7 +242,7 @@
         "stack_collections_mobile": true,
         "collections_per_row_mobile": "2",
         "subheading": "Categories",
-        "title": "Explore Our Range",
+        "title": "Explore our Range",
         "heading_style": "h1",
         "content": ""
       }
@@ -286,7 +286,7 @@
         "color_scheme": "scheme-1",
         "separate_section_with_border": false,
         "padding_top": 20,
-        "padding_bottom": 46,
+        "padding_bottom": 66,
         "subheading": "COLOR PALETTE",
         "title": "Shop by Shade",
         "heading_style": "h2",
@@ -454,8 +454,8 @@
         "sbs_menu": "prestige-main-menu",
         "sbs_background": "#f3eee4",
         "sbs_parent_item": "Shop by Style",
-        "sbs_subheading_mobile": "",
-        "sbs_title_mobile": "",
+        "sbs_subheading_mobile": "Style",
+        "sbs_title_mobile": "Shop by Pattern",
         "sbs_heading_gap": 24,
         "sbs_mobile_fill": "row",
         "sbs_mobile_gap": 5,
@@ -598,7 +598,7 @@
       "name": "t:sections.image_with_text.presets.image_with_text.name",
       "settings": {
         "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
-        "custom_class": "Custom_rugs",
+        "custom_class": "home_craft_row",
         "separate_section_with_border": true,
         "padding_top": 0,
         "padding_bottom": 0,
@@ -841,8 +841,8 @@
       "settings": {
         "color_scheme": "",
         "background": "#fffbf3",
-        "padding_top": 84,
-        "padding_bottom": 84,
+        "padding_top": 70,
+        "padding_bottom": 70,
         "subheading": "GET INSPIRED",
         "title": "Find the Perfect Look",
         "heading_style": "h2",
@@ -857,11 +857,11 @@
         "hotspot_size": 14,
         "hotspot_color": "#ffffff",
         "card_width_max": 344,
-        "card_width_share": 78,
+        "card_width_share": 80,
         "card_min_width": 260,
         "card_width_mobile_px": 344,
         "card_opacity_pct": 82,
-        "thumb_width": 56,
+        "thumb_width": 66,
         "card_margin_mobile_px": 16,
         "gutter_mobile": 16,
         "card_radius": 2,

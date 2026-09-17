@@ -142,7 +142,7 @@
       line-height: 1.4;
       letter-spacing: 0;
       text-transform: uppercase;
-      margin: 0;
+      margin-bottom: 4px;
     }
 
     #shopify-section-{{ section.id }} .section-header .section_header_heading {
@@ -163,8 +163,8 @@
       flex-wrap: wrap;
       justify-content: center;
       align-items: flex-start;
-      column-gap: 44px;
-      row-gap: 36px;
+      column-gap: 42px;
+      row-gap: 38px;
       max-width: 946px; /* 9 x 66 swatch + 8 x 44 gap */
       margin-inline: auto;
     }
@@ -192,9 +192,9 @@
 
     #shopify-section-{{ section.id }} .color-palette__label {
       font-family: var(--text-font-family);
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 400;
-      line-height: 1.4;
+      line-height: 20px;
       text-align: center;
       white-space: nowrap;
     }
@@ -211,13 +211,24 @@
         inset 0 0 0 2.5px rgb(var(--text-color)),
         inset 0 0 0 5.5px rgb(var(--background-without-opacity));
     }
-
+    #shopify-section-{{ section.id }} .section-stack {
+    gap: 20px;
+  }
     /* ---------- Mobile: four columns ---------- */
     @media screen and (max-width: 699px) {
       /* Theme default here is 2.25rem (36px). Tightened to match the Figma.
          The 12px gutter matches Row 06 above and widens the content band from
          336px to 351px at a 375px viewport, which is what gives the four
          columns their breathing room without resizing the swatches. */
+      #shopify-section-{{ section.id }} .section-spacing {
+        padding-block-start: 10px;
+      }
+      #shopify-section-{{ section.id }} .section-spacing {
+        padding-block-end: 40px;
+      }
+      #shopify-section-{{ section.id }} .section-stack {
+    gap: 10px;
+  }
       #shopify-section-{{ section.id }} {
         --section-stack-gap: 16px;
         --container-gutter: 0.75rem;
@@ -228,13 +239,13 @@
         grid-template-columns: repeat(4, minmax(0, 1fr));
         justify-items: center;
         column-gap: 37px;
-        row-gap: 20px;
+        row-gap: 25px;
         max-width: none;
       }
 
       #shopify-section-{{ section.id }} .color-palette__item {
         flex: none;
-        gap: 10px;
+        gap: 7px;
       }
 
       /* 56px is the reference's swatch-to-column ratio (0.63) applied to a
@@ -245,7 +256,9 @@
       }
 
       #shopify-section-{{ section.id }} .color-palette__label {
-        font-size: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 22px;
       }
 
       #shopify-section-{{ section.id }} .color-palette__item:hover .color-palette__swatch,
@@ -254,6 +267,10 @@
         box-shadow:
           inset 0 0 0 2px rgb(var(--text-color)),
           inset 0 0 0 4.5px rgb(var(--background-without-opacity));
+      }
+      #shopify-section-{{ section.id }} .section-stack > * {
+        justify-content: start;
+        width: 100%;
       }
     }
   </style>

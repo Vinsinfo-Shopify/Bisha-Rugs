@@ -41,7 +41,7 @@
   endif
 
   # OPT-IN. Falls back to the original 'plus' glyph when no call site passes quick_buy_icon.
-  assign quick_buy_glyph = quick_buy_icon | default: 'plus'
+  assign quick_buy_glyph = quick_buy_icon | default: 'bag-minimal'
 -%}
 
 <product-card
@@ -238,11 +238,15 @@
     {%- if settings.product_card_text_font == 'heading' -%}
       {%- assign text_class = 'h6' -%}
     {%- endif -%}
-      {%- if product_tag != blank and hide_product_information != true -%}
-    <div class="product-card__tag-wrapper">
-    <p class="product-card__tag smallcaps text-subdued">{{ product_tag }}</p>
-    </div>
-  {%- endif -%} 
+      {%- unless hide_product_information -%}
+  <div class="product-card__tag-wrapper{% if product_tag == blank %} is-empty{% endif %}">
+    {%- if product_tag != blank -%}
+      <p class="product-card__tag smallcaps text-subdued">{{ product_tag }}</p>
+    {%- else -%}
+      <p class="product-card__tag smallcaps text-subdued" aria-hidden="true">&nbsp;</p>
+    {%- endif -%}
+  </div>
+{%- endunless -%}
     {%- if show_title or show_prices or show_vendor and product.vendor != blank -%}
       <div class="v-stack justify-items-center gap-2">
         {%- if show_vendor and product.vendor != blank -%}

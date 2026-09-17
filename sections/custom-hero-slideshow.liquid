@@ -89,7 +89,7 @@
     font-size: 50px;
     line-height: 1.2;           
     letter-spacing: 0;
-    margin: 0 0 30px;           
+    margin: 0 0 15px;           
     color: var(--hero-text);
   }
 
@@ -123,7 +123,7 @@
     letter-spacing: 0;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 14px 28px;         
+    padding: 12px 28px;         
     border: none;
     cursor: pointer;
     transition: opacity 0.2s ease;
@@ -149,46 +149,65 @@
     padding: 0;
     cursor: pointer;
     transition: background 0.2s ease;
-  }
+   display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    transition: background 0.2s ease, transform 0.2s ease;
+    }}
   .hero-slideshow__dot.is-active {
     background: var(--hero-dot-active);
   }
 
-  .hero-slideshow__arrow {
+    .hero-slideshow__arrow {
     position: absolute;
     top: 50%;
     right: 1.5rem;
     transform: translateY(-50%);
-    width: 38px;
-    height: 38px;
+    width: 38.85px;
+    height: 38.85px;
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.4);
     color: #ffffff;
-    border: none;
+    border: 1px solid #ffffff;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 3;
     transition: background 0.2s ease, transform 0.2s ease;
-    }
+  }
+
+  .hero-slideshow__arrow svg {
+    width: 8px;
+    height: 15px;
+    stroke-width: 1.5;
+  }
     .hero-slideshow__arrow:hover {
     background: rgba(0, 0, 0, 0.6);
     transform: translateY(-50%) scale(1.05);
-    }
-    .hero-slideshow__arrow svg {
-    width: 14px;
-    height: 14px;
     }
     
     .hero-slide__img--desktop { display: block; }
     .hero-slide__img--mobile { display: none; }
 
+    @media screen and (min-width: 750px) {
+      :root { --container-gutter: 70px; } 
+    }
+    #HeroSlideshow-{{ section_id }} .button {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 22px;
+      padding: 12px 28px;
+}
+
     @media screen and (min-width: 750px) and (max-width: 991px) {
   .hero-slide__heading {
     font-size: 34px;           /* down from 50px — fits the narrow column */
     line-height: 1.15;
-    margin: 0 0 20px;
+    margin: 0 0 12px;
   }
   .hero-slide__description {
     font-size: 15px;
@@ -205,6 +224,7 @@
 
   @media screen and (max-width: 749px) {
   /* Stack: image top, content bottom */
+  :root { --container-gutter: 12px; }
   .hero-slide__inner,
   .hero-slide--image-left .hero-slide__inner,
   .hero-slide--image-right .hero-slide__inner {
@@ -219,8 +239,8 @@
 
   /* Content — Figma mobile spec */
   .hero-slide__content {
-    padding-top: 20px;
-    padding-bottom: 32px;
+    padding-top: 08px;
+    padding-bottom: 20px;
     padding-left: var(--container-gutter);
     padding-right: var(--container-gutter);
     align-items: flex-start;
@@ -230,7 +250,7 @@
   .hero-slide__heading {
     font-size: 28px;
     line-height: 1.2;            /* 120% */
-    margin: 0 0 20px;           /* 20px gap */
+    margin: 0 0 8px;           /* 20px gap */
     max-width: none;            /* let it use full width on mobile */
   }
 
@@ -258,9 +278,12 @@
     bottom: auto;
     right: 1rem;
     transform: none;
+    background: rgba(0, 0, 0, 0.5);    /* was 0.4 */
+    border: 0.5px solid #ffffff;        /* missing entirely */
+    box-sizing: border-box;
   }
   .hero-slideshow__arrow svg {
-    width: 10px;
+    width: 10px;                      /* was 10 */
     height: 10px;
   }
   .hero-slideshow__arrow:hover {
@@ -308,13 +331,21 @@
               <p class="hero-slide__subheading">{{ block.settings.subheading }}</p>
             {%- endif -%}
             {%- if block.settings.heading != blank -%}
-              <h2 class="hero-slide__heading" style="max-width: {{ block.settings.heading_width | default: 520 }}px;">{{ block.settings.heading | newline_to_br }}</h2>
+              <h2 class="hero-slide__heading" style="max-width: {{ block.settings.heading_width | default: 586 }}px;">{{ block.settings.heading | newline_to_br }}</h2>
             {%- endif -%}
             {%- if block.settings.description != blank -%}
               <div class="hero-slide__description">{{ block.settings.description }}</div>
             {%- endif -%}
             {%- if block.settings.button_label != blank -%}
-              <a href="{{ block.settings.button_link | default: '#' }}" class="hero-slide__button">{{ block.settings.button_label }}</a>
+              {%- if block.settings.button_label != blank -%}
+  {%- render 'button',
+    content: block.settings.button_label,
+    href: block.settings.button_link | default: '#',
+    style: 'solid',
+    background: section.settings.button_bg,
+    text_color: section.settings.button_text_color
+  -%}
+{%- endif -%}
             {%- endif -%}
           </div>
         </div>
@@ -323,7 +354,9 @@
 
     {%- if section.blocks.size > 1 -%}
       <button type="button" class="hero-slideshow__arrow" aria-label="Next slide" data-hero-next>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        <svg viewBox="8 5 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <polyline points="9 18 15 12 9 6"/>
+</svg>
       </button>
     {%- endif -%}
   </div>

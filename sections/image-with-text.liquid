@@ -508,9 +508,6 @@
       margin-top: 18px;       /* was 16 */
     }
     
-    #shopify-section-{{ section.id }} .Custom_rugs .image-with-text > .prose {
-      padding-inline-end: 16px;
-    }
   }
 
   @media screen and (max-width: 700px){
@@ -763,6 +760,49 @@
         padding-inline: 12px;
         max-width: none;
       }
+    }
+  </style>
+{%- endif -%}
+
+{%- if section.settings.custom_class contains 'home_craft_row' -%}
+  <style>
+    #shopify-section-{{ section.id }} .home_craft_row .prose .image_with_text_heading {
+      font-size: 28px;
+    }
+    #shopify-section-{{ section.id }} .home_craft_row .image_with_text_content{
+      padding-top: 16px;
+      margin: 0;
+    }
+    #shopify-section-{{ section.id }} .home_craft_row .prose:not(.prose--tight) :is(.button,.button-group:has(.button)) {
+        margin-block-start: 24px;
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 700;
+        padding: 12px 28px;
+    }
+    @media screen and (max-width: 749px){
+      #shopify-section-{{ section.id }} .home_craft_row .image-with-text-container div.prose{
+            margin: 0;
+            padding-top: 0;
+      }
+      #shopify-section-{{ section.id }} .home_craft_row .prose .image_with_text_heading {
+      font-size: 24px;
+    }
+    #shopify-section-{{ section.id }} .home_craft_row .image_with_text_content{
+      padding-top: 12px;
+    }
+    #shopify-section-{{ section.id }} .home_craft_row .prose .image_with_text_content {
+      font-size: 16px;
+    }
+    #shopify-section-{{ section.id }} .home_craft_row .prose:not(.prose--tight) :is(.button,.button-group:has(.button)) {
+        margin-block-start: 18px;
+    }
+    #shopify-section-{{ section.id }} .home_craft_row .image-with-text .prose {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-inline: 16px;
+  }
     }
   </style>
 {%- endif -%}

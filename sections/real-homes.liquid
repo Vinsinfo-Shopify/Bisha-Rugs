@@ -115,7 +115,7 @@
       flex: 0 0 var(--rh-card);
       scroll-snap-align: center;
       display: block;
-      transition: flex-basis 0.35s ease;
+      transition: flex-basis 0.2s ease;
     }
 
     /* The centre card is larger. Measured at 1.166x on both axes about a shared
@@ -162,7 +162,7 @@
       grid-template-columns: auto minmax(0, 1fr) auto;
       align-items: center;
       gap: 10px;
-      padding: 8px 10px;
+      padding: 4px 8px;
       background: #ffffff;
       border: 1px solid {{ section.settings.info_border_color }};
       border-radius: {{ section.settings.card_radius }}px;
@@ -172,8 +172,8 @@
     }
 
     #shopify-section-{{ section.id }} .real-homes__thumb {
-      width: 44px;
-      height: 44px;
+      width: 50px;
+      height: 60px;
       object-fit: cover;
       border-radius: 2px;
       display: block;
@@ -181,7 +181,7 @@
 
     #shopify-section-{{ section.id }} .real-homes__title {
       font-family: var(--text-font-family);
-      font-size: 13px;
+      font-size: 16px;
       font-weight: 700;
       line-height: 1.35;
       margin: 0;
@@ -195,44 +195,55 @@
        formatting and localisation. Only the weight is restyled here. */
     #shopify-section-{{ section.id }} .real-homes__price,
     #shopify-section-{{ section.id }} .real-homes__price .price-list > * {
-      font-size: 12px;
+      font-size: 16px;
       line-height: 1.4;
       font-weight: 700;
+    }
+    #shopify-section-{{ section.id }} .real-homes__price .line-through {
+      font-size: 12px;
+      font-weight: 500;
     }
 
     #shopify-section-{{ section.id }} .real-homes__price {
       margin-block-start: 2px;
     }
 
-    /* Surrounding cards: transparent disc with a dark chevron. */
-    #shopify-section-{{ section.id }} .real-homes__arrow {
-      width: 28px;
-      height: 28px;
-      display: grid;
-      place-items: center;
-      border-radius: var(--rounded-full);
-      background: transparent;
-      border: 1px solid {{ section.settings.info_border_color }};
-      color: #2b2724;
-      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-    }
+        #shopify-section-{{ section.id }} .real-homes__arrow {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--rounded-full);
+  background: transparent;
+  border: 1px solid {{ section.settings.info_border_color }};
+  color: #2b2724;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
 
-    /* Active centre card: dark disc with a white chevron. */
-    #shopify-section-{{ section.id }} .real-homes__card.is-active .real-homes__arrow,
-    #shopify-section-{{ section.id }} .real-homes__info:hover .real-homes__arrow,
-    #shopify-section-{{ section.id }} .real-homes__info:focus-visible .real-homes__arrow {
-      background: #2b2724;
-      border-color: #2b2724;
-      color: #ffffff;
-    }
+#shopify-section-{{ section.id }} .real-homes__card.is-active .real-homes__arrow,
+#shopify-section-{{ section.id }} .real-homes__info:hover .real-homes__arrow,
+#shopify-section-{{ section.id }} .real-homes__info:focus-visible .real-homes__arrow {
+  background: #55583c;
+  border-color: #55583c;
+  color: #ffffff;
+}
 
     /* ---------- Mobile ----------
        Same markup and the same block order. Only the card size changes, so the
        active card stays centred with its neighbours peeking either side. */
     @media screen and (max-width: 699px) {
+      #shopify-section-{{ section.id }} .real-homes__price .price-list > * {
+      font-size: 12px;
+    }
+    #shopify-section-{{ section.id }} .real-homes__price .price-list > * {
+      font-size: 11px;
+    }
+        #shopify-section-{{ section.id }} .real-homes__arrow {
+width: 28px;
+      height: 28px; }
       #shopify-section-{{ section.id }} .real-homes__inner {
-        padding-block-start: {{ section.settings.padding_top | divided_by: 2 }}px;
-        padding-block-end: {{ section.settings.padding_bottom | divided_by: 2 }}px;
+        padding-block-start: 45px;
+        padding-block-end: 45px;
       }
 
       #shopify-section-{{ section.id }} .real-homes__header {
@@ -240,11 +251,7 @@
       }
 
       #shopify-section-{{ section.id }} .real-homes__heading {
-        font-size: 22px;
-      }
-
-      #shopify-section-{{ section.id }} .real-homes__eyebrow {
-        font-size: 12px;
+        font-size: 24px;
       }
 
       /* Mobile sizing is solved backwards from the ACTIVE card, not from the
@@ -367,8 +374,10 @@
                   </div>
 
                   <span class="real-homes__arrow" aria-hidden="true">
-                    {%- render 'icon' with 'arrow-right', width: 12 -%}
-                  </span>
+  <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="12" height="12">
+    <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</span>
                 </a>
               {%- endif -%}
             </div>
@@ -426,7 +435,7 @@
 
             this.onScroll = () => {
               clearTimeout(this.settleTimer);
-              this.settleTimer = setTimeout(() => this.settle(), 130);
+              this.settleTimer = setTimeout(() => this.settle(), 60);
             };
 
             this.track.addEventListener('scroll', this.onScroll, { passive: true });
@@ -522,7 +531,7 @@
               this.centre(this.track.querySelector('.is-active'), false);
               setTimeout(() => {
                 this.busy = false;
-              }, 420);
+              }, 50);
             });
           }
 

@@ -65,6 +65,7 @@
   width: 20px;   /* desktop icon width */
   height: auto;
 }
+#TrustBar-{{ section.id }} .bordered-section { border-block-start-width: 0; }
 
 @media screen and (max-width: 990px) {
   #TrustBar-{{ section_id }} .trust-bar__inner {
@@ -83,6 +84,12 @@
 /* Mobile */
 @media screen and (max-width: 749px) {
   /* Visibility swap on mobile */
+
+  #TrustBar-{{ section_id }} {
+    padding-top: 15px;
+    padding-bottom: 30px;
+  }
+
   #TrustBar-{{ section_id }} .trust-bar__item--desktop { display: none; }        /* hide desktop-only on mobile */
   #TrustBar-{{ section_id }}  .trust-bar__item--mobile { display: inline-flex; }   /* show mobile-only on mobile */
 
@@ -110,6 +117,7 @@
     font-size: 14px;                  /* Figma mobile 14px */
     font-weight: 600;
     line-height: 1.4;
+    white-space: nowrap;
   }
 }
 </style>
