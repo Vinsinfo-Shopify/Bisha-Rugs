@@ -35,7 +35,8 @@
             "rating": 5,
             "rating_color": "#e8b923",
             "number": "01",
-            "number_color": "#b76e45",
+            "number_color": "#b35642",
+            "mobile_detail_text": "",
             "review_layout": false
           }
         },
@@ -53,7 +54,8 @@
             "rating": 5,
             "rating_color": "#e8b923",
             "number": "02",
-            "number_color": "#b76e45",
+            "number_color": "#b35642",
+            "mobile_detail_text": "",
             "review_layout": false
           }
         },
@@ -71,7 +73,8 @@
             "rating": 5,
             "rating_color": "#e8b923",
             "number": "03",
-            "number_color": "#b76e45",
+            "number_color": "#b35642",
+            "mobile_detail_text": "",
             "review_layout": false
           }
         },
@@ -89,7 +92,8 @@
             "rating": 5,
             "rating_color": "#e8b923",
             "number": "04",
-            "number_color": "#b76e45",
+            "number_color": "#b35642",
+            "mobile_detail_text": "",
             "review_layout": false
           }
         }
@@ -102,16 +106,20 @@
       ],
       "name": "t:sections.multi_column.presets.multi_column.name",
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
         "custom_class": "application_process",
         "separate_section_with_border": true,
         "remove_section_spacing": false,
         "columns_per_row": 4,
         "stack_on_mobile": true,
+        "enable_carousel": false,
         "overlap_image": false,
         "content_alignment": "center",
         "text_alignment": "start",
-        "spacing": "md",
+        "column_gap_mobile": 18,
+        "row_gap_mobile": 4,
+        "column_gap_desktop": 16,
+        "row_gap_desktop": 12,
         "media_height": "",
         "subheading": "What happens after you apply",
         "title": "From application to your first order",
@@ -123,8 +131,8 @@
         "padding_right_mobile": 0,
         "padding_top_desktop": 0,
         "padding_bottom_desktop": 0,
-        "padding_left_desktop": 46,
-        "padding_right_desktop": 24
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
       }
     },
     "text_with_icons_zcHVxf": {
@@ -222,6 +230,48 @@
         "custom_class": "trade_partnership"
       }
     },
+    "banner_cta_qWKbpi": {
+      "type": "banner-cta",
+      "name": "Banner CTA",
+      "settings": {
+        "color_scheme": "",
+        "custom_class": "trade_program_banner_cta",
+        "image": "shopify://shop_images/9c42224344c9f9eb57f9e13d4d17248a31098833.png",
+        "desktop_height": 300,
+        "mobile_height": 220,
+        "image_position_x": "50%",
+        "image_position_x_custom": 50,
+        "image_position_y": "custom",
+        "image_position_y_custom": 69,
+        "mobile_image_position_x": "100%",
+        "mobile_image_position_x_custom": 50,
+        "mobile_image_position_y": "custom",
+        "mobile_image_position_y_custom": 77,
+        "heading": "Woven by weavers we’ve worked with for 2 decades.",
+        "heading_size": 32,
+        "heading_size_mobile": 24,
+        "text": "<p>Get the highest quality rugs at our best rates.<br/>Join the trade program.</p>",
+        "text_size": 18,
+        "text_size_mobile": 14,
+        "content_width": 400,
+        "overlay_text_color": "#ffffff",
+        "button_label": "Apply for the trade program",
+        "button_link": "",
+        "button_size": 18,
+        "button_size_mobile": 16,
+        "button_background": "#ffffff",
+        "button_text_color": "#000000",
+        "button_background_mobile": "#ffffff",
+        "button_text_color_mobile": "#000000",
+        "mobile_layout": "stacked",
+        "mobile_background_color": "#2a2825",
+        "full_width": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "overlay_color": "#000000",
+        "overlay_opacity": 40
+      }
+    },
     "multi_column_eMfr3c": {
       "type": "multi-column",
       "blocks": {
@@ -241,6 +291,7 @@
             "rating_color": "#e8b923",
             "number": "",
             "number_color": "#b76e45",
+            "mobile_detail_text": "<p><strong>Interior designer:</strong> Maya Bennett</p>",
             "review_layout": false
           }
         },
@@ -260,6 +311,7 @@
             "rating_color": "#e8b923",
             "number": "",
             "number_color": "#b76e45",
+            "mobile_detail_text": "",
             "review_layout": false
           }
         },
@@ -279,6 +331,7 @@
             "rating_color": "#e8b923",
             "number": "",
             "number_color": "#b76e45",
+            "mobile_detail_text": "",
             "review_layout": false
           }
         },
@@ -298,6 +351,7 @@
             "rating_color": "#e8b923",
             "number": "",
             "number_color": "#b76e45",
+            "mobile_detail_text": "",
             "review_layout": false
           }
         }
@@ -316,10 +370,14 @@
         "remove_section_spacing": false,
         "columns_per_row": 4,
         "stack_on_mobile": false,
+        "enable_carousel": true,
         "overlap_image": false,
         "content_alignment": "center",
         "text_alignment": "start",
-        "spacing": "xs",
+        "column_gap_mobile": 12,
+        "row_gap_mobile": 24,
+        "column_gap_desktop": 16,
+        "row_gap_desktop": 48,
         "media_height": "379px",
         "subheading": "Trade work",
         "title": "Homes designed with Bisha Rugs",
@@ -354,6 +412,7 @@
             "rating_color": "#b35642",
             "number": "",
             "number_color": "#b76e45",
+            "mobile_detail_text": "",
             "review_layout": true
           }
         },
@@ -373,6 +432,7 @@
             "rating_color": "#b35642",
             "number": "",
             "number_color": "#b76e45",
+            "mobile_detail_text": "",
             "review_layout": true
           }
         },
@@ -392,6 +452,7 @@
             "rating_color": "#b35642",
             "number": "",
             "number_color": "#b76e45",
+            "mobile_detail_text": "",
             "review_layout": true
           }
         }
@@ -409,20 +470,24 @@
         "remove_section_spacing": true,
         "columns_per_row": 3,
         "stack_on_mobile": true,
+        "enable_carousel": false,
         "overlap_image": false,
         "content_alignment": "center",
         "text_alignment": "start",
-        "spacing": "md",
+        "column_gap_mobile": 18,
+        "row_gap_mobile": 24,
+        "column_gap_desktop": 48,
+        "row_gap_desktop": 48,
         "media_height": "",
         "subheading": "Member stories",
         "title": "Hear from other Interior Designers & Architects",
         "heading_style": "h3",
         "content": "",
-        "padding_top_mobile": 0,
+        "padding_top_mobile": 54,
         "padding_bottom_mobile": 0,
         "padding_left_mobile": 0,
         "padding_right_mobile": 0,
-        "padding_top_desktop": 0,
+        "padding_top_desktop": 60,
         "padding_bottom_desktop": 0,
         "padding_left_desktop": 0,
         "padding_right_desktop": 0
@@ -510,8 +575,9 @@
       "settings": {
         "color_scheme": "scheme-8eec0b30-7dd6-40f7-bdf8-3f2aa3b45117",
         "separate_section_with_border": true,
+        "custom_class": "trade_program_footer",
         "image_1": "shopify://shop_images/a236605228afe6e32b915f8384054fd462c4c2cf.png",
-        "image_2": "shopify://shop_images/5f3585e7983f7863d92ca8a0fc7eb2b9397ea946.png",
+        "image_2": "shopify://shop_images/5f3585e7983f7863d92ca8a0fc7eb2b9397ea946_1.png",
         "image_position_mobile": "after_text",
         "eyebrow": "Ready when you are",
         "title": "Apply today and get trade pricing",
@@ -527,6 +593,7 @@
     "main",
     "multi_column_6PWCEb",
     "text_with_icons_zcHVxf",
+    "banner_cta_qWKbpi",
     "multi_column_eMfr3c",
     "multi_column_cxfyX7",
     "faq_eE47fj",
