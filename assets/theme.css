@@ -3410,6 +3410,7 @@ tr[onclick]:hover {
   align-items: center;
   gap: .625rem;
   display: flex;
+  font-size: var(--text-xs);
 }
 
 .text-with-icon>svg {

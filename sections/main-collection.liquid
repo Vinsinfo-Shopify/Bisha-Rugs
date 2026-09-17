@@ -879,6 +879,50 @@
       }
     }
 
+     facets-drawer .option-value-list {
+      display: grid;
+      grid-template-columns: repeat({{ section.settings.pf_value_columns }}, minmax(0, 1fr));
+      gap: {{ section.settings.pf_value_row_gap }}px {{ section.settings.pf_value_col_gap }}px;
+    }
+
+    facets-drawer .option-value {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 140%;
+    }
+
+     facets-drawer .option-value :is(img, svg),
+     facets-drawer .option-value__swatch {
+      width: {{ section.settings.pf_value_media_size }}px;
+      height: {{ section.settings.pf_value_media_size }}px;
+      object-fit: cover;
+      border-radius: var(--rounded-full);
+      border: 1px solid rgb(0 0 0 / 0.12);
+      transition: box-shadow 0.15s ease-in-out;
+    }
+
+    facets-drawer .option-value:hover :is(img, svg),
+    facets-drawer .option-value:focus-visible :is(img, svg),
+    facets-drawer input:checked + .option-value :is(img, svg) {
+      box-shadow:
+        inset 0 0 0 1.5px rgb(var(--text-color)),
+        inset 0 0 0 4px rgb(var(--background-without-opacity));
+    }
+
+   facets-drawer input:checked + .option-value {
+      font-weight: 600;
+    }
+    facets-drawer .checkbox-control label, facets-drawer .checkbox-control input{
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 140%;
+      letter-spacing: 0%;
+    }
     @media screen and (max-width: 749px) {
       #shopify-section-{{ section.id }} .pf-colors {
         display: block;
