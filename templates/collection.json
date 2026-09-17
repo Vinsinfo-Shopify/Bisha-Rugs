@@ -98,7 +98,7 @@
           "settings": {
             "text": "<p>{{ collection.title }}</p>",
             "padding_top": 4,
-            "padding_bottom": 10,
+            "padding_bottom": 12,
             "heading_tag": "h1"
           }
         },
@@ -106,7 +106,7 @@
           "type": "richtext",
           "settings": {
             "content": "{{ collection.metafields.custom.collection_banner_content | metafield_tag }}",
-            "character_limit": 0
+            "character_limit": 110
           }
         },
         "icon_with_text_9ad9K6": {
