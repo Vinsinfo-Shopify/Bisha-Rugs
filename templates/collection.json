@@ -219,7 +219,7 @@
         "pf_hide_toolbar_rules": true,
         "color_filter_heading": "Shop by Color:",
         "color_filter_label": "Color",
-        "color_swatch_size": 56,
+        "color_swatch_size": 64,
         "color_strip_gap_top": 24,
         "color_strip_gap_top_mobile": 20,
         "color_strip_gap": 0,
@@ -534,11 +534,19 @@
           "settings": {
             "icon": "shopify://shop_images/Vector_7.png",
             "title": "Give Us a Call",
+            "subheading": "",
             "heading_tag": "h3",
             "custom_heading_size": 24,
             "content": "<p>Our experts are just a call away to help you find your perfect rug.</p>",
             "link_url": "tel:+1 (415) 980-7774",
-            "link_text": "+1 (415) 980-7774"
+            "link_text": "+1 (415) 980-7774",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
           }
         },
         "image_with_text_gdjPUn": {
@@ -546,11 +554,19 @@
           "settings": {
             "icon": "shopify://shop_images/tabler_video_1.png",
             "title": "Virtual Appointment",
+            "subheading": "",
             "heading_tag": "h3",
             "custom_heading_size": 24,
             "content": "<p>Schedule a call to explore designs, ask questions and shop online with our experts.</p>",
             "link_url": "#",
-            "link_text": "Book Now"
+            "link_text": "Book Now",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
           }
         },
         "image_with_text_9WNFQm": {
@@ -558,11 +574,19 @@
           "settings": {
             "icon": "shopify://shop_images/Vector_8.png",
             "title": "Send Us an Email",
+            "subheading": "",
             "heading_tag": "h3",
             "custom_heading_size": 24,
             "content": "<p>Prefer email? Send your query and our team will respond with all the details you need.</p>",
             "link_url": "mailto:love@bisharugs.com",
-            "link_text": "love@bisharugs.com"
+            "link_text": "love@bisharugs.com",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
           }
         }
       },
@@ -579,10 +603,14 @@
         "remove_section_spacing": true,
         "columns_per_row": 3,
         "stack_on_mobile": true,
+        "enable_carousel": false,
         "overlap_image": false,
         "content_alignment": "center",
         "text_alignment": "start",
-        "spacing": "sm",
+        "column_gap_mobile": 18,
+        "row_gap_mobile": 24,
+        "column_gap_desktop": 48,
+        "row_gap_desktop": 48,
         "media_height": "379px",
         "subheading": "CONTACT US",
         "title": "Still Have Questions?",
