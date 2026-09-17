@@ -425,7 +425,7 @@
 
             this.onScroll = () => {
               clearTimeout(this.settleTimer);
-              this.settleTimer = setTimeout(() => this.settle(), 130);
+              this.settleTimer = setTimeout(() => this.settle(), 60);
             };
 
             this.track.addEventListener('scroll', this.onScroll, { passive: true });
