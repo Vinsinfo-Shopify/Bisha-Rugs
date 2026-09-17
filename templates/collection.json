@@ -206,7 +206,7 @@
         "rt_heading_gap": 16,
         "rt_row_gap": 12,
         "pf_accordion_icon_width": 13,
-        "pf_accordion_icon_color": "#807e7a",
+        "pf_accordion_icon_color": "#000000",
         "pf_hide_color_in_sidebar": true,
         "pf_checkbox_size": 18,
         "pf_checkbox_radius": 2,
