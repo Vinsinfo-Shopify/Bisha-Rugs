@@ -143,6 +143,11 @@
       display: block;
     }
     }
+    @media screen and (max-width: 749px) {
+      #shopify-section-{{ section.id }} .image-with-text {
+        gap: 20px;
+      }
+    }
   {%- endif -%}
  
   {%- if section.settings.layout_variant == 'trade' -%}
