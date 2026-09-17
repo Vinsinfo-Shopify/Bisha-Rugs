@@ -75,6 +75,9 @@
       margin-block: 0;
       line-height:34px;
     }
+    #shopify-section-{{ section.id }}    .prose:not(.prose--tight) :where(:not(meta,span)+*) {
+      margin-block-start: 24px; 
+    }
 
     /* ---------- Gallery carousel ----------
        The carousel cell is a COLUMN, not an image and not a page. Each column
