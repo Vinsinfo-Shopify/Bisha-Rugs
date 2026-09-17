@@ -961,10 +961,10 @@
             const bounds = track ? track.getBoundingClientRect() : null;
 
             let rect = card.getBoundingClientRect();
-            const left = Math.max(this.margin, bounds ? bounds.left + 2 : this.margin);
+            const left = Math.max(this.margin, bounds ? bounds.left + 9 : this.margin);
             const right = Math.min(
               document.documentElement.clientWidth - this.margin,
-              bounds ? bounds.right - 2 : Infinity
+              bounds ? bounds.right - 9 : Infinity
             );
 
             let shift = 0;
