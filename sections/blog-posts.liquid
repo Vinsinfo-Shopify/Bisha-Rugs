@@ -282,42 +282,40 @@
      Row 08's treatment under this section's id. Size, inset, hover and
      disabled behaviour come from theme.css; only colours are restated. */
   #shopify-section-{{ section.id }} .floating-controls-container__control {
-    z-index: 3;
-    inset-block-start: {{ section.settings.arrow_offset }}%;
+  z-index: 3;
+  inset-block-start: {{ section.settings.arrow_offset }}%;
+  transform: translateY(-50%);
+}
+
+#shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+  --circle-button-size: 2.25rem;
+  --circle-button-background: 43 39 36;
+  --circle-button-text-color: 255 255 255;
+  box-sizing: border-box;
+  background: #2b2724;
+  color: #ffffff;
+  border: 3px solid #ffffff;
+  box-shadow: none;
+}
+
+#shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+  width: 0.965rem;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media screen and (pointer: fine) {
+  #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control,
+  #shopify-section-{{ section.id }} .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
+    opacity: 1;
     transform: translateY(-50%);
   }
 
-  #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
-    --circle-button-size: 36px;
-    --circle-button-background: 43 39 36;
-    --circle-button-text-color: 255 255 255;
-    box-sizing: border-box;
-    background: {{ section.settings.arrow_background }};
-    color: {{ section.settings.arrow_color }};
-    border: 2px solid {{ section.settings.arrow_border }};
-    box-shadow: none;
+  #shopify-section-{{ section.id }} .floating-controls-container--inside {
+    --floating-controls-inset-inline: -1.125rem;
   }
-
-  #shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
-    width: {{ section.settings.arrow_size | times: 0.42 | round }}px;
-    stroke-width: 1.75;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  /* Desktop has no arrow: the carousel is swipe/drag only above the mobile
-     breakpoint. Keyed to min-width, so the mobile rules below - which position
-     and show the control - are untouched. Nothing about scrolling, dragging or
-     snapping changes; only the control is taken out of the layout. */
-
-  @media screen and (pointer: fine) {
-    #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control,
-    #shopify-section-{{ section.id }} .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
-      opacity: 1;
-      transform: translateY(-50%);
-    }
-    
-  }
+}
 
   /* ---------- Mobile ---------- */
   @media screen and (max-width: 699px) {
