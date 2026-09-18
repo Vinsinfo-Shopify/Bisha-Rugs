@@ -29,7 +29,7 @@
         "rating_font_size": 14,
         "rating_line_height": 20,
         "rating_gap": 6,
-        "info_row_gap": 11,
+        "info_row_gap": 15,
         "info_row_gap_mobile": 6,
         "description_points": 2,
         "description_line_gap": 6,
@@ -64,7 +64,7 @@
         "title": {
           "type": "title",
           "settings": {
-            "heading_tag": "h3"
+            "heading_tag": "h1"
           }
         },
         "liquid_VxkgFD": {
