@@ -55,7 +55,6 @@
   /* Desktop: use the merchant-configured columns-per-row and padding */
   @media screen and (min-width: 999px) {
     #shopify-section-{{ section.id }} {
-      --multi-column-gap: {% if section.settings.spacing == 'xs' %}1rem{% elsif section.settings.spacing == 'sm' %}2rem{% elsif section.settings.spacing == 'md' %}3rem{% else %}4rem{% endif %};
       --multi-column-columns-per-row: {{ section.settings.columns_per_row }};
       --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
 

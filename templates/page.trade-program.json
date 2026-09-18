@@ -500,7 +500,7 @@
           "type": "question",
           "settings": {
             "question": "Who can apply to the trade program?",
-            "answer": "<p>Interior designers, architects, contractors, and retail partners actively working on residential orcommercial projects.</p>",
+            "answer": "<p>Interior designers, architects, contractors, and retail partners actively working on residential or commercial projects.</p>",
             "custom_class": ""
           }
         },

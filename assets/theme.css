@@ -9428,10 +9428,6 @@ ul {
   max-width: 100%;
 }
 
-.trade_program .faq_section_header {
-  margin-bottom: 0px;
-}
-
 .header_flex {
   display: flex;
   align-items: self-start;
@@ -10472,13 +10468,38 @@ ul {
   }
 }
 
-/* Trade Program page — FAQ section only (scoped to .trade_program) */
+/* ==========================================================================
+   Trade Program page — FAQ section
+   --------------------------------------------------------------------------
+   Every rule is scoped to the section's custom class (.trade_program, set in
+   templates/page.trade-program.json) so the shared `faq` section keeps its
+   default appearance on the FAQ page, collection pages and anywhere else.
+   Desktop rules first, mobile overrides at the end of the block.
+   ========================================================================== */
+
+.bordered-section.trade_program {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+/* Narrow, centred measure.
+   sections/faq.liquid ships an ID-scoped rule (#shopify-section-… .container)
+   that widens the container to 1300px from 1000px up. An ID beats any class
+   selector, so !important is what lets this stay a CSS-only override instead
+   of editing the shared section file. */
 .trade_program .container--md {
-  --container-max-width: 690px;
+  --container-max-width: 690px !important;
 }
 
 .trade_program .container>.section-stack {
   gap: 32px;
+}
+
+/* --- Header ------------------------------------------------------------- */
+
+/* the shared .faq_section_header spacing is replaced by the section-stack gap */
+.trade_program .faq_section_header {
+  margin-bottom: 0;
 }
 
 .trade_program .section-header {
@@ -10504,7 +10525,6 @@ ul {
   color: #1C1A17;
 }
 
-/* the heading's content div is rendered empty here - drop its prose margin */
 .trade_program .section_header_content:not(:has(*)) {
   margin-block-start: 0;
 }
@@ -10542,6 +10562,44 @@ ul {
   font-weight: 400;
   line-height: 140%;
   color: rgb(var(--text-color) / .7);
+}
+
+/* --- Mobile ------------------------------------------------------------- */
+
+@media screen and (max-width: 768px) {
+  .bordered-section.trade_program {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  .trade_program .container>.section-stack {
+    gap: 24px;
+  }
+
+  /* header centres on mobile; the questions stay left-aligned */
+  .trade_program .section-header {
+    text-align: center;
+  }
+
+  .trade_program .section_header_subheading {
+    font-weight: 500;
+  }
+
+  .trade_program .section_header_heading {
+    font-size: 24px;
+    line-height: 120%;
+  }
+
+  .trade_program .accordion__toggle {
+    column-gap: 16px;
+    padding-block: 16px;
+    font-size: 16px;
+  }
+
+  .trade_program .accordion__content {
+    padding-block-end: 16px;
+    padding-inline-end: 28px;
+  }
 }
 
 .trade_program_footer .multiimage-with-text__content {
@@ -10634,11 +10692,6 @@ ul {
   padding: 10px 40.5px;
 }
 
-.bordered-section.trade_program {
-  padding-top: 60px;
-  padding-bottom: 60px;
-}
-
 .trade_program_banner_cta .banner-cta__actions .button {
   font-weight: 700;
   line-height: 140%;
@@ -10684,26 +10737,6 @@ ul {
 }
 
 @media screen and (max-width: 768px) {
-  .trade_program .container>.section-stack {
-    gap: 24px;
-  }
-
-  .trade_program .section_header_heading {
-    font-size: 24px;
-    line-height: 120%;
-  }
-
-  .trade_program .accordion__toggle {
-    column-gap: 16px;
-    padding-block: 16px;
-    font-size: 16px;
-  }
-
-  .trade_program .accordion__content {
-    padding-block-end: 16px;
-    padding-inline-end: 28px;
-  }
-
   .application_process .section_header_heading {
     font-size: 24px;
     line-height: 120%;
@@ -10729,19 +10762,6 @@ ul {
 
   .member_stories .multi-column-card_content {
     line-height: 140%;
-  }
-
-  .trade_program .section-header {
-    text-align: center;
-  }
-
-  .trade_program .section_header_subheading {
-    font-weight: 500;
-  }
-
-  .bordered-section.trade_program {
-    padding-top: 50px;
-    padding-bottom: 50px;
   }
 
   .trade_program_footer .multiimage-with-text__content-wrapper {
