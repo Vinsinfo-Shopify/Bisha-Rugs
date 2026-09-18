@@ -223,6 +223,32 @@
           "type": "separator",
           "settings": {}
         },
+        "image_text_card_eDVhda": {
+          "type": "image_text_card",
+          "settings": {
+            "image": "shopify://shop_images/b9f58825ed6196aa9f6f5dd06281e6e41609f56d.png",
+            "heading": "Crafted with Purpose",
+            "text": "<p>Handcrafted by skilled artisans in rural India, every Bisha rug celebrates craftsmanship and fair, ethical practices.</p>",
+            "button_label": "",
+            "button_link": "",
+            "background": "#F5F5F5",
+            "text_color": "",
+            "border_color": ""
+          }
+        },
+        "image_text_card_A3aczE": {
+          "type": "image_text_card",
+          "settings": {
+            "image": "shopify://shop_images/0f111b50afa1cbc748628327e86a3d50423143c9.png",
+            "heading": "Having second thoughts?",
+            "text": "<p>See your rug before you order. Get a CADD design in your size, colors and setting.</p>",
+            "button_label": "Get CADD DESIGN",
+            "button_link": "shopify://pages/contact",
+            "background": "#F3EEE4",
+            "text_color": "",
+            "border_color": ""
+          }
+        },
         "complementary_products": {
           "type": "complementary_products",
           "settings": {
@@ -256,6 +282,8 @@
         "feature_with_icon_hzGdKd",
         "feature_with_icon_UTUmyk",
         "separator_QzT9Tb",
+        "image_text_card_eDVhda",
+        "image_text_card_A3aczE",
         "complementary_products"
       ],
       "settings": {
