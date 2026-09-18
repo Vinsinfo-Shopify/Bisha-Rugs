@@ -10785,12 +10785,12 @@ ul {
   font-size: 14px;
   line-height:20px;
   font-weight: 700;
+  padding: 4px 12px;
 }
 
 .product-card__figure .badge-list .badge--new {
   background: #b08d4c;
   color: #ffffff;
-  padding: 5px 14px;
 }
 
 /* ---------- Hand Knotted / type pill ---------- */
@@ -10957,6 +10957,7 @@ ul {
   .product-card__figure .badge-list .badge {
     font-size: 12px;
     line-height: 17px;
+    padding: 3px 8px;
   }
 
   .product-card__tag-wrapper {
