@@ -37,15 +37,20 @@
   }
 
 
-.hero-slide--image-right .hero-slide__inner {
-  grid-template-columns: 53% 47%;
-  grid-template-areas: "content image";
-}
+@media screen and (min-width: 750px) {
+  .hero-slide--image-right .hero-slide__inner {
+    grid-template-columns: 1fr 682px;
+    grid-template-areas: "content image";
+  }
 
+  .hero-slide--image-left .hero-slide__inner {
+    grid-template-columns: 682px 1fr;
+    grid-template-areas: "image content";
+  }
 
-.hero-slide--image-left .hero-slide__inner {
-  grid-template-columns: 47% 53%;
-  grid-template-areas: "image content";
+  .hero-slide__image {
+    width: 682px;
+  }
 }
 
 
@@ -180,6 +185,14 @@
     transition: background 0.2s ease, transform 0.2s ease;
   }
 
+  .hero-slideshow__arrow--prev {
+    left: 1.5rem;
+    right: auto;
+  }
+  .hero-slideshow__arrow[hidden] {
+  display: none;
+}
+
   .hero-slideshow__arrow svg {
     width: 8px;
     height: 15px;
@@ -220,6 +233,7 @@
     font-size: 14px;
     padding: 12px 22px;
   }
+
 }
 
   @media screen and (max-width: 749px) {
@@ -289,6 +303,10 @@
   .hero-slideshow__arrow:hover {
     transform: scale(1.05);
   }
+  .hero-slideshow__arrow--prev {
+    left: 1rem;
+    right: auto;
+  }
 }
 </style>
 
@@ -353,12 +371,18 @@
     {%- endfor -%}
 
     {%- if section.blocks.size > 1 -%}
-      <button type="button" class="hero-slideshow__arrow" aria-label="Next slide" data-hero-next>
-        <svg viewBox="8 5 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <polyline points="9 18 15 12 9 6"/>
-</svg>
-      </button>
-    {%- endif -%}
+  <button type="button" class="hero-slideshow__arrow hero-slideshow__arrow--prev" aria-label="Previous slide" data-hero-prev>
+    <svg viewBox="8 5 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 6 9 12 15 18"/>
+    </svg>
+  </button>
+
+  <button type="button" class="hero-slideshow__arrow" aria-label="Next slide" data-hero-next>
+    <svg viewBox="8 5 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"/>
+    </svg>
+  </button>
+{%- endif -%}
   </div>
   {%- if section.blocks.size > 1 -%}
     <div class="hero-slideshow__dots">
@@ -377,6 +401,7 @@
     var slides = root.querySelectorAll('.hero-slide');
     var dots = root.querySelectorAll('.hero-slideshow__dot');
     var nextBtn = root.querySelector('[data-hero-next]');
+    var prevBtn = root.querySelector('[data-hero-prev]');
     var current = 0;
     var total = slides.length;
     var autoplay = root.getAttribute('data-autoplay') === 'true';
@@ -386,14 +411,21 @@
     if (total <= 1) return;
 
     function goTo(index) {
-      slides[current].classList.remove('is-active');
-      if (dots[current]) dots[current].classList.remove('is-active');
-      current = (index + total) % total;
-      slides[current].classList.add('is-active');
-      if (dots[current]) dots[current].classList.add('is-active');
-    }
+    slides[current].classList.remove('is-active');
+    if (dots[current]) dots[current].classList.remove('is-active');
+    current = (index + total) % total;
+    slides[current].classList.add('is-active');
+    if (dots[current]) dots[current].classList.add('is-active');
+    updateArrows();
+  }
+
+  function updateArrows() {
+    if (prevBtn) prevBtn.hidden = current === 0;
+    if (nextBtn) nextBtn.hidden = current === total - 1;
+  }
 
     function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
 
     function startAuto() {
       if (!autoplay) return;
@@ -408,6 +440,10 @@
       nextBtn.addEventListener('click', function () { next(); startAuto(); });
     }
 
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function () { prev(); startAuto(); });
+    }
+
     dots.forEach(function (dot) {
       dot.addEventListener('click', function () {
         goTo(parseInt(dot.getAttribute('data-hero-dot'), 10));
@@ -417,7 +453,7 @@
 
     root.addEventListener('mouseenter', stopAuto);
     root.addEventListener('mouseleave', startAuto);
-
+    updateArrows();
     startAuto();
   })();
 </script>

@@ -202,7 +202,10 @@
   .shopify-section--main-product .product-info {
     --product-info-gap: {{ section.settings.info_row_gap }}px;
   }
-
+ .product-info__block-item:is([data-block-type=variant-picker],[data-block-type=product-variations],[data-block-type=separator],[data-block-type=description],[data-block-type=text],[data-block-type=liquid],[data-block-type=share-buttons])
+  {
+   --product-info-gap: {{ section.settings.info_row_gap }}px;
+  }
   {%- comment -%}
     Rating row: stars, value and the linked review count on one line. The count
     is underlined so it reads as the link it is; the stars and value are the

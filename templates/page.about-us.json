@@ -67,13 +67,16 @@
           "type": "heading",
           "settings": {
             "text": "<p>More Than a Rug. A Legacy Woven by Hands</p>",
+            "padding_top": 0,
+            "padding_bottom": 0,
             "heading_tag": "h2"
           }
         },
         "richtext_wqkkh8": {
           "type": "richtext",
           "settings": {
-            "content": "<p>Bisha Rugs was founded with a simple belief: exceptional craftsmanship deserves to be preserved. </p><p>We work directly with <strong>generational artisans across India's rug-weaving communities</strong> to create handmade rugs that honor centuries of tradition while finding a place in modern homes. </p>"
+            "content": "<p>Bisha Rugs was founded with a simple belief: exceptional craftsmanship deserves to be preserved. </p><p>We work directly with <strong>generational artisans across India's rug-weaving communities</strong> to create handmade rugs that honor centuries of tradition while finding a place in modern homes. </p>",
+            "character_limit": 0
           }
         },
         "icon_with_text_VkQfgf": {
@@ -120,6 +123,16 @@
         "reveal_on_scroll": true,
         "image_position": "end",
         "content_width": "lg",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
+        "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
       }
@@ -322,6 +335,7 @@
       "disabled": true,
       "name": "t:sections.blog_posts.presets.blog_posts.name",
       "settings": {
+        "layout": "grid",
         "color_scheme": "",
         "separate_section_with_border": false,
         "blog": "news",
@@ -336,7 +350,46 @@
         "heading_style": "h4",
         "content": "",
         "button_link": "",
-        "button_text": "View all"
+        "button_text": "View all",
+        "card_width": 313,
+        "image_height": 323,
+        "card_width_mobile": 219,
+        "image_height_mobile": 242,
+        "card_gap": 16,
+        "card_gap_mobile": 10,
+        "end_gap": 0,
+        "words_per_minute": 200,
+        "read_time_label": "min read",
+        "meta_separator": "|",
+        "date_format": "%b %d, %Y",
+        "excerpt_words": 22,
+        "excerpt_lines": 3,
+        "eyebrow_size": 14,
+        "heading_size": 28,
+        "heading_size_mobile": 24,
+        "meta_size": 12,
+        "title_size": 18,
+        "title_size_mobile": 14,
+        "excerpt_size": 14,
+        "excerpt_size_mobile": 12,
+        "background": "#fffbf3",
+        "space_top": 32,
+        "space_bottom": 64,
+        "eyebrow_gap": 4,
+        "header_gap": 24,
+        "cta_gap": 24,
+        "card_padding": 16,
+        "card_radius": 2,
+        "card_background": "#ffffff",
+        "card_border": "#e6e6e6",
+        "cta_background": "#4f5b3f",
+        "cta_text_color": "#ffffff",
+        "arrow_size": 38,
+        "arrow_offset": 40,
+        "arrow_inset_mobile": 8,
+        "arrow_background": "#2b2724",
+        "arrow_color": "#ffffff",
+        "arrow_border": "#ffffff"
       }
     },
     "multi_column_WmHANY": {
@@ -347,11 +400,19 @@
           "settings": {
             "image": "shopify://shop_images/CWP-1.png",
             "title": "<strong>Generational Artisans</strong>",
+            "subheading": "",
             "heading_tag": "h4",
             "custom_heading_size": 24,
             "content": "<p>Passed down through generations, our artisans preserve Persian, Turkish weaving traditions to create every rug.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
           }
         },
         "image_with_text_qL9dee": {
@@ -359,11 +420,19 @@
           "settings": {
             "image": "shopify://shop_images/CWP-2.png",
             "title": "<strong>Premium New Zealand Wool</strong>",
+            "subheading": "",
             "heading_tag": "h4",
             "custom_heading_size": 24,
             "content": "<p>Crafted from 100% premium New Zealand wool, prized for its exceptional softness and durability.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
           }
         },
         "image_with_text_CeVrhX": {
@@ -371,11 +440,19 @@
           "settings": {
             "image": "shopify://shop_images/CWP-3.png",
             "title": "<strong>Naturally Dyed</strong>",
+            "subheading": "",
             "heading_tag": "h4",
             "custom_heading_size": 24,
             "content": "<p>Colored using eco-friendly natural vegetable dyes for rich, lasting color and a lower environmental impact.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
           }
         },
         "image_with_text_qUwkh9": {
@@ -383,11 +460,19 @@
           "settings": {
             "image": "shopify://shop_images/CWP-4.png",
             "title": "<strong>Made Just for You</strong>",
+            "subheading": "",
             "heading_tag": "h4",
             "custom_heading_size": 24,
             "content": "<p>Every rug is made to order and can be customized in virtually any size, color, or design to perfectly suit your space.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
           }
         }
       },
@@ -404,11 +489,15 @@
         "separate_section_with_border": false,
         "remove_section_spacing": false,
         "columns_per_row": 4,
-        "stack_on_mobile": true,
+        "stack_on_mobile": false,
+        "enable_carousel": false,
         "overlap_image": false,
         "content_alignment": "center",
         "text_alignment": "start",
-        "spacing": "xs",
+        "column_gap_mobile": 9,
+        "row_gap_mobile": 16,
+        "column_gap_desktop": 16,
+        "row_gap_desktop": 48,
         "media_height": "379px",
         "subheading": "Why Choose Bisha",
         "title": "Crafted with Purpose",
@@ -437,13 +526,16 @@
           "type": "heading",
           "settings": {
             "text": "<p>Handcrafted in India. Loved Around the World.</p>",
+            "padding_top": 0,
+            "padding_bottom": 0,
             "heading_tag": "h2"
           }
         },
         "richtext_q87Vw8": {
           "type": "richtext",
           "settings": {
-            "content": "<p>Every Bisha rug is<strong> handcrafted in India's renowned rug-weaving regions, where generations of artisans continue to preserve techniques</strong> inspired by Persian and Anatolian traditions. </p><p>Using premium New Zealand wool, natural dyes, and meticulous hand-knotting, each rug is woven to become a lasting part of homes across the globe.</p>"
+            "content": "<p>Every Bisha rug is<strong> handcrafted in India's renowned rug-weaving regions, where generations of artisans continue to preserve techniques</strong> inspired by Persian and Anatolian traditions. </p><p>Using premium New Zealand wool, natural dyes, and meticulous hand-knotting, each rug is woven to become a lasting part of homes across the globe.</p>",
+            "character_limit": 0
           }
         },
         "icon_with_text_wJDNfg": {
@@ -490,6 +582,16 @@
         "reveal_on_scroll": true,
         "image_position": "end",
         "content_width": "lg",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
+        "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
       }
@@ -511,11 +613,19 @@
           "settings": {
             "image": "shopify://shop_images/Our_impact_img1.png",
             "title": "<strong>Empowering Artisan Communities</strong>",
+            "subheading": "",
             "heading_tag": "h4",
             "custom_heading_size": 24,
             "content": "<p>Every rug supports skilled artisans across rural India, helping preserve livelihoods and generations of craftsmanship.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
           }
         },
         "image_with_text_MhcAbJ": {
@@ -523,11 +633,19 @@
           "settings": {
             "image": "shopify://shop_images/Our_impact_img2.png",
             "title": "<strong>Sustainable by Choice</strong>",
+            "subheading": "",
             "heading_tag": "h4",
             "custom_heading_size": 24,
             "content": "<p>Made with natural fibers, natural dyes and traditional techniques that respect both the craft and the environment.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
           }
         },
         "image_with_text_7ycCrD": {
@@ -535,11 +653,19 @@
           "settings": {
             "image": "shopify://shop_images/Our_impact_img3.png",
             "title": "<strong>Heritage Worth Preserving</strong>",
+            "subheading": "",
             "heading_tag": "h4",
             "custom_heading_size": 24,
             "content": "<p>More than a rug, every piece carries centuries of weaving tradition, designed to be treasured for generations.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
           }
         },
         "image_with_text_zHQtEd": {
@@ -547,11 +673,19 @@
           "settings": {
             "image": "shopify://shop_images/2da73a19d2d5536af25dae75fca49f41a6ae6130.png",
             "title": "<strong>Authentic, Never Replicated</strong>",
+            "subheading": "",
             "heading_tag": "h4",
             "custom_heading_size": 24,
             "content": "<p>Choose genuine handcrafted artistry over mass-produced imitations, where every rug tells its own story.</p>",
             "link_url": "",
-            "link_text": ""
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
           }
         }
       },
@@ -568,11 +702,15 @@
         "separate_section_with_border": false,
         "remove_section_spacing": false,
         "columns_per_row": 4,
-        "stack_on_mobile": true,
+        "stack_on_mobile": false,
+        "enable_carousel": false,
         "overlap_image": false,
         "content_alignment": "center",
         "text_alignment": "start",
-        "spacing": "xs",
+        "column_gap_mobile": 9,
+        "row_gap_mobile": 16,
+        "column_gap_desktop": 16,
+        "row_gap_desktop": 48,
         "media_height": "379px",
         "subheading": "Our Impact",
         "title": "Every Bisha Rug Tells a Bigger Story",
@@ -601,19 +739,23 @@
           "type": "heading",
           "settings": {
             "text": "<p>A Message from Our Founder</p>",
+            "padding_top": 0,
+            "padding_bottom": 0,
             "heading_tag": "h2"
           }
         },
         "richtext_7xBL3G": {
           "type": "richtext",
           "settings": {
-            "content": "<p>“Bisha Rugs was created to celebrate India's extraordinary weaving heritage and the people who preserve it every day. </p><p>Our mission is simple: to bring authentic handcrafted rugs to homes around the world while ensuring the artisans behind every piece receive the recognition their craftsmanship deserves.”</p>"
+            "content": "<p>“Bisha Rugs was created to celebrate India's extraordinary weaving heritage and the people who preserve it every day. </p><p>Our mission is simple: to bring authentic handcrafted rugs to homes around the world while ensuring the artisans behind every piece receive the recognition their craftsmanship deserves.”</p>",
+            "character_limit": 0
           }
         },
         "richtext_64nxex": {
           "type": "richtext",
           "settings": {
-            "content": "<p><strong>- Founder’s Name </strong><br/>Founder, Bisha Rugs</p>"
+            "content": "<p><strong>- Founder’s Name </strong><br/>Founder, Bisha Rugs</p>",
+            "character_limit": 0
           }
         }
       },
@@ -641,6 +783,16 @@
         "reveal_on_scroll": true,
         "image_position": "start",
         "content_width": "lg",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
+        "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
       }
@@ -649,6 +801,7 @@
       "type": "newsletter",
       "name": "t:sections.newsletter.presets.newsletter.name",
       "settings": {
+        "home_top_spacing": 50,
         "color_scheme": "scheme-8eec0b30-7dd6-40f7-bdf8-3f2aa3b45117",
         "separate_section_with_border": false,
         "image_1": "shopify://shop_images/newsletter_img1.png",

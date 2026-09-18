@@ -91,8 +91,6 @@
        five on large desktop, three below that and on mobile. */
     #shopify-section-{{ section.id }} .real-homes__carousel {
       --rh-gap: {{ section.settings.card_gap }}px;
-      --rh-visible: 5;
-      --rh-card: calc((100% - (var(--rh-visible) - 1) * var(--rh-gap)) / var(--rh-visible));
       display: block;
     }
 
@@ -103,7 +101,8 @@
       gap: var(--rh-gap);
       overflow: auto hidden;
       overscroll-behavior-x: contain;
-      scroll-snap-type: x mandatory;
+      scroll-snap-type: x proximity;
+      scroll-behavior: smooth;
       scrollbar-width: none;
     }
 
@@ -112,24 +111,17 @@
     }
 
     #shopify-section-{{ section.id }} .real-homes__card {
-      flex: 0 0 var(--rh-card);
-      scroll-snap-align: center;
-      display: block;
-      transition: flex-basis 0.2s ease;
-    }
+  flex: 0 0 280px;
+  scroll-snap-align: center;
+  display: block;
+  transition: flex-basis 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
 
-    /* The centre card is larger. Measured at 1.166x on both axes about a shared
-       midpoint, which align-items: center on the track reproduces. */
-    #shopify-section-{{ section.id }} .real-homes__card.is-active {
-      flex-basis: calc(var(--rh-card) * {{ section.settings.active_scale | divided_by: 100.0 }});
-    }
+#shopify-section-{{ section.id }} .real-homes__card.is-active {
+  flex-basis: 329px;
+}
 
-    /* Three across below large desktop, so the centre card is never ambiguous */
-    @media screen and (max-width: 1199px) {
-      #shopify-section-{{ section.id }} .real-homes__carousel {
-        --rh-visible: 3;
-      }
-    }
+
 
     #shopify-section-{{ section.id }} .real-homes__media {
       position: relative;
@@ -269,12 +261,16 @@ width: 28px;
          approach and the active card then overflowed the viewport by the
          difference, which is where the horizontal page scroll came from. */
       #shopify-section-{{ section.id }} .real-homes__carousel {
-        --rh-gap: {{ section.settings.card_gap_mobile }}px;
-        --rh-peek: {{ section.settings.card_peek_mobile }}px;
-        --rh-ratio: {{ section.settings.active_scale | divided_by: 100.0 }};
-        --rh-active: calc(100% - 2 * (var(--rh-peek) + var(--rh-gap)));
-        --rh-card: calc(var(--rh-active) / var(--rh-ratio));
-      }
+  --rh-gap: {{ section.settings.card_gap_mobile }}px;
+}
+
+#shopify-section-{{ section.id }} .real-homes__card {
+  flex: 0 0 204px;
+}
+
+#shopify-section-{{ section.id }} .real-homes__card.is-active {
+  flex-basis: 230px;
+}
 
       /* One flick moves exactly one card. Without this, momentum scrolling can
          fly past several snap points and land three cards away. */
@@ -375,7 +371,7 @@ width: 28px;
 
                   <span class="real-homes__arrow" aria-hidden="true">
   <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="12" height="12">
-    <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M3 8h7M7 5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
 </span>
                 </a>
@@ -449,7 +445,7 @@ width: 28px;
               // midpoint right by half the growth, so the first paint would sit
               // off-centre by that amount. Centre once more now the width is
               // final. Instant, so nothing is visible.
-              requestAnimationFrame(() => this.centre(this.track.querySelector('.is-active'), true));
+              requestAnimationFrame(() => this.centre(this.track.querySelector('.is-active'), false));
             });
           }
 
