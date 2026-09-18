@@ -613,6 +613,20 @@
           "id": "size_chart_page",
           "label": "t:sections.main_product.blocks.variant_picker.size_chart_page",
           "info": "t:sections.main_product.blocks.variant_picker.size_chart_page_info"
+        },
+        {
+          "type": "text",
+          "id": "shape_heading",
+          "label": "t:sections.main_product.blocks.variant_picker.shape_heading",
+          "info": "t:sections.main_product.blocks.variant_picker.shape_heading_info",
+          "default": "Select Shape"
+        },
+        {
+          "type": "text",
+          "id": "enter_size_heading",
+          "label": "t:sections.main_product.blocks.variant_picker.enter_size_heading",
+          "info": "t:sections.main_product.blocks.variant_picker.enter_size_heading_info",
+          "default": "Enter Size"
         }
       ]
     },
@@ -673,6 +687,35 @@
             }
           ],
           "default": "swatch"
+        }
+      ]
+    },
+    {
+      "type": "color_pattern_picker",
+      "name": "t:sections.main_product.blocks.color_pattern_picker.name",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "t:sections.main_product.blocks.color_pattern_picker.instructions"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.main_product.blocks.color_pattern_picker.heading",
+          "default": "Select Color & Pattern"
+        },
+        {
+          "type": "text",
+          "id": "option_value_metafield",
+          "label": "t:sections.main_product.blocks.color_pattern_picker.option_value_metafield",
+          "info": "t:sections.main_product.blocks.color_pattern_picker.option_value_metafield_info",
+          "placeholder": "shopify.color-pattern"
+        },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "t:sections.main_product.blocks.color_pattern_picker.product_list",
+          "info": "t:sections.main_product.blocks.color_pattern_picker.product_list_info"
         }
       ]
     },
@@ -1346,6 +1389,92 @@
       ]
     },
     {
+      "type": "notice_banner",
+      "name": "t:sections.main_product.blocks.notice_banner.name",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "t:global.text.content",
+          "default": "This rug is <strong>made to order &amp; ships in 5-8 weeks</strong>"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "t:global.colors.background",
+          "default": "#fbeedd"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "t:global.colors.text"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "t:global.colors.border"
+        }
+      ]
+    },
+    {
+      "type": "checklist_item",
+      "name": "t:sections.main_product.blocks.checklist_item.name",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "t:global.text.content",
+          "default": "Checklist item"
+        }
+      ]
+    },
+    {
+      "type": "image_text_card",
+      "name": "t:sections.main_product.blocks.image_text_card.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:global.image.image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:global.text.heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:global.text.content"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "t:sections.main_product.blocks.image_text_card.button_label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.main_product.blocks.image_text_card.button_link"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "t:global.colors.background"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "t:global.colors.text"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "t:global.colors.border"
+        }
+      ]
+    },
+    {
       "type": "accordion",
       "name": "t:sections.main_product.blocks.collapsible_text.name",
       "settings": [
@@ -1879,6 +2008,54 @@
           "label": "t:sections.main_product.blocks.button.stretch"
         },
         {
+          "type": "select",
+          "id": "style",
+          "label": "t:global.text.style",
+          "options": [
+            {
+              "value": "outline",
+              "label": "t:global.text.link_style_options.outline"
+            },
+            {
+              "value": "solid",
+              "label": "t:global.text.link_style_options.solid"
+            },
+            {
+              "value": "link",
+              "label": "t:global.text.link_style_options.link"
+            }
+          ],
+          "default": "solid"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:global.icons.icon",
+          "options": [
+            {
+              "value": "none",
+              "label": "t:global.icons.none"
+            },
+            {
+              "value": "picto-video-camera",
+              "label": "t:global.icons.video_call"
+            },
+            {
+              "value": "picto-phone",
+              "label": "t:global.icons.phone"
+            },
+            {
+              "value": "picto-chat",
+              "label": "t:global.icons.chat"
+            },
+            {
+              "value": "picto-customer-support",
+              "label": "t:global.icons.customer_support"
+            }
+          ],
+          "default": "none"
+        },
+        {
           "type": "color",
           "id": "background",
           "label": "t:global.colors.background"
@@ -1887,6 +2064,11 @@
           "type": "color",
           "id": "text_color",
           "label": "t:global.colors.text"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "t:global.colors.border"
         }
       ]
     },
@@ -1914,6 +2096,375 @@
           "id": "text",
           "label": "t:sections.main_product.blocks.more_information.text",
           "default": "More information"
+        }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Customer review",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "A single customer testimonial with an avatar, name, verified badge, star rating and quote."
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Avatar"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Kerry M."
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Show verified badge",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "The quality of these rugs is truly exceptional. I love knowing that I am supporting local artisans."
+        }
+      ]
+    },
+    {
+      "type": "real_homes_reel",
+      "name": "Real homes reel",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "A row of up to 10 videos or images, each shown as a thumbnail with a play button (used for \"See in Real Homes\"). Leave an item's video and image both blank to skip it."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "t:global.text.heading",
+          "default": "See in Real Homes"
+        },
+        {
+          "type": "header",
+          "content": "Item 1"
+        },
+        {
+          "type": "select",
+          "id": "item_1_type",
+          "label": "Item 1 media type",
+          "options": [
+            { "value": "video", "label": "Video" },
+            { "value": "image", "label": "Image" }
+          ],
+          "default": "video"
+        },
+        {
+          "type": "video",
+          "id": "item_1_video",
+          "label": "Item 1 video",
+          "info": "Used when media type is set to Video."
+        },
+        {
+          "type": "image_picker",
+          "id": "item_1_image",
+          "label": "Item 1 image",
+          "info": "Used when media type is set to Image, or as a fallback poster for the video."
+        },
+        {
+          "type": "url",
+          "id": "item_1_link",
+          "label": "Item 1 link (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Item 2"
+        },
+        {
+          "type": "select",
+          "id": "item_2_type",
+          "label": "Item 2 media type",
+          "options": [
+            { "value": "video", "label": "Video" },
+            { "value": "image", "label": "Image" }
+          ],
+          "default": "video"
+        },
+        {
+          "type": "video",
+          "id": "item_2_video",
+          "label": "Item 2 video",
+          "info": "Used when media type is set to Video."
+        },
+        {
+          "type": "image_picker",
+          "id": "item_2_image",
+          "label": "Item 2 image",
+          "info": "Used when media type is set to Image, or as a fallback poster for the video."
+        },
+        {
+          "type": "url",
+          "id": "item_2_link",
+          "label": "Item 2 link (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Item 3"
+        },
+        {
+          "type": "select",
+          "id": "item_3_type",
+          "label": "Item 3 media type",
+          "options": [
+            { "value": "video", "label": "Video" },
+            { "value": "image", "label": "Image" }
+          ],
+          "default": "video"
+        },
+        {
+          "type": "video",
+          "id": "item_3_video",
+          "label": "Item 3 video",
+          "info": "Used when media type is set to Video."
+        },
+        {
+          "type": "image_picker",
+          "id": "item_3_image",
+          "label": "Item 3 image",
+          "info": "Used when media type is set to Image, or as a fallback poster for the video."
+        },
+        {
+          "type": "url",
+          "id": "item_3_link",
+          "label": "Item 3 link (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Item 4"
+        },
+        {
+          "type": "select",
+          "id": "item_4_type",
+          "label": "Item 4 media type",
+          "options": [
+            { "value": "video", "label": "Video" },
+            { "value": "image", "label": "Image" }
+          ],
+          "default": "video"
+        },
+        {
+          "type": "video",
+          "id": "item_4_video",
+          "label": "Item 4 video",
+          "info": "Used when media type is set to Video."
+        },
+        {
+          "type": "image_picker",
+          "id": "item_4_image",
+          "label": "Item 4 image",
+          "info": "Used when media type is set to Image, or as a fallback poster for the video."
+        },
+        {
+          "type": "url",
+          "id": "item_4_link",
+          "label": "Item 4 link (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Item 5"
+        },
+        {
+          "type": "select",
+          "id": "item_5_type",
+          "label": "Item 5 media type",
+          "options": [
+            { "value": "video", "label": "Video" },
+            { "value": "image", "label": "Image" }
+          ],
+          "default": "video"
+        },
+        {
+          "type": "video",
+          "id": "item_5_video",
+          "label": "Item 5 video",
+          "info": "Used when media type is set to Video."
+        },
+        {
+          "type": "image_picker",
+          "id": "item_5_image",
+          "label": "Item 5 image",
+          "info": "Used when media type is set to Image, or as a fallback poster for the video."
+        },
+        {
+          "type": "url",
+          "id": "item_5_link",
+          "label": "Item 5 link (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Item 6"
+        },
+        {
+          "type": "select",
+          "id": "item_6_type",
+          "label": "Item 6 media type",
+          "options": [
+            { "value": "video", "label": "Video" },
+            { "value": "image", "label": "Image" }
+          ],
+          "default": "video"
+        },
+        {
+          "type": "video",
+          "id": "item_6_video",
+          "label": "Item 6 video",
+          "info": "Used when media type is set to Video."
+        },
+        {
+          "type": "image_picker",
+          "id": "item_6_image",
+          "label": "Item 6 image",
+          "info": "Used when media type is set to Image, or as a fallback poster for the video."
+        },
+        {
+          "type": "url",
+          "id": "item_6_link",
+          "label": "Item 6 link (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Item 7"
+        },
+        {
+          "type": "select",
+          "id": "item_7_type",
+          "label": "Item 7 media type",
+          "options": [
+            { "value": "video", "label": "Video" },
+            { "value": "image", "label": "Image" }
+          ],
+          "default": "video"
+        },
+        {
+          "type": "video",
+          "id": "item_7_video",
+          "label": "Item 7 video",
+          "info": "Used when media type is set to Video."
+        },
+        {
+          "type": "image_picker",
+          "id": "item_7_image",
+          "label": "Item 7 image",
+          "info": "Used when media type is set to Image, or as a fallback poster for the video."
+        },
+        {
+          "type": "url",
+          "id": "item_7_link",
+          "label": "Item 7 link (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Item 8"
+        },
+        {
+          "type": "select",
+          "id": "item_8_type",
+          "label": "Item 8 media type",
+          "options": [
+            { "value": "video", "label": "Video" },
+            { "value": "image", "label": "Image" }
+          ],
+          "default": "video"
+        },
+        {
+          "type": "video",
+          "id": "item_8_video",
+          "label": "Item 8 video",
+          "info": "Used when media type is set to Video."
+        },
+        {
+          "type": "image_picker",
+          "id": "item_8_image",
+          "label": "Item 8 image",
+          "info": "Used when media type is set to Image, or as a fallback poster for the video."
+        },
+        {
+          "type": "url",
+          "id": "item_8_link",
+          "label": "Item 8 link (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Item 9"
+        },
+        {
+          "type": "select",
+          "id": "item_9_type",
+          "label": "Item 9 media type",
+          "options": [
+            { "value": "video", "label": "Video" },
+            { "value": "image", "label": "Image" }
+          ],
+          "default": "video"
+        },
+        {
+          "type": "video",
+          "id": "item_9_video",
+          "label": "Item 9 video",
+          "info": "Used when media type is set to Video."
+        },
+        {
+          "type": "image_picker",
+          "id": "item_9_image",
+          "label": "Item 9 image",
+          "info": "Used when media type is set to Image, or as a fallback poster for the video."
+        },
+        {
+          "type": "url",
+          "id": "item_9_link",
+          "label": "Item 9 link (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Item 10"
+        },
+        {
+          "type": "select",
+          "id": "item_10_type",
+          "label": "Item 10 media type",
+          "options": [
+            { "value": "video", "label": "Video" },
+            { "value": "image", "label": "Image" }
+          ],
+          "default": "video"
+        },
+        {
+          "type": "video",
+          "id": "item_10_video",
+          "label": "Item 10 video",
+          "info": "Used when media type is set to Video."
+        },
+        {
+          "type": "image_picker",
+          "id": "item_10_image",
+          "label": "Item 10 image",
+          "info": "Used when media type is set to Image, or as a fallback poster for the video."
+        },
+        {
+          "type": "url",
+          "id": "item_10_link",
+          "label": "Item 10 link (optional)"
         }
       ]
     }

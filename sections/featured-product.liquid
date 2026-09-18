@@ -493,6 +493,20 @@
           "id": "size_chart_page",
           "label": "t:sections.main_product.blocks.variant_picker.size_chart_page",
           "info": "t:sections.main_product.blocks.variant_picker.size_chart_page_info"
+        },
+        {
+          "type": "text",
+          "id": "shape_heading",
+          "label": "t:sections.main_product.blocks.variant_picker.shape_heading",
+          "info": "t:sections.main_product.blocks.variant_picker.shape_heading_info",
+          "default": "Select Shape"
+        },
+        {
+          "type": "text",
+          "id": "enter_size_heading",
+          "label": "t:sections.main_product.blocks.variant_picker.enter_size_heading",
+          "info": "t:sections.main_product.blocks.variant_picker.enter_size_heading_info",
+          "default": "Enter Size"
         }
       ]
     },
@@ -1221,6 +1235,92 @@
       ]
     },
     {
+      "type": "notice_banner",
+      "name": "t:sections.main_product.blocks.notice_banner.name",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "t:global.text.content",
+          "default": "This rug is <strong>made to order &amp; ships in 5-8 weeks</strong>"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "t:global.colors.background",
+          "default": "#fbeedd"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "t:global.colors.text"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "t:global.colors.border"
+        }
+      ]
+    },
+    {
+      "type": "checklist_item",
+      "name": "t:sections.main_product.blocks.checklist_item.name",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "t:global.text.content",
+          "default": "Checklist item"
+        }
+      ]
+    },
+    {
+      "type": "image_text_card",
+      "name": "t:sections.main_product.blocks.image_text_card.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:global.image.image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:global.text.heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:global.text.content"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "t:sections.main_product.blocks.image_text_card.button_label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.main_product.blocks.image_text_card.button_link"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "t:global.colors.background"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "t:global.colors.text"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "t:global.colors.border"
+        }
+      ]
+    },
+    {
       "type": "accordion",
       "name": "t:sections.main_product.blocks.collapsible_text.name",
       "settings": [
@@ -1740,6 +1840,54 @@
           "type": "checkbox",
           "id": "stretch",
           "label": "t:sections.main_product.blocks.button.stretch"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "t:global.text.style",
+          "options": [
+            {
+              "value": "outline",
+              "label": "t:global.text.link_style_options.outline"
+            },
+            {
+              "value": "solid",
+              "label": "t:global.text.link_style_options.solid"
+            },
+            {
+              "value": "link",
+              "label": "t:global.text.link_style_options.link"
+            }
+          ],
+          "default": "solid"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:global.icons.icon",
+          "options": [
+            {
+              "value": "none",
+              "label": "t:global.icons.none"
+            },
+            {
+              "value": "picto-video-camera",
+              "label": "t:global.icons.video_call"
+            },
+            {
+              "value": "picto-phone",
+              "label": "t:global.icons.phone"
+            },
+            {
+              "value": "picto-chat",
+              "label": "t:global.icons.chat"
+            },
+            {
+              "value": "picto-customer-support",
+              "label": "t:global.icons.customer_support"
+            }
+          ],
+          "default": "none"
         },
         {
           "type": "color",

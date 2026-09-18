@@ -42,7 +42,8 @@
     "label": {
       "color": "Color,Colour",
       "white": "White",
-      "size": "Size"
+      "size": "Size",
+      "all": "All"
     },
     "social": {
       "follow_on": "Follow on {{ social_media }}",
@@ -118,6 +119,10 @@
       "taxes_excluded": "Tax excluded.",
       "shipping_policy_html": "<a href=\"{{ link }}\" class=\"link\">Shipping calculated<\/a> at checkout",
       "size_chart": "Size chart",
+      "shape": "Shape",
+      "shape_rectangle": "Rectangle",
+      "shape_runner": "Runner",
+      "enter_size": "Enter Size",
       "available_colors_count": {
         "one": "{{ count }} color available",
         "other": "{{ count }} colors available"
