@@ -337,6 +337,20 @@
             "border_color": ""
           }
         },
+        "separator_dzMtFM": {
+          "type": "separator",
+          "settings": {}
+        },
+        "review_KirzYU": {
+          "type": "review",
+          "settings": {
+            "avatar": "shopify://shop_images/Best_Sellers_3edf9f18-2c92-4f6c-a0ed-56b99bb57411.png",
+            "name": "Kerry M.",
+            "verified": true,
+            "rating": 5,
+            "quote": "The quality of these rugs is truly exceptional. I love knowing that I am supporting local artisans."
+          }
+        },
         "complementary_products": {
           "type": "complementary_products",
           "settings": {
@@ -380,6 +394,8 @@
         "feature_with_icon_Rjq9wY",
         "feature_with_icon_pLrHNa",
         "feature_with_icon_ArkC3B",
+        "separator_dzMtFM",
+        "review_KirzYU",
         "complementary_products"
       ],
       "settings": {
