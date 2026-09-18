@@ -120,6 +120,12 @@
             "enter_size_heading": "Enter Size"
           }
         },
+        "text_nEQyXW": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Need help with custom sizing?<a href=\"/pages/contact\" title=\"Contact Us\"><strong> Talk to an expert</strong></a> before placing your order.</p>"
+          }
+        },
         "quantity_selector": {
           "type": "quantity_selector",
           "settings": {}
@@ -157,6 +163,7 @@
         "separator",
         "color_pattern_picker_LVwz7N",
         "variant_picker",
+        "text_nEQyXW",
         "quantity_selector",
         "buy_buttons",
         "complementary_products"
