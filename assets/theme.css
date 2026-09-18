@@ -2329,7 +2329,7 @@ model-media .shopify-model-viewer-ui {
 .product-card__figure>.badge-list {
   z-index: 1;
   position: absolute;
-  inset-block-start: .25rem;
+  inset-block-start: 13px;
   inset-inline-start: .25rem;
 }
 
