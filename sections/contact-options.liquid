@@ -42,6 +42,8 @@
 
   #shopify-section-{{ section.id }} .co__header {
     margin-block-end: {{ section.settings.header_gap }}px;
+    display: flex;
+    justify-content: center;
   }
 
   #shopify-section-{{ section.id }} .co__header .section-header {
@@ -325,6 +327,7 @@
 
     #shopify-section-{{ section.id }} .co__header {
       margin-block-end: 16px;
+      justify-content: flex-start;
     }
     #shopify-section-{{ section.id }} .co__header,
     #shopify-section-{{ section.id }} .co__header .section-header {
