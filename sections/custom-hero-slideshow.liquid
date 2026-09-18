@@ -421,6 +421,10 @@
       nextBtn.addEventListener('click', function () { next(); startAuto(); });
     }
 
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function () { prev(); startAuto(); });
+    }
+
     dots.forEach(function (dot) {
       dot.addEventListener('click', function () {
         goTo(parseInt(dot.getAttribute('data-hero-dot'), 10));
