@@ -99,6 +99,14 @@
           "type": "separator",
           "settings": {}
         },
+        "color_pattern_picker_LVwz7N": {
+          "type": "color_pattern_picker",
+          "settings": {
+            "heading": "Select Color & Pattern",
+            "option_value_metafield": "shopify.color-pattern",
+            "products": "{{ product.metafields[\"shopify--discovery--product_recommendation\"].complementary_products.value }}"
+          }
+        },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
@@ -107,7 +115,9 @@
             "swatch_selector_style": "none",
             "variant_image_options": "",
             "variant_image_show_underline": false,
-            "size_chart_page": ""
+            "size_chart_page": "",
+            "shape_heading": "Select Shape",
+            "enter_size_heading": "Enter Size"
           }
         },
         "quantity_selector": {
@@ -145,6 +155,7 @@
         "liquid_WK9Eei",
         "payment_terms",
         "separator",
+        "color_pattern_picker_LVwz7N",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
