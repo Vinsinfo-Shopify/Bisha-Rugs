@@ -260,12 +260,16 @@ width: 28px;
          approach and the active card then overflowed the viewport by the
          difference, which is where the horizontal page scroll came from. */
       #shopify-section-{{ section.id }} .real-homes__carousel {
-        --rh-gap: {{ section.settings.card_gap_mobile }}px;
-        --rh-peek: {{ section.settings.card_peek_mobile }}px;
-        --rh-ratio: {{ section.settings.active_scale | divided_by: 100.0 }};
-        --rh-active: calc(100% - 2 * (var(--rh-peek) + var(--rh-gap)));
-        --rh-card: calc(var(--rh-active) / var(--rh-ratio));
-      }
+  --rh-gap: {{ section.settings.card_gap_mobile }}px;
+}
+
+#shopify-section-{{ section.id }} .real-homes__card {
+  flex: 0 0 auto;
+}
+
+#shopify-section-{{ section.id }} .real-homes__card.is-active {
+  flex-basis: 230px;
+}
 
       /* One flick moves exactly one card. Without this, momentum scrolling can
          fly past several snap points and land three cards away. */
