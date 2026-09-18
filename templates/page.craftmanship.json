@@ -67,13 +67,16 @@
           "type": "heading",
           "settings": {
             "text": "<p>Crafted by Master Artisans</p>",
+            "padding_top": 0,
+            "padding_bottom": 0,
             "heading_tag": "h2"
           }
         },
         "richtext_wqkkh8": {
           "type": "richtext",
           "settings": {
-            "content": "<p>Every Bisha rug begins in the hands of artisans who have inherited their craft through generations. Using time-honoured techniques, each rug is woven entirely by hand, one knot at a time.   </p><p>It's a slow,<strong> meticulous process that cannot be replicated by machines, resulting in exceptional quality, lasting durability,</strong> and craftsmanship that stands the test of time.</p>"
+            "content": "<p>Every Bisha rug begins in the hands of artisans who have inherited their craft through generations. Using time-honoured techniques, each rug is woven entirely by hand, one knot at a time.   </p><p>It's a slow,<strong> meticulous process that cannot be replicated by machines, resulting in exceptional quality, lasting durability,</strong> and craftsmanship that stands the test of time.</p>",
+            "character_limit": 0
           }
         },
         "icon_with_text_VkQfgf": {
@@ -464,7 +467,7 @@
         "column_gap_mobile": 9,
         "row_gap_mobile": 16,
         "column_gap_desktop": 16,
-        "row_gap_desktop": 46,
+        "row_gap_desktop": 44,
         "media_height": "445px",
         "subheading": "The Making",
         "title": "From Wool to Woven Masterpiece.",
@@ -493,13 +496,16 @@
           "type": "heading",
           "settings": {
             "text": "<p>True Luxury Is Never Rushed.</p>",
+            "padding_top": 0,
+            "padding_bottom": 0,
             "heading_tag": "h2"
           }
         },
         "richtext_q87Vw8": {
           "type": "richtext",
           "settings": {
-            "content": "<p>In a world built for speed, true craftsmanship takes time. Every knot, every pattern, and every touch reflects the patience and dedication of skilled artisans, creating a rug that grows more beautiful with every passing year.<br/><br/><em><strong>\"Time isn't the cost of craftsmanship. It's the source of its value.\"</strong></em></p>"
+            "content": "<p>In a world built for speed, true craftsmanship takes time. Every knot, every pattern, and every touch reflects the patience and dedication of skilled artisans, creating a rug that grows more beautiful with every passing year.<br/><br/><em><strong>\"Time isn't the cost of craftsmanship. It's the source of its value.\"</strong></em></p>",
+            "character_limit": 0
           }
         },
         "button_AGG3LD": {

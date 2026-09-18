@@ -20,13 +20,16 @@
           "type": "heading",
           "settings": {
             "text": "<p>Oushak Rugs</p>",
+            "padding_top": 0,
+            "padding_bottom": 0,
             "heading_tag": "h1"
           }
         },
         "richtext_TEbCEy": {
           "type": "richtext",
           "settings": {
-            "content": "<p>Oushak rugs are hand-knotted and admired for their oversized motifs, soft pastel and timeless craftsman...<span style=\"text-decoration:underline\">Read more</span></p>"
+            "content": "<p>Oushak rugs are hand-knotted and admired for their oversized motifs, soft pastel and timeless craftsman...<span style=\"text-decoration:underline\">Read more</span></p>",
+            "character_limit": 0
           }
         },
         "icon_with_text_Cg9p8d": {
@@ -94,13 +97,16 @@
           "type": "heading",
           "settings": {
             "text": "<p>{{ collection.title }}</p>",
+            "padding_top": 4,
+            "padding_bottom": 2,
             "heading_tag": "h1"
           }
         },
         "richtext_YzFKam": {
           "type": "richtext",
           "settings": {
-            "content": "{{ collection.metafields.custom.collection_banner_content | metafield_tag }}"
+            "content": "{{ collection.metafields.custom.collection_banner_content | metafield_tag }}",
+            "character_limit": 110
           }
         },
         "icon_with_text_9ad9K6": {
@@ -198,13 +204,6 @@
         "pf_value_media_size": 67,
         "pf_value_col_gap": 37,
         "pf_value_row_gap": 27,
-        "rt_heading": "Rug Type",
-        "rt_menu": "prestige-main-menu",
-        "rt_parent_item": "Shop By Type",
-        "rt_show_counts": true,
-        "rt_group_gap": 24,
-        "rt_heading_gap": 16,
-        "rt_row_gap": 12,
         "pf_accordion_icon_width": 13,
         "pf_accordion_icon_color": "#000000",
         "pf_hide_color_in_sidebar": true,
@@ -248,13 +247,16 @@
           "type": "heading",
           "settings": {
             "text": "<p>Can't Find the Perfect Rug? <br/>Let's Create It Together.</p>",
+            "padding_top": 0,
+            "padding_bottom": 0,
             "heading_tag": "h1"
           }
         },
         "richtext_cVc9n7": {
           "type": "richtext",
           "settings": {
-            "content": "<p>Choose the ideal size, colors, materials, and design with guidance from our rug experts. Our artisans will transform your vision to reality.</p>"
+            "content": "<p>Choose the ideal size, colors, materials, and design with guidance from our rug experts. Our artisans will transform your vision to reality.</p>",
+            "character_limit": 0
           }
         },
         "button_CMc8UT": {
@@ -609,8 +611,8 @@
         "text_alignment": "start",
         "column_gap_mobile": 18,
         "row_gap_mobile": 24,
-        "column_gap_desktop": 48,
-        "row_gap_desktop": 48,
+        "column_gap_desktop": 28,
+        "row_gap_desktop": 28,
         "media_height": "379px",
         "subheading": "CONTACT US",
         "title": "Still Have Questions?",

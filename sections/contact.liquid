@@ -104,13 +104,27 @@
 
           {%- when 'contact' -%}
             {%- liquid
-              assign name_label = block_st.name | default: 'contact.form.name' | t
-              assign email_label = block_st.email | default: 'contact.form.email' | t
-              assign message_label = block_st.your_comment | default: 'contact.form.message' | t
-              assign button_label = block_st.button_label | default: 'contact.form.submit' | t
+              assign name_label = block_st.name | default: 'contact.form.name'
+              assign email_label = block_st.email | default: 'contact.form.email'
+              assign message_label = block_st.your_comment | default: 'contact.form.message'
+              assign button_label = block_st.button_label | default: 'contact.form.submit'
               assign name_value = form.name | default: customer.name
+              assign message_max_length = block_st.message_max_length | default: 500
+              assign name_pattern = "[A-Za-zÀ-ÖØ-öø-ÿĀ-ɏ][A-Za-zÀ-ÖØ-öø-ÿĀ-ɏ'’.\- ]*"
+              assign email_pattern = "[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
             -%}
-            <div class="contact_form" {{ block.shopify_attributes }}>
+            <div
+              class="contact_form"
+              data-contact-form
+              data-required-name="Please enter your name."
+              data-invalid-name="Please enter a valid name using letters, spaces, hyphens or apostrophes only."
+              data-required-email="Please enter your email address."
+              data-invalid-email="Please enter a valid email address, for example name@example.com."
+              data-required-message="Please enter your message."
+              data-invalid-message="Please shorten your message to {{ message_max_length }} characters or less."
+              data-required-privacy="Please accept the Privacy Policy before sending your message."
+              {{ block.shopify_attributes }}
+            >
               <div class="contact_header">
                 {%- if block_st.heading != blank -%}
                   <h3 class="h4 heading-style">{{ block_st.heading }}</h3>
@@ -141,6 +155,8 @@
                       label: name_label,
                       value: name_value,
                       required: true,
+                      minlength: 2,
+                      pattern: name_pattern,
                       autocomplete: 'name'
                     -%}
                     {%- render 'input',
@@ -149,6 +165,7 @@
                       label: email_label,
                       value: customer.email,
                       required: true,
+                      pattern: email_pattern,
                       autocomplete: 'email'
                     -%}
                   </div>
@@ -157,7 +174,9 @@
                     name: 'contact[body]',
                     label: message_label,
                     multiline: 4,
-                    required: true
+                    required: true,
+                    maxlength: message_max_length,
+                    show_max_characters_count: true
                   -%}
                 </div>
 
@@ -169,12 +188,14 @@
                         type="checkbox"
                         name="conditions"
                         id="privacy"
+                        required
                       >
                       <label for="privacy">
                         I agree to the
                         <a href="{{ shop.privacy_policy.url }}" class="link">Privacy Policy</a>
                         of the website.
                       </label>
+                      <p class="contact-form__error" id="privacy-error" hidden></p>
                     </div>
                   {%- endif -%}
 
@@ -186,6 +207,8 @@
                 </div>
               {%- endform -%}
             </div>
+
+            <script src="{{ 'contact-form.js' | asset_url }}" defer></script>
 
           {%- when 'text_block' -%}
             <div class="support_customer" {{ block.shopify_attributes }}>
@@ -368,6 +391,16 @@
           "type": "text",
           "id": "your_comment",
           "label": "Message field label"
+        },
+        {
+          "type": "range",
+          "id": "message_max_length",
+          "label": "Message character limit",
+          "info": "Maximum number of characters allowed in the message field.",
+          "min": 100,
+          "max": 2000,
+          "step": 50,
+          "default": 500
         },
         {
           "type": "text",

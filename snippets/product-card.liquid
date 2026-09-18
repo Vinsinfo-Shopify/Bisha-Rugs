@@ -33,15 +33,15 @@
     assign show_badges = show_badges | default: true, allow_false: true
     assign show_rating = show_rating | default: settings.show_product_rating, allow_false: true
     assign show_vendor = show_vendor | default: settings.show_vendor, allow_false: true
-    assign show_quick_buy = show_quick_buy | default: settings.show_quick_buy, allow_false: true
+    assign show_quick_buy = show_quick_buy | default: true, allow_false: true
     assign show_title = true
     assign show_prices = true
     assign show_secondary_image = show_secondary_image | default: settings.show_secondary_image, allow_false: true
-    assign show_swatches = show_swatches | default: true, allow_false: true
+    assign show_swatches = show_swatches | default: false, allow_false: true
   endif
 
-  # OPT-IN. Falls back to the original 'plus' glyph when no call site passes quick_buy_icon.
   assign quick_buy_glyph = quick_buy_icon | default: 'bag-minimal'
+  assign image_carousel = image_carousel | default: true, allow_false: true
 -%}
 
 <product-card

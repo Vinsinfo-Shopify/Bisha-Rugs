@@ -43,7 +43,7 @@
     }
 
     #shopify-section-{{ section.id }} .ig__inner {
-      padding-block: {{ section.settings.space_top }}px {{ section.settings.space_bottom }}px;
+      padding-block: 70px;
     }
 
     #shopify-section-{{ section.id }} .ig__header {
@@ -78,9 +78,9 @@
     }
 
     #shopify-section-{{ section.id }} .ig__tagline {
-      margin-block: {{ section.settings.tagline_gap }}px 0;
-      font-size: {{ section.settings.tagline_size }}px;
-      line-height: 1.375;
+      margin-block: 10px 0;
+      font-size: 16px;
+      line-height: 22px;
       font-weight: 400;
     }
 
@@ -161,6 +161,7 @@
     #shopify-section-{{ section.id }} .ig__item {
       flex: 0 0 var(--ig-item);
       min-width: 0;
+      max-width: 303px;
       position: relative;
       aspect-ratio: {{ section.settings.media_ratio }};
       overflow: hidden;
@@ -234,6 +235,42 @@
       stroke-linecap: round;
       stroke-linejoin: round;
     }
+    #shopify-section-{{ section.id }} .floating-controls-container__control {
+  z-index: 3;
+  inset-block-start: {{ section.settings.arrow_offset }}%;
+  transform: translateY(-50%);
+}
+
+#shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+  --circle-button-size: 2.25rem;
+  --circle-button-background: 43 39 36;
+  --circle-button-text-color: 255 255 255;
+  box-sizing: border-box;
+  background: #2b2724;
+  color: #ffffff;
+  border: 3px solid #ffffff;
+  box-shadow: none;
+}
+
+#shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+  width: 0.965rem;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media screen and (pointer: fine) {
+  #shopify-section-{{ section.id }} .floating-controls-container--on-hover > .floating-controls-container__control,
+  #shopify-section-{{ section.id }} .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
+
+  /* Straddles the container edge, half in / half out, like Row 08 */
+  #shopify-section-{{ section.id }} .floating-controls-container--inside {
+    --floating-controls-inset-inline: -1.125rem;
+  }
+}
 
     @media screen and (pointer: fine) {
       /* Row 08 overrides the theme's hover-reveal: its arrows are always on. */
@@ -247,11 +284,11 @@
     /* ---------- Mobile ---------- */
     @media screen and (max-width: 699px) {
       #shopify-section-{{ section.id }} .ig__inner {
-        padding-block: {{ section.settings.space_top | divided_by: 2 }}px {{ section.settings.space_bottom | divided_by: 2 }}px;
+        padding-block: 50px;
       }
 
       #shopify-section-{{ section.id }} .ig__header {
-        margin-block-end: {{ section.settings.header_gap | times: 0.7 | round }}px;
+        margin-block-end: 26px;
       }
 
       /* 24 x 1.208 = 29, 14 x 1.571 = 22. The eyebrow is unchanged at 14/20. */
@@ -263,6 +300,7 @@
       #shopify-section-{{ section.id }} .ig__tagline {
         font-size: {{ section.settings.tagline_size_mobile }}px;
         line-height: 1.571;
+        margin-block: 2px 0;
       }
 
       #shopify-section-{{ section.id }} .ig__track {
@@ -271,15 +309,35 @@
         --ig-item: calc((100% - {{ section.settings.items_mobile | floor }} * var(--ig-gap)) / var(--ig-visible));
       }
 
+      #shopify-section-{{ section.id }} .ig__item {
+        max-width: 265px;
+        width:100%;
+      }
+
       /* theme.css only positions these controls under (pointer: fine), so on a
          touch device they would fall into normal flow. Positioning is restated
          here. No display, visibility or opacity is used to hide them. */
       #shopify-section-{{ section.id }} .floating-controls-container__control {
-        position: absolute;
-        display: grid;
-        place-items: center;
-        inset-block-start: {{ section.settings.arrow_offset }}%;
-      }
+  position: absolute;
+  display: grid;
+  place-items: center;
+  inset-block-start: {{ section.settings.arrow_offset }}%;
+  /* on-hover reveal only sets opacity:1 under (pointer: fine); forced
+     visible here since touch has no hover to trigger it */
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+#shopify-section-{{ section.id }} .floating-controls-container__control .circle-button {
+  --circle-button-size: 26px;
+  border-width: 0.74px;
+  border-color: #e5e5e5;
+}
+
+#shopify-section-{{ section.id }} .floating-controls-container__control .circle-button > svg {
+  width: 11px;
+  stroke-width: 1.23;
+}
 
       #shopify-section-{{ section.id }} carousel-prev-button.floating-controls-container__control {
         inset-inline-start: {{ section.settings.arrow_inset_mobile }}px;
@@ -306,11 +364,7 @@
           <p class="ig__tagline">
             {{- section.settings.tagline_before }}
             {% if section.settings.handle != blank -%}
-              {%- if section.settings.instagram_url != blank -%}
-                <a class="ig__handle" href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener">{{ section.settings.handle }}</a>
-              {%- else -%}
                 <span class="ig__handle">{{ section.settings.handle }}</span>
-              {%- endif -%}
             {%- endif %}
             {{ section.settings.tagline_after -}}
           </p>
@@ -510,12 +564,6 @@
       "id": "tagline_after",
       "label": "Tagline, after the handle",
       "default": "to get featured"
-    },
-    {
-      "type": "url",
-      "id": "instagram_url",
-      "label": "Instagram profile URL",
-      "info": "Links the handle. Leave empty for plain text."
     },
     {
       "type": "header",
