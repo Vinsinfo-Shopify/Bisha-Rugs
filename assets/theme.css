@@ -9166,7 +9166,7 @@ ul {
   font-size: 16px;
 }
 
-.template-page .container .section-header h1 {
+/* .template-page .container .section-header h1 {
   font-size: 38px;
 }
 
@@ -9176,7 +9176,7 @@ ul {
 
 .template-page .container .prose h2 {
   font-size: 28px;
-}
+} */
 
 @media screen and (max-width: 1100px) {
   .collection_banner .image-with-text>.prose {
@@ -10475,9 +10475,9 @@ ul {
   --container-max-width: 690px !important;
 }
 
-.trade_program .container>.section-stack {
+/* .trade_program .container>.section-stack {
   gap: 32px;
-}
+} */
 
 .trade_program .faq_section_header {
   margin-bottom: 0;
@@ -10492,18 +10492,19 @@ ul {
   text-transform: uppercase;
   font-size: 14px;
   font-weight: 400;
-  line-height: 140%;
-  letter-spacing: 2.16px;
+  line-height: 16.5px;
+  letter-spacing: 1.54px;
 }
 
 .trade_program .section_header_heading {
   font-family: 'Forum', serif;
-  font-size: 28px;
+  font-size: 28px !important;
   font-weight: 400;
-  line-height: 41.4px;
-  letter-spacing: -0.72px;
+  line-height: 45px;
+  letter-spacing: 0%;
   margin-top: 4px;
-  color: #1C1A17;
+  margin-bottom: 8px;
+  color: #000000;
 }
 
 .trade_program .section_header_content:not(:has(*)) {
@@ -10522,8 +10523,8 @@ ul {
   column-gap: 24px;
   padding-block: 18px;
   font-size: 18px;
-  font-weight: 500;
-  line-height: 140%;
+  font-weight: 600;
+  line-height: 22.5px;
   color: #1C1A17;
 }
 
@@ -10539,13 +10540,12 @@ ul {
 }
 
 .trade_program .faq__answer {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
-  line-height: 140%;
-  color: rgb(var(--text-color) / .7);
+  line-height: 22.4px;
+  color: rgb(var(--text-color));
 }
 
-/* --- Mobile ------------------------------------------------------------- */
 
 @media screen and (max-width: 768px) {
   .bordered-section.trade_program {
@@ -10564,22 +10564,28 @@ ul {
 
   .trade_program .section_header_subheading {
     font-weight: 500;
+    letter-spacing: 0%;
   }
 
   .trade_program .section_header_heading {
-    font-size: 24px;
+    font-size: 24px !important;
     line-height: 120%;
   }
 
   .trade_program .accordion__toggle {
     column-gap: 16px;
     padding-block: 16px;
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 17.5px;
   }
 
   .trade_program .accordion__content {
     padding-block-end: 16px;
     padding-inline-end: 28px;
+  }
+  .trade_program .faq__answer{
+    font-size: 12px;
+    line-height: 140%;
   }
 }
 
@@ -10695,7 +10701,12 @@ ul {
   padding: 10px 30px;
   font-weight: 700;
 }
-
+.faq__content .accordion__toggle .text-with-icon{
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 22.5px;
+  letter-spacing: 0%;
+}
 @media screen and (min-width: 999px) {
   .application_process .multi-column-card_heading-group {
     display: block;
@@ -10780,6 +10791,10 @@ ul {
 
   .trade_program_banner_cta .banner-cta__actions .button {
     padding: 8.55px 19px 9.45px 19px;
+  }
+  .faq__content .accordion__toggle .text-with-icon{
+    font-size: 16px;
+    line-height: 17.5px;
   }
 
 }
