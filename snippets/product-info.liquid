@@ -9,7 +9,15 @@
   @param {string} [context] - the context of the product info. Can be "main_product", "featured_product" or "quick_buy"
   @param {object} [section]
 {%- enddoc -%}
-
+<style>
+  .shopify-section--main-product .product-info .product-title 
+    font-family: Forum;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 120%;
+    vertical-align: middle;
+  }
+</style>
 <safe-sticky class="product-info {% if center_basic_info %}product-info--center{% endif %}">
   <div class="product-info__block-list">
     {%- liquid
