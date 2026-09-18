@@ -249,7 +249,7 @@
       "email": "E-mail",
       "message": "Message",
       "submit": "Send message",
-      "success_message": "Your message has been sent."
+      "success_message": "Thank you for reaching out! Your message was successfully submitted. We'll respond shortly."
     }
   },
   "customer": {
