@@ -10763,7 +10763,7 @@ ul {
 }
 
 .product-card__figure > .badge-list {
-  inset-block-start: 7px;
+  inset-block-start: 13px;
   inset-inline-start: 0px;
   gap: 3px;
 }
@@ -10948,7 +10948,7 @@ ul {
 /* ---------- Mobile ---------- */
 @media screen and (max-width: 699px) {
   .product-card__figure > .badge-list {
-    inset-block-start: 7px;
+    inset-block-start:12px;
     inset-inline-start: 0px;
   }
 
