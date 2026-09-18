@@ -6,6 +6,7 @@
   @param {string} [size] - can be "sm". If none is set, the default "base" size is used
   @param {string} [background] - an optional background color to use that overrides the default
   @param {string} [text_color] - an optional text color to use that overrides the default
+  @param {string} [border_color] - an optional border color to use that overrides the default
   @param {string} [style] - "solid", "outline" or "link". If none is set "solid" is assumed
   @param {boolean} [stretch] - if set to true, a full width button is generated
   @param {boolean} [subdued] - when using the "outline" mode, this reduces the importance of the button
@@ -54,6 +55,10 @@
 
       if text_color != blank and text_color != 'rgba(0,0,0,0)'
         echo '--button-text-color: ' | append: text_color.rgb | append: ';'
+      endif
+
+      if border_color != blank and border_color != 'rgba(0,0,0,0)'
+        echo '--button-outline-color: ' | append: border_color.rgb | append: ';'
       endif
     endif
   endcapture

@@ -99,30 +99,338 @@
           "type": "separator",
           "settings": {}
         },
+        "color_pattern_picker_LVwz7N": {
+          "type": "color_pattern_picker",
+          "settings": {
+            "heading": "Select Color & Pattern",
+            "option_value_metafield": "shopify.color-pattern",
+            "products": "{{ product.metafields[\"shopify--discovery--product_recommendation\"].complementary_products.value }}"
+          }
+        },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
             "hide_sold_out_variants": false,
-            "selector_style": "block",
-            "swatch_selector_style": "swatch",
+            "selector_style": "dropdown",
+            "swatch_selector_style": "none",
             "variant_image_options": "",
             "variant_image_show_underline": false,
-            "size_chart_page": ""
+            "size_chart_page": "",
+            "shape_heading": "Select Shape",
+            "enter_size_heading": "Enter Size"
+          }
+        },
+        "text_nEQyXW": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Need help with custom sizing?<a href=\"/pages/contact\" title=\"Contact Us\"><strong> Talk to an expert</strong></a> before placing your order.</p>"
+          }
+        },
+        "notice_banner_xrXFrz": {
+          "type": "notice_banner",
+          "settings": {
+            "text": "This rug is <strong>made to order & ships in 5-8 weeks</strong>",
+            "background": "#fbeedd",
+            "text_color": "",
+            "border_color": ""
           }
         },
         "quantity_selector": {
           "type": "quantity_selector",
           "settings": {}
         },
+        "separator_r4QKWE": {
+          "type": "separator",
+          "settings": {}
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "show_payment_button": true,
+            "show_payment_button": false,
             "show_gift_card_recipient": true,
             "atc_button_background": "",
             "atc_button_text_color": "",
             "payment_button_background": "",
             "payment_button_text_color": ""
+          }
+        },
+        "button_jGMte4": {
+          "type": "button",
+          "settings": {
+            "link": "shopify://pages/contact",
+            "text": "Talk to us",
+            "stretch": true,
+            "style": "solid",
+            "icon": "picto-video-camera",
+            "background": "#fffbf3",
+            "text_color": "#55583c",
+            "border_color": "#55583c"
+          }
+        },
+        "feature_with_icon_gKpqa9": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "Free & Insured Shipping",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/hugeicons_shipping-truck-01_1_6cf58179-dc43-4947-9e5d-6e1b4308c496.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "feature_with_icon_6h4t8k": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "Ships In 5-8 weeks",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/solar_box-outline_1_bf3e91fc-af70-44fc-9e25-adbf79357a8a.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "feature_with_icon_hzGdKd": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "Handcrafted Design",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/solar_hand-heart-linear_24a89c7b-829e-430a-9169-9457f150df6b.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "feature_with_icon_UTUmyk": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "30-Day Returns",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/hugeicons_delivery-return-01_1_f492d797-6777-41ef-812b-a864922d3ce3.png",
+            "icon_width": 16,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "separator_QzT9Tb": {
+          "type": "separator",
+          "settings": {}
+        },
+        "image_text_card_eDVhda": {
+          "type": "image_text_card",
+          "settings": {
+            "image": "shopify://shop_images/b9f58825ed6196aa9f6f5dd06281e6e41609f56d.png",
+            "heading": "Crafted with Purpose",
+            "text": "<p>Handcrafted by skilled artisans in rural India, every Bisha rug celebrates craftsmanship and fair, ethical practices.</p>",
+            "button_label": "",
+            "button_link": "",
+            "background": "#f5f5f5",
+            "text_color": "",
+            "border_color": ""
+          }
+        },
+        "image_text_card_A3aczE": {
+          "type": "image_text_card",
+          "settings": {
+            "image": "shopify://shop_images/0f111b50afa1cbc748628327e86a3d50423143c9.png",
+            "heading": "Having second thoughts?",
+            "text": "<p>See your rug before you order. Get a CADD design in your size, colors and setting.</p>",
+            "button_label": "Get CADD DESIGN",
+            "button_link": "shopify://pages/contact",
+            "background": "#f3eee4",
+            "text_color": "",
+            "border_color": ""
+          }
+        },
+        "separator_HzXX9c": {
+          "type": "separator",
+          "settings": {}
+        },
+        "text_WrhAdN": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Why You’ll Love It</strong></p>"
+          }
+        },
+        "feature_with_icon_G9QcDK": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "100% New Zealand Wool",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/icon-park-outline_check-one_1.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "feature_with_icon_jpNWAH": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "Custom Sizes & Colors",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/icon-park-outline_check-one_1.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "feature_with_icon_6mzQBC": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "Colored with Natural Dyes",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/icon-park-outline_check-one_1.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "feature_with_icon_Rjq9wY": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "Made by Master Artisans",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/icon-park-outline_check-one_1.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "feature_with_icon_pLrHNa": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "Hand-Woven in India",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/icon-park-outline_check-one_1.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "feature_with_icon_ArkC3B": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "Eco-Friendly Materials",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/icon-park-outline_check-one_1.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "separator_dzMtFM": {
+          "type": "separator",
+          "settings": {}
+        },
+        "review_KirzYU": {
+          "type": "review",
+          "settings": {
+            "avatar": "shopify://shop_images/Best_Sellers_3edf9f18-2c92-4f6c-a0ed-56b99bb57411.png",
+            "name": "Kerry M.",
+            "verified": true,
+            "rating": 5,
+            "quote": "The quality of these rugs is truly exceptional. I love knowing that I am supporting local artisans."
+          }
+        },
+        "separator_nnLx4L": {
+          "type": "separator",
+          "settings": {}
+        },
+        "real_homes_reel_f4y6Ep": {
+          "type": "real_homes_reel",
+          "settings": {
+            "title": "See in Real Homes",
+            "item_1_type": "video",
+            "item_1_video": "shopify://files/videos/WhatsApp Video 2026-09-12 at 12.11.01 PM.mp4",
+            "item_1_link": "",
+            "item_2_type": "video",
+            "item_2_video": "shopify://files/videos/WhatsApp Video 2026-09-12 at 12.10.13 PM.mp4",
+            "item_2_link": "",
+            "item_3_type": "video",
+            "item_3_video": "shopify://files/videos/Celestial Midnight Garden – Karakul Handmade Rug ✨🌙Artistic • Textured • Ethereal Craftsmanship.mp4",
+            "item_3_link": "",
+            "item_4_type": "video",
+            "item_4_video": "shopify://files/videos/Hey friends! I’m so excited to share this incredible upgrade in our library room. True quality a.mp4",
+            "item_4_link": "",
+            "item_5_type": "video",
+            "item_5_link": "",
+            "item_6_type": "video",
+            "item_6_link": "",
+            "item_7_type": "video",
+            "item_7_link": "",
+            "item_8_type": "video",
+            "item_8_link": "",
+            "item_9_type": "video",
+            "item_9_link": "",
+            "item_10_type": "video",
+            "item_10_link": ""
+          }
+        },
+        "separator_M8pJPL": {
+          "type": "separator",
+          "settings": {}
+        },
+        "accordion_gHQJpr": {
+          "type": "accordion",
+          "settings": {
+            "show_below_gallery": false,
+            "icon": "none",
+            "title": "Product Description",
+            "content": "{{ product.description }}",
+            "liquid": "",
+            "page": ""
+          }
+        },
+        "accordion_dWgcNj": {
+          "type": "accordion",
+          "settings": {
+            "show_below_gallery": false,
+            "icon": "none",
+            "title": "Craftsmanship",
+            "content": "<p>Handcrafted in India by generational artisans, every Bisha Oushak rug is woven using centuries-old techniques inspired by Persian and Anatolian traditions. From selecting the finest wool to tying every individual knot by hand, each rug is crafted with remarkable patience, precision, and care.<br/><br/><strong>The Making Process:<br/></strong> Premium New Zealand wool is carefully selected and prepared.<br/>Natural dyes create soft, timeless color palettes with subtle tonal variation<br/>.Every knot is tied by hand on a traditional loom.<br/>Each rug is trimmed, washed, and carefully inspected before shipment.<br/><br/><strong> Features: </strong><br/><br/>Generational artisan craftsmanship<br/>Oversized signature motifs<br/>Soft pastel color palette<br/>Inspired by historic Oushak designs<br/><br/><br/><br/></p>",
+            "liquid": "",
+            "page": ""
+          }
+        },
+        "accordion_YhTQb9": {
+          "type": "accordion",
+          "settings": {
+            "show_below_gallery": false,
+            "icon": "none",
+            "title": "Rug Care Guide",
+            "content": "<p>Your Oushak rug is designed to be enjoyed for decades. With simple, consistent care, the natural wool will soften beautifully over time, allowing the rug to develop the timeless character that makes handcrafted pieces special.</p><p><strong>Everyday Care:</strong></p><ul><li>Vacuum regularly using low suction.</li><li>Rotate your rug every 6–12 months for even wear.</li><li>Use a quality rug pad for added cushioning, stability, and longevity.</li></ul><p><strong>Spill & Stain Care:</strong></p><ul><li>Blot spills immediately with a clean white cloth.</li><li>Never rub stains, as this may damage the fibers.</li><li>Avoid harsh chemicals or bleach.</li><li>Allow the rug to air dry completely before regular use.</li></ul><p><strong>Professional Care:</strong></p><ul><li>Professional dry cleaning is recommended when needed.</li><li>Do not wash the rug at home.</li><li>Trim loose fibers carefully with scissors, never pull them.</li><li>Use rug protectors beneath heavy furniture to reduce pressure marks.</li></ul><p><strong>Rug Pad Protection:</strong></p><ul><li>Use a quality rug pad to prevent slipping and improve stability.</li><li>Adds cushioning for a softer underfoot feel.</li><li>Reduces wear on the rug's foundation and extends its lifespan.</li><li>Promotes airflow beneath the rug to help preserve its condition.</li></ul><p><strong>Storage & Long-Term Care:</strong></p><ul><li>Roll the rug for storage, never fold it.</li><li>Store in a cool, dry place wrapped in breathable fabric.</li><li>Avoid prolonged exposure to direct sunlight to preserve color.</li><li>Light shedding is normal for new wool rugs and will reduce over time.</li></ul>",
+            "liquid": "",
+            "page": ""
+          }
+        },
+        "accordion_RLayEy": {
+          "type": "accordion",
+          "settings": {
+            "show_below_gallery": false,
+            "icon": "none",
+            "title": "Shipping & Returns",
+            "content": "<p>Every Bisha rug is made to order and carefully handcrafted before it begins its journey to your home. Once completed, we ship to USA, UK, Germany and all international destinations via multiple logistics, <strong>with fully insured delivery and tracking for complete peace of mind.</strong></p><p><strong>Shipping:</strong></p><ul><li>Made-to-order production: 30 - 60 days</li><li>Delivery: 5 - 8 business days after dispatch</li><li>Fully insured worldwide shipping</li><li>Tracking provided for every order</li></ul><p>Learn more about our <a href=\"https://claude.ai/chat/954c3ac3-d331-4668-a439-c60f1cebbd90#\">Shipping Policy</a></p><p><strong>Returns:</strong></p><ul><li>30-Day Returns & Exchanges on eligible orders</li><li>Made-to-order custom rugs cannot be cancelled, changed or returned once production begins.</li></ul><p>Learn more about our <a href=\"https://claude.ai/chat/954c3ac3-d331-4668-a439-c60f1cebbd90#\">Return Policy</a></p>",
+            "liquid": "",
+            "page": ""
           }
         },
         "complementary_products": {
@@ -145,9 +453,38 @@
         "liquid_WK9Eei",
         "payment_terms",
         "separator",
+        "color_pattern_picker_LVwz7N",
         "variant_picker",
+        "text_nEQyXW",
+        "notice_banner_xrXFrz",
         "quantity_selector",
+        "separator_r4QKWE",
         "buy_buttons",
+        "button_jGMte4",
+        "feature_with_icon_gKpqa9",
+        "feature_with_icon_6h4t8k",
+        "feature_with_icon_hzGdKd",
+        "feature_with_icon_UTUmyk",
+        "separator_QzT9Tb",
+        "image_text_card_eDVhda",
+        "image_text_card_A3aczE",
+        "separator_HzXX9c",
+        "text_WrhAdN",
+        "feature_with_icon_G9QcDK",
+        "feature_with_icon_jpNWAH",
+        "feature_with_icon_6mzQBC",
+        "feature_with_icon_Rjq9wY",
+        "feature_with_icon_pLrHNa",
+        "feature_with_icon_ArkC3B",
+        "separator_dzMtFM",
+        "review_KirzYU",
+        "separator_nnLx4L",
+        "real_homes_reel_f4y6Ep",
+        "separator_M8pJPL",
+        "accordion_gHQJpr",
+        "accordion_dWgcNj",
+        "accordion_YhTQb9",
+        "accordion_RLayEy",
         "complementary_products"
       ],
       "settings": {

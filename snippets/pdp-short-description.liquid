@@ -14,7 +14,10 @@
   block boundaries handles every shape the same way.
 
   The text itself is never rewritten: points are taken whole, in order, exactly
-  as written in Shopify. Nothing is hardcoded.
+  as written in Shopify. Nothing is hardcoded. Bold and italic runs (<strong>,
+  <b>, <em>, <i>) are the one exception carried through as real markup rather
+  than being stripped, so a merchant can bold a phrase - "New Zealand wool",
+  say - in the product description and have it render bold here too.
 
   Usage - a "Liquid" block where the short description should appear:
 
@@ -35,7 +38,19 @@
   assign raw = product.description
   assign raw = raw | replace: '</li>', '|||' | replace: '</p>', '|||'
   assign raw = raw | replace: '<br>', '|||' | replace: '<br/>', '|||' | replace: '<br />', '|||'
+
+  # strip_html removes every tag, bold and italic included. Swap those for
+  # placeholders it won't recognise as markup, then restore the real tags
+  # once the rest of the HTML is gone.
+  assign raw = raw | replace: '<strong>', '[[b]]' | replace: '</strong>', '[[/b]]'
+  assign raw = raw | replace: '<b>', '[[b]]' | replace: '</b>', '[[/b]]'
+  assign raw = raw | replace: '<em>', '[[i]]' | replace: '</em>', '[[/i]]'
+  assign raw = raw | replace: '<i>', '[[i]]' | replace: '</i>', '[[/i]]'
+
   assign raw = raw | strip_html
+  assign raw = raw | replace: '[[b]]', '<strong>' | replace: '[[/b]]', '</strong>'
+  assign raw = raw | replace: '[[i]]', '<em>' | replace: '[[/i]]', '</em>'
+
   assign chunks = raw | split: '|||'
 
   assign kept = ''
@@ -58,8 +73,9 @@
     # as bold body text rather than a heading, so it is part of the content and
     # would otherwise count as the first point. Compared case-insensitively and
     # only when it is the whole of the line, so a sentence that merely contains
-    # the word is kept.
-    assign point_downcase = point | downcase | strip | replace: ':', ''
+    # the word is kept. Stripped of its <strong> tags first, since the label is
+    # bold and point now keeps its markup.
+    assign point_downcase = point | strip_html | downcase | strip | replace: ':', ''
     if point_downcase == 'description'
       continue
     endif

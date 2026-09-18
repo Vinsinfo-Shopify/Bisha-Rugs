@@ -141,7 +141,7 @@
         "image": "{{ collection.metafields.custom.collection_banner.value }}",
         "mobile_image": "{{ collection.metafields.custom.collection_banner_mobile.value }}",
         "media_position_mobile": "before_text",
-        "reveal_on_scroll": true,
+        "reveal_on_scroll": false,
         "image_position": "end",
         "content_width": "lg",
         "trade_media_gap": 0,
