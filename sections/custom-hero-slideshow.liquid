@@ -358,12 +358,18 @@
     {%- endfor -%}
 
     {%- if section.blocks.size > 1 -%}
-      <button type="button" class="hero-slideshow__arrow" aria-label="Next slide" data-hero-next>
-        <svg viewBox="8 5 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <polyline points="9 18 15 12 9 6"/>
-</svg>
-      </button>
-    {%- endif -%}
+  <button type="button" class="hero-slideshow__arrow hero-slideshow__arrow--prev" aria-label="Previous slide" data-hero-prev>
+    <svg viewBox="8 5 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 6 9 12 15 18"/>
+    </svg>
+  </button>
+
+  <button type="button" class="hero-slideshow__arrow" aria-label="Next slide" data-hero-next>
+    <svg viewBox="8 5 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"/>
+    </svg>
+  </button>
+{%- endif -%}
   </div>
   {%- if section.blocks.size > 1 -%}
     <div class="hero-slideshow__dots">
