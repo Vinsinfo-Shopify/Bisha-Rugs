@@ -101,7 +101,7 @@
       gap: var(--rh-gap);
       overflow: auto hidden;
       overscroll-behavior-x: contain;
-      scroll-snap-type: x mandatory;
+      scroll-snap-type: x proximity;
       scroll-behavior: smooth;
       scrollbar-width: none;
     }
@@ -445,7 +445,7 @@ width: 28px;
               // midpoint right by half the growth, so the first paint would sit
               // off-centre by that amount. Centre once more now the width is
               // final. Instant, so nothing is visible.
-              requestAnimationFrame(() => this.centre(this.track.querySelector('.is-active'), true));
+              requestAnimationFrame(() => this.centre(this.track.querySelector('.is-active'), false));
             });
           }
 
