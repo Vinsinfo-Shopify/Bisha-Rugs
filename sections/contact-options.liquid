@@ -63,7 +63,11 @@
     line-height: 34px;
     font-weight: 500;
   }
-
+#shopify-section-{{ section.id }} .co__header .section_header_subheading,
+#shopify-section-{{ section.id }} .co__header .section_header_heading {
+  text-align: center;
+  width: 100%;
+}
   /* ---------- Carousel ----------
      group-cells is omitted, so ScrollCarousel's groupCells getter returns 1:
      one card per arrow click, never a page. cell-selector pins the cells to the
@@ -309,6 +313,8 @@
 #shopify-section-{{ section.id }} .co__header .prose {
   width: 100%;
   max-width: 100%;
+    text-align: center;
+  margin-inline: auto;
 }
   /* ---------- Mobile ---------- */
   @media screen and (max-width: 699px) {
