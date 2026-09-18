@@ -259,6 +259,19 @@
             "text": "<p><strong>Why You’ll Love It</strong></p>"
           }
         },
+        "feature_with_icon_G9QcDK": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "100% New Zealand Wool",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/icon-park-outline_check-one_1.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
         "complementary_products": {
           "type": "complementary_products",
           "settings": {
@@ -296,6 +309,7 @@
         "image_text_card_A3aczE",
         "separator_HzXX9c",
         "text_WrhAdN",
+        "feature_with_icon_G9QcDK",
         "complementary_products"
       ],
       "settings": {
