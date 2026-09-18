@@ -29,13 +29,13 @@
         "rating_font_size": 14,
         "rating_line_height": 20,
         "rating_gap": 6,
-        "info_row_gap": 8,
+        "info_row_gap": 15,
         "info_row_gap_mobile": 6,
         "description_points": 2,
         "description_line_gap": 6,
         "price_gap": 12,
         "pill_gap": 12,
-        "pill_background": "#f3eee4",
+        "pill_background": "#ffffff",
         "badge_top": 10,
         "badge_left": 0,
         "grid_gap": 16,
@@ -64,7 +64,7 @@
         "title": {
           "type": "title",
           "settings": {
-            "heading_tag": "h3"
+            "heading_tag": "h1"
           }
         },
         "liquid_VxkgFD": {
@@ -151,7 +151,7 @@
         "complementary_products"
       ],
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-1",
         "allow_transparent_header": false,
         "transparent_header_use_primary_colors": false,
         "container_size": "lg",
