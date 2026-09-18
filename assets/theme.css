@@ -10079,6 +10079,38 @@ ul {
   letter-spacing: 0%;
 }
 
+/* Collection + PDP FAQ — mobile only.
+   The image column is desktop-only, so the header drops its side-by-side
+   alignment and centers over the full-width accordion list. */
+@media screen and (max-width: 768px) {
+  .collection_faq .faq_section_header {
+    margin-bottom: 24px;
+  }
+
+  .collection_faq .faq_section_header.header_flex {
+    display: block;
+  }
+
+  .collection_faq .faq_section_header .section-header {
+    justify-self: center;
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .collection_faq .section_header_heading {
+    font-size: 24px;
+  }
+
+  .collection_faq .accordion__toggle {
+    column-gap: 16px;
+    padding-block: 16px;
+  }
+
+  .collection_faq .accordion__content {
+    padding-block-end: 16px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .custom_rugs .image-with-text {
     gap: 15px;
@@ -11147,10 +11179,10 @@ ul {
 .comparison-table__eyebrow {
   margin: 0 0 8px;
   font-family: var(--text-font-family);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: 0.1em;
+  line-height: 140%;
+  letter-spacing: 0%;
   text-transform: uppercase;
   color: var(--ct-heading-color);
 }
@@ -11263,8 +11295,8 @@ ul {
   margin: 14px 0 0;
   font-family: var(--text-font-family);
   font-size: var(--ct-title-size);
-  font-weight: 600;
-  line-height: 1.35;
+  font-weight: 700;
+  line-height: 140%;
   color: var(--ct-heading-color);
 }
 
@@ -11313,6 +11345,7 @@ ul {
 
   .comparison-table__column-title {
     margin-block-start: 10px;
+    font-size: 16px;
   }
 
   .comparison-table__eyebrow {
