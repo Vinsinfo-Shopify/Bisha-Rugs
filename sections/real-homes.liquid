@@ -110,28 +110,17 @@
     }
 
     #shopify-section-{{ section.id }} .real-homes__card {
-      flex: 0 0 var(--rh-card);
-      scroll-snap-align: center;
-      display: block;
-      transition: flex-basis 0.2s ease;
-    }
-
-    /* The centre card is larger. Measured at 1.166x on both axes about a shared
-       midpoint, which align-items: center on the track reproduces. */
-    #shopify-section-{{ section.id }} .real-homes__card.is-active {
-      flex-basis: calc(var(--rh-card) * {{ section.settings.active_scale | divided_by: 100.0 }});
-    }
-
-#shopify-section-{{ section.id }} .real-homes__card {
-  flex: 0 0 var(--rh-card);
+  flex: 0 0 280px;
   scroll-snap-align: center;
   display: block;
   transition: flex-basis 0.2s ease;
 }
 
 #shopify-section-{{ section.id }} .real-homes__card.is-active {
-  flex-basis: calc(var(--rh-card) * {{ section.settings.active_scale | divided_by: 100.0 }});
+  flex-basis: 329px;
 }
+
+
 
     #shopify-section-{{ section.id }} .real-homes__media {
       position: relative;
