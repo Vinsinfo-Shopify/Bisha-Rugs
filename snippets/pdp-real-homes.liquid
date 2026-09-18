@@ -1,0 +1,84 @@
+{%- doc -%}
+  Renders the "See in Real Homes" reel for the product page: a horizontally
+  scrolling row of up to 10 items, each either a video or an image, shown as a
+  thumbnail with a play-button overlay when it's a video.
+
+  Reuses the media + play-button rendering from snippets/media.liquid, the
+  same pattern used by sections/real-homes.liquid.
+
+  @param {object} block - the "real_homes_reel" block
+{%- enddoc -%}
+
+{%- liquid
+  assign settings = block.settings
+  assign carousel_id = 'pdp-real-homes-' | append: block.id
+
+  assign item_count = 0
+  for i in (1..10)
+    assign type_key = 'item_' | append: i | append: '_type'
+    assign video_key = 'item_' | append: i | append: '_video'
+    assign image_key = 'item_' | append: i | append: '_image'
+
+    assign item_type = settings[type_key]
+    assign item_video = settings[video_key]
+    assign item_image = settings[image_key]
+
+    if item_type == 'image' and item_image != blank
+      assign item_count = item_count | plus: 1
+    elsif item_video != blank or item_image != blank
+      assign item_count = item_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if item_count > 0 -%}
+  <div class="pdp-real-homes" {{ block.shopify_attributes }}>
+    {%- if settings.title != blank -%}
+      <p class="pdp-real-homes__title h6">{{- settings.title -}}</p>
+    {%- endif -%}
+
+    <div class="pdp-real-homes__track">
+      {%- for i in (1..10) -%}
+        {%- liquid
+          assign type_key = 'item_' | append: i | append: '_type'
+          assign video_key = 'item_' | append: i | append: '_video'
+          assign image_key = 'item_' | append: i | append: '_image'
+          assign link_key = 'item_' | append: i | append: '_link'
+
+          assign item_type = settings[type_key]
+          assign item_video = settings[video_key]
+          assign item_image = settings[image_key]
+          assign item_link = settings[link_key]
+
+          if item_type == 'image' and item_image != blank
+            assign item_media = item_image
+          else
+            assign item_media = item_video | default: item_image
+          endif
+        -%}
+
+        {%- if item_media != blank -%}
+          {%- capture item_media_markup -%}
+            <div class="pdp-real-homes__media">
+              {%- render 'media',
+                media: item_media,
+                autoplay: false,
+                loop: true,
+                controls: false,
+                show_play_button: true,
+                group: carousel_id,
+                sizes: '(max-width: 699px) 45vw, 200px'
+              -%}
+            </div>
+          {%- endcapture -%}
+
+          {%- if item_link != blank -%}
+            <a href="{{ item_link }}" class="pdp-real-homes__item">{{- item_media_markup -}}</a>
+          {%- else -%}
+            <div class="pdp-real-homes__item">{{- item_media_markup -}}</div>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}

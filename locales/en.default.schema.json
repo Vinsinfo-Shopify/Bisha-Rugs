@@ -287,6 +287,7 @@
       "mobile_phone": "Mobile phone",
       "operator": "Operator",
       "phone": "Phone",
+      "video_call": "Video call",
       "send": "Send",
       "user": "User",
       "food_category": "Food & Drink",
@@ -1292,7 +1293,11 @@
           "variant_image_options_info": "List of comma separated option names where option values show the attached variant image. [Learn more](https://support.maestrooo.com/article/767-variant-image-for-color-options)",
           "variant_image_show_underline": "Underline for variant images",
           "size_chart_page": "Size chart page",
-          "size_chart_page_info": "Feature a page for size option"
+          "size_chart_page_info": "Feature a page for size option",
+          "shape_heading": "Shape heading",
+          "shape_heading_info": "Shown above the All/Rectangle/Runner filter. Leave blank to hide it.",
+          "enter_size_heading": "Enter size heading",
+          "enter_size_heading_info": "Shown above the size selector. Leave blank to hide it."
         },
         "product_variations": {
           "name": "Product variations",
@@ -1303,6 +1308,15 @@
           "option_value_metafield_info": "Enter as a text the namespace and key of the metafield holding the value. Eg.: custom.color",
           "product_list": "Products",
           "product_list_info": "Select all the variations (including the product itself)."
+        },
+        "color_pattern_picker": {
+          "name": "Color & pattern picker",
+          "instructions": "Links this product to other products (different colorways of the same design) as circular photo swatches. Add every colorway, including this product itself.",
+          "heading": "Heading",
+          "option_value_metafield": "Label metafield",
+          "option_value_metafield_info": "Namespace and key of the metafield holding each product's displayed name, eg.: shopify.color-pattern or custom.color",
+          "product_list": "Products",
+          "product_list_info": "Select every colorway/pattern of this product, including the product itself."
         },
         "line_item_property": {
           "name": "Line item property",
@@ -1381,6 +1395,17 @@
         },
         "text": {
           "name": "Text"
+        },
+        "notice_banner": {
+          "name": "Notice banner"
+        },
+        "checklist_item": {
+          "name": "Checklist item"
+        },
+        "image_text_card": {
+          "name": "Image with text card",
+          "button_label": "Button label",
+          "button_link": "Button link"
         },
         "collapsible_text": {
           "name": "Collapsible text",
