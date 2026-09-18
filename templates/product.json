@@ -272,6 +272,71 @@
             "border_color": ""
           }
         },
+        "feature_with_icon_jpNWAH": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "Custom Sizes & Colors",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/icon-park-outline_check-one_1.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "feature_with_icon_6mzQBC": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "Colored with Natural Dyes",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/icon-park-outline_check-one_1.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "feature_with_icon_Rjq9wY": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "Made by Master Artisans",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/icon-park-outline_check-one_1.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "feature_with_icon_pLrHNa": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "Hand-Woven in India",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/icon-park-outline_check-one_1.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "feature_with_icon_ArkC3B": {
+          "type": "feature_with_icon",
+          "settings": {
+            "text": "Eco-Friendly Materials",
+            "link": "",
+            "icon": "none",
+            "custom_icon": "shopify://shop_images/icon-park-outline_check-one_1.png",
+            "icon_width": 28,
+            "background": "rgba(0,0,0,0)",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
         "complementary_products": {
           "type": "complementary_products",
           "settings": {
@@ -310,6 +375,11 @@
         "separator_HzXX9c",
         "text_WrhAdN",
         "feature_with_icon_G9QcDK",
+        "feature_with_icon_jpNWAH",
+        "feature_with_icon_6mzQBC",
+        "feature_with_icon_Rjq9wY",
+        "feature_with_icon_pLrHNa",
+        "feature_with_icon_ArkC3B",
         "complementary_products"
       ],
       "settings": {
