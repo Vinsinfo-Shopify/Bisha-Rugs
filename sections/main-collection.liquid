@@ -271,6 +271,9 @@
     }
 
     @media screen and (max-width: 749px) {
+      #shopify-section-{{ section.id }} .active-facets > facet-link {
+         padding: 0px;
+      }
       #shopify-section-{{ section.id }} .container {
         --container-gutter: 12px;
       }
@@ -438,7 +441,8 @@
       #shopify-section-{{ section.id }} .collection-toolbar__products-count {
         position: relative;
         z-index: 0;
-        top: 25px;
+        padding-block-start: 15px;
+        padding-block-end: 5px;
       }
     }
     /* ---------- Shop by Color (Phase 1) ----------
