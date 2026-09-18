@@ -35,10 +35,11 @@
             "heading": "Contact Us",
             "description": "<p>Please submit all general enquiries in the contact form below and we look forward to hearing from you soon.</p>",
             "show_privacy": true,
-            "name": "",
-            "email": "",
-            "your_comment": "",
-            "button_label": ""
+            "name": "Name",
+            "email": "E-mail",
+            "your_comment": "Message",
+            "message_max_length": 500,
+            "button_label": "Send"
           }
         }
       },

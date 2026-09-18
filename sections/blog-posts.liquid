@@ -41,6 +41,9 @@
   #shopify-section-{{ section.id }} .blogc__header {
     margin-block-end: {{ section.settings.header_gap }}px;
     text-align: center;
+    display: flex;
+      justify-content: center;
+      align-items: center;
   }
 
   /* section-header.liquid always emits <div class="section_header_content">,
@@ -185,6 +188,11 @@
     line-height: 1.417;
     font-weight: 400;
     color: #000000;
+  }
+
+  #shopify-section-{{ section.id }} .blogc__meta [aria-hidden] {
+    font-size: 16px;
+    line-height: 1.5;
   }
 
   #shopify-section-{{ section.id }} .blogc__title {
