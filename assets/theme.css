@@ -10777,7 +10777,7 @@ ul {
   text-transform: uppercase;
 }
 
-.product-card__figure .badge-list .badge--best-seller {
+.product-card__figure .badge-list .badge {
   background: #f3eee4;
   color: #000000;
   padding: 10.5px 15px;
