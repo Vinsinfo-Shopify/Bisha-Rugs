@@ -122,12 +122,16 @@
       flex-basis: calc(var(--rh-card) * {{ section.settings.active_scale | divided_by: 100.0 }});
     }
 
-    /* Three across below large desktop, so the centre card is never ambiguous */
-    @media screen and (max-width: 1199px) {
-      #shopify-section-{{ section.id }} .real-homes__carousel {
-        --rh-visible: 3;
-      }
-    }
+#shopify-section-{{ section.id }} .real-homes__card {
+  flex: 0 0 var(--rh-card);
+  scroll-snap-align: center;
+  display: block;
+  transition: flex-basis 0.2s ease;
+}
+
+#shopify-section-{{ section.id }} .real-homes__card.is-active {
+  flex-basis: calc(var(--rh-card) * {{ section.settings.active_scale | divided_by: 100.0 }});
+}
 
     #shopify-section-{{ section.id }} .real-homes__media {
       position: relative;
