@@ -411,6 +411,17 @@
             "page": ""
           }
         },
+        "accordion_YhTQb9": {
+          "type": "accordion",
+          "settings": {
+            "show_below_gallery": false,
+            "icon": "none",
+            "title": "Rug Care Guide",
+            "content": "<p>Your Oushak rug is designed to be enjoyed for decades. With simple, consistent care, the natural wool will soften beautifully over time, allowing the rug to develop the timeless character that makes handcrafted pieces special.</p><p><strong>Everyday Care:</strong></p><ul><li>Vacuum regularly using low suction.</li><li>Rotate your rug every 6–12 months for even wear.</li><li>Use a quality rug pad for added cushioning, stability, and longevity.</li></ul><p><strong>Spill & Stain Care:</strong></p><ul><li>Blot spills immediately with a clean white cloth.</li><li>Never rub stains, as this may damage the fibers.</li><li>Avoid harsh chemicals or bleach.</li><li>Allow the rug to air dry completely before regular use.</li></ul><p><strong>Professional Care:</strong></p><ul><li>Professional dry cleaning is recommended when needed.</li><li>Do not wash the rug at home.</li><li>Trim loose fibers carefully with scissors, never pull them.</li><li>Use rug protectors beneath heavy furniture to reduce pressure marks.</li></ul><p><strong>Rug Pad Protection:</strong></p><ul><li>Use a quality rug pad to prevent slipping and improve stability.</li><li>Adds cushioning for a softer underfoot feel.</li><li>Reduces wear on the rug's foundation and extends its lifespan.</li><li>Promotes airflow beneath the rug to help preserve its condition.</li></ul><p><strong>Storage & Long-Term Care:</strong></p><ul><li>Roll the rug for storage, never fold it.</li><li>Store in a cool, dry place wrapped in breathable fabric.</li><li>Avoid prolonged exposure to direct sunlight to preserve color.</li><li>Light shedding is normal for new wool rugs and will reduce over time.</li></ul>",
+            "liquid": "",
+            "page": ""
+          }
+        },
         "complementary_products": {
           "type": "complementary_products",
           "settings": {
@@ -461,6 +472,7 @@
         "separator_M8pJPL",
         "accordion_gHQJpr",
         "accordion_dWgcNj",
+        "accordion_YhTQb9",
         "complementary_products"
       ],
       "settings": {
