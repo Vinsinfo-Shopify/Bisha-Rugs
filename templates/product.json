@@ -422,6 +422,17 @@
             "page": ""
           }
         },
+        "accordion_RLayEy": {
+          "type": "accordion",
+          "settings": {
+            "show_below_gallery": false,
+            "icon": "none",
+            "title": "Shipping & Returns",
+            "content": "<p>Every Bisha rug is made to order and carefully handcrafted before it begins its journey to your home. Once completed, we ship to USA, UK, Germany and all international destinations via multiple logistics, <strong>with fully insured delivery and tracking for complete peace of mind.</strong></p><p><strong>Shipping:</strong></p><ul><li>Made-to-order production: 30 - 60 days</li><li>Delivery: 5 - 8 business days after dispatch</li><li>Fully insured worldwide shipping</li><li>Tracking provided for every order</li></ul><p>Learn more about our <a href=\"https://claude.ai/chat/954c3ac3-d331-4668-a439-c60f1cebbd90#\">Shipping Policy</a></p><p><strong>Returns:</strong></p><ul><li>30-Day Returns & Exchanges on eligible orders</li><li>Made-to-order custom rugs cannot be cancelled, changed or returned once production begins.</li></ul><p>Learn more about our <a href=\"https://claude.ai/chat/954c3ac3-d331-4668-a439-c60f1cebbd90#\">Return Policy</a></p>",
+            "liquid": "",
+            "page": ""
+          }
+        },
         "complementary_products": {
           "type": "complementary_products",
           "settings": {
@@ -473,6 +484,7 @@
         "accordion_gHQJpr",
         "accordion_dWgcNj",
         "accordion_YhTQb9",
+        "accordion_RLayEy",
         "complementary_products"
       ],
       "settings": {
