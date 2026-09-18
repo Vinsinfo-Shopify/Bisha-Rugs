@@ -389,6 +389,28 @@
           "type": "separator",
           "settings": {}
         },
+        "accordion_gHQJpr": {
+          "type": "accordion",
+          "settings": {
+            "show_below_gallery": false,
+            "icon": "none",
+            "title": "Product Description",
+            "content": "{{ product.description }}",
+            "liquid": "",
+            "page": ""
+          }
+        },
+        "accordion_dWgcNj": {
+          "type": "accordion",
+          "settings": {
+            "show_below_gallery": false,
+            "icon": "none",
+            "title": "Craftsmanship",
+            "content": "<p>Handcrafted in India by generational artisans, every Bisha Oushak rug is woven using centuries-old techniques inspired by Persian and Anatolian traditions. From selecting the finest wool to tying every individual knot by hand, each rug is crafted with remarkable patience, precision, and care.<br/><br/><strong>The Making Process:<br/></strong> Premium New Zealand wool is carefully selected and prepared.<br/>Natural dyes create soft, timeless color palettes with subtle tonal variation<br/>.Every knot is tied by hand on a traditional loom.<br/>Each rug is trimmed, washed, and carefully inspected before shipment.<br/><br/><strong> Features: </strong><br/><br/>Generational artisan craftsmanship<br/>Oversized signature motifs<br/>Soft pastel color palette<br/>Inspired by historic Oushak designs<br/><br/><br/><br/></p>",
+            "liquid": "",
+            "page": ""
+          }
+        },
         "complementary_products": {
           "type": "complementary_products",
           "settings": {
@@ -437,6 +459,8 @@
         "separator_nnLx4L",
         "real_homes_reel_f4y6Ep",
         "separator_M8pJPL",
+        "accordion_gHQJpr",
+        "accordion_dWgcNj",
         "complementary_products"
       ],
       "settings": {
