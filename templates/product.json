@@ -139,6 +139,10 @@
           "type": "quantity_selector",
           "settings": {}
         },
+        "separator_r4QKWE": {
+          "type": "separator",
+          "settings": {}
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -215,6 +219,10 @@
             "border_color": ""
           }
         },
+        "separator_QzT9Tb": {
+          "type": "separator",
+          "settings": {}
+        },
         "complementary_products": {
           "type": "complementary_products",
           "settings": {
@@ -240,12 +248,14 @@
         "text_nEQyXW",
         "notice_banner_xrXFrz",
         "quantity_selector",
+        "separator_r4QKWE",
         "buy_buttons",
         "button_jGMte4",
         "feature_with_icon_gKpqa9",
         "feature_with_icon_6h4t8k",
         "feature_with_icon_hzGdKd",
         "feature_with_icon_UTUmyk",
+        "separator_QzT9Tb",
         "complementary_products"
       ],
       "settings": {
