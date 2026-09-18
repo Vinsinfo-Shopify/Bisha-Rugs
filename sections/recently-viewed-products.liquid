@@ -8,7 +8,12 @@
     --product-list-horizontal-spacing-factor: {{ section.settings.horizontal_spacing_factor }};
     --product-list-vertical-spacing-factor: {{ section.settings.vertical_spacing_factor }};
   }
-
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .container {
+      --container-max-width: 1300px;
+      --container-gutter: 70px;
+    }
+  }
   @media screen and (min-width: 700px) {
     #shopify-section-{{ section.id }} {
       --product-list-items-per-row: {{ section.settings.products_per_row_desktop }};

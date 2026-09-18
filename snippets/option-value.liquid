@@ -15,6 +15,7 @@
   @param {string} [id_prefix] - an optional prefix to be used to dissociate the ID
   @param {boolean} [show_swatch] - if set to true, show the colors as a small tile (block specific)
   @param {boolean} [show_tooltip] - if set to true, display a tooltip on hover (color swatch specific)
+  @param {boolean} [show_count] - if set to true, append the filter value's product count to its label (image_filter specific)
   @param {object} [color_metaobject] - a color metaobject used when directly working with it instead of an option
   @param {object} [image] - a specific image to use for the thumbnail (thumbnail specific)
   @param {boolean} [underline] - if true it will be underlined instead of bordered (thumbnail specific)
@@ -208,13 +209,29 @@
     </{{ option_value_tag }}>
 
   {%- when 'image_filter' -%}
-    <label class="image-filter {% if disabled %}is-disabled{% endif %}" for="{{ id | escape }}">
-      {%- if filter_value.image -%}
-        {{- filter_value.image | image_url: width: filter_value.image.width | image_tag: loading: 'lazy', sizes: '48px', widths: '48,96,144', class: 'image-filter__image' -}}
+    {%- comment -%}
+      Handles both a true "image" filter (filter_value.image) and a "swatch"
+      filter whose swatch pattern is an image (filter_value.swatch.image),
+      such as a metaobject thumbnail. Rendered as a grid tile: photo on top,
+      label and count centred below, matching the sidebar's other image/
+      swatch value groups (see main-collection.liquid's .option-value CSS).
+    {%- endcomment -%}
+    {%- assign tile_image = filter_value.image | default: swatch.image -%}
+    <{{ option_value_tag }}
+      class="option-value {% if disabled %}is-disabled{% endif %} {% if selected and option_value_tag == 'a' %}is-selected{% endif %}"
+      {{ attributes }}
+    >
+      {%- if tile_image != blank -%}
+        {{- tile_image | image_url: width: tile_image.width | image_tag: loading: 'lazy', sizes: '(max-width: 749px) 20vw, 90px', widths: '67,134,180', class: 'option-value__swatch' -}}
       {%- endif -%}
 
-      <span class="image-filter__label link-faded">{{ filter_value.label }}</span>
-    </label>
+      <span>
+        {{- filter_value.label -}}
+        {%- if show_count and filter_value.count -%}
+          &nbsp;({{ filter_value.count }})
+        {%- endif -%}
+      </span>
+    </{{ option_value_tag }}>
 
   {%- when 'underline' -%}
     <{{ option_value_tag }} class="block-underline {% if disabled %}is-disabled{% endif %} {% if selected and option_value_tag == 'a' %}is-selected{% endif %}" {{ attributes }}>

@@ -195,7 +195,7 @@
       }
       #shopify-section-{{ section.id }} .collection-toolbar {
         display: grid;
-        grid-template-columns: {{ 396 }}px minmax(0, 1fr);
+        grid-template-columns: {{ 0 }}px minmax(0, 1fr);
         align-items: center;
       }
 
@@ -223,7 +223,7 @@
         box-shadow: none;
       }
       #shopify-section-{{ section.id }} .collection__main {
-        row-gap: 16px;
+        row-gap: 5px;
       }
 
       /* Chips: rounded outline, black border, per the design. Prestige draws
@@ -393,7 +393,6 @@
         line-height: 1.4;
         font-weight: 600;
         text-transform: uppercase;
-        text-decoration: underline;
         color: #55583C;
       }
             #shopify-section-{{ section.id }} .collection-toolbar {
@@ -414,6 +413,7 @@
       #shopify-section-{{ section.id }} .collection-toolbar__products-count {
         position: relative;
         z-index: 0;
+        top: 25px;
       }
     }
     /* ---------- Shop by Color (Phase 1) ----------
@@ -489,11 +489,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      /* Measured: 17px between the bottom of the circle and the label cap
-         height. At 6px the labels crowded the swatches. */
-      gap: 17px;
+      gap: 10px;
       text-decoration: none;
-      /* Inactive */
       font-size: 13px;
       line-height: 28px;
       font-weight: 400;
@@ -502,7 +499,6 @@
 
     #shopify-section-{{ section.id }} .pf-color.is-active {
       font-size: 13px;
-      line-height: 15px;
       font-weight: 600;
       color: #000000;
     }
@@ -558,8 +554,47 @@
         line-height: 28px;
         font-weight: 700;
         color: #000000;
-        margin: 0 0 {{ section.settings.pf_filters_heading_gap }}px;
+        margin: 0;
       }
+
+      /* Row wrapper carries the gap the heading used to own on its own, so
+         the collapse button can sit inline with it without a second margin
+         stacking underneath. */
+      #shopify-section-{{ section.id }} .pf-sidebar-fillter-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 4px 0 {{ section.settings.pf_filters_heading_gap }}px;
+        margin: 4px 0 18px;
+        padding-block-end: 10px;
+        border-block-end: 1px solid rgb(0 0 0 / 0.1);
+      }
+
+      #shopify-section-{{ section.id }} .pf-sidebar-collapse {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        border: 0;
+        background: none;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      /* Collapsing hides the whole rendered form (every accordion group plus
+         the noscript submit button) rather than a specific inner class, so
+         it stays correct if facets.liquid's own markup changes. */
+      #shopify-section-{{ section.id }} .facets-sidebar.is-collapsed .pf-sidebar-collapse {
+        transform: rotate(180deg);
+      }
+
+      #shopify-section-{{ section.id }} .facets-sidebar.is-collapsed facets-form {
+        display: none;
+      }
+
       #shopify-section-{{ section.id }} .pf-mobilebar {
         display: none;
       }
@@ -631,37 +666,6 @@
         box-sizing: border-box;
         padding-inline-end: {{ section.settings.pf_sidebar_inset }}px;
       }
-
-      /* A rule between groups, not beneath every heading. */
-      #shopify-section-{{ section.id }} .facets .accordion + .accordion {
-        border-block-start: 1px solid rgb(0 0 0 / 0.08);
-      }
-
-      /* Checkbox values keep the same size and weight whether active or not;
-         only the colour changes, exactly as specified. */
-      /* Checkbox values.
-         The real markup is snippets/checkbox.liquid: a .checkbox-control
-         wrapper holding <input class="checkbox"> and a sibling <label>. My
-         earlier attempt targeted .checkbox-container, which does not exist in
-         this theme, so none of it applied.
-
-         Measured off the Figma: 18px square, olive #55583C when checked with a
-         white tick, light outline when not, 12px to the label, 18px between
-         rows.
-
-         The input is styled directly rather than replaced, so it stays a real
-         control: keyboard focus, screen readers and the theme's own change
-         handler all keep working, and filtering still goes through the
-         existing form. */
-      /* Row alignment.
-         theme.css:1296 sets align-items: flex-start, which top-aligns an 18px
-         box against a 22px line. checkbox.liquid also gives the input
-         margin-block-start to push it down under that rule, so centring alone
-         still left the box low. Both are corrected, and the row is stated as a
-         two-column grid so the box and the label share one centre line
-         regardless of how long the label wraps.
-
-         Typography is untouched: this is purely the row structure. */
       #shopify-section-{{ section.id }} .facets .v-stack:has(> .checkbox-control) {
         gap: 0;
       }
@@ -720,9 +724,10 @@
         outline-offset: 2px;
       }
 
-      /* Label typography: same size and weight whether active or not, only the
-         colour changes. :has() on the wrapper keeps it tied to the real input
-         state rather than a class the theme would have to maintain. */
+      /* Label typography: checked values turn bold and black, matching the
+         active swatch/image values below. :has() on the wrapper keeps it
+         tied to the real input state rather than a class the theme would
+         have to maintain. */
       #shopify-section-{{ section.id }} .facets .checkbox-control label {
         font-size: 16px;
         line-height: 22px;
@@ -732,7 +737,61 @@
       }
 
       #shopify-section-{{ section.id }} .facets .checkbox-control:has(input:checked) label {
+        font-weight: 600;
         color: #000000;
+      }
+
+      /* Price filter. theme.css's own .range/.range-group/.input-group are
+         left untouched globally; these overrides are scoped to this
+         section's facets only, matching the bolder handle and the
+         bordered "$" inputs in the Figma frame (theme.css defaults to a
+         10px thumb and unbordered spacing). */
+      #shopify-section-{{ section.id }} .facets .price-range {
+        padding-block-start: 8px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .price-range > .range-group {
+        margin-block-end: 20px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .range::-webkit-slider-thumb {
+        width: 16px;
+        height: 16px;
+        margin-block-start: -7px;
+        background: #000000;
+      }
+
+      #shopify-section-{{ section.id }} .facets .range::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        background: #000000;
+      }
+
+      #shopify-section-{{ section.id }} .facets .input-group {
+        column-gap: 12px;
+        margin-block-start: 4px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .input-prefix {
+        border: 1px solid rgb(0 0 0 / 0.2);
+        border-radius: 4px;
+        padding: 10px 14px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .input-prefix .prefix {
+        font-size: 16px;
+        color: #696969;
+      }
+
+      #shopify-section-{{ section.id }} .facets .input-prefix > .field {
+        font-size: 16px;
+        font-weight: 500;
+        color: #000000;
+      }
+
+      #shopify-section-{{ section.id }} .facets .input-group > .text-subdued {
+        font-size: 16px;
+        color: #696969;
       }
 
       /* Image and swatch values: three per row, 67px media. */
@@ -742,23 +801,51 @@
         gap: {{ section.settings.pf_value_row_gap }}px {{ section.settings.pf_value_col_gap }}px;
       }
 
+      /* Photo on top, label centred below, same shape as the .pf-colors
+         strip's own tiles above the toolbar. */
+      #shopify-section-{{ section.id }} .facets .option-value {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 8px;
+        font-size: 13px;
+        line-height: 18px;
+        font-weight: 400;
+        color: #696969;
+        cursor: pointer;
+      }
+
       #shopify-section-{{ section.id }} .facets .option-value :is(img, svg),
       #shopify-section-{{ section.id }} .facets .option-value__swatch {
         width: {{ section.settings.pf_value_media_size }}px;
         height: {{ section.settings.pf_value_media_size }}px;
         object-fit: cover;
         border-radius: var(--rounded-full);
+        border: 1px solid rgb(0 0 0 / 0.12);
+        transition: box-shadow 0.15s ease-in-out;
       }
 
-      #shopify-section-{{ section.id }} .facets .option-value {
-        font-size: 13px;
-        line-height: 18px;
-        font-weight: 400;
-        color: #696969;
+      /* Active ring, inset like .pf-color__media so the tile never changes
+         size or shifts the grid.
+
+         :has(input:checked) never matched here: option-value.liquid emits
+         the sr-only <input> as a PRECEDING sibling of the <label
+         class="option-value">, not a descendant, and :has()'s default
+         combinator only looks at descendants. There is no CSS combinator
+         for "preceding sibling", so the checked state is read off the
+         input itself with the ordinary adjacent-sibling combinator
+         instead - input:checked + .option-value - which is what actually
+         matches this markup. */
+      #shopify-section-{{ section.id }} .facets .option-value:hover :is(img, svg),
+      #shopify-section-{{ section.id }} .facets .option-value:focus-visible :is(img, svg),
+      #shopify-section-{{ section.id }} .facets input:checked + .option-value :is(img, svg) {
+        box-shadow:
+          inset 0 0 0 1.5px rgb(var(--text-color)),
+          inset 0 0 0 4px rgb(var(--background-without-opacity));
       }
 
-      #shopify-section-{{ section.id }} .facets .option-value:has(input:checked) {
-        line-height: 16px;
+      #shopify-section-{{ section.id }} .facets input:checked + .option-value {
         font-weight: 600;
         color: #000000;
       }
@@ -776,100 +863,6 @@
         }
       {%- endif -%}
 
-      /* Rug Type. Styled to sit with the other sidebar groups: the same
-         heading treatment, and values using the checkbox-value typography from
-         the spec since these are text rows, not image swatches. */
-      #shopify-section-{{ section.id }} .pf-rugtype {
-        border-block-start: 1px solid rgb(0 0 0 / 0.08);
-        padding-block-start: {{ section.settings.rt_group_gap }}px;
-        margin-block-start: {{ section.settings.rt_group_gap }}px;
-      }
-
-      /* On Shop All the accordion supplies its own heading row, padding and
-         rule, so the group's own spacing is dropped to avoid doubling up. The
-         heading type comes from the .accordion__toggle rule above, the same one
-         every other group uses. */
-      #shopify-section-{{ section.id }} .pf-rugtype--accordion {
-        padding-block-start: 0;
-      }
-
-      /* Only used on a specific rug collection, where there is no accordion. */
-      #shopify-section-{{ section.id }} .pf-rugtype:not(.pf-rugtype--accordion) .pf-rugtype__heading {
-        font-size: 16px;
-        line-height: 22px;
-        font-weight: 600;
-        color: #000000;
-        margin: 0 0 {{ section.settings.rt_heading_gap }}px;
-      }
-
-      #shopify-section-{{ section.id }} .pf-rugtype__list {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        gap: {{ section.settings.rt_row_gap }}px;
-      }
-
-      /* Same row shape and the same checkbox values as the real filter
-         checkboxes, so the group is visually indistinguishable from them. The
-         values are read from the same settings, so changing the checkbox size
-         or colour moves both together. */
-      #shopify-section-{{ section.id }} .pf-rugtype__item {
-        display: flex;
-        align-items: center;
-        gap: {{ section.settings.pf_checkbox_gap }}px;
-        min-height: {{ section.settings.pf_checkbox_size }}px;
-        font-size: 16px;
-        line-height: 22px;
-        font-weight: 500;
-        color: #696969;
-        text-decoration: none;
-      }
-
-      #shopify-section-{{ section.id }} .pf-rugtype__box {
-        flex: none;
-        width: {{ section.settings.pf_checkbox_size }}px;
-        height: {{ section.settings.pf_checkbox_size }}px;
-        border: 1px solid {{ section.settings.pf_checkbox_border }};
-        border-radius: {{ section.settings.pf_checkbox_radius }}px;
-        background: #ffffff;
-        transition: background-color 0.15s ease, border-color 0.15s ease;
-      }
-
-      #shopify-section-{{ section.id }} .pf-rugtype__item.is-active {
-        color: #000000;
-      }
-
-            /* The colour was declared on the <a> and inherited by the spans, which
-         lets Prestige's own rules on `a` take it. Stated on the spans that
-         actually hold the text, the same way the Style labels do, so both
-         groups resolve their colour the same way and the inactive grey is not
-         at the mercy of anchor styling. */
-      #shopify-section-{{ section.id }} .pf-rugtype__item .pf-rugtype__label,
-      #shopify-section-{{ section.id }} .pf-rugtype__item .pf-rugtype__count {
-        color: #696969;
-        opacity: 0.7;
-      }
-
-      #shopify-section-{{ section.id }} .pf-rugtype__item.is-active .pf-rugtype__label,
-      #shopify-section-{{ section.id }} .pf-rugtype__item.is-active .pf-rugtype__count {
-        color: #000000;
-      }
-
-      #shopify-section-{{ section.id }} .pf-rugtype__item.is-active .pf-rugtype__box {
-        background-color: {{ section.settings.pf_checkbox_checked }};
-        border-color: {{ section.settings.pf_checkbox_checked }};
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 5l3.5 3.5L11 1.5'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: 62%;
-      }
-
-      #shopify-section-{{ section.id }} .pf-rugtype__item:focus-visible {
-        outline: 2px solid {{ section.settings.pf_checkbox_checked }};
-        outline-offset: 2px;
-      }
-
       /* The toolbar in the design carries no rules. */
       {%- if section.settings.pf_hide_toolbar_rules -%}
         /* theme.css:4503 draws these rules with box-shadow, not border, so
@@ -886,6 +879,50 @@
       }
     }
 
+     facets-drawer .option-value-list {
+      display: grid;
+      grid-template-columns: repeat({{ section.settings.pf_value_columns }}, minmax(0, 1fr));
+      gap: {{ section.settings.pf_value_row_gap }}px {{ section.settings.pf_value_col_gap }}px;
+    }
+
+    facets-drawer .option-value {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 140%;
+    }
+
+     facets-drawer .option-value :is(img, svg),
+     facets-drawer .option-value__swatch {
+      width: {{ section.settings.pf_value_media_size }}px;
+      height: {{ section.settings.pf_value_media_size }}px;
+      object-fit: cover;
+      border-radius: var(--rounded-full);
+      border: 1px solid rgb(0 0 0 / 0.12);
+      transition: box-shadow 0.15s ease-in-out;
+    }
+
+    facets-drawer .option-value:hover :is(img, svg),
+    facets-drawer .option-value:focus-visible :is(img, svg),
+    facets-drawer input:checked + .option-value :is(img, svg) {
+      box-shadow:
+        inset 0 0 0 1.5px rgb(var(--text-color)),
+        inset 0 0 0 4px rgb(var(--background-without-opacity));
+    }
+
+   facets-drawer input:checked + .option-value {
+      font-weight: 600;
+    }
+    facets-drawer .checkbox-control label, facets-drawer .checkbox-control input{
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 140%;
+      letter-spacing: 0%;
+    }
     @media screen and (max-width: 749px) {
       #shopify-section-{{ section.id }} .pf-colors {
         display: block;
@@ -1059,205 +1096,6 @@
           </div>
         </div>
       {%- else -%}
-        {%- if show_filters or section.settings.show_sort_by or section.settings.show_grid_mode_selector or section.settings.show_results_count -%}
-          <height-observer variable="collection-toolbar" class="collection-toolbar full-bleed">
-            {%- if section.settings.enable_new_filters -%}
-                                {%- liquid
-                  assign selected_sort_by_value = collection.sort_by | default: collection.default_sort_by
-
-                  assign pf_sort_label = ''
-                  for sort_option in collection.sort_options
-                    if sort_option.value == selected_sort_by_value
-                      assign pf_sort_label = sort_option.name
-                    endif
-                  endfor
-
-                  # Counted across EVERY filter, Colour included. The shared
-                  # active_values_count is deliberately allow-listed and excludes
-                  # Colour, which would leave the bar reading "No Filter Applied"
-                  # after a swatch is chosen. That count is left untouched.
-                  assign pf_bar_count = 0
-
-                  for filter in collection.filters
-                    if filter.type == 'price_range'
-                      if filter.min_value.value != blank or filter.max_value.value != blank
-                        assign pf_bar_count = pf_bar_count | plus: 1
-                      endif
-                    else
-                      assign pf_bar_count = pf_bar_count | plus: filter.active_values.size
-                    endif
-                  endfor
-
-                  if pf_bar_count == 0
-                    assign pf_filter_state = 'No Filter Applied'
-                  elsif pf_bar_count == 1
-                    assign pf_filter_state = '1 Filter Applied'
-                  else
-                    assign pf_filter_state = pf_bar_count | append: ' Filters Applied'
-                  endif
-                -%}
-
-                <div class="pf-mobilebar">
-                  <button type="button" aria-controls="facets-drawer" class="pf-mobilebar__half">
-                                        <span class="pf-mobilebar__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                        <path d="M2 5.5h11M18 5.5h4M2 12h3M10 12h12M2 18.5h11M18 18.5h4"/>
-                        <circle cx="15.5" cy="5.5" r="2.5" fill="none"/>
-                        <circle cx="7.5" cy="12" r="2.5" fill="none"/>
-                        <circle cx="15.5" cy="18.5" r="2.5" fill="none"/>
-                      </svg>
-                    </span>
-                    <span class="pf-mobilebar__text">
-                      <span class="pf-mobilebar__label">Filter</span>
-                      <span class="pf-mobilebar__value">{{ pf_filter_state }}</span>
-                    </span>
-                  </button>
-
-                  <button type="button" aria-controls="sort-by-popover" class="pf-mobilebar__half">
-                    <span class="pf-mobilebar__icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M7 3v18M7 21l-4-4M7 21l4-4M17 21V3M17 3l-4 4M17 3l4 4"/>
-                      </svg>
-                    </span>
-                    <span class="pf-mobilebar__text">
-                      <span class="pf-mobilebar__label">Sort By</span>
-                      <span class="pf-mobilebar__value">{{ pf_sort_label }}</span>
-                    </span>
-                  </button>
-                </div>
-              {%- endif -%}
-                        <div class="collection-toolbar__button-list">
-              {%- comment -%}
-                Mobile Filter / Sort bar.
-
-                Replaces Prestige's mobile buttons and grid-density switcher on
-                small screens; the stock buttons below are kept for desktop and
-                are untouched. Both halves reuse the existing aria-controls, so
-                the drawer and the sort popover open exactly as before and no
-                new JavaScript is involved.
-
-                Both secondary lines are real state: the filter count comes from
-                active_values_count, which is already resolved at the top of this
-                file and respects the production allow-list, and the sort label
-                comes from collection.sort_options.
-              {%- endcomment -%}
-              
-
-              {%- if show_filters -%}
-                <div class="collection-toolbar__button-container {% if section.settings.filter_layout == 'sidebar' %}md:hidden{% endif %}">
-                  <button type="button" aria-controls="facets-drawer" class="collection-toolbar__button heading text-xxs w-full">
-                    {{- 'collection.faceting.filter_button' | t }}
-                    {% if active_values_count > 0 %}({{ active_values_count }}){% endif -%}
-                  </button>
-                </div>
-              {%- endif -%}
-
-              {%- if section.settings.show_sort_by -%}
-                <div class="collection-toolbar__button-container">
-                  <button type="button" aria-controls="sort-by-popover" class="collection-toolbar__button heading text-xxs w-full">
-                    <span class="text-with-icon justify-center">
-                      {{- 'collection.faceting.sort_by' | t -}}
-                      {%- if section.settings.enable_new_filters -%}
-                        {%- liquid
-                          assign pf_sort_value_label = ''
-                          for sort_option in collection.sort_options
-                            if sort_option.value == selected_sort_by_value
-                              assign pf_sort_value_label = sort_option.name
-                            endif
-                          endfor
-                        -%}
-                        <span class="pf-sort-value">{{ pf_sort_value_label }}</span>
-                      {%- endif -%}
-                      {%- render 'icon' with 'chevron-down' -%}
-                    </span>
-                  </button>
-
-                  <facets-sort-popover
-                    id="sort-by-popover"
-                    section-id="{{ section.id }}"
-                    class="popover popover--bottom-end color-scheme color-scheme--dialog"
-                    close-on-listbox-select
-                  >
-                    <p class="h4" slot="header">{{ 'collection.faceting.sort_by' | t }}</p>
-
-                    <x-listbox class="popover__value-list">
-                      {%- for sort_option in collection.sort_options -%}
-                        {%- if sort_option.name != blank -%}
-                          <button
-                            type="button"
-                            class="popover__value-option group"
-                            role="option"
-                            value="{{ sort_option.value }}"
-                            {% if sort_option.value == selected_sort_by_value %}
-                              aria-selected="true"
-                            {% endif %}
-                          >
-                            <span class="reversed-link">{{ sort_option.name }}</span>
-                          </button>
-                        {%- endif -%}
-                      {%- endfor -%}
-                    </x-listbox>
-                  </facets-sort-popover>
-                </div>
-              {%- endif -%}
-            </div>
-
-            {%- if section.settings.show_results_count -%}
-              <p class="collection-toolbar__products-count h6 text-subdued md-max:hidden">
-                {{ 'collection.products_count' | t: count: collection.products_count }}
-              </p>
-            {%- endif -%}
-
-            {%- if section.settings.show_grid_mode_selector -%}
-              <collection-layout-switch device="mobile" class="collection-toolbar__layout-switch-list sm:hidden" aria-controls="product-list-{{ section.id }}">
-                <button
-                  type="button"
-                  value="large"
-                  class="collection-toolbar__button {% if products_mobile_grid_mode == 'large' %}is-active{% endif %}"
-                  aria-label="Switch to larger product images"
-                >
-                  {%- render 'icon' with 'collection-layout-1' -%}
-                </button>
-                <button
-                  type="button"
-                  value="medium"
-                  class="collection-toolbar__button {% if products_mobile_grid_mode == 'medium' %}is-active{% endif %}"
-                  aria-label="Switch to smaller product images"
-                >
-                  {%- render 'icon' with 'collection-layout-2' -%}
-                </button>
-              </collection-layout-switch>
-
-              <collection-layout-switch device="desktop" class="collection-toolbar__layout-switch-list sm-max:hidden" aria-controls="product-list-{{ section.id }}">
-                <button
-                  type="button"
-                  value="large"
-                  class="collection-toolbar__button {% if products_desktop_grid_mode == 'large' %}is-active{% endif %}"
-                  aria-label="Switch to larger product images"
-                >
-                  {%- render 'icon' with 'collection-layout-2' -%}
-                </button>
-                <button
-                  type="button"
-                  value="medium"
-                  class="collection-toolbar__button {% if products_desktop_grid_mode == 'medium' %}is-active{% endif %}"
-                  aria-label="Switch to smaller product images"
-                >
-                  {%- render 'icon' with 'collection-layout-3' -%}
-                </button>
-                <button
-                  type="button"
-                  value="compact"
-                  class="collection-toolbar__button {% if products_desktop_grid_mode == 'compact' %}is-active{% endif %}"
-                  aria-label="Switch to compact product images"
-                >
-                  {%- render 'icon' with 'collection-layout-4' -%}
-                </button>
-              </collection-layout-switch>
-            {%- endif -%}
-          </height-observer>
-        {%- endif -%}
-
         <div class="collection">
           {%- paginate collection.products by section.settings.products_per_page -%}
             {%- if show_filters -%}
@@ -1296,7 +1134,21 @@
                     production allow-list.
                   {%- endcomment -%}
                   {%- if section.settings.enable_new_filters and section.settings.pf_filters_heading != blank -%}
+                  <div class="pf-sidebar-fillter-heading">
                     <p class="pf-sidebar-heading">{{ section.settings.pf_filters_heading }}</p>
+                    <button
+                      type="button"
+                      class="pf-sidebar-collapse"
+                      data-pf-sidebar-toggle
+                      aria-expanded="true"
+                      aria-label="{{ 'collection.faceting.filters' | t }}"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
+                        <path d="M6.97852 0.753418L1.01885 7.58991L6.97852 14.4264" stroke="black" stroke-width="1.53542"/>
+                        <path d="M12.9395 0.504395L6.97978 7.34089L12.9395 14.1774" stroke="black" stroke-width="1.53542"/>
+                      </svg>
+                    </button>
+                  </div>
                   {%- endif -%}
 
                   {%- render 'facets',
@@ -1310,169 +1162,6 @@
                     context: 'sidebar'
                   -%}
 
-                  {%- comment -%}
-                    ---------------- Rug Type ----------------
-                    Sourced from a navigation menu, not from Search & Discovery,
-                    because the rug types are Shopify collections and Shopify has
-                    no collection filter source. Titles, URLs and order all come
-                    from the menu, so adding a collection there adds it here.
-
-                    Behaviour, as specified: on a collection that appears in the
-                    menu, only that one is listed and marked active. Anywhere
-                    else, including Shop All Types, the full list is shown.
-
-                    These are links rather than checkboxes because this is
-                    navigation: you are in one collection at a time. The current
-                    filter query string is carried across, so switching type
-                    keeps any Color, Style or Shape selection.
-                  {%- endcomment -%}
-                  {%- if section.settings.enable_new_filters -%}
-                    {%- liquid
-                      assign rt_menu = section.settings.rt_menu
-                      assign rt_parent = section.settings.rt_parent_item | downcase | strip
-                      assign rt_links = null
-
-                      if rt_parent != blank
-                        for l1 in rt_menu.links
-                          if rt_links == null
-                            assign t1 = l1.title | downcase | strip
-                            assign h1 = l1.handle | downcase | strip
-
-                            if t1 == rt_parent or h1 == rt_parent
-                              assign rt_links = l1.links
-                            endif
-                          endif
-
-                          if rt_links == null
-                            for l2 in l1.links
-                              if rt_links == null
-                                assign t2 = l2.title | downcase | strip
-                                assign h2 = l2.handle | downcase | strip
-
-                                if t2 == rt_parent or h2 == rt_parent
-                                  assign rt_links = l2.links
-                                endif
-                              endif
-                            endfor
-                          endif
-                        endfor
-                      else
-                        assign rt_links = rt_menu.links
-                      endif
-
-                      # Which of the menu's collections is the page we are on.
-                      # Compared on handle, taken from the link's own object
-                      # rather than parsed out of the URL.
-                      assign rt_current = null
-
-                      for l in rt_links
-                        if l.object.handle == collection.handle
-                          assign rt_current = l
-                        endif
-                      endfor
-
-                      # Shop All, identified from Shopify's own route rather
-                      # than a hardcoded path. "Shop All Types" is itself a link
-                      # in the menu and points here, so without this the menu
-                      # match would fire and only that one entry would render.
-                      # The route wins.
-                      assign rt_is_shop_all = false
-
-                      if collection.url == routes.all_products_collection_url
-                        assign rt_is_shop_all = true
-                        assign rt_current = null
-                      endif
-
-                      # Carry the active filters across, so changing type does
-                      # not silently drop a Color or Style selection.
-                      assign rt_query = ''
-
-                      for f in collection.filters
-                        for v in f.active_values
-                          assign rt_query = rt_query | append: '&' | append: v.param_name | append: '=' | append: v.value | url_encode
-                        endfor
-                      endfor
-                    -%}
-
-                    {%- if rt_links.size > 0 -%}
-                      {%- comment -%}
-                        The list is captured once and used by both branches, so
-                        the values, counts, checkboxes, active state and filter
-                        URLs are identical either way. Only the wrapper differs.
-                      {%- endcomment -%}
-                      {%- capture rt_list -%}
-                        <ul class="pf-rugtype__list">
-                          {%- for l in rt_links -%}
-                            {%- comment -%}
-                              Option B: on a matched collection only that entry
-                              renders; everywhere else the whole list does.
-                            {%- endcomment -%}
-                            {%- if rt_current == null or l.object.handle == collection.handle -%}
-                              {%- liquid
-                                assign rt_active = false
-                                if l.object.handle == collection.handle
-                                  assign rt_active = true
-                                endif
-
-                                assign rt_href = l.url
-                                if rt_query != blank
-                                  assign rt_href = l.url | append: '?' | append: rt_query | remove_first: '&'
-                                endif
-                              -%}
-                              <li>
-                                {%- comment -%}
-                                  Rendered as a checkbox row so the group reads
-                                  the same as the other non-image filters. The
-                                  box is a span, not an input: this is still a
-                                  link to a collection, so a screen reader is
-                                  told the truth about what activating it does,
-                                  and aria-current marks the one you are on.
-                                {%- endcomment -%}
-                                <a
-                                  class="pf-rugtype__item {% if rt_active %}is-active{% endif %}"
-                                  href="{{ rt_href }}"
-                                  {% if rt_active %}aria-current="page"{% endif %}
-                                >
-                                  <span class="pf-rugtype__box" aria-hidden="true"></span>
-                                  <span class="pf-rugtype__label">{{ l.title }}</span>
-
-                                  {%- if section.settings.rt_show_counts and l.object.all_products_count > 0 -%}
-                                    <span class="pf-rugtype__count">({{ l.object.all_products_count }})</span>
-                                  {%- endif -%}
-                                </a>
-                              </li>
-                            {%- endif -%}
-                          {%- endfor -%}
-                        </ul>
-                      {%- endcapture -%}
-
-                      <div class="pf-rugtype {% if rt_is_shop_all %}pf-rugtype--accordion{% endif %}">
-                        {%- if rt_is_shop_all -%}
-                          {%- comment -%}
-                            Shop All gets the theme's own accordion, with the
-                            same parameters facets.liquid passes at line 182, so
-                            the toggle, chevron, rotation and open state are
-                            identical to every other group. accordion.liquid is
-                            not modified.
-                          {%- endcomment -%}
-                          {%- render 'accordion',
-                            title: section.settings.rt_heading,
-                            content: rt_list,
-                            open: open_filters,
-                            show_arrow: true
-                          -%}
-                        {%- else -%}
-                          {%- comment -%}
-                            A specific rug collection keeps the existing
-                            behaviour: a plain heading, no accordion, showing
-                            only the collection you are on.
-                          {%- endcomment -%}
-                          <p class="pf-rugtype__heading">{{ section.settings.rt_heading }}</p>
-                          {{ rt_list }}
-                        {%- endif -%}
-                      </div>
-                    {%- endif -%}
-                  {%- endif -%}
                 </safe-sticky>
               {%- endif -%}
             {%- endif -%}
@@ -1496,6 +1185,204 @@
                   through a pasted URL would still appear as a removable chip in
                   production.
                 {%- endcomment -%}
+                {%- if show_filters or section.settings.show_sort_by or section.settings.show_grid_mode_selector or section.settings.show_results_count -%}
+                <height-observer variable="collection-toolbar" class="collection-toolbar">
+                  {%- if section.settings.enable_new_filters -%}
+                                      {%- liquid
+                        assign selected_sort_by_value = collection.sort_by | default: collection.default_sort_by
+
+                        assign pf_sort_label = ''
+                        for sort_option in collection.sort_options
+                          if sort_option.value == selected_sort_by_value
+                            assign pf_sort_label = sort_option.name
+                          endif
+                        endfor
+
+                        # Counted across EVERY filter, Colour included. The shared
+                        # active_values_count is deliberately allow-listed and excludes
+                        # Colour, which would leave the bar reading "No Filter Applied"
+                        # after a swatch is chosen. That count is left untouched.
+                        assign pf_bar_count = 0
+
+                        for filter in collection.filters
+                          if filter.type == 'price_range'
+                            if filter.min_value.value != blank or filter.max_value.value != blank
+                              assign pf_bar_count = pf_bar_count | plus: 1
+                            endif
+                          else
+                            assign pf_bar_count = pf_bar_count | plus: filter.active_values.size
+                          endif
+                        endfor
+
+                        if pf_bar_count == 0
+                          assign pf_filter_state = 'No Filter Applied'
+                        elsif pf_bar_count == 1
+                          assign pf_filter_state = '1 Filter Applied'
+                        else
+                          assign pf_filter_state = pf_bar_count | append: ' Filters Applied'
+                        endif
+                      -%}
+
+                      <div class="pf-mobilebar">
+                        <button type="button" aria-controls="facets-drawer" class="pf-mobilebar__half">
+                                              <span class="pf-mobilebar__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                              <path d="M2 5.5h11M18 5.5h4M2 12h3M10 12h12M2 18.5h11M18 18.5h4"/>
+                              <circle cx="15.5" cy="5.5" r="2.5" fill="none"/>
+                              <circle cx="7.5" cy="12" r="2.5" fill="none"/>
+                              <circle cx="15.5" cy="18.5" r="2.5" fill="none"/>
+                            </svg>
+                          </span>
+                          <span class="pf-mobilebar__text">
+                            <span class="pf-mobilebar__label">Filter</span>
+                            <span class="pf-mobilebar__value">{{ pf_filter_state }}</span>
+                          </span>
+                        </button>
+
+                        <button type="button" aria-controls="sort-by-popover" class="pf-mobilebar__half">
+                          <span class="pf-mobilebar__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M7 3v18M7 21l-4-4M7 21l4-4M17 21V3M17 3l-4 4M17 3l4 4"/>
+                            </svg>
+                          </span>
+                          <span class="pf-mobilebar__text">
+                            <span class="pf-mobilebar__label">Sort By</span>
+                            <span class="pf-mobilebar__value">{{ pf_sort_label }}</span>
+                          </span>
+                        </button>
+                      </div>
+                    {%- endif -%}
+                              <div class="collection-toolbar__button-list">
+                    {%- comment -%}
+                      Mobile Filter / Sort bar.
+
+                      Replaces Prestige's mobile buttons and grid-density switcher on
+                      small screens; the stock buttons below are kept for desktop and
+                      are untouched. Both halves reuse the existing aria-controls, so
+                      the drawer and the sort popover open exactly as before and no
+                      new JavaScript is involved.
+
+                      Both secondary lines are real state: the filter count comes from
+                      active_values_count, which is already resolved at the top of this
+                      file and respects the production allow-list, and the sort label
+                      comes from collection.sort_options.
+                    {%- endcomment -%}
+                    
+
+                    {%- if show_filters -%}
+                      <div class="collection-toolbar__button-container {% if section.settings.filter_layout == 'sidebar' %}md:hidden{% endif %}">
+                        <button type="button" aria-controls="facets-drawer" class="collection-toolbar__button heading text-xs w-full">
+                          {{- 'collection.faceting.filter_button' | t }}
+                          {% if active_values_count > 0 %}({{ active_values_count }}){% endif -%}
+                        </button>
+                      </div>
+                    {%- endif -%}
+
+                    {%- if section.settings.show_sort_by -%}
+                      <div class="collection-toolbar__button-container">
+                        <button type="button" aria-controls="sort-by-popover" class="collection-toolbar__button heading text-xs w-full">
+                          <span class="text-with-icon justify-center">
+                            {{- 'collection.faceting.sort_by' | t -}}
+                            {%- if section.settings.enable_new_filters -%}
+                              {%- liquid
+                                assign pf_sort_value_label = ''
+                                for sort_option in collection.sort_options
+                                  if sort_option.value == selected_sort_by_value
+                                    assign pf_sort_value_label = sort_option.name
+                                  endif
+                                endfor
+                              -%}
+                              <span class="pf-sort-value">{{ pf_sort_value_label }}</span>
+                            {%- endif -%}
+                            {%- render 'icon' with 'chevron-down' -%}
+                          </span>
+                        </button>
+
+                        <facets-sort-popover
+                          id="sort-by-popover"
+                          section-id="{{ section.id }}"
+                          class="popover popover--bottom-end color-scheme color-scheme--dialog"
+                          close-on-listbox-select
+                        >
+                          <p class="h4" slot="header">{{ 'collection.faceting.sort_by' | t }}</p>
+
+                          <x-listbox class="popover__value-list">
+                            {%- for sort_option in collection.sort_options -%}
+                              {%- if sort_option.name != blank -%}
+                                <button
+                                  type="button"
+                                  class="popover__value-option group"
+                                  role="option"
+                                  value="{{ sort_option.value }}"
+                                  {% if sort_option.value == selected_sort_by_value %}
+                                    aria-selected="true"
+                                  {% endif %}
+                                >
+                                  <span class="reversed-link">{{ sort_option.name }}</span>
+                                </button>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          </x-listbox>
+                        </facets-sort-popover>
+                      </div>
+                    {%- endif -%}
+                  </div>
+
+                  {%- if section.settings.show_results_count -%}
+                    <p class="collection-toolbar__products-count h6 text-subdued md-max:hidden">
+                      {{ 'collection.products_count' | t: count: collection.products_count }}
+                    </p>
+                  {%- endif -%}
+
+                  {%- if section.settings.show_grid_mode_selector -%}
+                    <collection-layout-switch device="mobile" class="collection-toolbar__layout-switch-list sm:hidden" aria-controls="product-list-{{ section.id }}">
+                      <button
+                        type="button"
+                        value="large"
+                        class="collection-toolbar__button {% if products_mobile_grid_mode == 'large' %}is-active{% endif %}"
+                        aria-label="Switch to larger product images"
+                      >
+                        {%- render 'icon' with 'collection-layout-1' -%}
+                      </button>
+                      <button
+                        type="button"
+                        value="medium"
+                        class="collection-toolbar__button {% if products_mobile_grid_mode == 'medium' %}is-active{% endif %}"
+                        aria-label="Switch to smaller product images"
+                      >
+                        {%- render 'icon' with 'collection-layout-2' -%}
+                      </button>
+                    </collection-layout-switch>
+
+                    <collection-layout-switch device="desktop" class="collection-toolbar__layout-switch-list sm-max:hidden" aria-controls="product-list-{{ section.id }}">
+                      <button
+                        type="button"
+                        value="large"
+                        class="collection-toolbar__button {% if products_desktop_grid_mode == 'large' %}is-active{% endif %}"
+                        aria-label="Switch to larger product images"
+                      >
+                        {%- render 'icon' with 'collection-layout-2' -%}
+                      </button>
+                      <button
+                        type="button"
+                        value="medium"
+                        class="collection-toolbar__button {% if products_desktop_grid_mode == 'medium' %}is-active{% endif %}"
+                        aria-label="Switch to smaller product images"
+                      >
+                        {%- render 'icon' with 'collection-layout-3' -%}
+                      </button>
+                      <button
+                        type="button"
+                        value="compact"
+                        class="collection-toolbar__button {% if products_desktop_grid_mode == 'compact' %}is-active{% endif %}"
+                        aria-label="Switch to compact product images"
+                      >
+                        {%- render 'icon' with 'collection-layout-4' -%}
+                      </button>
+                    </collection-layout-switch>
+                  {%- endif -%}
+                </height-observer>
+        {%- endif -%}
                 {%- render 'active-facets', results: collection, allowed_filters: production_filters -%}
 
                 <product-list
@@ -1526,6 +1413,22 @@
     </div>
   </div>
 </div>
+
+{%- if section.settings.enable_new_filters -%}
+  <script>
+    if (!window.__pfSidebarCollapseBound) {
+      window.__pfSidebarCollapseBound = true;
+      document.addEventListener('click', function (event) {
+        var toggle = event.target.closest('[data-pf-sidebar-toggle]');
+        if (!toggle) return;
+        var sidebar = toggle.closest('.facets-sidebar');
+        if (!sidebar) return;
+        var collapsed = sidebar.classList.toggle('is-collapsed');
+        toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+      });
+    }
+  </script>
+{%- endif -%}
 
 {% schema %}
 {
@@ -1776,71 +1679,6 @@
       "step": 1,
       "unit": "px",
       "default": 27
-    },
-    {
-      "type": "header",
-      "content": "Rug Type (from a menu)"
-    },
-    {
-      "type": "paragraph",
-      "content": "The rug types are Shopify collections, and Shopify has no collection filter source, so this group is built from a navigation menu instead. Titles, links and order all come from the menu. On a collection that appears in the menu only that entry is shown, marked as current; anywhere else the whole list is shown."
-    },
-    {
-      "type": "text",
-      "id": "rt_heading",
-      "label": "Group heading",
-      "info": "Leave empty to hide the whole group.",
-      "default": "Rug Type"
-    },
-    {
-      "type": "link_list",
-      "id": "rt_menu",
-      "label": "Menu",
-      "info": "Required. Select the menu containing the Shop By Type entry. No default is set on purpose: Shopify only accepts main-menu or footer as a link_list default, and a wrong default fails silently by rendering nothing."
-    },
-    {
-      "type": "text",
-      "id": "rt_parent_item",
-      "label": "Parent menu item",
-      "info": "The entry whose child links are the rug types, for example Shop By Type. Leave empty if the selected menu's own items are the rug types. Searched two levels deep, by title or handle.",
-      "default": "Shop By Type"
-    },
-    {
-      "type": "checkbox",
-      "id": "rt_show_counts",
-      "label": "Show product counts",
-      "info": "Counts are the collection totals, so they do not narrow as other filters are applied.",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "rt_group_gap",
-      "label": "Space above the group",
-      "min": 0,
-      "max": 64,
-      "step": 1,
-      "unit": "px",
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "rt_heading_gap",
-      "label": "Heading gap",
-      "min": 0,
-      "max": 48,
-      "step": 1,
-      "unit": "px",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "rt_row_gap",
-      "label": "Row gap",
-      "min": 0,
-      "max": 32,
-      "step": 1,
-      "unit": "px",
-      "default": 12
     },
     {
       "type": "range",

@@ -28,12 +28,12 @@
       "rss_feed": "RSS feed"
     },
     "product": {
-        "save": "Save {{ percentage }}%",
-        "review_count": {
-          "one": "{{ count }} review",
-          "other": "{{ count }} reviews"
-        }
-      },
+      "save": "Save {{ percentage }}%",
+      "review_count": {
+        "one": "{{ count }} review",
+        "other": "{{ count }} reviews"
+      }
+    },
     "breadcrumb": {
       "label": "Breadcrumb",
       "home": "Home",
@@ -194,9 +194,9 @@
     "faceting": {
       "filters": "Filters",
       "filter_button": "Filter",
-      "clear_filters": "Clear all",
+      "clear_filters": "Remove all",
       "apply_filters": "View results",
-      "sort_by": "Sort by",
+      "sort_by": "Sort by:",
       "remove_filter": "Remove filter \"{{ name }}\"",
       "no_results": "No products match those filters.",
       "price_range_to": "to",
@@ -214,7 +214,7 @@
       "all_posts": "All posts",
       "read_more": "Read more",
       "post_by": "Post by",
-      "comments" : "Comments count"
+      "comments": "Comments count"
     },
     "post": {
       "written_by": "Written by {{ author }}",

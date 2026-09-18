@@ -15,7 +15,12 @@
     letter-spacing: 0;
     text-transform: none;
   }
-
+   @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .container {
+        --container-max-width: 1300px;
+        --container-gutter: 70px;
+      }
+    }
   /* The collection currently being viewed. aria-current is already on that
      link, so no extra class is needed in the markup. */
   #shopify-section-{{ section.id }} .breadcrumb__list-item .smallcaps[aria-current='page'] {
@@ -30,7 +35,7 @@
   }
 </style>
 
-<nav class="collection-breadcrumb" aria-label="{{ 'general.breadcrumb.label' | t | escape }}">
+<nav class="collection-breadcrumb container" aria-label="{{ 'general.breadcrumb.label' | t | escape }}">
   <div class="collection-breadcrumb__inner">
     <ol class="breadcrumb__list unstyled-list">
       <li class="breadcrumb__list-item">
