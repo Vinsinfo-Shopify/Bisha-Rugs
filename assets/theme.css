@@ -10756,3 +10756,307 @@ ul {
   }
 
 }
+
+/* ---------- Product card: image ---------- */
+.product-card__image {
+  aspect-ratio: 313 / 380;
+}
+
+.product-card__figure > .badge-list {
+  inset-block-start: 7px;
+  inset-inline-start: 0px;
+  gap: 3px;
+}
+
+.product-card__figure .badge-list .badge--custom {
+  border-radius: 2px;
+  font-size: 12px;
+  line-height: 140%;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.product-card__figure .badge-list .badge--best-seller {
+  background: #f3eee4;
+  color: #000000;
+  padding: 10.5px 15px;
+}
+
+.product-card__figure .badge-list .badge--new {
+  background: #b08d4c;
+  color: #ffffff;
+  padding: 5px 14px;
+}
+
+/* ---------- Hand Knotted / type pill ---------- */
+.product-card__tag-wrapper {
+  background: #f1ece2;
+  border-radius: 100px;
+  padding: 5px 14px;
+  justify-self: start;
+  width: fit-content;
+  text-align: start;
+}
+
+.product-card__tag-wrapper.is-empty {
+  background: transparent;
+  visibility: hidden;
+}
+
+.product-card__tag {
+  color: #000000;
+  font-size: 14px;
+  line-height: 140%;
+  font-weight: 500;
+}
+
+/* ---------- Per-product media carousel ---------- */
+.product-card__media-carousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  overflow: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.product-card__media-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.product-card__media-cell {
+  scroll-snap-align: start;
+  width: 100%;
+}
+
+.product-card__media-control {
+  z-index: 2;
+  position: absolute;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.product-card__media-control--prev { inset-inline-start: 26px; }
+.product-card__media-control--next { inset-inline-end: 26px; }
+
+.product-card__media-control .circle-button {
+  --circle-button-size: 1.75rem;
+  --circle-button-background: 43 39 36;
+  --circle-button-text-color: 255 255 255;
+  background: rgb(43 39 36 / 0.55);
+  color: #ffffff;
+  box-shadow: none;
+  backdrop-filter: blur(2px);
+}
+
+.product-card__media-control .circle-button > svg {
+  width: 0.6875rem;
+  color: #ffffff;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 1px rgb(255 255 255 / 0.55));
+}
+
+.product-card__media-control button[disabled] {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .product-card__figure:hover .product-card__media-control,
+  .product-card__figure:focus-within .product-card__media-control {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.product-card__media-pagination {
+  display: none;
+}
+
+/* ---------- Quick buy ---------- */
+.product-card__quick-add-button {
+  background: rgb(43 39 36 / 0.55);
+  color: #ffffff;
+  border-radius: var(--rounded-full);
+  padding: 9px;
+  inset-block-end: 16px;
+  inset-inline-end: 16px;
+  box-shadow: none;
+  backdrop-filter: blur(2px);
+}
+
+.product-card__quick-add-button > svg {
+  color: #ffffff;
+  stroke-width: 1.75;
+}
+
+@media screen and (pointer: fine) {
+  .product-card__quick-add-button {
+    opacity: 1;
+    transform: none;
+  }
+
+  .product-card__quick-add-button:is(:hover, :focus) svg {
+    transform: none;
+  }
+}
+
+/* ---------- Info rhythm ---------- */
+.product-card__info {
+  gap: 12px;
+  padding-top: 14px;
+}
+
+.product-card__info .gap-1 {
+  gap: 8px;
+}
+
+.product-card__info > *:empty {
+  display: none;
+}
+
+.rating-badge {
+  margin-top: 0;
+  margin-bottom: 0;
+  column-gap: 6px;
+}
+
+.rating-badge__stars > svg {
+  width: 15px;
+  shape-rendering: geometricPrecision;
+}
+
+.product-card-title {
+  font-family: var(--text-font-family);
+  font-size: 18px;
+  line-height: 25px;
+  font-weight: 700;
+  min-height: calc(25px * 2);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* ---------- Mobile ---------- */
+@media screen and (max-width: 699px) {
+  .product-card__figure > .badge-list {
+    inset-block-start: 7px;
+    inset-inline-start: 0px;
+  }
+
+  .product-card__figure .badge-list .badge--custom {
+    font-size: 10px;
+  }
+
+  .product-card__figure .badge-list .badge--best-seller {
+    padding: 5px 8px;
+  }
+
+  .product-card__figure .badge-list .badge--new {
+    padding: 3px 8px;
+  }
+
+  .product-card__tag-wrapper {
+    padding: 4px 14px;
+  }
+
+  .product-card__tag {
+    font-size: 12px;
+  }
+
+  .product-card__info {
+    gap: 8px;
+    padding-top: 10px;
+  }
+
+  .product-card__info .gap-1 {
+    gap: 6px;
+  }
+
+  .product-card-title {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 700;
+    min-height: calc(22px * 2);
+  }
+
+  .rating-badge {
+    column-gap: 4px;
+    flex-wrap: nowrap;
+  }
+
+  .rating-badge .text-xxs {
+    font-size: 12px;
+  }
+
+  .price-list {
+    font-size: 14px;
+    column-gap: 6px;
+  }
+
+  .price-list .text-on-sale {
+    font-size: 14px;
+  }
+
+  .price-list :is(s, .text-subdued) {
+    font-size: 12px;
+  }
+
+  .product-card__quick-add-button {
+    padding: 6px;
+    inset-block-end: 8px;
+    inset-inline-end: 8px;
+  }
+
+  .product-card__media-control {
+    display: none;
+  }
+
+  .product-card__media-carousel {
+    overflow: auto hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+  }
+
+  .product-card__media-pagination {
+    z-index: 2;
+    display: flex;
+    position: absolute;
+    inset-inline: 12px;
+    inset-block-end: 0;
+    gap: 0;
+    height: 2px;
+    border-radius: 1px;
+    background: rgb(43 39 36 / 0.22);
+  }
+
+  .product-card__media-pagination > button {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  .product-card__media-pagination > button::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: rgb(43 39 36 / 0);
+    transition: background 0.25s ease-in-out;
+  }
+
+  .product-card__media-pagination > button[aria-current='true']::after {
+    background: rgb(43 39 36 / 0.9);
+  }
+}
