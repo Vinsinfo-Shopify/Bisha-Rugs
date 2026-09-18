@@ -450,11 +450,16 @@
       inset-inline-end: {{ section.settings.arrow_inset_mobile }}px;
       inset-inline-start: auto;
     }
+    #shopify-section-{{ section.id }} .co__header,
+    #shopify-section-{{ section.id }} .co__header .section_header_subheading {
+text-align: left;
+    }
 
     #shopify-section-{{ section.id }} .co__header .section_header_subheading {
     font-size: 14px;
     line-height: 20px;
     font-weight: 500;
+    
   }
 
   #shopify-section-{{ section.id }} .co__header .section_header_heading {
