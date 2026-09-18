@@ -126,6 +126,15 @@
             "text": "<p>Need help with custom sizing?<a href=\"/pages/contact\" title=\"Contact Us\"><strong> Talk to an expert</strong></a> before placing your order.</p>"
           }
         },
+        "notice_banner_xrXFrz": {
+          "type": "notice_banner",
+          "settings": {
+            "text": "This rug is <strong>made to order & ships in 5-8 weeks</strong>",
+            "background": "#fbeedd",
+            "text_color": "",
+            "border_color": ""
+          }
+        },
         "quantity_selector": {
           "type": "quantity_selector",
           "settings": {}
@@ -133,12 +142,25 @@
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "show_payment_button": true,
+            "show_payment_button": false,
             "show_gift_card_recipient": true,
             "atc_button_background": "",
             "atc_button_text_color": "",
             "payment_button_background": "",
             "payment_button_text_color": ""
+          }
+        },
+        "button_jGMte4": {
+          "type": "button",
+          "settings": {
+            "link": "shopify://pages/contact",
+            "text": "Talk to us",
+            "stretch": true,
+            "style": "solid",
+            "icon": "picto-video-camera",
+            "background": "#FFFBF3",
+            "text_color": "#55583C",
+            "border_color": "#55583C"
           }
         },
         "complementary_products": {
@@ -164,8 +186,10 @@
         "color_pattern_picker_LVwz7N",
         "variant_picker",
         "text_nEQyXW",
+        "notice_banner_xrXFrz",
         "quantity_selector",
         "buy_buttons",
+        "button_jGMte4",
         "complementary_products"
       ],
       "settings": {
