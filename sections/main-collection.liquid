@@ -240,6 +240,35 @@
         margin-block-start: 3px;
       }
     }
+    #shopify-section-{{ section.id }} .active-facets {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      padding-block: 2px;       
+      scroll-snap-type: x mandatory;
+    }
+
+    #shopify-section-{{ section.id }} .active-facets::-webkit-scrollbar {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .active-facets .removable-facet {
+      flex: none;
+      scroll-snap-align: start;
+    }
+    #shopify-section-{{ section.id }} .active-facets > facet-link {
+      position: sticky;
+      inset-inline-end: 0;
+      flex: none;
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      background: rgb(var(--background-without-opacity));
+    }
+    #shopify-section-{{ section.id }} .active-facets .facets-clear-all {
+      white-space: nowrap;
+    }
 
     @media screen and (max-width: 749px) {
       #shopify-section-{{ section.id }} .container {
@@ -257,10 +286,6 @@
         width: auto;
         max-width: none;
       }
-            /* Mobile Filter/Sort bar. Prestige's own buttons and the grid-density
-         switcher are hidden and this replaces them. State comes from
-         active_values_count and collection.sort_options, so both lines are
-         real, not static text. */
       #shopify-section-{{ section.id }} .collection-toolbar__button-list,
       #shopify-section-{{ section.id }} collection-layout-switch {
         display: none;
@@ -359,9 +384,8 @@
         font-weight: 400;
         color: #000000;
       }
-            #shopify-section-{{ section.id }} .active-facets {
+       #shopify-section-{{ section.id }} .active-facets {
         display: flex;
-        flex-wrap: wrap;
         align-items: center;
         gap: 8px;
       }
@@ -388,13 +412,13 @@
         height: 9.72px;
         color: #000000;
       }
-            #shopify-section-{{ section.id }} .facets-clear-all {
+      #shopify-section-{{ section.id }} .facets-clear-all {
         font-size: 12px;
         line-height: 1.4;
         font-weight: 600;
         text-transform: uppercase;
-        text-decoration: underline;
         color: #55583C;
+        padding: 10px;
       }
             #shopify-section-{{ section.id }} .collection-toolbar {
         display: block;
@@ -598,26 +622,11 @@
       #shopify-section-{{ section.id }} .pf-mobilebar {
         display: none;
       }
-
-      /* Layout.
-         .collection is a CSS grid whose columns come from
-         --collection-grid-template, built from --collection-sidebar-width
-         (15rem by default) with --collection-gap of 2rem between them. All
-         three are variables, so the whole layout is set here without touching
-         the grid definition in theme.css.
-
-         1300 content = 300 sidebar + 32 gap + 968 grid. The 32px gap is
-         already Prestige's own --collection-gap, so only the sidebar width
-         changes and the product column takes the remainder. */
       #shopify-section-{{ section.id }} .collection {
         --collection-sidebar-width: {{ section.settings.pf_sidebar_width }}px;
         --collection-gap: {{ section.settings.pf_sidebar_gap }}px;
       }
 
-      /* Containment. The accordion toggle is width: 100%, and without an
-         explicit width plus min-width: 0 on the column it resolved against the
-         grid area rather than the sidebar, which is why the chevron rendered
-         over the first product image. */
       #shopify-section-{{ section.id }} .facets-sidebar,
       #shopify-section-{{ section.id }} .facets {
         width: 100%;
@@ -625,9 +634,6 @@
         min-width: 0;
         overflow-x: clip;
       }
-
-      /* Three product columns alongside an open sidebar. Prestige's own
-         variable, so the product card markup is untouched. */
       #shopify-section-{{ section.id }} {
         --collection-items-per-row-large: {{ section.settings.pf_products_per_row }};
       }
