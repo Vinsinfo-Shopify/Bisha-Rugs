@@ -249,6 +249,16 @@
             "border_color": ""
           }
         },
+        "separator_HzXX9c": {
+          "type": "separator",
+          "settings": {}
+        },
+        "text_WrhAdN": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Why You’ll Love It</strong></p>"
+          }
+        },
         "complementary_products": {
           "type": "complementary_products",
           "settings": {
@@ -284,6 +294,8 @@
         "separator_QzT9Tb",
         "image_text_card_eDVhda",
         "image_text_card_A3aczE",
+        "separator_HzXX9c",
+        "text_WrhAdN",
         "complementary_products"
       ],
       "settings": {
