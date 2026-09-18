@@ -4571,7 +4571,7 @@ product-rerender {
 }
 
 .collection__main {
-  row-gap: var(--section-stack-gap);
+  row-gap: 10px;
   display: grid;
 }
 
@@ -9165,15 +9165,19 @@ ul {
 .collection_banner .icon-with-text-item {
   font-size: 16px;
 }
-.template-page .container .section-header h1{
+
+.template-page .container .section-header h1 {
   font-size: 38px;
 }
-.template-page .container .prose h1{
+
+.template-page .container .prose h1 {
   font-size: 32px;
 }
-.template-page .container .prose h2{
+
+.template-page .container .prose h2 {
   font-size: 28px;
 }
+
 @media screen and (max-width: 1100px) {
   .collection_banner .image-with-text>.prose {
     max-width: 440px;
@@ -9841,7 +9845,7 @@ ul {
   }
 
   .custom_rugs .image-with-text>.prose {
-    padding: 0px 12px;
+    padding: 0px 15px;
   }
 }
 
@@ -10084,8 +10088,12 @@ ul {
     font-size: 26px;
   }
 
+  .custom_rugs .image-with-text picture img {
+    height: 100%;
+  }
+
   .custom_rugs .image-with-text>.prose {
-    padding: 0px;
+    padding-inline: 15px;
     width: auto;
   }
 
@@ -10643,14 +10651,16 @@ ul {
   line-height: 15px;
   color: #000000;
 }
-  .template-page .prose:not(.prose--tight) :where(:not(meta, span) + *) {
-    margin-block-start: 4px;
-  }
-  .contact_us .form_action button{
-    font-size: 16px;
-    padding: 10px 30px;
-    font-weight: 700;
-  }
+
+.template-page .prose:not(.prose--tight) :where(:not(meta, span) + *) {
+  margin-block-start: 4px;
+}
+
+.contact_us .form_action button {
+  font-size: 16px;
+  padding: 10px 30px;
+  font-weight: 700;
+}
 
 @media screen and (min-width: 999px) {
   .application_process .multi-column-card_heading-group {
@@ -10807,7 +10817,7 @@ ul {
   aspect-ratio: 313 / 380;
 }
 
-.product-card__figure > .badge-list {
+.product-card__figure>.badge-list {
   inset-block-start: 13px;
   inset-inline-start: 0px;
   gap: 3px;
@@ -10828,7 +10838,7 @@ ul {
   border-width: 1px 1px 1px 0px;
   box-sizing: border-box;
   font-size: 14px;
-  line-height:20px;
+  line-height: 20px;
   font-weight: 700;
   padding: 4px 12px;
 }
@@ -10889,8 +10899,13 @@ ul {
   transition: opacity 0.2s ease-in-out;
 }
 
-.product-card__media-control--prev { inset-inline-start: 26px; }
-.product-card__media-control--next { inset-inline-end: 26px; }
+.product-card__media-control--prev {
+  inset-inline-start: 26px;
+}
+
+.product-card__media-control--next {
+  inset-inline-end: 26px;
+}
 
 .product-card__media-control .circle-button {
   --circle-button-size: 1.75rem;
@@ -10902,7 +10917,7 @@ ul {
   backdrop-filter: blur(2px);
 }
 
-.product-card__media-control .circle-button > svg {
+.product-card__media-control .circle-button>svg {
   width: 0.6875rem;
   color: #ffffff;
   stroke-width: 1.75;
@@ -10917,6 +10932,7 @@ ul {
 }
 
 @media (hover: hover) {
+
   .product-card__figure:hover .product-card__media-control,
   .product-card__figure:focus-within .product-card__media-control {
     opacity: 1;
@@ -10940,7 +10956,7 @@ ul {
   backdrop-filter: blur(2px);
 }
 
-.product-card__quick-add-button > svg {
+.product-card__quick-add-button>svg {
   color: #ffffff;
   stroke-width: 1.75;
 }
@@ -10966,7 +10982,7 @@ ul {
   gap: 8px;
 }
 
-.product-card__info > *:empty {
+.product-card__info>*:empty {
   display: none;
 }
 
@@ -10976,7 +10992,7 @@ ul {
   column-gap: 6px;
 }
 
-.rating-badge__stars > svg {
+.rating-badge__stars>svg {
   width: 15px;
   shape-rendering: geometricPrecision;
 }
@@ -10995,10 +11011,11 @@ ul {
 
 /* ---------- Mobile ---------- */
 @media screen and (max-width: 699px) {
-  .product-card__figure > .badge-list {
-    inset-block-start:12px;
+  .product-card__figure>.badge-list {
+    inset-block-start: 12px;
     inset-inline-start: 0px;
   }
+
   .product-card__figure .badge-list .badge {
     font-size: 12px;
     line-height: 17px;
@@ -11079,7 +11096,7 @@ ul {
     background: rgb(43 39 36 / 0.22);
   }
 
-  .product-card__media-pagination > button {
+  .product-card__media-pagination>button {
     flex: 1 1 0;
     min-width: 0;
     height: 100%;
@@ -11088,7 +11105,7 @@ ul {
     background: none;
   }
 
-  .product-card__media-pagination > button::after {
+  .product-card__media-pagination>button::after {
     content: '';
     display: block;
     width: 100%;
@@ -11098,7 +11115,7 @@ ul {
     transition: background 0.25s ease-in-out;
   }
 
-  .product-card__media-pagination > button[aria-current='true']::after {
+  .product-card__media-pagination>button[aria-current='true']::after {
     background: rgb(43 39 36 / 0.9);
   }
 }
