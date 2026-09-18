@@ -2425,7 +2425,7 @@ model-media .shopify-model-viewer-ui {
 
 @media screen and (min-width: 700px) {
   .product-card__figure>.badge-list {
-    inset-block-start: .5rem;
+    inset-block-start: 12px;
     inset-inline-start: .5rem;
   }
 }
