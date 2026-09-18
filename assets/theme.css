@@ -9165,7 +9165,15 @@ ul {
 .collection_banner .icon-with-text-item {
   font-size: 16px;
 }
-
+.template-page .container .section-header h1{
+  font-size: 38px;
+}
+.template-page .container .prose h1{
+  font-size: 32px;
+}
+.template-page .container .prose h2{
+  font-size: 28px;
+}
 @media screen and (max-width: 1100px) {
   .collection_banner .image-with-text>.prose {
     max-width: 440px;
@@ -10635,6 +10643,14 @@ ul {
   line-height: 15px;
   color: #000000;
 }
+  .template-page .prose:not(.prose--tight) :where(:not(meta, span) + *) {
+    margin-block-start: 4px;
+  }
+  .contact_us .form_action button{
+    font-size: 16px;
+    padding: 10px 30px;
+    font-weight: 700;
+  }
 
 @media screen and (min-width: 999px) {
   .application_process .multi-column-card_heading-group {
@@ -10755,6 +10771,35 @@ ul {
     padding: 8.55px 19px 9.45px 19px;
   }
 
+}
+
+.contact_us .contact-form__error {
+  margin: 0;
+  color: rgb(var(--error-text, 178 34 34));
+  font-size: 13px;
+  line-height: 140%;
+}
+
+.contact_us .contact-form__error[hidden] {
+  display: none;
+}
+
+.contact_us .form-control .contact-form__error {
+  margin-block-start: -4px;
+}
+
+.contact_us .checkbox-control {
+  flex-wrap: wrap;
+}
+
+.contact_us .checkbox-control .contact-form__error {
+  flex: 0 0 100%;
+  margin-block-start: 6px;
+}
+
+.contact_us .form-control :is(.input, .textarea)[aria-invalid="true"],
+.contact_us .checkbox-control .checkbox[aria-invalid="true"] {
+  border-color: rgb(var(--error-text, 178 34 34));
 }
 
 /* ---------- Product card: image ---------- */
