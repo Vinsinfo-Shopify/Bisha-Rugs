@@ -504,22 +504,959 @@
         "max_image_zoom_level": 3
       }
     },
+    "marquee_GgE39E": {
+      "type": "marquee",
+      "blocks": {
+        "item_NDFqUe": {
+          "type": "item",
+          "settings": {
+            "text": "Hand-Woven",
+            "icon_source": "custom",
+            "icon": "picto-user",
+            "custom_icon": "shopify://shop_images/solar_hand-heart-linear_24a89c7b-829e-430a-9169-9457f150df6b.png",
+            "link": ""
+          }
+        },
+        "item_e9iKe9": {
+          "type": "item",
+          "settings": {
+            "text": "Natural Wool & Dyes",
+            "icon_source": "custom",
+            "icon": "picto-leaf",
+            "custom_icon": "shopify://shop_images/Frame_1437257754.png",
+            "link": ""
+          }
+        },
+        "item_ixkDYn": {
+          "type": "item",
+          "settings": {
+            "text": "Risk-Free Purchase",
+            "icon_source": "custom",
+            "icon": "picto-success",
+            "custom_icon": "shopify://shop_images/akar-icons_check-box_2.png",
+            "link": ""
+          }
+        },
+        "item_UA4Npy": {
+          "type": "item",
+          "settings": {
+            "text": "Master Artisans",
+            "icon_source": "custom",
+            "icon": "picto-love",
+            "custom_icon": "shopify://shop_images/Frame_1437257752.png",
+            "link": ""
+          }
+        },
+        "item_aaM8RR": {
+          "type": "item",
+          "settings": {
+            "text": "Fair Trade Practices",
+            "icon_source": "custom",
+            "icon": "picto-earth",
+            "custom_icon": "shopify://shop_images/Frame_1437257753.png",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_NDFqUe",
+        "item_e9iKe9",
+        "item_ixkDYn",
+        "item_UA4Npy",
+        "item_aaM8RR"
+      ],
+      "name": "Marquee",
+      "settings": {
+        "enable_animation": true,
+        "direction": "left",
+        "duration": 40,
+        "duration_mobile": 25,
+        "pause_on_hover": true,
+        "fade_edges": false,
+        "icon_size": 22,
+        "icon_size_mobile": 20,
+        "icon_stroke_width": 1,
+        "icon_gap": 6,
+        "text_font": "body",
+        "text_size": 18,
+        "text_size_mobile": 16,
+        "text_weight": "400",
+        "text_transform": "none",
+        "letter_spacing": 0.2,
+        "show_separator": true,
+        "separator": "•",
+        "separator_size": 30,
+        "item_gap": 40,
+        "item_gap_mobile": 12,
+        "padding_top": 14,
+        "padding_bottom": 14,
+        "padding_top_mobile": 8,
+        "padding_bottom_mobile": 8,
+        "background": "#f3eee4",
+        "text_color": "#000000",
+        "icon_color": "#000000",
+        "separator_color": "#000000",
+        "show_border_top": true,
+        "show_border_bottom": true,
+        "border_width": 1,
+        "border_color": "#e7dfcc"
+      }
+    },
+    "multi_column_wbh9GA": {
+      "type": "multi-column",
+      "blocks": {
+        "image_with_text_mVCbhd": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/d32ac65c516f1c324c1b42db7699e39b9bfbbe3c_4.png",
+            "title": "<strong>Handcrafted by Artisans in India</strong>",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>From hand-spun fibers to the final weave, every rug is handcrafted, making each piece truly one of a kind.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        },
+        "image_with_text_4xE4iK": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/CWP-2.png",
+            "title": "<strong>Premium New Zealand Wool</strong>",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>Crafted from 100% premium New Zealand wool, prized for its exceptional softness and durability.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        },
+        "image_with_text_at4LXK": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/CWP-1.png",
+            "title": "<strong>Generational Artisans</strong>",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>Passed down through generations, our artisans preserve Persian, Turkish weaving traditions to create every rug.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        },
+        "image_with_text_4yUpiL": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/CWP-3.png",
+            "title": "<strong>Naturally Dyed</strong>",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>Colored using eco-friendly natural vegetable dyes for rich, lasting color and a lower environmental impact.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_mVCbhd",
+        "image_with_text_4xE4iK",
+        "image_with_text_at4LXK",
+        "image_with_text_4yUpiL"
+      ],
+      "name": "t:sections.multi_column.presets.multi_column.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "custom_class": "why_choose_bisha",
+        "separate_section_with_border": false,
+        "remove_section_spacing": false,
+        "columns_per_row": 4,
+        "stack_on_mobile": false,
+        "enable_carousel": false,
+        "overlap_image": false,
+        "content_alignment": "center",
+        "text_alignment": "start",
+        "column_gap_mobile": 9,
+        "row_gap_mobile": 16,
+        "column_gap_desktop": 16,
+        "row_gap_desktop": 44,
+        "media_height": "379px",
+        "subheading": "Top Features",
+        "title": "Crafted with Care",
+        "heading_style": "h2",
+        "content": "",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
+      }
+    },
+    "image_with_text_3fdGrc": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_ELLBT8": {
+          "type": "subheading",
+          "settings": {
+            "text": "WHY OUSHAK"
+          }
+        },
+        "heading_XmjxKy": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Timeless Beauty of Oushak Rugs</p>",
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "heading_tag": "h2"
+          }
+        },
+        "richtext_CtNqqA": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Originating in the city of Uşak, Turkey, Oushak rugs have been admired for centuries for their oversized motifs, soft pastel palettes, and refined elegance. Their timeless designs transcend trends, making them heirloom-quality pieces that remain beautiful for decades.<br/></p><ul><li>Intricate hand weaving </li><li>Oversized signature motifs</li><li>Heirloom-quality craftmanship</li></ul>",
+            "character_limit": 0
+          }
+        }
+      },
+      "block_order": [
+        "subheading_ELLBT8",
+        "heading_XmjxKy",
+        "richtext_CtNqqA"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "custom_class": "who_we_are",
+        "separate_section_with_border": false,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 20,
+        "padding_bottom_mobile": 50,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "image": "shopify://shop_images/9352e889885af92e68da5c3aee0d24b03cb3f394_1.png",
+        "media_position_mobile": "after_text",
+        "reveal_on_scroll": true,
+        "image_position": "end",
+        "content_width": "lg",
+        "full_width": false,
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
+        "layout_variant": "",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
+    "multiple_media_with_text_diJWEW": {
+      "type": "multiple-media-with-text",
+      "blocks": {
+        "icon_with_text_C7bJP9": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/cff864219a3a7f086c67a50e5e7dd58c66657ffe.png",
+            "text": "Hand Crafted in India"
+          }
+        },
+        "icon_with_text_naDGnd": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group.png",
+            "text": "Generational Master Artisans"
+          }
+        },
+        "video_C7iAha": {
+          "type": "video",
+          "disabled": true,
+          "settings": {
+            "video": "shopify://files/videos/Celestial Midnight Garden – Karakul Handmade Rug ✨🌙Artistic • Textured • Ethereal Craftsmanship.mp4",
+            "rotation": 0
+          }
+        },
+        "image_3kHVrh": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/who_we_are_img.png",
+            "rotation": 0
+          }
+        }
+      },
+      "block_order": [
+        "icon_with_text_C7bJP9",
+        "icon_with_text_naDGnd",
+        "video_C7iAha",
+        "image_3kHVrh"
+      ],
+      "disabled": true,
+      "name": "t:sections.multiple_media_with_text.presets.multiple_media_with_text.name",
+      "settings": {
+        "color_scheme": "",
+        "custom_class": "",
+        "reveal_on_scroll": false,
+        "separate_section_with_border": false,
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 40,
+        "padding_bottom_mobile": 40,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "media_position_desktop": "after_text",
+        "media_position_mobile": "after_text",
+        "media_layout": "separated",
+        "media_width_1": "370",
+        "media_width_2": "414",
+        "media_gap_width": "81",
+        "media_alignment": "center",
+        "media_alignment_offset": 0,
+        "media_mobile_alignment_offset": 0,
+        "text_alignment": "center",
+        "subheading": "Who We Are",
+        "title": "<p>More Than a Rug. A Legacy Woven by Hands</p>",
+        "heading_style": "h5",
+        "content": "<p>Bisha Rugs was founded with a simple belief: exceptional craftsmanship deserves to be preserved. We work directly with generational artisans across India's rug-weaving communities to create handmade rugs that honor centuries of tradition while finding a place in modern homes. <br/><br/>Hand Crafted in India            Generational Master Artisans</p>",
+        "button_1_text": "",
+        "button_1_link": "",
+        "button_1_style": "link",
+        "button_2_text": "",
+        "button_2_link": "",
+        "button_2_style": "solid"
+      }
+    },
+    "comparison_table_V6yq7Q": {
+      "type": "comparison-table",
+      "blocks": {
+        "row_Q8EDMe": {
+          "type": "row",
+          "settings": {
+            "label": "Construction",
+            "value_1": "Individually hand-knotted",
+            "value_2": "Hand-tufted with a backing",
+            "value_3": ""
+          }
+        },
+        "row_Jya9Jf": {
+          "type": "row",
+          "settings": {
+            "label": "Price Range",
+            "value_1": "Premium investment",
+            "value_2": "More affordable",
+            "value_3": ""
+          }
+        },
+        "row_7RJRRx": {
+          "type": "row",
+          "settings": {
+            "label": "Rug Pad",
+            "value_1": "Recommended for grip, cushioning & longevity",
+            "value_2": "Recommended, but optional",
+            "value_3": ""
+          }
+        },
+        "row_niacVR": {
+          "type": "row",
+          "settings": {
+            "label": "Artisan Expertise",
+            "value_1": "Woven by generational artisans",
+            "value_2": "Hand-finished by skilled artisans",
+            "value_3": ""
+          }
+        },
+        "row_jQrna9": {
+          "type": "row",
+          "settings": {
+            "label": "Durability",
+            "value_1": "Exceptional. Built to last for decades",
+            "value_2": "Designed to last for years",
+            "value_3": ""
+          }
+        },
+        "row_KQCLbG": {
+          "type": "row",
+          "settings": {
+            "label": "Feel",
+            "value_1": "Smooth, refined & luxurious",
+            "value_2": "Plush, soft & cushioned",
+            "value_3": ""
+          }
+        },
+        "row_NTEmDX": {
+          "type": "row",
+          "settings": {
+            "label": "Maintenance",
+            "value_1": "Professional cleaning recommended",
+            "value_2": "Spot clean & easy day-to-day maintenance",
+            "value_3": ""
+          }
+        },
+        "row_KeN4DD": {
+          "type": "row",
+          "settings": {
+            "label": "Pile Height",
+            "value_1": "Medium pile",
+            "value_2": "Medium to high pile",
+            "value_3": ""
+          }
+        },
+        "row_VdC8DV": {
+          "type": "row",
+          "settings": {
+            "label": "Perfect For",
+            "value_1": "Living room, Dining room, Bedroom, Statement Spaces",
+            "value_2": "Family room, Bedroom, Kid's room",
+            "value_3": ""
+          }
+        },
+        "row_RCRGM7": {
+          "type": "row",
+          "settings": {
+            "label": "Customization",
+            "value_1": "Custom sizes & colors available",
+            "value_2": "Custom sizes & colors available",
+            "value_3": ""
+          }
+        },
+        "row_7Ae8wY": {
+          "type": "row",
+          "settings": {
+            "label": "Production Time",
+            "value_1": "5 - 8 Weeks",
+            "value_2": "5 - 8 Weeks",
+            "value_3": ""
+          }
+        }
+      },
+      "block_order": [
+        "row_Q8EDMe",
+        "row_Jya9Jf",
+        "row_7RJRRx",
+        "row_niacVR",
+        "row_jQrna9",
+        "row_KQCLbG",
+        "row_NTEmDX",
+        "row_KeN4DD",
+        "row_VdC8DV",
+        "row_RCRGM7",
+        "row_7Ae8wY"
+      ],
+      "name": "Comparison table",
+      "settings": {
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "subheading": "RUG GUIDE",
+        "heading": "Compare and Find your Perfect Rug",
+        "description": "",
+        "column_count": "2",
+        "column_1_image": "shopify://shop_images/00df73a76c09ff5a794bf6f169ec525810b8146f_5.png",
+        "column_1_title": "Hand-Knotted Rugs",
+        "column_1_button_label": "",
+        "column_1_button_url": "",
+        "column_2_image": "shopify://shop_images/94c525051010f292b212b2a18516883b0cc47bbb.png",
+        "column_2_title": "Tufted Rugs",
+        "column_2_button_label": "",
+        "column_2_button_url": "",
+        "column_3_title": "",
+        "column_3_button_label": "",
+        "column_3_button_url": "",
+        "button_style": "outline",
+        "image_ratio": "3 / 2",
+        "image_radius": 2,
+        "background": "#F3EEE4",
+        "column_background": "#ffffff",
+        "border_color": "#e4e0d7",
+        "heading_color": "#000000",
+        "value_color": "#000000",
+        "scrollbar_color": "#B35642",
+        "heading_size": 28,
+        "heading_size_mobile": 24,
+        "column_title_size": 22,
+        "body_size": 20,
+        "body_size_mobile": 14,
+        "label_column_width": 272,
+        "label_column_width_mobile": 96,
+        "column_min_width_mobile": 172,
+        "cell_padding_inline": 16,
+        "row_padding": 18,
+        "padding_top": 54,
+        "padding_bottom": 54,
+        "padding_top_mobile": 30,
+        "padding_bottom_mobile": 22
+      }
+    },
+    "multi_column_TxrEcw": {
+      "type": "multi-column",
+      "blocks": {
+        "image_with_text_RFf9AT": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/Our_impact_img1.png",
+            "title": "<strong>Empowering Artisan Communities</strong>",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>Every rug supports skilled artisans across rural India, helping preserve livelihoods and generations of craftsmanship.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        },
+        "image_with_text_xrmcCb": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/Our_impact_img3.png",
+            "title": "<strong>Heritage Worth Preserving</strong>",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>More than a rug, every piece carries centuries of weaving tradition, designed to be treasured for generations.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        },
+        "image_with_text_NQw74f": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/Our_impact_img2.png",
+            "title": "<strong>Sustainable by Choice</strong>",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>Made with natural fibers, natural dyes and traditional techniques that respect both the craft and the environment.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        },
+        "image_with_text_AHdYCt": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/2da73a19d2d5536af25dae75fca49f41a6ae6130.png",
+            "title": "<strong>Authentic, Never Replicated</strong>",
+            "subheading": "",
+            "heading_tag": "h4",
+            "custom_heading_size": 24,
+            "content": "<p>Choose genuine handcrafted artistry over mass-produced imitations, where every rug tells its own story.</p>",
+            "link_url": "",
+            "link_text": "",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_RFf9AT",
+        "image_with_text_xrmcCb",
+        "image_with_text_NQw74f",
+        "image_with_text_AHdYCt"
+      ],
+      "name": "t:sections.multi_column.presets.multi_column.name",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "custom_class": "our_impact",
+        "separate_section_with_border": false,
+        "remove_section_spacing": false,
+        "columns_per_row": 4,
+        "stack_on_mobile": false,
+        "enable_carousel": false,
+        "overlap_image": false,
+        "content_alignment": "center",
+        "text_alignment": "start",
+        "column_gap_mobile": 9,
+        "row_gap_mobile": 16,
+        "column_gap_desktop": 16,
+        "row_gap_desktop": 48,
+        "media_height": "229px",
+        "subheading": "WHY choose BISHA",
+        "title": "Every Bisha Rug Tells a Bigger Story",
+        "heading_style": "h2",
+        "content": "",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
+      }
+    },
+    "faq_PAcnCq": {
+      "type": "faq",
+      "blocks": {
+        "question_byKAH6": {
+          "type": "question",
+          "settings": {
+            "question": "What makes an Oushak rug special?",
+            "answer": "<p>Oushak rugs are among the most celebrated traditional rugs in the world, known for their soft color palettes, large-scale motifs, and refined elegance. Originating from centuries-old weaving traditions, they are valued for their ability to bring warmth, sophistication, and timeless character to a space. At Bisha Rugs, each Oushak is handwoven by skilled artisans, ensuring every piece carries its own individuality and craftsmanship.<br/></p>",
+            "custom_class": ""
+          }
+        },
+        "question_6VYkw8": {
+          "type": "question",
+          "settings": {
+            "question": "Why invest in a handmade Oushak rug?",
+            "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_DnBhPb": {
+          "type": "question",
+          "settings": {
+            "question": "How should I care for my Oushak rug?",
+            "answer": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_9Vrygf": {
+          "type": "question",
+          "settings": {
+            "question": "Can I return my rug?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_pncFLf": {
+          "type": "question",
+          "settings": {
+            "question": "What if my rug arrives damaged?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_w7gbX6": {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "custom_class": ""
+          }
+        }
+      },
+      "block_order": [
+        "question_byKAH6",
+        "question_6VYkw8",
+        "question_DnBhPb",
+        "question_9Vrygf",
+        "question_pncFLf",
+        "question_w7gbX6"
+      ],
+      "name": "t:sections.faq.presets.faq.name",
+      "settings": {
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "separate_section_with_border": true,
+        "show_categories": false,
+        "custom_class": "collection_faq pdp_faq",
+        "faq_custom_class": "",
+        "show_breadcrumb": false,
+        "breadcrumb_home_label": "Home",
+        "breadcrumb_current_label": "FAQs",
+        "subheading": "FAQs",
+        "title": "Your Questions Answered",
+        "heading_style": "h2",
+        "content": "",
+        "show_sidebar": false,
+        "sidebar_heading": "Contact Us",
+        "sidebar_text": "<p>If you have an issue or question that requires immediate assistance, you can mail us on love@example.com</p><p>We will reply as soon as possible with solution.</p>",
+        "sidebar_button_1_label": "Contact Us",
+        "sidebar_button_1_link": "",
+        "sidebar_button_2_label": "About Us",
+        "sidebar_button_2_link": "",
+        "sidebar_custom_class": "",
+        "show_image": true,
+        "image": "shopify://shop_images/c0a4d61bbc28d2127363ecf547d1f6829f8d6d42_1.png",
+        "image_max_height": 641
+      }
+    },
+    "image_with_text_YaGxKL": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_UhyHWq": {
+          "type": "subheading",
+          "settings": {
+            "text": "CUSTOM RUGS"
+          }
+        },
+        "heading_7KFHrr": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Can't Find the Perfect Rug? <br/>Let's Create It Together.</p>",
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_dpYTRn": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Choose the ideal size, colors, materials, and design with guidance from our rug experts. Our artisans will transform your vision to reality.</p>",
+            "character_limit": 0
+          }
+        },
+        "button_4Xb8XQ": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "GET IN TOUCH",
+            "url": "",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "subheading_UhyHWq",
+        "heading_7KFHrr",
+        "richtext_dpYTRn",
+        "button_4Xb8XQ"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
+        "custom_class": "custom_rugs pdp",
+        "separate_section_with_border": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "image": "shopify://shop_images/df4757b35b342ceb512cface52f83f77935973da.png",
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "start",
+        "content_width": "sm",
+        "full_width": true,
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
+        "layout_variant": "",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
     "related-products": {
       "type": "related-products",
       "settings": {
         "color_scheme": "",
         "separate_section_with_border": true,
         "hide_product_information": false,
+        "custom_css_class": "recent_products",
         "stack_products": false,
         "recommendations_count": 10,
         "products_per_row_mobile": "2",
         "products_per_row_desktop": 4,
         "horizontal_spacing_factor": 1,
         "vertical_spacing_factor": 1,
-        "subheading": "",
-        "title": "Related products",
+        "subheading": "EXPLORE MORE",
+        "title": "Other Oushak Rugs",
         "heading_style": "h2",
         "content": ""
+      }
+    },
+    "color_palette_P6iqLw": {
+      "type": "color-palette",
+      "settings": {
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "separate_section_with_border": false,
+        "padding_top": 86,
+        "padding_bottom": 88,
+        "subheading": "COLOR PALETTE",
+        "title": "Shop by Shade",
+        "heading_style": "h2",
+        "menu": "prestige-main-menu",
+        "color_group_title": ""
+      }
+    },
+    "recently_viewed_products_YJBcW8": {
+      "type": "recently-viewed-products",
+      "name": "t:sections.recently_viewed_products.presets.recently_viewed_products.name",
+      "settings": {
+        "separate_section_with_border": true,
+        "remove_vertical_spacing": true,
+        "custom_class": "recent_products",
+        "color_scheme": "scheme-1",
+        "hide_product_information": false,
+        "stack_products": false,
+        "products_count": 9,
+        "products_per_row_mobile": "2",
+        "products_per_row_desktop": 4,
+        "horizontal_spacing_factor": 1,
+        "vertical_spacing_factor": 1,
+        "subheading": "CONTINUE BROWSING",
+        "title": "Recently Viewed",
+        "heading_style": "h2",
+        "content": ""
+      }
+    },
+    "multi_column_mKLkbK": {
+      "type": "multi-column",
+      "blocks": {
+        "image_with_text_THD9B3": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_7.png",
+            "title": "Give Us a Call",
+            "subheading": "",
+            "heading_tag": "h3",
+            "custom_heading_size": 24,
+            "content": "<p>Our experts are just a call away to help you find your perfect rug.</p>",
+            "link_url": "tel:+1 (415) 980-7774",
+            "link_text": "+1 (415) 980-7774",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        },
+        "image_with_text_t3cUVe": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/tabler_video_1.png",
+            "title": "Virtual Appointment",
+            "subheading": "",
+            "heading_tag": "h3",
+            "custom_heading_size": 24,
+            "content": "<p>Schedule a call to explore designs, ask questions and shop online with our experts.</p>",
+            "link_url": "#",
+            "link_text": "Book Now",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        },
+        "image_with_text_xih7tA": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_8.png",
+            "title": "Send Us an Email",
+            "subheading": "",
+            "heading_tag": "h3",
+            "custom_heading_size": 24,
+            "content": "<p>Prefer email? Send your query and our team will respond with all the details you need.</p>",
+            "link_url": "mailto:love@bisharugs.com",
+            "link_text": "love@bisharugs.com",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_THD9B3",
+        "image_with_text_t3cUVe",
+        "image_with_text_xih7tA"
+      ],
+      "name": "t:sections.multi_column.presets.multi_column.name",
+      "settings": {
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
+        "custom_class": "Collection_contact_us",
+        "separate_section_with_border": true,
+        "remove_section_spacing": true,
+        "columns_per_row": 3,
+        "stack_on_mobile": true,
+        "enable_carousel": false,
+        "overlap_image": false,
+        "content_alignment": "center",
+        "text_alignment": "start",
+        "column_gap_mobile": 18,
+        "row_gap_mobile": 24,
+        "column_gap_desktop": 28,
+        "row_gap_desktop": 28,
+        "media_height": "379px",
+        "subheading": "CONTACT US",
+        "title": "Still Have Questions?",
+        "heading_style": "h2",
+        "content": "<p>We’re here to help you pick the right rug for your space, talk to our experts today.</p>",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
       }
     }
   },
@@ -527,6 +1464,17 @@
     "pdp_breadcrumb_bar_6Fx63X",
     "pdp_gallery_presentation_CbT3gF",
     "main",
-    "related-products"
+    "marquee_GgE39E",
+    "multi_column_wbh9GA",
+    "image_with_text_3fdGrc",
+    "multiple_media_with_text_diJWEW",
+    "comparison_table_V6yq7Q",
+    "multi_column_TxrEcw",
+    "faq_PAcnCq",
+    "image_with_text_YaGxKL",
+    "related-products",
+    "color_palette_P6iqLw",
+    "recently_viewed_products_YJBcW8",
+    "multi_column_mKLkbK"
   ]
 }

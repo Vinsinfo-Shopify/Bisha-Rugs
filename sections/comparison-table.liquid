@@ -1,0 +1,638 @@
+{%- liquid
+  assign column_count = section.settings.column_count | plus: 0
+  assign row_count = section.blocks.size
+
+  capture grid_desktop
+    echo 'var(--ct-label-width)'
+    for i in (1..column_count)
+      echo ' minmax(0, 1fr)'
+    endfor
+  endcapture
+
+  capture grid_mobile
+    echo 'var(--ct-label-width-mobile)'
+    for i in (1..column_count)
+      echo ' minmax(var(--ct-column-min-mobile), 1fr)'
+    endfor
+  endcapture
+
+  # The CTA row only exists when at least one column actually has a button.
+  assign has_buttons = false
+  for i in (1..column_count)
+    assign label_key = 'column_' | append: i | append: '_button_label'
+    if section.settings[label_key] != blank
+      assign has_buttons = true
+    endif
+  endfor
+-%}
+
+{%- capture intro_content -%}
+  {%- if section.settings.subheading != blank -%}
+    <p class="comparison-table__eyebrow">{{ section.settings.subheading }}</p>
+  {%- endif -%}
+
+  {%- if section.settings.heading != blank -%}
+    <h2 class="comparison-table__heading">{{ section.settings.heading }}</h2>
+  {%- endif -%}
+
+  {%- if section.settings.description != blank -%}
+    <div class="comparison-table__description">{{ section.settings.description }}</div>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- if row_count > 0 or intro_content != blank -%}
+  <div
+    class="comparison-table color-scheme color-scheme--{{ section.settings.color_scheme.id }}"
+    style="
+      --ct-background: {{ section.settings.background }};
+      --ct-column-background: {{ section.settings.column_background }};
+      --ct-border-color: {{ section.settings.border_color }};
+      --ct-heading-color: {{ section.settings.heading_color }};
+      --ct-value-color: {{ section.settings.value_color }};
+      --ct-scrollbar-color: {{ section.settings.scrollbar_color }};
+      --ct-padding-block-start: {{ section.settings.padding_top }}px;
+      --ct-padding-block-end: {{ section.settings.padding_bottom }}px;
+      --ct-padding-block-start-mobile: {{ section.settings.padding_top_mobile }}px;
+      --ct-padding-block-end-mobile: {{ section.settings.padding_bottom_mobile }}px;
+      --ct-label-width: {{ section.settings.label_column_width }}px;
+      --ct-label-width-mobile: {{ section.settings.label_column_width_mobile }}px;
+      --ct-column-min-mobile: {{ section.settings.column_min_width_mobile }}px;
+      --ct-cell-padding-inline: {{ section.settings.cell_padding_inline }}px;
+      --ct-cell-padding-block: {{ section.settings.row_padding }}px;
+      --ct-heading-size: {{ section.settings.heading_size }}px;
+      --ct-heading-size-mobile: {{ section.settings.heading_size_mobile }}px;
+      --ct-title-size: {{ section.settings.column_title_size }}px;
+      --ct-body-size: {{ section.settings.body_size }}px;
+      --ct-body-size-mobile: {{ section.settings.body_size_mobile }}px;
+      --ct-image-ratio: {{ section.settings.image_ratio }};
+      --ct-image-radius: {{ section.settings.image_radius }}px;
+      --ct-grid-desktop: {{ grid_desktop }};
+      --ct-grid-mobile: {{ grid_mobile }};
+    "
+  >
+    <div class="comparison-table__inner container container--lg">
+      {%- if intro_content != blank -%}
+        <div class="comparison-table__intro comparison-table__intro--mobile">{{ intro_content }}</div>
+      {%- endif -%}
+
+      <div class="comparison-table__scroller" tabindex="0" role="group" aria-label="{{ section.settings.heading | default: 'Comparison table' | escape }}">
+        <div class="comparison-table__grid">
+          {%- comment -%} Header row: intro beside one media cell per column {%- endcomment -%}
+          <div class="comparison-table__cell comparison-table__cell--intro">
+            {%- if intro_content != blank -%}
+              <div class="comparison-table__intro comparison-table__intro--inline">{{ intro_content }}</div>
+            {%- endif -%}
+          </div>
+
+          {%- for i in (1..column_count) -%}
+            {%- liquid
+              assign image_key = 'column_' | append: i | append: '_image'
+              assign title_key = 'column_' | append: i | append: '_title'
+              assign column_image = section.settings[image_key]
+              assign column_title = section.settings[title_key]
+            -%}
+
+            <div class="comparison-table__cell comparison-table__cell--head{% if forloop.last %} comparison-table__cell--last-column{% endif %}">
+              <div class="comparison-table__media">
+                {%- if column_image != blank -%}
+                  {{-
+                    column_image
+                    | image_url: width: 1000
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '240,320,420,540,720,960',
+                      sizes: '(max-width: 699px) 60vw, (max-width: 1199px) 36vw, 480px',
+                      class: 'comparison-table__image'
+                  -}}
+                {%- else -%}
+                  {{- 'lifestyle-1' | placeholder_svg_tag: 'comparison-table__image placeholder' -}}
+                {%- endif -%}
+              </div>
+
+              {%- if column_title != blank -%}
+                <p class="comparison-table__column-title">{{ column_title }}</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+
+          {%- comment -%} One attribute per block: label, then a value per column {%- endcomment -%}
+          {%- for block in section.blocks -%}
+            <div class="comparison-table__cell comparison-table__cell--label" {{ block.shopify_attributes }}>
+              {{- block.settings.label -}}
+            </div>
+
+            {%- for i in (1..column_count) -%}
+              {%- assign value_key = 'value_' | append: i -%}
+
+              <div class="comparison-table__cell comparison-table__cell--value{% if forloop.last %} comparison-table__cell--last-column{% endif %}">
+                {{- block.settings[value_key] -}}
+              </div>
+            {%- endfor -%}
+          {%- endfor -%}
+
+          {%- if has_buttons -%}
+            <div class="comparison-table__cell comparison-table__cell--label comparison-table__cell--cta" aria-hidden="true"></div>
+
+            {%- for i in (1..column_count) -%}
+              {%- liquid
+                assign label_key = 'column_' | append: i | append: '_button_label'
+                assign url_key = 'column_' | append: i | append: '_button_url'
+                assign button_label = section.settings[label_key]
+                assign button_url = section.settings[url_key]
+              -%}
+
+              <div class="comparison-table__cell comparison-table__cell--cta{% if forloop.last %} comparison-table__cell--last-column{% endif %}">
+                {%- if button_label != blank -%}
+                  {%- render 'button',
+                    href: button_url,
+                    content: button_label,
+                    style: section.settings.button_style,
+                    size: 'sm'
+                  -%}
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Comparison table",
+  "class": "shopify-section--comparison-table",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:global.text.subheading",
+      "default": "RUG GUIDE"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:global.text.heading",
+      "default": "Compare and Find your Perfect Rug"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "info": "Optional. Sits under the heading, in the first column on desktop."
+    },
+    {
+      "type": "header",
+      "content": "Columns"
+    },
+    {
+      "type": "select",
+      "id": "column_count",
+      "label": "Number of columns",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "image_picker",
+      "id": "column_1_image",
+      "label": "Column 1 image"
+    },
+    {
+      "type": "text",
+      "id": "column_1_title",
+      "label": "Column 1 title",
+      "default": "Hand-Knotted Rugs"
+    },
+    {
+      "type": "text",
+      "id": "column_1_button_label",
+      "label": "Column 1 button label",
+      "info": "Leave every button label empty to hide the button row."
+    },
+    {
+      "type": "url",
+      "id": "column_1_button_url",
+      "label": "Column 1 button link",
+      "visible_if": "{{ section.settings.column_1_button_label != blank }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "column_2_image",
+      "label": "Column 2 image"
+    },
+    {
+      "type": "text",
+      "id": "column_2_title",
+      "label": "Column 2 title",
+      "default": "Tufted Rugs"
+    },
+    {
+      "type": "text",
+      "id": "column_2_button_label",
+      "label": "Column 2 button label"
+    },
+    {
+      "type": "url",
+      "id": "column_2_button_url",
+      "label": "Column 2 button link",
+      "visible_if": "{{ section.settings.column_2_button_label != blank }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "column_3_image",
+      "label": "Column 3 image",
+      "visible_if": "{{ section.settings.column_count == '3' }}"
+    },
+    {
+      "type": "text",
+      "id": "column_3_title",
+      "label": "Column 3 title",
+      "visible_if": "{{ section.settings.column_count == '3' }}"
+    },
+    {
+      "type": "text",
+      "id": "column_3_button_label",
+      "label": "Column 3 button label",
+      "visible_if": "{{ section.settings.column_count == '3' }}"
+    },
+    {
+      "type": "url",
+      "id": "column_3_button_url",
+      "label": "Column 3 button link",
+      "visible_if": "{{ section.settings.column_count == '3' and section.settings.column_3_button_label != blank }}"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "t:global.text.link_style",
+      "options": [
+        { "value": "solid", "label": "t:global.text.link_style_options.solid" },
+        { "value": "outline", "label": "t:global.text.link_style_options.outline" },
+        { "value": "link", "label": "t:global.text.link_style_options.link" }
+      ],
+      "default": "outline"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        { "value": "3 / 2", "label": "Landscape (3:2)" },
+        { "value": "4 / 3", "label": "Landscape (4:3)" },
+        { "value": "16 / 9", "label": "Wide (16:9)" },
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "3 / 4", "label": "Portrait (3:4)" }
+      ],
+      "default": "3 / 2"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Section background",
+      "info": "Applied only to this section. Global colour schemes are not affected.",
+      "default": "#fffbf3"
+    },
+    {
+      "type": "color",
+      "id": "column_background",
+      "label": "Column background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Divider and outline colour",
+      "default": "#e4e0d7"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading, column title and row label colour",
+      "default": "#2b2724"
+    },
+    {
+      "type": "color",
+      "id": "value_color",
+      "label": "Value colour",
+      "default": "#55504a"
+    },
+    {
+      "type": "color",
+      "id": "scrollbar_color",
+      "label": "Mobile scrollbar colour",
+      "info": "The drag indicator under the table when it scrolls sideways.",
+      "default": "#b24a2b"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size (desktop)",
+      "min": 18,
+      "max": 56,
+      "step": 1,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size (mobile)",
+      "min": 16,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "column_title_size",
+      "label": "Column title size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Label and value size (desktop)",
+      "min": 11,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "body_size_mobile",
+      "label": "Label and value size (mobile)",
+      "min": 9,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "label_column_width",
+      "label": "Label column width (desktop)",
+      "min": 140,
+      "max": 420,
+      "step": 4,
+      "unit": "px",
+      "default": 272
+    },
+    {
+      "type": "range",
+      "id": "label_column_width_mobile",
+      "label": "Label column width (mobile)",
+      "min": 70,
+      "max": 220,
+      "step": 2,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "column_min_width_mobile",
+      "label": "Minimum column width (mobile)",
+      "info": "Columns narrower than this start scrolling sideways instead of squashing.",
+      "min": 120,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 172
+    },
+    {
+      "type": "range",
+      "id": "cell_padding_inline",
+      "label": "Cell side padding",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "row_padding",
+      "label": "Row vertical padding",
+      "min": 4,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top spacing (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom spacing (mobile)",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Comparison row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Row label",
+          "default": "Construction"
+        },
+        {
+          "type": "text",
+          "id": "value_1",
+          "label": "Column 1 value"
+        },
+        {
+          "type": "text",
+          "id": "value_2",
+          "label": "Column 2 value"
+        },
+        {
+          "type": "text",
+          "id": "value_3",
+          "label": "Column 3 value",
+          "visible_if": "{{ section.settings.column_count == '3' }}"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparison table",
+      "blocks": [
+        {
+          "type": "row",
+          "settings": {
+            "label": "Construction",
+            "value_1": "Individually hand-knotted",
+            "value_2": "Hand-tufted with a backing"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Price Range",
+            "value_1": "Premium investment",
+            "value_2": "More affordable"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Rug Pad",
+            "value_1": "Recommended for grip, cushioning & longevity",
+            "value_2": "Recommended, but optional"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Artisan Expertise",
+            "value_1": "Woven by generational artisans",
+            "value_2": "Hand-finished by skilled artisans"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Durability",
+            "value_1": "Exceptional. Built to last for decades",
+            "value_2": "Designed to last for years"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Feel",
+            "value_1": "Smooth, refined & luxurious",
+            "value_2": "Plush, soft & cushioned"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Maintenance",
+            "value_1": "Professional cleaning recommended",
+            "value_2": "Spot clean & easy day-to-day maintenance"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Pile Height",
+            "value_1": "Medium pile",
+            "value_2": "Medium to high pile"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Perfect For",
+            "value_1": "Living room, Dining room, Bedroom, Statement Spaces",
+            "value_2": "Family room, Bedroom, Kid's room"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Customization",
+            "value_1": "Custom sizes & colors available",
+            "value_2": "Custom sizes & colors available"
+          }
+        },
+        {
+          "type": "row",
+          "settings": {
+            "label": "Production Time",
+            "value_1": "5 - 8 Weeks",
+            "value_2": "5 - 8 Weeks"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

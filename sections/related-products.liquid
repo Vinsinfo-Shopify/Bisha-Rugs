@@ -16,7 +16,7 @@
 
     {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 
-    <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+    <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_css_class }}">
       <div class="container">
         <div class="section-stack">
           {%- render 'section-header',
@@ -102,6 +102,12 @@
       "info": "t:global.product_list.hide_product_information_info"
     },
     {
+      "type": "text",
+      "id": "custom_css_class",
+      "label": "Custom CSS class",
+      "info": "Optional. Adds a class to this section's wrapper so you can target its styling, e.g. explore_more_rugs"
+    },
+    {
       "type": "header",
       "content": "t:global.product_list.product_list_category"
     },
@@ -175,13 +181,14 @@
     {
       "type": "inline_richtext",
       "id": "subheading",
-      "label": "t:global.text.subheading"
+      "label": "t:global.text.subheading",
+      "default": "Explore more"
     },
     {
       "type": "inline_richtext",
       "id": "title",
       "label": "t:global.text.heading",
-      "default": "Related products"
+      "default": "Other Oushak Rugs"
     },
     {
       "type": "select",

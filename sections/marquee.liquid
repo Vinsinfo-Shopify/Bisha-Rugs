@@ -1,0 +1,533 @@
+{%- liquid
+  assign item_count = section.blocks.size
+
+  # The track is one group repeated: the animation shifts it by exactly one group
+  # width, so the wrap-around is invisible. Enough copies are rendered that the
+  # remaining groups always cover the widest viewport, even with a single item.
+  assign divisor = item_count | at_least: 1
+  assign copies = 30 | divided_by: divisor
+  assign copies = copies | at_least: 4 | at_most: 24
+
+  unless section.settings.enable_animation
+    assign copies = 1
+  endunless
+
+  assign scroll_direction = 'normal'
+  if section.settings.direction == 'right'
+    assign scroll_direction = 'reverse'
+  endif
+
+  assign is_animated = section.settings.enable_animation
+  assign icon_sizes_attr = section.settings.icon_size | append: 'px'
+-%}
+
+{%- if item_count > 0 -%}
+  <div
+    class="
+      marquee
+      {% if is_animated %}marquee--animated{% else %}marquee--static{% endif %}
+      {% if is_animated and section.settings.pause_on_hover %}marquee--pause-on-hover{% endif %}
+      {% if section.settings.fade_edges %}marquee--faded{% endif %}
+      {% if section.settings.show_border_top %}marquee--border-top{% endif %}
+      {% if section.settings.show_border_bottom %}marquee--border-bottom{% endif %}
+    "
+    style="
+      --marquee-background: {{ section.settings.background }};
+      --marquee-text-color: {{ section.settings.text_color }};
+      --marquee-icon-color: {{ section.settings.icon_color | default: section.settings.text_color }};
+      --marquee-separator-color: {{ section.settings.separator_color | default: section.settings.text_color }};
+      --marquee-border-color: {{ section.settings.border_color }};
+      --marquee-border-width: {{ section.settings.border_width }}px;
+      --marquee-padding-block-start: {{ section.settings.padding_top }}px;
+      --marquee-padding-block-end: {{ section.settings.padding_bottom }}px;
+      --marquee-padding-block-start-mobile: {{ section.settings.padding_top_mobile }}px;
+      --marquee-padding-block-end-mobile: {{ section.settings.padding_bottom_mobile }}px;
+      --marquee-item-gap-desktop: {{ section.settings.item_gap }}px;
+      --marquee-item-gap-mobile: {{ section.settings.item_gap_mobile }}px;
+      --marquee-icon-gap: {{ section.settings.icon_gap }}px;
+      --marquee-icon-size-desktop: {{ section.settings.icon_size }}px;
+      --marquee-icon-size-mobile: {{ section.settings.icon_size_mobile }}px;
+      --marquee-text-size-desktop: {{ section.settings.text_size }}px;
+      --marquee-text-size-mobile: {{ section.settings.text_size_mobile }}px;
+      --marquee-text-weight: {{ section.settings.text_weight }};
+      --marquee-text-transform: {{ section.settings.text_transform }};
+      --marquee-letter-spacing: {{ section.settings.letter_spacing }}px;
+      --marquee-separator-size: {{ section.settings.separator_size }}px;
+      --marquee-duration-desktop: {{ section.settings.duration }}s;
+      --marquee-duration-mobile: {{ section.settings.duration_mobile }}s;
+      --marquee-direction: {{ scroll_direction }};
+      --marquee-copies: {{ copies }};
+      --marquee-font-family: {% if section.settings.text_font == 'heading' %}var(--heading-font-family){% else %}var(--text-font-family){% endif %};
+    "
+  >
+    <div class="marquee__viewport">
+      <div class="marquee__track">
+        {%- for copy in (1..copies) -%}
+          <div class="marquee__group"{% unless forloop.first %} aria-hidden="true"{% endunless %}>
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign item_tag = 'div'
+                if block.settings.link != blank
+                  assign item_tag = 'a'
+                endif
+              -%}
+
+              <{{ item_tag }}
+                class="marquee__item"
+                {% if item_tag == 'a' %}href="{{ block.settings.link }}"{% if copy > 1 %} tabindex="-1"{% endif %}{% endif %}
+                {% if copy == 1 %}{{ block.shopify_attributes }}{% endif %}
+              >
+                {%- if block.settings.icon_source != 'none' -%}
+                  {%- if block.settings.icon_source == 'custom' and block.settings.custom_icon != blank -%}
+                    {{-
+                      block.settings.custom_icon
+                      | image_url: width: 200
+                      | image_tag: loading: 'lazy', widths: '32,48,64,96,128,200', sizes: icon_sizes_attr, class: 'marquee__icon marquee__icon--image', alt: ''
+                    -}}
+                  {%- elsif block.settings.icon_source == 'theme' -%}
+                    {%- render 'icon' with block.settings.icon, class: 'marquee__icon', width: section.settings.icon_size, stroke_width: section.settings.icon_stroke_width -%}
+                  {%- endif -%}
+                {%- endif -%}
+
+                {%- if block.settings.text != blank -%}
+                  <span class="marquee__text">{{ block.settings.text }}</span>
+                {%- endif -%}
+              </{{ item_tag }}>
+
+              {%- if section.settings.show_separator and section.settings.separator != blank -%}
+                <span class="marquee__separator" aria-hidden="true">{{ section.settings.separator }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Marquee",
+  "class": "shopify-section--marquee",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animation",
+      "label": "Enable scrolling animation",
+      "info": "When off, the items are shown as a static row.",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Scroll direction",
+      "options": [
+        { "value": "left", "label": "Right to left" },
+        { "value": "right", "label": "Left to right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "duration",
+      "min": 5,
+      "max": 120,
+      "step": 5,
+      "unit": "s",
+      "label": "Scroll speed — desktop",
+      "info": "Seconds for one full loop. A higher value scrolls slower.",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "duration_mobile",
+      "min": 5,
+      "max": 120,
+      "step": 5,
+      "unit": "s",
+      "label": "Scroll speed — mobile",
+      "default": 25
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "fade_edges",
+      "label": "Fade the left and right edges",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Icons"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 8,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon size — desktop",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "icon_size_mobile",
+      "min": 8,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon size — mobile",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "icon_stroke_width",
+      "min": 0.5,
+      "max": 2.5,
+      "step": 0.1,
+      "label": "Icon line thickness",
+      "info": "Only applies to the built-in theme icons.",
+      "default": 1.0
+    },
+    {
+      "type": "range",
+      "id": "icon_gap",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Space between icon and text",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "text_font",
+      "label": "Font",
+      "options": [
+        { "value": "body", "label": "Body" },
+        { "value": "heading", "label": "Heading" }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 8,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size — desktop",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "min": 8,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size — mobile",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "text_weight",
+      "label": "Text weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Regular" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semibold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Text case",
+      "options": [
+        { "value": "none", "label": "As typed" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "min": -1,
+      "max": 4,
+      "step": 0.1,
+      "unit": "px",
+      "label": "Letter spacing",
+      "default": 0.2
+    },
+    {
+      "type": "header",
+      "content": "Separator"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_separator",
+      "label": "Show separator between items",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "separator",
+      "label": "Separator character",
+      "info": "For example • / — |",
+      "default": "•"
+    },
+    {
+      "type": "range",
+      "id": "separator_size",
+      "min": 4,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Separator size",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "item_gap",
+      "min": 4,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between items — desktop",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "item_gap_mobile",
+      "min": 4,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between items — mobile",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding — desktop",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding — desktop",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Top padding — mobile",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom padding — mobile",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#fdf9ef"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#241f1a"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icons",
+      "default": "#241f1a"
+    },
+    {
+      "type": "color",
+      "id": "separator_color",
+      "label": "Separator",
+      "default": "#241f1a"
+    },
+    {
+      "type": "header",
+      "content": "Borders"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border_top",
+      "label": "Show top border",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border_bottom",
+      "label": "Show bottom border",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Border thickness",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border",
+      "default": "#e7dfcc"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "Hand-Woven"
+        },
+        {
+          "type": "select",
+          "id": "icon_source",
+          "label": "Icon",
+          "options": [
+            { "value": "theme", "label": "Theme icon" },
+            { "value": "custom", "label": "Custom image" },
+            { "value": "none", "label": "No icon" }
+          ],
+          "default": "theme"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Theme icon",
+          "options": [
+            { "value": "picto-user", "label": "Person" },
+            { "value": "picto-avatar", "label": "Avatar" },
+            { "value": "picto-leaf", "label": "Leaf" },
+            { "value": "picto-tree", "label": "Tree" },
+            { "value": "picto-recycle", "label": "Recycle" },
+            { "value": "picto-earth", "label": "Globe" },
+            { "value": "picto-success", "label": "Checkmark" },
+            { "value": "picto-like", "label": "Thumbs up" },
+            { "value": "picto-love", "label": "Heart" },
+            { "value": "picto-shield", "label": "Shield" },
+            { "value": "picto-lock", "label": "Lock" },
+            { "value": "picto-secure-profile", "label": "Secure profile" },
+            { "value": "picto-award-gift", "label": "Award" },
+            { "value": "picto-gift", "label": "Gift" },
+            { "value": "picto-star", "label": "Star" },
+            { "value": "picto-jewelry", "label": "Jewelry" },
+            { "value": "picto-delivery-truck", "label": "Delivery truck" },
+            { "value": "picto-return", "label": "Return" },
+            { "value": "picto-box", "label": "Box" },
+            { "value": "picto-plane", "label": "Plane" },
+            { "value": "picto-pin", "label": "Pin" },
+            { "value": "picto-money", "label": "Money" },
+            { "value": "picto-credit-card", "label": "Credit card" },
+            { "value": "picto-percent", "label": "Percent" },
+            { "value": "picto-timer", "label": "Timer" }
+          ],
+          "default": "picto-user"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom image",
+          "info": "Used when the icon is set to \"Custom image\". A square, transparent PNG or SVG works best."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "info": "Optional. Makes the item clickable."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": { "text": "Hand-Woven", "icon": "picto-user" }
+        },
+        {
+          "type": "item",
+          "settings": { "text": "Natural Wool & Dyes", "icon": "picto-leaf" }
+        },
+        {
+          "type": "item",
+          "settings": { "text": "Risk-Free Purchase", "icon": "picto-success" }
+        },
+        {
+          "type": "item",
+          "settings": { "text": "Master Artisans", "icon": "picto-love" }
+        },
+        {
+          "type": "item",
+          "settings": { "text": "Fair Trade Practices", "icon": "picto-earth" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
