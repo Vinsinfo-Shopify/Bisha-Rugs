@@ -436,11 +436,11 @@
         "complementary_products": {
           "type": "complementary_products",
           "settings": {
-            "title": "Pairs well with",
-            "products_count": 2,
-            "show_below_gallery": true,
+            "title": "Discover More Designs",
+            "products_count": 4,
+            "show_below_gallery": false,
             "stack_products": false,
-            "show_quick_buy": true
+            "show_quick_buy": false
           }
         }
       },
