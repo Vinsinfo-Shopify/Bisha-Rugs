@@ -78,32 +78,35 @@
     position: relative;
   }
 
-  #shopify-section-{{ section.id }} .co__track {
+    #shopify-section-{{ section.id }} .co__track {
     --co-gap: {{ section.settings.card_gap }}px;
-    /* Fixed, not a fraction of the track. The design specifies a rendered image
-       size, so the card is that size at every viewport and the carousel simply
-       scrolls when they stop fitting. A fractional width would have re-derived
-       the image size from the container and broken the measurement. */
     --co-card: {{ section.settings.image_width }}px;
     --co-media: {{ section.settings.image_height }}px;
     display: flex;
     align-items: stretch;
     gap: var(--co-gap);
-    /* Equal outer space without touching either side's padding: the track is
-       only as wide as its cards (3 x 415 + 2 x 22 = 1289px) and auto margins
-       split the remainder. max-width caps it at the container, so on a narrow
-       desktop it simply becomes a scroller again instead of overflowing. */
-    width: fit-content;
-    max-width: 100%;
-    margin-inline: auto;
+    position: relative;
     overflow: auto hidden;
+    overflow-anchor: none;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    /* No inline padding: card 1 starts on the container edge and the row can
-       run to the opposite edge. */
-    padding-inline: 0;
-    scroll-padding-inline: 0;
+
+    /* Full-bleed track: it spans the viewport and the left/right insets are
+       content, not container edges. Same pattern as the Instagram section. */
+    width: auto;
+    max-width: none;
+    margin-inline: calc(-1 * var(--container-gutter));
+    padding-inline-start: var(--container-gutter);
+    padding-inline-end: 0;
+    scroll-padding-inline-start: var(--container-gutter);
+    scroll-padding-inline-end: 0;
+  }
+
+  /* End inset as a margin on the item. padding-inline-end on a flex scroller
+     is dropped from scrollWidth by several engines. */
+  #shopify-section-{{ section.id }} .co__card:last-child {
+    margin-inline-end: var(--container-gutter);
   }
 
   #shopify-section-{{ section.id }} .co__track::-webkit-scrollbar {
