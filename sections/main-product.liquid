@@ -1439,6 +1439,27 @@
           "label": "t:global.image.image"
         },
         {
+          "type": "range",
+          "id": "image_width",
+          "label": "Image width",
+          "min": 40,
+          "max": 200,
+          "step": 4,
+          "unit": "px",
+          "default": 80
+        },
+        {
+          "type": "range",
+          "id": "image_height",
+          "label": "Image height",
+          "info": "Ignored when \"Show checkmarks for list items\" is on below — the image then stretches to match the card's height automatically.",
+          "min": 40,
+          "max": 240,
+          "step": 4,
+          "unit": "px",
+          "default": 80
+        },
+        {
           "type": "text",
           "id": "heading",
           "label": "t:global.text.heading"
@@ -1464,6 +1485,22 @@
           "type": "url",
           "id": "button_link",
           "label": "t:sections.main_product.blocks.image_text_card.button_link"
+        },
+        {
+          "type": "select",
+          "id": "italic",
+          "label": "heading_style",
+          "options": [
+            {
+              "value": "normal",
+              "label": "Normal"
+            },
+            {
+              "value": "Italic",
+              "label": "Italic"
+            }
+          ],
+          "default": "normal"
         },
         {
           "type": "select",

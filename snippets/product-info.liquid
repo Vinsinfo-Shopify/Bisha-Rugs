@@ -46,7 +46,7 @@
     display: flex;
     flex-wrap: nowrap;
     gap: 20px;
-    margin-block-end: 4px;
+    margin-block: 4px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
@@ -64,7 +64,7 @@
     font-family: var(--text-font-family);
     font-size: 14px;
     line-height: 140%;
-    font-weight: 500;
+    font-weight: 400;
     color: rgb(var(--text-color) / 0.5);
     white-space: nowrap;
     cursor: pointer;
@@ -72,6 +72,7 @@
 
   .shopify-section--main-product .color-pattern-picker__tab.is-active {
     color: rgb(var(--text-color));
+    font-weight: 600;
   }
 
   .shopify-section--main-product .color-pattern-picker__grid {
@@ -91,8 +92,8 @@
     display: block;
     box-sizing: border-box;
     flex-shrink: 0;
-    width: 44px;
-    height: 44px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     overflow: hidden;
     border: 1px solid rgb(0 0 0 / 0.12);
@@ -507,10 +508,10 @@
                 assign label_list = all_labels | split: '|||' | uniq
               -%}
 
-              <color-pattern-picker class="color-pattern-picker v-stack gap-2">
+              <color-pattern-picker class="color-pattern-picker v-stack gap-3">
                 {%- if block.settings.heading != blank -%}
                   <p class="color-pattern-picker__heading">
-                    {{ block.settings.heading | escape }}: <span style="text-transform:capitalize; font-wieght:400;">{{- heading_label_short -}}</span>
+                    {{ block.settings.heading | escape }}: <span style="text-transform:capitalize; font-weight:400;">{{- heading_label_short -}}</span>
                   </p>
                 {%- endif -%}
 
@@ -772,18 +773,35 @@
 
           {%- when 'image_text_card' -%}
             {%- if block.settings.heading != blank or block.settings.text != blank or block.settings.image != blank -%}
+              {%- liquid
+                assign card_image_width = block.settings.image_width | default: 80
+                assign card_image_height = block.settings.image_height | default: 80
+                assign card_image_request_width = card_image_width | times: 2
+                assign card_image_sizes = card_image_width | append: 'px'
+                assign card_image_widths = card_image_width | append: ',' | append: card_image_request_width
+              -%}
+              {%- capture card_image_style -%}
+                width: {{ card_image_width }}px;
+                {%- unless block.settings.show_checklist_icons -%}
+                  height: {{ card_image_height }}px;
+                {%- endunless -%}
+              {%- endcapture -%}
               <div class="image-text-card {% if block.settings.show_checklist_icons %}image-text-card--checklist{% endif %} {% if block.settings.border_color != blank and block.settings.border_color != 'rgba(0,0,0,0)' %}border{% endif %}" style="{% render 'surface', background: block.settings.background, text_color: block.settings.text_color, border_color: block.settings.border_color %}">
                 {%- if block.settings.image != blank -%}
-                  {{- block.settings.image | image_url: width: 200 | image_tag: loading: 'lazy', sizes: '80px', widths: '80,160', class: 'image-text-card__image' -}}
+                  {{-
+                    block.settings.image
+                    | image_url: width: card_image_request_width
+                    | image_tag: loading: 'lazy', sizes: card_image_sizes, widths: card_image_widths, class: 'image-text-card__image', style: card_image_style
+                  -}}
                 {%- endif -%}
 
-                <div class="v-stack gap-2">
+                <div class="v-stack gap-2 image-text-card__info">
                   {%- if block.settings.heading != blank -%}
-                    <p class="image-text-card__heading">{{ block.settings.heading }}</p>
+                    <p class="image-text-card__heading" style="font-style:{{ block.settings.italic }}">{{ block.settings.heading }}</p>
                   {%- endif -%}
 
                   {%- if block.settings.text != blank -%}
-                    <div class="prose">
+                    <div class="prose image-text-card__content">
                       {{- block.settings.text -}}
                     </div>
                   {%- endif -%}
@@ -795,7 +813,7 @@
                       size: 'sm',
                       style: block.settings.button_style,
                       background: block.settings.button_background,
-                      text_color: block.settings.button_text_color
+                      text_color: block.settings.button_text_color,
                     -%}
                   {%- endif -%}
                 </div>

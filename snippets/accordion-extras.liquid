@@ -55,13 +55,13 @@
       -}}
     {%- endif -%}
 
-    <div class="v-stack gap-2">
+    <div class="v-stack gap-2 accordion-option-card_info">
       {%- if block.settings.card_heading != blank -%}
-        <p class="h6">{{ block.settings.card_heading }}</p>
+        <p class="h6 accordion-option-card_heading">{{ block.settings.card_heading }}</p>
       {%- endif -%}
 
       {%- if block.settings.card_text != blank -%}
-        <div class="prose">{{ block.settings.card_text }}</div>
+        <div class="prose accordion-option-card_content">{{ block.settings.card_text }}</div>
       {%- endif -%}
 
       {%- if block.settings.card_button_label != blank and block.settings.card_button_link != blank -%}
