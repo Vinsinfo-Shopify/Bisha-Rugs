@@ -229,8 +229,12 @@
             "image": "shopify://shop_images/b9f58825ed6196aa9f6f5dd06281e6e41609f56d.png",
             "heading": "Crafted with Purpose",
             "text": "<p>Handcrafted by skilled artisans in rural India, every Bisha rug celebrates craftsmanship and fair, ethical practices.</p>",
+            "show_checklist_icons": false,
             "button_label": "",
             "button_link": "",
+            "button_style": "solid",
+            "button_background": "",
+            "button_text_color": "",
             "background": "#f5f5f5",
             "text_color": "",
             "border_color": ""
@@ -242,8 +246,12 @@
             "image": "shopify://shop_images/0f111b50afa1cbc748628327e86a3d50423143c9.png",
             "heading": "Having second thoughts?",
             "text": "<p>See your rug before you order. Get a CADD design in your size, colors and setting.</p>",
+            "show_checklist_icons": false,
             "button_label": "Get CADD DESIGN",
             "button_link": "shopify://pages/contact",
+            "button_style": "solid",
+            "button_background": "",
+            "button_text_color": "",
             "background": "#f3eee4",
             "text_color": "",
             "border_color": ""
@@ -397,7 +405,17 @@
             "title": "Product Description",
             "content": "{{ product.description }}",
             "liquid": "",
-            "page": ""
+            "page": "",
+            "tag_1_text": "Eco-Friendly",
+            "tag_2_text": "Hand-Woven",
+            "tag_3_text": "Custom Sizes & Colors",
+            "note_text": "",
+            "card_heading": "",
+            "card_text": "",
+            "card_button_label": "",
+            "card_button_link": "",
+            "card_button_background": "",
+            "card_button_text_color": ""
           }
         },
         "accordion_dWgcNj": {
@@ -408,7 +426,17 @@
             "title": "Craftsmanship",
             "content": "<p>Handcrafted in India by generational artisans, every Bisha Oushak rug is woven using centuries-old techniques inspired by Persian and Anatolian traditions. From selecting the finest wool to tying every individual knot by hand, each rug is crafted with remarkable patience, precision, and care.<br/><br/><strong>The Making Process:<br/></strong> Premium New Zealand wool is carefully selected and prepared.<br/>Natural dyes create soft, timeless color palettes with subtle tonal variation<br/>.Every knot is tied by hand on a traditional loom.<br/>Each rug is trimmed, washed, and carefully inspected before shipment.<br/><br/><strong> Features: </strong><br/><br/>Generational artisan craftsmanship<br/>Oversized signature motifs<br/>Soft pastel color palette<br/>Inspired by historic Oushak designs<br/><br/><br/><br/></p>",
             "liquid": "",
-            "page": ""
+            "page": "",
+            "tag_1_text": "Eco-Friendly",
+            "tag_2_text": "Hand-Woven",
+            "tag_3_text": "Custom Sizes & Colors",
+            "note_text": "",
+            "card_heading": "",
+            "card_text": "",
+            "card_button_label": "",
+            "card_button_link": "",
+            "card_button_background": "",
+            "card_button_text_color": ""
           }
         },
         "accordion_YhTQb9": {
@@ -419,7 +447,17 @@
             "title": "Rug Care Guide",
             "content": "<p>Your Oushak rug is designed to be enjoyed for decades. With simple, consistent care, the natural wool will soften beautifully over time, allowing the rug to develop the timeless character that makes handcrafted pieces special.</p><p><strong>Everyday Care:</strong></p><ul><li>Vacuum regularly using low suction.</li><li>Rotate your rug every 6–12 months for even wear.</li><li>Use a quality rug pad for added cushioning, stability, and longevity.</li></ul><p><strong>Spill & Stain Care:</strong></p><ul><li>Blot spills immediately with a clean white cloth.</li><li>Never rub stains, as this may damage the fibers.</li><li>Avoid harsh chemicals or bleach.</li><li>Allow the rug to air dry completely before regular use.</li></ul><p><strong>Professional Care:</strong></p><ul><li>Professional dry cleaning is recommended when needed.</li><li>Do not wash the rug at home.</li><li>Trim loose fibers carefully with scissors, never pull them.</li><li>Use rug protectors beneath heavy furniture to reduce pressure marks.</li></ul><p><strong>Rug Pad Protection:</strong></p><ul><li>Use a quality rug pad to prevent slipping and improve stability.</li><li>Adds cushioning for a softer underfoot feel.</li><li>Reduces wear on the rug's foundation and extends its lifespan.</li><li>Promotes airflow beneath the rug to help preserve its condition.</li></ul><p><strong>Storage & Long-Term Care:</strong></p><ul><li>Roll the rug for storage, never fold it.</li><li>Store in a cool, dry place wrapped in breathable fabric.</li><li>Avoid prolonged exposure to direct sunlight to preserve color.</li><li>Light shedding is normal for new wool rugs and will reduce over time.</li></ul>",
             "liquid": "",
-            "page": ""
+            "page": "",
+            "tag_1_text": "Eco-Friendly",
+            "tag_2_text": "Hand-Woven",
+            "tag_3_text": "Custom Sizes & Colors",
+            "note_text": "",
+            "card_heading": "",
+            "card_text": "",
+            "card_button_label": "",
+            "card_button_link": "",
+            "card_button_background": "",
+            "card_button_text_color": ""
           }
         },
         "accordion_RLayEy": {
@@ -430,12 +468,48 @@
             "title": "Shipping & Returns",
             "content": "<p>Every Bisha rug is made to order and carefully handcrafted before it begins its journey to your home. Once completed, we ship to USA, UK, Germany and all international destinations via multiple logistics, <strong>with fully insured delivery and tracking for complete peace of mind.</strong></p><p><strong>Shipping:</strong></p><ul><li>Made-to-order production: 30 - 60 days</li><li>Delivery: 5 - 8 business days after dispatch</li><li>Fully insured worldwide shipping</li><li>Tracking provided for every order</li></ul><p>Learn more about our <a href=\"https://claude.ai/chat/954c3ac3-d331-4668-a439-c60f1cebbd90#\">Shipping Policy</a></p><p><strong>Returns:</strong></p><ul><li>30-Day Returns & Exchanges on eligible orders</li><li>Made-to-order custom rugs cannot be cancelled, changed or returned once production begins.</li></ul><p>Learn more about our <a href=\"https://claude.ai/chat/954c3ac3-d331-4668-a439-c60f1cebbd90#\">Return Policy</a></p>",
             "liquid": "",
-            "page": ""
+            "page": "",
+            "tag_1_text": "Eco-Friendly",
+            "tag_2_text": "Hand-Woven",
+            "tag_3_text": "Custom Sizes & Colors",
+            "note_text": "",
+            "card_heading": "",
+            "card_text": "",
+            "card_button_label": "",
+            "card_button_link": "",
+            "card_button_background": "",
+            "card_button_text_color": ""
           }
         },
         "product_faq_widget": {
           "type": "product-faq",
-          "settings": {}
+          "settings": {
+            "title": "FAQs",
+            "product_faq_metafield": "custom.collection_faqs",
+            "product_faq_limit": 5,
+            "product_question_1": "What makes an Oushak rug special?",
+            "product_answer_1": "<p>Oushak rugs are among the most celebrated traditional rugs in the world, known for their soft color palettes, large-scale motifs, and refined elegance.</p><p>At Bisha Rugs, each Oushak is handwoven by skilled artisans, ensuring every piece carries its own individuality and craftsmanship.</p>",
+            "product_question_2": "What materials are used in your rugs?",
+            "product_answer_2": "<p>Our Oushak rugs are made using premium natural wool, selected for its durability, softness, and ability to hold color beautifully over time. Natural fibers allow the rug to age gracefully while maintaining its structure and comfort underfoot.</p>",
+            "product_question_3": "Will my rug look exactly like the photos?",
+            "product_answer_3": "<p>Our photos represent the rug as accurately as possible. However, because each rug is handmade and natural fibers interact uniquely with dyes and lighting, slight variations in tone, texture, and pattern may occur. These subtle differences are part of the charm and authenticity of handcrafted rugs.</p>",
+            "product_question_4": "Why invest in a handmade Oushak rug?",
+            "product_answer_4": "<p>Unlike mass-produced rugs, a handwoven Oushak is crafted slowly and intentionally. The result is a piece that brings warmth, artistry, and lasting value to your home.</p>",
+            "product_question_5": "Are size variations normal for handmade rugs?",
+            "product_answer_5": "<p>Yes. Because Oushak rugs are woven by hand, small variations in size (typically within 3–5%) may occur. This is a natural result of traditional weaving techniques and is considered a hallmark of authentic craftsmanship.</p>",
+            "shipping_faq_metafield": "",
+            "shipping_faq_limit": 5,
+            "shipping_question_1": "Do you ship internationally?",
+            "shipping_answer_1": "<p>Yes, we ship worldwide. International orders may be subject to customs duties, taxes, or import fees determined by your country's regulations. These charges are the responsibility of the customer unless otherwise stated.</p>",
+            "shipping_question_2": "How long does it take to receive my rug?",
+            "shipping_answer_2": "<p>For in-stock rugs, orders are typically processed within 2–5 business days before shipping. For custom or made-to-order rugs, weaving timelines vary (normally 4 to 6 weeks) depending on size and complexity.</p><p>Once shipped, delivery within the United States typically takes 5–7 business days.</p>",
+            "shipping_question_3": "Can I return my rug?",
+            "shipping_answer_3": "<p>Returns are accepted for standard (non-custom) rugs within 7 days of delivery, provided the rug is unused and returned in original condition. Custom or made-to-order rugs are not eligible for return.</p>",
+            "shipping_question_4": "What if my rug arrives damaged?",
+            "shipping_answer_4": "<p>In the rare event that a rug arrives damaged during transit, please contact us within 48 hours of delivery with photographs of the rug and packaging. We will work quickly to resolve the issue with a replacement or appropriate solution.</p>",
+            "shipping_question_5": "How can I contact Bisha Rugs?",
+            "shipping_answer_5": "<p>We are always happy to assist with questions about sizing, design, or custom orders.</p><p><strong>Email:</strong> Love@bisharugs.com</p><p><strong>Website:</strong> https://bisharugs.com</p>"
+          }
         },
         "image_text_card_tradeProgram": {
           "type": "image_text_card",
@@ -1023,12 +1097,12 @@
         "button_style": "outline",
         "image_ratio": "3 / 2",
         "image_radius": 2,
-        "background": "#F3EEE4",
+        "background": "#f3eee4",
         "column_background": "#ffffff",
         "border_color": "#e4e0d7",
         "heading_color": "#000000",
         "value_color": "#000000",
-        "scrollbar_color": "#B35642",
+        "scrollbar_color": "#b35642",
         "heading_size": 28,
         "heading_size_mobile": 24,
         "column_title_size": 22,
