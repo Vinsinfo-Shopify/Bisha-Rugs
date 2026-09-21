@@ -22,6 +22,9 @@
     position: relative;
     overflow: hidden;
     background: var(--hero-cream);
+    container-type: inline-size;
+    --hero-mobile-w: 375;
+    --hero-mobile-h: 251;
   }
 
   .hero-slideshow__track {
@@ -300,29 +303,20 @@
     line-height: 1.4;
   }
 
-  /* Arrow — 22px on the seam */
   .hero-slideshow__arrow {
-    width: 22px;
-    height: 22px;
-    top: calc((100vw * 2480 / 2728) - 11px);  /* seam position based on image ratio */
+    top: calc(100cqw * var(--hero-mobile-h) / var(--hero-mobile-w) - 11px);
     bottom: auto;
     right: 1rem;
     transform: none;
-    background: rgba(0, 0, 0, 0.5);    /* was 0.4 */
-    border: 0.5px solid #ffffff;        /* missing entirely */
+    width: 22px;
+    height: 22px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 0.5px solid #ffffff;
     box-sizing: border-box;
   }
-  .hero-slideshow__arrow svg {
-    width: 10px;                      /* was 10 */
-    height: 10px;
-  }
-  .hero-slideshow__arrow:hover {
-    transform: scale(1.05);
-  }
-  .hero-slideshow__arrow--prev {
-    left: 1rem;
-    right: auto;
-  }
+  .hero-slideshow__arrow--prev { left: 1rem; right: auto; }
+  .hero-slideshow__arrow svg { width: 10px; height: 10px; }
+  .hero-slideshow__arrow:hover { transform: scale(1.05); }
 }
 </style>
 
