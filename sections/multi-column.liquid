@@ -30,38 +30,32 @@
       --multi-column-row-gap: {{ section.settings.row_gap_desktop }}px;
       --multi-column-columns-per-row: {{ section.settings.columns_per_row }};
       --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
+
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+      padding-left: {{ section.settings.padding_left_desktop }}px;
+      padding-right: {{ section.settings.padding_right_desktop }}px;
     }
   }
 
-  @media screen and (max-width: 698px) {
-    #shopify-section-{{ section.id }} .multi-column.multi-column--stack-mobile {
-      --multi-column-columns-per-row: 1;
-      --multi-column-column-width: 100%;
-      --multi-column-grid: auto / repeat(auto-fit, var(--multi-column-column-width));
-    }
-  }
-  @media screen and (min-width: 1000px) {
-    #shopify-section-{{ section.id }} .container {
-      --container-max-width: 1300px;
-      --container-gutter: 70px;
-    }
-  } 
-  @media screen and (min-width: 1440px) {
-    .image-with-text-container {
-        max-width: 1300px;
-        margin-inline: auto;
+  {%- comment -%}
+    Standard width: the 1300px column the other sections lock to. Skipped when
+    Full width is on, so the .multi-column-section--full-width rule in theme.css
+    (which only lifts the max-width cap) is not outranked by this ID selector.
+  {%- endcomment -%}
+  {%- unless section.settings.full_width -%}
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .container {
+        --container-max-width: 1300px;
+        --container-gutter: 70px;
       }
     }
-  /* Desktop: use the merchant-configured columns-per-row and padding */
-  @media screen and (min-width: 999px) {
-    #shopify-section-{{ section.id }} {
-      --multi-column-columns-per-row: {{ section.settings.columns_per_row }};
-      --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
+  {%- endunless -%}
 
-        padding-top: {{ section.settings.padding_top_desktop }}px;
-        padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
-        padding-left: {{ section.settings.padding_left_desktop }}px;
-        padding-right: {{ section.settings.padding_right_desktop }}px;
+  @media screen and (min-width: 1440px) {
+    .image-with-text-container {
+      max-width: 1300px;
+      margin-inline: auto;
     }
   }
 
@@ -138,25 +132,37 @@
     border-radius: var(--multi-column-media-radius, 0);
   }
 
-  @media screen and (min-width: 1600px) {
-    #shopify-section-{{ section.id }} .multi-column__media {
-      height: 700px;
+  {%- if section.settings.media_fit != 'contain' -%}
+    @media screen and (min-width: 1600px) {
+      #shopify-section-{{ section.id }} .multi-column__media {
+        height: 500px;
+      }
     }
-  }
 
-  @media screen and (max-width: 500px) {
-    #shopify-section-{{ section.id }} .multi-column__media {
-      max-height: 279px;
+    @media screen and (max-width: 500px) {
+      #shopify-section-{{ section.id }} .multi-column__media {
+        max-height: 279px;
+      }
     }
-  }
+  {%- endif -%}
 
   #shopify-section-{{ section.id }} .multi-column__media img,
   #shopify-section-{{ section.id }} .multi-column__media video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: {{ section.settings.media_fit | default: 'cover' }};
+    object-position: center;
     display: block;
   }
+
+  {%- if section.settings.media_fit == 'contain' -%}
+    #shopify-section-{{ section.id }} .multi-column__media,
+    #shopify-section-{{ section.id }} .multi-column__media img,
+    #shopify-section-{{ section.id }} .multi-column__media video {
+      height: auto;
+      max-height: {{ section.settings.media_height | default: '400px' }};
+    }
+  {%- endif -%}
 
   #shopify-section-{{ section.id }} .multi-column__item--review {
     border: 1px solid rgba(var(--color-foreground), 0.08);
@@ -222,7 +228,7 @@
     endif
   -%}
 
-<div class="{% unless section.settings.remove_section_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_class }}">
+<div class="{% unless section.settings.remove_section_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {% if section.settings.full_width %}multi-column-section--full-width{% endif %} {{ section.settings.custom_class }}">
     <div class="container">
       <div class="section-stack">
         {%- render 'section-header',
@@ -422,6 +428,13 @@
       "default": false
     },
     {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "t:global.sizes.full_width",
+      "info": "Stretches the columns across the viewport, keeping the theme's standard side gutter. Off keeps the section on the theme's standard container width.",
+      "default": false
+    },
+    {
       "type": "range",
       "id": "columns_per_row",
       "min": 2,
@@ -520,6 +533,17 @@
           "label": "Media height",
           "info": "Enter a CSS value, e.g. 379px or 50vh",
           "default": "379px"
+    },
+    {
+      "type": "select",
+      "id": "media_fit",
+      "label": "Media fit",
+      "info": "Crop fills the column and may trim the edges of the image. Fit shows the whole image inside the media height — use this for logos and badges (e.g. a 'Featured in' row).",
+      "options": [
+        { "value": "cover", "label": "Crop to fill" },
+        { "value": "contain", "label": "Fit whole image" }
+      ],
+      "default": "cover"
     },
     {
       "type": "header",

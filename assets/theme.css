@@ -6763,6 +6763,9 @@ shopify-account::part(signed-out-avatar) {
 .multi-column__item--overlap:has(.multi-column__media)>.prose> :first-child {
   margin-block-start: -.5lh !important;
 }
+.shopify-section--multi-column .multi-column-section--full-width>.container {
+  --container-max-width: 100%;
+}
 
 .multiple-media-with-text {
   --multiple-media-with-text-gap: 2rem;
@@ -9363,8 +9366,7 @@ ul {
 }
 
 .why_choose_bisha .container {
-  margin-left: 70px;
-  margin-right: 70px;
+  --container-gutter: 70px;
 }
 
 .our_impact.section-spacing {
@@ -9373,8 +9375,7 @@ ul {
 }
 
 .our_impact .container {
-  margin-left: 70px;
-  margin-right: 70px;
+  --container-gutter: 70px;
 }
 
 .image_with_text_subheading,
@@ -9687,8 +9688,7 @@ ul {
   }
 
   .why_choose_bisha .container {
-    margin-left: 12px;
-    margin-right: 12px;
+    --container-gutter: 12px;
   }
 
   .craftmanship .prose {
@@ -9701,8 +9701,7 @@ ul {
   }
 
   .our_impact .container {
-    margin-left: 12px;
-    margin-right: 12px;
+    --container-gutter: 12px;
   }
 
   .why_choose_bisha .section_header_heading,
@@ -11726,9 +11725,6 @@ ul {
   }
 }
 
-.custom_rugs.pdp .image-with-text-container {
-  margin-top: 60px;
-}
 
 .comparison-table {
   --ct-pad-x: var(--ct-cell-padding-inline);
@@ -12105,5 +12101,96 @@ a.marquee__item:hover .marquee__text {
     --marquee-duration: var(--marquee-duration-mobile);
 
     padding-block: var(--marquee-padding-block-start-mobile) var(--marquee-padding-block-end-mobile);
+  }
+}
+
+.featured_in .section-stack {
+  gap: 24px;
+}
+
+.featured_in .section-header {
+  max-width: 100%;
+}
+
+.featured_in .section_header_subheading {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 140%;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.featured_in .section_header_heading {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 120%;
+  letter-spacing: 0;
+  margin-top: 4px;
+}
+
+.featured_in .prose .section_header_content {
+  margin-top: 40px;
+  margin-inline: auto;
+  font-size: 22px;
+  font-style: italic;
+  line-height: 160%;
+  font-weight: 500;
+  max-width: 1100px;
+}
+
+.featured_in .section_header_content p {
+  margin: 0;
+}
+
+/* Logos sit on a shared optical baseline, whatever their aspect ratio. */
+.featured_in .multi-column__item {
+  justify-content: center;
+}
+
+/* Tablet: keep the four-across row instead of dropping to the default 2-up. */
+@media screen and (min-width: 699px) and (max-width: 998px) {
+  .featured_in .multi-column {
+    --multi-column-columns-per-row: 4;
+    --multi-column-column-width: calc(100% / 4 - var(--multi-column-gap) * 0.75);
+  }
+}
+
+/* Mobile: one edge-to-edge row that scrolls when the logos outgrow the screen. */
+@media screen and (max-width: 698px) {
+  .featured_in .section-stack {
+    gap: 14px;
+  }
+
+  .featured_in .section_header_heading {
+    font-size: 24px;
+    margin-top: 4px;
+  }
+
+
+  .featured_in .prose .section_header_content {
+    margin-top: 16px;
+    font-size: 16px;
+  }
+
+  .featured_in .multi-column:not(.multi-column--carousel) {
+    --multi-column-grid: none;
+    --multi-column-content-alignment: safe start;
+
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(84px, 1fr);
+    overflow: auto hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    margin-inline: calc(-1 * var(--distance-to-bleed));
+    padding-inline: var(--distance-to-bleed);
+    scroll-padding-inline: var(--distance-to-bleed);
+  }
+
+  .featured_in .multi-column:not(.multi-column--carousel)::-webkit-scrollbar {
+    display: none;
+  }
+
+  .featured_in .multi-column:not(.multi-column--carousel) .multi-column__item {
+    min-width: 0;
   }
 }
