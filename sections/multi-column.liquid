@@ -123,6 +123,7 @@
 
     #shopify-section-{{ section.id }} .multi-column__dots {
       display: flex;
+      gap:6px;
     }
 
     #shopify-section-{{ section.id }} .multi-column__dots > *[aria-current='true'] {
@@ -145,7 +146,7 @@
 
   @media screen and (max-width: 500px) {
     #shopify-section-{{ section.id }} .multi-column__media {
-      height: 220px;
+      max-height: 279px;
     }
   }
 
@@ -166,7 +167,7 @@
     display: flex;
     align-items: center;
     gap: 2px;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
   }
 
   #shopify-section-{{ section.id }} .multi-column-card_star {

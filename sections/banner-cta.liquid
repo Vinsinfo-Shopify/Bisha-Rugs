@@ -110,9 +110,9 @@
   }
 
   #BannerCta-{{ section.id }} .banner-cta__description {
-    margin-block-start: 10px;
+    margin-block-start: 16px;
     font-size: var(--banner-cta-text-size);
-    line-height: 1.5;
+    line-height: 140%;
   }
 
   #BannerCta-{{ section.id }} .banner-cta__description > * {
@@ -175,7 +175,12 @@
     #BannerCta-{{ section.id }}.banner-cta--mobile-stacked .banner-cta__inner {
       grid-template-areas: 'media' 'content';
     }
-
+      #BannerCta-{{ section.id }} .banner-cta__heading {
+        line-height: 120%;
+      }
+        #BannerCta-{{ section.id }} .banner-cta__description {
+          margin-block-start: 8px;
+        }
     #BannerCta-{{ section.id }}.banner-cta--mobile-stacked .banner-cta__content {
       grid-area: content;
       justify-content: flex-start;
