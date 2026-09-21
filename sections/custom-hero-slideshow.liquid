@@ -239,6 +239,7 @@
 
   @media screen and (max-width: 749px) {
   /* Stack: image top, content bottom */
+
   :root { --container-gutter: 12px; }
   .hero-slide__inner,
   .hero-slide--image-left .hero-slide__inner,
@@ -247,6 +248,9 @@
     grid-template-areas: "image" "content";
     min-height: 0;
   }
+
+  .hero-slide__img--desktop { display: none; }
+  .hero-slide__img--mobile  { display: block; }
 
   .hero-slide__image {
     aspect-ratio: 2728 / 2480;   /* keep image undistorted */
