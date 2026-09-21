@@ -9322,11 +9322,7 @@ ul {
 .collection_banner .icon-with-text-item {
   font-size: 16px;
 }
-/* Default page typography.
-   Scoped with :has() so it only applies to pages that render the "main-page"
-   section (every standard/admin-created page). Custom-designed pages such as
-   About Us, Craftsmanship and Trade Program disable that section in their
-   template and therefore keep their own heading styles untouched. */
+
 .template-page:has(.shopify-section--main-page) .container .section-header h1 {
   font-size: 38px;
 }
