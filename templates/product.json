@@ -530,10 +530,10 @@
             "button_label": "Learn More",
             "button_link": "shopify://pages/bisha-rugs-trade-program",
             "button_style": "solid",
-            "button_background": "#b35642",
+            "button_background": "#55583C",
             "button_text_color": "#ffffff",
-            "background": "#f3eee4",
-            "text_color": "",
+            "background": "#E9E6DB",
+            "text_color": "#000000",
             "border_color": ""
           }
         },
