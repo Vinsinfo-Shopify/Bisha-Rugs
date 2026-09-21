@@ -27,20 +27,39 @@
         </div>
       {%- endif -%}
 
-      {%- capture complementary_products -%}
-        {%- for product in recommendations.products -%}
-          {%- render 'product-card-horizontal', product: product, show_quick_buy: block.settings.show_quick_buy -%}
-        {%- endfor -%}
-      {%- endcapture -%}
-
       {%- if block.settings.stack_products -%}
         <div class="complementary-products__product-list">
-          {{- complementary_products -}}
+          {%- for product in recommendations.products -%}
+            {%- render 'product-card-horizontal', product: product, show_quick_buy: block.settings.show_quick_buy -%}
+          {%- endfor -%}
         </div>
       {%- else -%}
+        {%- comment -%}
+          Rendered as full product-card grid items (not the horizontal list
+          card) so every card in the row - regardless of how many images the
+          underlying product has - matches the same image, rating and price
+          layout. image_carousel is turned off so a product with more than
+          one image doesn't grow prev/next arrows other cards don't have.
+          quick_buy_context is set per breakpoint copy because both the
+          desktop and mobile carousels render in the DOM at once (only one is
+          hidden by CSS), and product-card otherwise builds the same quick-buy
+          modal/swatch id for the same product in both places.
+        {%- endcomment -%}
         <div class="sm-max:hidden">
           <scroll-carousel id="{{ carousel_id }}" class="complementary-products__product-list complementary-products__product-list--carousel scroll-area snap-x">
-            {{- complementary_products -}}
+            {%- for product in recommendations.products -%}
+              {%- render 'product-card',
+                product: product,
+                show_quick_buy: block.settings.show_quick_buy,
+                show_badges: false,
+                show_vendor: false,
+                show_rating: true,
+                show_secondary_image: false,
+                show_swatches: false,
+                image_carousel: false,
+                quick_buy_context: 'complementary-desktop'
+              -%}
+            {%- endfor -%}
           </scroll-carousel>
         </div>
 
@@ -54,9 +73,11 @@
                 show_quick_buy: block.settings.show_quick_buy,
                 show_badges: false,
                 show_vendor: false,
-                show_rating: false,
+                show_rating: true,
                 show_secondary_image: false,
-                show_swatches: false
+                show_swatches: false,
+                image_carousel: true,
+                quick_buy_context: 'complementary-mobile'
               -%}
             {%- endfor -%}
           </scroll-carousel>
