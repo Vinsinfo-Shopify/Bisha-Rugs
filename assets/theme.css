@@ -10544,6 +10544,9 @@ ul {
   font-weight: 600;
   line-height: 140%;
 }
+.Collection_contact_us .prose .multi-column-card_content{
+  font-weight: 500;
+}
 
 .member_stories .multi-column__item--review {
   padding: 33px 42px 27px 31px;
