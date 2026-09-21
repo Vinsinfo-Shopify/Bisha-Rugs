@@ -347,7 +347,7 @@
             "avatar": "shopify://shop_images/Best_Sellers_3edf9f18-2c92-4f6c-a0ed-56b99bb57411.png",
             "name": "Kerry M.",
             "verified": true,
-            "rating": 5,
+            "rating": 4.8,
             "quote": "The quality of these rugs is truly exceptional. I love knowing that I am supporting local artisans."
           }
         },
@@ -433,6 +433,27 @@
             "page": ""
           }
         },
+        "product_faq_widget": {
+          "type": "product-faq",
+          "settings": {}
+        },
+        "image_text_card_tradeProgram": {
+          "type": "image_text_card",
+          "settings": {
+            "image": "shopify://shop_images/Trade_Program_-_Desktop.png",
+            "heading": "Special Offers for Interior Designers & Architects",
+            "text": "<p>Join Bisha's Trade Program, designed to help bring your design vision to life.</p><ul><li>Trade Discounts</li><li>Fully customizable rugs</li><li>Dedicated project support</li></ul>",
+            "show_checklist_icons": true,
+            "button_label": "Learn More",
+            "button_link": "shopify://pages/bisha-rugs-trade-program",
+            "button_style": "solid",
+            "button_background": "#b35642",
+            "button_text_color": "#ffffff",
+            "background": "#f3eee4",
+            "text_color": "",
+            "border_color": ""
+          }
+        },
         "complementary_products": {
           "type": "complementary_products",
           "settings": {
@@ -485,6 +506,8 @@
         "accordion_dWgcNj",
         "accordion_YhTQb9",
         "accordion_RLayEy",
+        "product_faq_widget",
+        "image_text_card_tradeProgram",
         "complementary_products"
       ],
       "settings": {
