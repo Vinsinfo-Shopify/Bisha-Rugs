@@ -193,8 +193,8 @@
       "continue_shopping": "Continue shopping"
     },
     "products_count": {
-      "one": "{{ count }} product",
-      "other": "{{ count }} products"
+      "one": "{{ count }} item",
+      "other": "{{ count }} items"
     },
     "faceting": {
       "filters": "Filters",

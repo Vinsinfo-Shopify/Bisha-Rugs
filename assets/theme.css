@@ -4013,6 +4013,7 @@ tr[onclick]:hover {
   height: var(--animated-plus-size);
   display: block;
   position: relative;
+  padding-right: 20px;
 }
 
 .animated-plus:before,
@@ -9463,7 +9464,7 @@ ul {
 .product-card__tag {
   color: rgb(var(--text-color));
   font-size: 14px;
-  line-height: 140%;
+  line-height: 160%;
   font-weight: 500;
   text-transform: capitalize;
 }
@@ -9854,6 +9855,15 @@ ul {
 }
 .shopify-section--faq .faq-content-column{
   padding-bottom: 37px;
+}
+
+/* An expanded answer carries the shared accordion's 20px bottom padding, which
+   leaves an empty band above the divider. Drop it so the answer ends on the
+   divider; the closed-state spacing lives on .accordion__toggle and is untouched.
+   The two :not()s keep the collection/PDP and Trade Program FAQs on their own
+   tuned values - both set .accordion__content padding themselves further down. */
+.shopify-section--faq .section-spacing:not(.collection_faq):not(.trade_program) .accordion__disclosure[open] .accordion__content {
+  padding-block-end: 0;
 }
 
 .blog-sidebar__recent-post-image_content {
@@ -10409,7 +10419,7 @@ ul {
   font-weight: 500;
 }
 
-.collection_faq .accordion__toggle .text-with-icon {
+.collection_faq .faq__content .accordion__toggle .text-with-icon {
   font-size: 16px;
   line-height: 140%;
   font-weight: 700;
@@ -10542,6 +10552,9 @@ ul {
   font-size: 16px;
   font-weight: 600;
   line-height: 140%;
+}
+.Collection_contact_us .prose .multi-column-card_content{
+  font-weight: 500;
 }
 
 .member_stories .multi-column__item--review {
@@ -11312,7 +11325,7 @@ ul {
 .product-card__tag-wrapper {
   background: #f1ece2;
   border-radius: 100px;
-  padding: 5px 14px;
+  padding: 4px 14px;
   justify-self: start;
   width: fit-content;
   text-align: start;
