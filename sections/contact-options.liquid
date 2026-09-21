@@ -298,8 +298,14 @@
      rather than clipping the third card against the section's overflow: clip.
      Still no arrows and no snap - it is a plain overflow, not a carousel. */
   @media screen and (min-width: 1400px) {
-    #shopify-section-{{ section.id }} .co__track {
+   #shopify-section-{{ section.id }} .co__track {
       overflow: visible;
+      justify-content: center;
+      padding-inline: var(--container-gutter);
+    }
+
+    #shopify-section-{{ section.id }} .co__card:last-child {
+      margin-inline-end: 0;
     }
   }
   #shopify-section-{{ section.id }} .co__header .section-header {
