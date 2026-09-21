@@ -141,10 +141,10 @@
 
         {%- if resolved_option_selector_style == 'dropdown' -%}
           {%- if show_shape_tabs -%}
-            <shape-picker class="shape-picker v-stack gap-2">
+            <shape-picker class="shape-picker v-stack gap-4">
               {%- if shape_heading != blank -%}
                 <p class="shape-picker__heading">
-                  {{ shape_heading }}: <span data-shape-picker-label>{{ 'general.label.all' | t }}</span>
+                  {{ shape_heading }}: <span data-shape-picker-label style="font-weight:400;">{{ 'general.label.all' | t }}</span>
                 </p>
               {%- endif -%}
 
@@ -164,7 +164,7 @@
 
           {%- if is_size_option and enter_size_heading != blank -%}
             <p class="size-entry__heading">
-              {{ enter_size_heading }}: <span>{{ option.selected_value }}</span>
+              {{ enter_size_heading }}: <span style="font-weight:400;">{{ option.selected_value }}</span>
             </p>
           {%- endif -%}
 
@@ -361,12 +361,12 @@
 
         .shape-picker__tab {
           flex-shrink: 0;
-          padding: .625rem 1.125rem;
+          padding: 12px 28px;
           border: 1px solid rgb(var(--border-color));
           border-radius: var(--input-border-radius);
           background: none;
           font-family: var(--text-font-family);
-          font-size: 14px;
+          font-size: 16px;
           line-height: 140%;
           font-weight: 500;
           color: rgb(var(--text-color) / 0.65);
@@ -377,6 +377,8 @@
         .shape-picker__tab.is-active {
           color: rgb(var(--text-color));
           border-color: currentColor;
+          font-weight: 600;
+          background-color: #F9F6EE;
         }
 
         .shape-picker__heading {
@@ -401,6 +403,7 @@
           font-weight: 600;
           line-height: 140%;
           margin: 0;
+          padding-block: 16px;
         }
       </style>
 

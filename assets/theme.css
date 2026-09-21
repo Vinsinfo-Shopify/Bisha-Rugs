@@ -1388,6 +1388,11 @@ shopify-accelerated-checkout-cart {
   padding-inline-end: calc(var(--input-padding-inline) * 2 + 10px);
 }
 
+.variant-picker__option .select {
+  padding: 7px 12px;
+  background-color: rgb(var(--text-color) / .03);
+}
+
 .select:required:invalid {
   color: rgb(var(--input-text-color, var(--text-color)) / .6);
 }
@@ -3577,16 +3582,20 @@ tr[onclick]:hover {
 .notice-banner {
   align-items: center;
   column-gap: .625rem;
-  padding: .875rem 1rem;
+  padding: 7px 12px;
   border-radius: var(--input-border-radius);
   display: flex;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 149%;
+  vertical-align: middle;
 }
 
 .notice-banner__dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: currentColor;
+  background: #C6933B;
   flex-shrink: 0;
 }
 
@@ -7046,6 +7055,10 @@ shopify-account::part(signed-out-avatar) {
 
 .product-info__block-group:has(.product-info__block-item[data-block-type="complementary-products"]) {
   --product-info-gap: 3rem;
+}
+
+.product-info__block-item[data-block-type="text"] .prose {
+  font-size: 14px;
 }
 
 @media screen and (max-width: 699px) {
