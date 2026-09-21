@@ -1,0 +1,191 @@
+{%- doc -%}
+  Renders a "FAQs" collapsible item (matching the other product-page collapsible content
+  rows) whose content is a tabbed FAQ list with two fixed groups: "Product" and
+  "Shipping & Returns".
+
+  For each group, the merchant can either fill in up to 5 static question/answer pairs, or
+  point "Metafield (namespace.key)" at a list metafield of question/answer metaobjects (the
+  same shape used by the "faq" section's dynamic FAQs). When that metafield is set and has a
+  value, it's used instead of the static pairs. A limit setting caps how many are shown.
+
+  @param {object} block - the "product-faq" block (settings declared on the main-product section)
+{%- enddoc -%}
+
+{%- liquid
+  assign faq_categories = 'product,shipping' | split: ','
+  assign product_shown = 0
+  assign shipping_shown = 0
+  assign total_shown = 0
+-%}
+
+{%- capture faq_items_html -%}
+  {%- for category_key in faq_categories -%}
+    {%- assign limit_key = category_key | append: '_faq_limit' -%}
+    {%- assign metafield_key = category_key | append: '_faq_metafield' -%}
+    {%- assign limit = block.settings[limit_key] -%}
+    {%- assign metafield_path = block.settings[metafield_key] -%}
+    {%- assign category_shown = 0 -%}
+
+    {%- assign metafield_items = blank -%}
+    {%- if metafield_path != blank and product != blank -%}
+      {%- assign metafield_parts = metafield_path | strip | split: '.' -%}
+      {%- if metafield_parts.size == 2 -%}
+        {%- assign metafield_items = product.metafields[metafield_parts[0]][metafield_parts[1]].value -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if metafield_items != blank -%}
+      {%- for faq in metafield_items -%}
+        {%- if category_shown >= limit -%}
+          {%- break -%}
+        {%- endif -%}
+
+        {%- if faq.question.value != blank and faq.answer.value != blank -%}
+          {%- assign category_shown = category_shown | plus: 1 -%}
+          {%- assign total_shown = total_shown | plus: 1 -%}
+          <div class="product-faq-widget__item" data-faq-category="{{ category_key }}">
+            <p class="product-faq-widget__question"><span data-faq-number>{{ total_shown }}.</span> {{ faq.question.value }}</p>
+            <div class="product-faq-widget__answer">{{ faq.answer.value }}</div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..5) -%}
+        {%- if category_shown >= limit -%}
+          {%- break -%}
+        {%- endif -%}
+
+        {%- assign question_key = category_key | append: '_question_' | append: i -%}
+        {%- assign answer_key = category_key | append: '_answer_' | append: i -%}
+        {%- assign question = block.settings[question_key] -%}
+        {%- assign answer = block.settings[answer_key] -%}
+
+        {%- if question != blank and answer != blank -%}
+          {%- assign category_shown = category_shown | plus: 1 -%}
+          {%- assign total_shown = total_shown | plus: 1 -%}
+          <div class="product-faq-widget__item" data-faq-category="{{ category_key }}">
+            <p class="product-faq-widget__question"><span data-faq-number>{{ total_shown }}.</span> {{ question }}</p>
+            <div class="product-faq-widget__answer">{{ answer }}</div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- if category_key == 'product' -%}
+      {%- assign product_shown = category_shown -%}
+    {%- else -%}
+      {%- assign shipping_shown = category_shown -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if block.settings.title != blank and total_shown > 0 -%}
+  <style>
+    .product-faq-widget {
+      display: block;
+    }
+
+    /* This widget lives inside the ".prose" wrapper the "accordion" snippet applies to its
+       content; ".prose"'s generic sibling-spacing rules would otherwise misalign the tabs
+       and add inconsistent gaps between items, so we keep this widget's own spacing in control. */
+    .product-faq-widget__tabs,
+    .product-faq-widget__tab,
+    .product-faq-widget__list,
+    .product-faq-widget__item {
+      margin-block-start: 0 !important;
+    }
+
+    .product-faq-widget__tabs {
+      display: flex;
+      align-items: center;
+      column-gap: 1.75rem;
+      border-block-end: 1px solid rgb(var(--border-color) / .15);
+      margin-block-end: 1.5rem;
+      overflow-x: auto;
+    }
+
+    .product-faq-widget__tab {
+      appearance: none;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      color: rgb(var(--text-color) / .55);
+      font-size: 1rem;
+      line-height: 1.4;
+      padding-block: .1rem .9rem;
+      margin-block-end: -1px;
+      border-block-end: 1px solid transparent;
+      white-space: nowrap;
+      transition: color .2s ease-in-out, border-color .2s ease-in-out;
+    }
+
+    .product-faq-widget__tab:hover {
+      color: rgb(var(--text-color));
+    }
+
+    .product-faq-widget__tab.is-active {
+      color: rgb(var(--text-color));
+      font-weight: 600;
+      border-block-end-color: rgb(var(--text-color));
+    }
+
+    .product-faq-widget__item {
+      padding-block: 1.25rem;
+      border-block-end: 1px solid rgb(var(--border-color) / .12);
+    }
+
+    .product-faq-widget__item:first-child,
+    .product-faq-widget__item.is-first-visible {
+      padding-block-start: 0;
+    }
+
+    .product-faq-widget__item:last-child,
+    .product-faq-widget__item.is-last-visible {
+      border-block-end: 0;
+      padding-block-end: 0;
+    }
+
+    .product-faq-widget__question {
+      display: flex;
+      column-gap: .4em;
+      font-weight: 600;
+      font-size: 1rem;
+      line-height: 1.5;
+      margin: 0 0 .6rem;
+    }
+
+    .product-faq-widget__answer {
+      color: rgb(var(--text-color) / .75);
+      font-size: .9375rem;
+      line-height: 1.65;
+    }
+
+    .product-faq-widget__answer p+p {
+      margin-block-start: .85em;
+    }
+
+    .product-faq-widget__answer :is(strong, b) {
+      color: rgb(var(--text-color));
+    }
+  </style>
+
+  {%- capture faq_tabs_content -%}
+    <faq-tabs class="product-faq-widget">
+      {%- if product_shown > 0 and shipping_shown > 0 -%}
+        <div class="product-faq-widget__tabs" role="tablist">
+          <button type="button" class="product-faq-widget__tab is-active" role="tab" data-faq-tab="all">All</button>
+          <button type="button" class="product-faq-widget__tab" role="tab" data-faq-tab="product">Product</button>
+          <button type="button" class="product-faq-widget__tab" role="tab" data-faq-tab="shipping">Shipping &amp; Returns</button>
+        </div>
+      {%- endif -%}
+
+      <div class="product-faq-widget__list">
+        {{- faq_items_html -}}
+      </div>
+    </faq-tabs>
+
+    <script src="{{ 'product-faq.js' | asset_url }}" defer></script>
+  {%- endcapture -%}
+
+  {%- render 'accordion', title: block.settings.title, content: faq_tabs_content, icon: 'none', prose_content: true, size: 'lg', block: block -%}
+{%- endif -%}

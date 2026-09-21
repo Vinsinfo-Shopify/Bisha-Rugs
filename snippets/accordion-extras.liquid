@@ -1,0 +1,79 @@
+{%- doc -%}
+  Renders the optional "tags", "note" and "option card" extras that can be added to a
+  "Collapsible text" (accordion) block, appended below its main content. Returns nothing
+  if none of the three are configured.
+
+  @param {object} block - the "accordion" block
+{%- enddoc -%}
+
+{%- liquid
+  assign has_tags = false
+  for i in (1..3)
+    assign tag_text_key = 'tag_' | append: i | append: '_text'
+    if block.settings[tag_text_key] != blank
+      assign has_tags = true
+      break
+    endif
+  endfor
+-%}
+
+{%- if has_tags -%}
+  <div class="accordion-tags">
+    {%- for i in (1..3) -%}
+      {%- assign tag_text_key = 'tag_' | append: i | append: '_text' -%}
+      {%- assign tag_icon_key = 'tag_' | append: i | append: '_icon' -%}
+      {%- assign tag_text = block.settings[tag_text_key] -%}
+      {%- assign tag_icon = block.settings[tag_icon_key] -%}
+
+      {%- if tag_text != blank -%}
+        <span class="accordion-tag">
+          {%- if tag_icon != blank -%}
+            {{- tag_icon | image_url: width: 32 | image_tag: loading: 'lazy', sizes: '16px', widths: '16,32', class: 'accordion-tag__icon' -}}
+          {%- else -%}
+            {%- render 'icon' with 'success', width: 14, class: 'accordion-tag__icon' -%}
+          {%- endif -%}
+          <span>{{- tag_text -}}</span>
+        </span>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{%- if block.settings.note_text != blank -%}
+  <div class="accordion-note prose">
+    {{- block.settings.note_text -}}
+  </div>
+{%- endif -%}
+
+{%- if block.settings.card_heading != blank or block.settings.card_text != blank or block.settings.card_image != blank -%}
+  <div class="accordion-option-card">
+    {%- if block.settings.card_image != blank -%}
+      {{-
+        block.settings.card_image
+        | image_url: width: 400
+        | image_tag: loading: 'lazy', sizes: '140px', widths: '140,280,400', class: 'accordion-option-card__image'
+      -}}
+    {%- endif -%}
+
+    <div class="v-stack gap-2">
+      {%- if block.settings.card_heading != blank -%}
+        <p class="h6">{{ block.settings.card_heading }}</p>
+      {%- endif -%}
+
+      {%- if block.settings.card_text != blank -%}
+        <div class="prose">{{ block.settings.card_text }}</div>
+      {%- endif -%}
+
+      {%- if block.settings.card_button_label != blank and block.settings.card_button_link != blank -%}
+        {%- render 'button',
+          href: block.settings.card_button_link,
+          content: block.settings.card_button_label,
+          size: 'sm',
+          style: 'solid',
+          background: block.settings.card_button_background,
+          text_color: block.settings.card_button_text_color
+        -%}
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

@@ -1,8 +1,8 @@
 {%- doc -%}
-  Renders a single static customer review block for the product page: avatar,
-  name, an optional "Verified" badge, a manually-set star rating and a quote.
-  Unlike product-rating.liquid, this is not driven by review-app metafields -
-  the merchant enters every field directly in the block settings.
+  Renders a single static customer review block for the product page: a rectangular
+  product image, name, an optional "Verified" badge, a manually-set star rating (with
+  its numeric value) and a quote. Unlike product-rating.liquid, this is not driven by
+  review-app metafields - the merchant enters every field directly in the block settings.
 
   @param {object} block - the "review" block
 {%- enddoc -%}
@@ -10,6 +10,7 @@
 {%- liquid
   assign settings = block.settings
   assign rating = settings.rating | default: 5
+  assign filled_stars = rating | round
 -%}
 
 <div class="pdp-review" {{ block.shopify_attributes }}>
@@ -17,45 +18,51 @@
     {%- if settings.avatar != blank -%}
       {{-
         settings.avatar
-        | image_url: width: 80
-        | image_tag: loading: 'lazy', sizes: '40px', widths: '40,80', class: 'pdp-review__avatar'
+        | image_url: width: 160
+        | image_tag: loading: 'lazy', sizes: '56px', widths: '56,112,160', class: 'pdp-review__image'
       -}}
     {%- endif -%}
 
-    <div class="pdp-review__meta">
-      {%- if settings.name != blank or settings.verified -%}
-        <div class="pdp-review__name-row">
-          {%- if settings.name != blank -%}
-            <span class="pdp-review__name">{{- settings.name -}}</span>
-          {%- endif -%}
+    <div class="pdp-review__body">
+      <div class="pdp-review__top-row">
+        {%- if settings.name != blank or settings.verified -%}
+          <div class="pdp-review__name-row">
+            {%- if settings.name != blank -%}
+              <span class="pdp-review__name">{{- settings.name -}}</span>
+            {%- endif -%}
 
-          {%- if settings.verified -%}
-            <span class="pdp-review__verified">
-              <svg viewBox="0 0 20 20" aria-hidden="true" width="14" height="14">
-                <path
-                  fill="currentColor"
-                  d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm-1.06 10.71L6.65 10.4a.75.75 0 1 1 1.06-1.06l1.23 1.23 3.35-3.35a.75.75 0 1 1 1.06 1.06l-3.9 3.9a.75.75 0 0 1-1.06 0Z"
-                />
-              </svg>
-              Verified
-            </span>
-          {%- endif -%}
+            {%- if settings.verified -%}
+              <span class="pdp-review__verified">
+                <svg viewBox="0 0 20 20" aria-hidden="true" width="16" height="16">
+                  <circle cx="10" cy="10" r="10" fill="currentColor" />
+                  <path
+                    fill="#fff"
+                    d="M8.94 12.71 6.65 10.4a.75.75 0 1 1 1.06-1.06l1.23 1.23 3.35-3.35a.75.75 0 1 1 1.06 1.06l-3.9 3.9a.75.75 0 0 1-1.06 0Z"
+                  />
+                </svg>
+                Verified
+              </span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        <div class="pdp-review__rating">
+          <span class="pdp-review__stars" role="img" aria-label="{{ 'general.rating.info' | t: rating_value: rating, rating_max: 5 }}">
+            {%- for i in (1..5) -%}
+              {%- if i <= filled_stars -%}
+                {%- render 'icon' with 'star-rating' -%}
+              {%- else -%}
+                {%- render 'icon' with 'star-rating-empty' -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </span>
+          <span class="pdp-review__rating-value">({{ rating }})</span>
         </div>
-      {%- endif -%}
-
-      <div class="pdp-review__stars" role="img" aria-label="{{ 'general.rating.info' | t: rating_value: rating, rating_max: 5 }}">
-        {%- for i in (1..5) -%}
-          {%- if i <= rating -%}
-            {%- render 'icon' with 'star-rating' -%}
-          {%- else -%}
-            {%- render 'icon' with 'star-rating-empty' -%}
-          {%- endif -%}
-        {%- endfor -%}
       </div>
+
+      {%- if settings.quote != blank -%}
+        <p class="pdp-review__quote">&ldquo;{{ settings.quote }}&rdquo;</p>
+      {%- endif -%}
     </div>
   </div>
-
-  {%- if settings.quote != blank -%}
-    <p class="pdp-review__quote">&ldquo;{{ settings.quote }}&rdquo;</p>
-  {%- endif -%}
 </div>

@@ -192,6 +192,12 @@
         elsif block.type == 'accordion' and next_block.type == 'accordion' and next_block.settings.show_below_gallery != true
           assign block_group_class = 'accordion-group'
           assign block_group_name = 'accordion-group'
+        elsif block.type == 'accordion' and next_block.type == 'product-faq'
+          assign block_group_class = 'accordion-group'
+          assign block_group_name = 'accordion-group'
+        elsif block.type == 'product-faq' and next_block.type == 'accordion' and next_block.settings.show_below_gallery != true
+          assign block_group_class = 'accordion-group'
+          assign block_group_name = 'accordion-group'
         elsif block.type == 'accordion' and next_block.type == 'description' and product.description != blank and next_block.settings.collapse_content and next_block.settings.show_below_gallery != true
           assign block_group_class = 'accordion-group'
           assign block_group_name = 'accordion-group'
@@ -766,14 +772,14 @@
 
           {%- when 'image_text_card' -%}
             {%- if block.settings.heading != blank or block.settings.text != blank or block.settings.image != blank -%}
-              <div class="image-text-card {% if block.settings.border_color != blank and block.settings.border_color != 'rgba(0,0,0,0)' %}border{% endif %}" style="{% render 'surface', background: block.settings.background, text_color: block.settings.text_color, border_color: block.settings.border_color %}">
+              <div class="image-text-card {% if block.settings.show_checklist_icons %}image-text-card--checklist{% endif %} {% if block.settings.border_color != blank and block.settings.border_color != 'rgba(0,0,0,0)' %}border{% endif %}" style="{% render 'surface', background: block.settings.background, text_color: block.settings.text_color, border_color: block.settings.border_color %}">
                 {%- if block.settings.image != blank -%}
                   {{- block.settings.image | image_url: width: 200 | image_tag: loading: 'lazy', sizes: '80px', widths: '80,160', class: 'image-text-card__image' -}}
                 {%- endif -%}
 
                 <div class="v-stack gap-2">
                   {%- if block.settings.heading != blank -%}
-                    <p class="h6">{{ block.settings.heading }}</p>
+                    <p class="image-text-card__heading">{{ block.settings.heading }}</p>
                   {%- endif -%}
 
                   {%- if block.settings.text != blank -%}
@@ -783,7 +789,14 @@
                   {%- endif -%}
 
                   {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
-                    {%- render 'button', href: block.settings.button_link, content: block.settings.button_label, size: 'sm' -%}
+                    {%- render 'button',
+                      href: block.settings.button_link,
+                      content: block.settings.button_label,
+                      size: 'sm',
+                      style: block.settings.button_style,
+                      background: block.settings.button_background,
+                      text_color: block.settings.button_text_color
+                    -%}
                   {%- endif -%}
                 </div>
               </div>
@@ -793,17 +806,21 @@
             {%- liquid
               assign accordion_title = block.settings.title | default: block.settings.page.title
               assign accordion_content = block.settings.page.content | default: block.settings.liquid | default: block.settings.content
-
-              if accordion_title != blank and accordion_content != blank
-                render 'accordion', title: accordion_title, content: accordion_content, prose_content: true, icon: block.settings.icon, custom_icon: block.settings.custom_icon, block: block
-              endif
             -%}
+            {%- capture accordion_extras -%}{%- render 'accordion-extras', block: block -%}{%- endcapture -%}
+            {%- assign accordion_content = accordion_content | append: accordion_extras -%}
+            {%- if accordion_title != blank and accordion_content != blank -%}
+              {%- render 'accordion', title: accordion_title, content: accordion_content, prose_content: true, icon: block.settings.icon, custom_icon: block.settings.custom_icon, block: block -%}
+            {%- endif -%}
 
           {%- when 'review' -%}
             {%- render 'pdp-review', block: block -%}
 
           {%- when 'real_homes_reel' -%}
             {%- render 'pdp-real-homes', block: block -%}
+
+          {%- when 'contact_consultation' -%}
+            {%- render 'pdp-contact-consultation', block: block -%}
 
           {%- when 'disclosures' -%}
             {%- if product != blank -%}
@@ -913,6 +930,9 @@
                 {%- render 'icon' with 'chevron-right' -%}
               </a>
             {%- endif -%}
+
+          {%- when 'product-faq' -%}
+            {%- render 'product-faq', block: block -%}
         {%- endcase -%}
       {%- endcapture -%}
 
@@ -925,7 +945,7 @@
         class="product-info__block-item"
         data-block-id="{{ block.id }}"
         data-block-type="{{ block.type | replace: '_', '-' }}"
-        {% unless block.type == '@app' or block.type == 'accordion' %}
+        {% unless block.type == '@app' or block.type == 'accordion' or block.type == 'product-faq' %}
           {{- block.shopify_attributes -}}
         {% endunless %}
       >

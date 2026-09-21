@@ -1,0 +1,66 @@
+{%- doc -%}
+  Renders the "Got Questions? Reach Out To Us" contact block for the product
+  page: a heading, description, click-to-call phone number and mailto email,
+  followed by a nested "Free Virtual Consultation" card with an image, copy
+  and a Book Now button.
+
+  @param {object} block - the "contact_consultation" block
+{%- enddoc -%}
+
+{%- liquid
+  assign settings = block.settings
+-%}
+
+<div class="pdp-contact" {{ block.shopify_attributes }}>
+  {%- if settings.heading != blank -%}
+    <p class="pdp-contact__heading">{{- settings.heading -}}</p>
+  {%- endif -%}
+
+  {%- if settings.description != blank -%}
+    <p class="pdp-contact__description">{{- settings.description -}}</p>
+  {%- endif -%}
+
+  {%- if settings.phone_label != blank or settings.email != blank -%}
+    <div class="pdp-contact__methods">
+      {%- if settings.phone_label != blank -%}
+        <a href="{{ settings.phone_link | default: '#' }}" class="pdp-contact__method">
+          {%- render 'icon' with 'picto-phone', width: 16 -%}
+          <span>{{- settings.phone_label -}}</span>
+        </a>
+      {%- endif -%}
+
+      {%- if settings.email != blank -%}
+        <a href="mailto:{{ settings.email }}" class="pdp-contact__method">
+          {%- render 'icon' with 'email', width: 16 -%}
+          <span>{{- settings.email -}}</span>
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if settings.consultation_heading != blank or settings.consultation_text != blank or settings.consultation_image != blank -%}
+    <div class="pdp-consultation">
+      {%- if settings.consultation_image != blank -%}
+        {{-
+          settings.consultation_image
+          | image_url: width: 160
+          | image_tag: loading: 'lazy', sizes: '72px', widths: '72,144', class: 'pdp-consultation__image'
+        -}}
+      {%- endif -%}
+
+      <div class="pdp-consultation__body">
+        {%- if settings.consultation_heading != blank -%}
+          <p class="pdp-consultation__heading">{{- settings.consultation_heading -}}</p>
+        {%- endif -%}
+
+        {%- if settings.consultation_text != blank -%}
+          <p class="pdp-consultation__text">{{- settings.consultation_text -}}</p>
+        {%- endif -%}
+      </div>
+
+      {%- if settings.consultation_button_label != blank -%}
+        {%- render 'button', href: settings.consultation_button_link, content: settings.consultation_button_label, size: 'sm' -%}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>
