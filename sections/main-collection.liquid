@@ -240,6 +240,14 @@
         margin-block-start: 3px;
       }
     }
+    #shopify-section-{{ section.id }} .pf-sort-label {
+      font-weight: 600;
+    }
+
+    #shopify-section-{{ section.id }} .pf-sort-value {
+      font-weight: 400;
+    }
+
     #shopify-section-{{ section.id }} .active-facets {
       flex-wrap: nowrap;
       overflow-x: auto;
@@ -1293,7 +1301,7 @@
                       <div class="collection-toolbar__button-container">
                         <button type="button" aria-controls="sort-by-popover" class="collection-toolbar__button heading text-xs w-full">
                           <span class="text-with-icon justify-center">
-                            {{- 'collection.faceting.sort_by' | t -}}
+                            <span class="pf-sort-label">{{- 'collection.faceting.sort_by' | t -}}</span>
                             {%- if section.settings.enable_new_filters -%}
                               {%- liquid
                                 assign pf_sort_value_label = ''
