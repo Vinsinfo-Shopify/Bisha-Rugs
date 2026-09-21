@@ -3418,6 +3418,17 @@ tr[onclick]:hover {
   font-size: var(--text-xs);
 }
 
+.product-info__block-item[data-block-type="button"] .text-with-icon {
+  font-weight: 700;
+}
+
+.product-info__block-item[data-block-type="feature-with-icon"] .feature-badge {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
+}
+
 .text-with-icon>svg {
   flex-shrink: 0;
 }
@@ -3560,7 +3571,6 @@ tr[onclick]:hover {
   font-size: var(--text-xs);
   align-items: center;
   column-gap: .5rem;
-  padding: .375rem .5rem;
   display: inline-flex;
 }
 
@@ -3570,7 +3580,7 @@ tr[onclick]:hover {
 
 .feature-badge-list {
   grid-template-columns: repeat(2, 1fr);
-  gap: .75rem 1rem;
+  gap: 1rem;
   display: grid;
 }
 
@@ -3632,8 +3642,7 @@ tr[onclick]:hover {
 }
 
 .image-text-card__image {
-  width: 80px;
-  height: 80px;
+  /* width/height come from the block's "Image width"/"Image height" settings via inline style */
   border-radius: var(--input-border-radius);
   object-fit: cover;
   flex-shrink: 0;
@@ -3644,17 +3653,36 @@ tr[onclick]:hover {
 }
 
 .image-text-card--checklist .image-text-card__image {
-  width: 110px;
   height: auto;
   align-self: stretch;
 }
 
 .image-text-card__heading {
-  font-size: 1.0625rem;
-  font-weight: 700;
-  line-height: 1.4;
   margin: 0;
   color: rgb(var(--text-color));
+  font-family: Figtree;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+}
+
+.image-text-card__content {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
+}
+
+.image-text-card__info .button {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  text-transform: uppercase;
+  width: fit-content;
 }
 
 .image-text-card--checklist .prose :is(ul, ol) {
@@ -3689,7 +3717,7 @@ tr[onclick]:hover {
 
 .accordion-tags {
   align-items: center;
-  column-gap: 1.5rem;
+  column-gap: 1rem;
   row-gap: .625rem;
   flex-wrap: wrap;
   margin-block-start: 1.25rem;
@@ -3700,13 +3728,26 @@ tr[onclick]:hover {
   align-items: center;
   column-gap: .4rem;
   display: flex;
-  font-size: .875rem;
-  font-weight: 600;
+  background-color: #F3EEE4;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  text-align: center;
+  padding: .5rem .8rem;
+  border-radius: 50px;
+}
+
+.accordion__content.prose .accordion-tag span {
+  margin: 0px;
+  margin-inline-end: 0;
 }
 
 .accordion-tag__icon {
   color: #1b8a4a;
   flex-shrink: 0;
+  height: 1rem;
+  width: 1rem;
 }
 
 .accordion-note {
@@ -3725,9 +3766,48 @@ tr[onclick]:hover {
   display: flex;
 }
 
+.accordion__content.prose .accordion-option-card .accordion-option-card_info {
+  margin: 0px;
+  margin-block-start: 0;
+}
+
+.accordion__content.prose .accordion-option-card .accordion-option-card_content p {
+  margin: 0px;
+  margin-block-start: 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
+}
+
+.accordion__content.prose .accordion-option-card .accordion-option-card_content {
+  margin: 0px;
+  margin-block-start: 0;
+}
+
+.accordion__content.prose .accordion-option-card_heading {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: 0%;
+}
+
+.accordion__content.prose .accordion-option-card .accordion-option-card_info .button {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  text-transform: uppercase;
+  width: fit-content;
+  margin: 0px;
+  margin-block-start: 0;
+  padding: 12px;
+}
+
 .accordion-option-card__image {
-  width: 96px;
-  height: 96px;
+  width: 120px;
+  height: 160px;
   border-radius: var(--input-border-radius);
   object-fit: cover;
   flex-shrink: 0;
@@ -3735,6 +3815,9 @@ tr[onclick]:hover {
 
 .pdp-review {
   display: block;
+  background: #ffffff;
+  padding: 10px 12px;
+  border: 1px solid #DBDBDB;
 }
 
 .pdp-review__header {
@@ -3744,8 +3827,8 @@ tr[onclick]:hover {
 }
 
 .pdp-review__image {
-  width: 56px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   border-radius: var(--input-border-radius);
   object-fit: cover;
   flex-shrink: 0;
@@ -3774,7 +3857,8 @@ tr[onclick]:hover {
 }
 
 .pdp-review__name {
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 14px;
 }
 
 .pdp-review__verified {
@@ -3806,7 +3890,11 @@ tr[onclick]:hover {
 
 .pdp-review__quote {
   margin: 0;
-  font-style: italic;
+  font-weight: 400;
+  font-style: Italic;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
 }
 
 .pdp-real-homes {
@@ -3814,11 +3902,31 @@ tr[onclick]:hover {
   display: grid;
 }
 
+.product-info__block-item .pdp-real-homes .pdp-real-homes__title,
+.product-info__block-item .accordion .accordion__toggle {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: 0%;
+}
+
+.product-info__block-item .accordion .accordion__content.prose {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+}
+
 .pdp-real-homes__track {
   gap: .75rem;
   overflow-x: auto;
   scroll-snap-type: x proximity;
   display: flex;
+}
+
+.pdp-real-homes__track::-webkit-scrollbar {
+  display: none;
 }
 
 .pdp-real-homes__item {
@@ -3829,7 +3937,7 @@ tr[onclick]:hover {
 }
 
 .pdp-real-homes__media {
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 2.5 / 4;
   border-radius: var(--input-border-radius);
   overflow: hidden;
   position: relative;
@@ -7042,7 +7150,7 @@ shopify-account::part(signed-out-avatar) {
 }
 
 .product-info__block-item:is([data-block-type="inventory"], [data-block-type="buy-buttons"], [data-block-type="pickup-availability"], [data-block-type="more-information"], [data-block-type="offers"]) {
-  --product-info-gap: 2rem;
+  --product-info-gap: 1rem;
 }
 
 .product-info__block-group:has(.product-info__block-item:is([data-block-type="inventory"], [data-block-type="buy-buttons"], [data-block-type="pickup-availability"], [data-block-type="more-information"], [data-block-type="offers"])) {
@@ -7151,6 +7259,7 @@ shopify-account::part(signed-out-avatar) {
 .buy-buttons {
   row-gap: 1rem;
   display: grid;
+  font-weight: 700;
 }
 
 .pickup-location {
@@ -9866,7 +9975,8 @@ ul {
 .shopify-section--faq .container .section-stack {
   gap: 0px;
 }
-.shopify-section--faq .faq-content-column{
+
+.shopify-section--faq .faq-content-column {
   padding-bottom: 37px;
 }
 
@@ -10834,7 +10944,8 @@ ul {
     line-height: 120%;
     letter-spacing: 0%;
   }
-  .member_stories .section-stack{
+
+  .member_stories .section-stack {
     gap: 23px;
   }
 
@@ -10859,9 +10970,10 @@ ul {
     font-weight: 600;
     line-height: 15px;
   }
-   .member_stories .multi-column {
+
+  .member_stories .multi-column {
     row-gap: 17px !important;
-   }
+  }
 
   .member_stories {
     padding-top: 44px;
@@ -10993,7 +11105,7 @@ ul {
     font-size: 12px;
     line-height: 140%;
   }
-  
+
 }
 
 .trade_program_footer .multiimage-with-text__content {
@@ -11064,10 +11176,12 @@ ul {
 .application_process .multi-column-card_heading-wrapper {
   margin: 0;
 }
-.application_process .multi-column-card_heading-wrapper{
+
+.application_process .multi-column-card_heading-wrapper {
   margin-top: 6px !important;
   margin-bottom: 4px !important;
 }
+
 .application_process .multi-column-card_subheading {
   flex-basis: 100%;
 }
@@ -11227,31 +11341,39 @@ ul {
     font-size: 16px;
     line-height: 17.5px;
   }
-  .application_process .section-stack{
+
+  .application_process .section-stack {
     padding: 41px 0px;
   }
-  .application_process .multi-column__item{
+
+  .application_process .multi-column__item {
     padding: 17px 0px;
   }
-  .multi-column-card_number{
+
+  .multi-column-card_number {
     font-weight: 600;
     font-size: 13px;
     line-height: 100%;
     letter-spacing: 0%;
   }
-  .application_process .prose .multi-column-card_content{
+
+  .application_process .prose .multi-column-card_content {
     line-height: 20px;
   }
-  .trade_partnership{
-    margin: 10px 0px; 
+
+  .trade_partnership {
+    margin: 10px 0px;
   }
-  .trade_work.section-spacing{
+
+  .trade_work.section-spacing {
     padding: 25px 0px;
   }
-  .trade_work .section-stack{
-    gap:24px
+
+  .trade_work .section-stack {
+    gap: 24px
   }
-  .shopify-section--faq .faq-content-column{
+
+  .shopify-section--faq .faq-content-column {
     padding-bottom: 0px;
   }
 

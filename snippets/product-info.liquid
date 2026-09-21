@@ -773,18 +773,35 @@
 
           {%- when 'image_text_card' -%}
             {%- if block.settings.heading != blank or block.settings.text != blank or block.settings.image != blank -%}
+              {%- liquid
+                assign card_image_width = block.settings.image_width | default: 80
+                assign card_image_height = block.settings.image_height | default: 80
+                assign card_image_request_width = card_image_width | times: 2
+                assign card_image_sizes = card_image_width | append: 'px'
+                assign card_image_widths = card_image_width | append: ',' | append: card_image_request_width
+              -%}
+              {%- capture card_image_style -%}
+                width: {{ card_image_width }}px;
+                {%- unless block.settings.show_checklist_icons -%}
+                  height: {{ card_image_height }}px;
+                {%- endunless -%}
+              {%- endcapture -%}
               <div class="image-text-card {% if block.settings.show_checklist_icons %}image-text-card--checklist{% endif %} {% if block.settings.border_color != blank and block.settings.border_color != 'rgba(0,0,0,0)' %}border{% endif %}" style="{% render 'surface', background: block.settings.background, text_color: block.settings.text_color, border_color: block.settings.border_color %}">
                 {%- if block.settings.image != blank -%}
-                  {{- block.settings.image | image_url: width: 200 | image_tag: loading: 'lazy', sizes: '80px', widths: '80,160', class: 'image-text-card__image' -}}
+                  {{-
+                    block.settings.image
+                    | image_url: width: card_image_request_width
+                    | image_tag: loading: 'lazy', sizes: card_image_sizes, widths: card_image_widths, class: 'image-text-card__image', style: card_image_style
+                  -}}
                 {%- endif -%}
 
-                <div class="v-stack gap-2">
+                <div class="v-stack gap-2 image-text-card__info">
                   {%- if block.settings.heading != blank -%}
-                    <p class="image-text-card__heading">{{ block.settings.heading }}</p>
+                    <p class="image-text-card__heading" style="font-style:{{ block.settings.italic }}">{{ block.settings.heading }}</p>
                   {%- endif -%}
 
                   {%- if block.settings.text != blank -%}
-                    <div class="prose">
+                    <div class="prose image-text-card__content">
                       {{- block.settings.text -}}
                     </div>
                   {%- endif -%}
@@ -796,7 +813,7 @@
                       size: 'sm',
                       style: block.settings.button_style,
                       background: block.settings.button_background,
-                      text_color: block.settings.button_text_color
+                      text_color: block.settings.button_text_color,
                     -%}
                   {%- endif -%}
                 </div>
