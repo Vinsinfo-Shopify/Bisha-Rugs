@@ -875,11 +875,21 @@
         color: #696969;
       }
 
-      /* Image and swatch values: three per row, 67px media. */
       #shopify-section-{{ section.id }} .facets .option-value-list {
+        --pf-value-gutter: 8px;
         display: grid;
         grid-template-columns: repeat({{ section.settings.pf_value_columns }}, minmax(0, 1fr));
-        gap: {{ section.settings.pf_value_row_gap }}px {{ section.settings.pf_value_col_gap }}px;
+        row-gap: {{ section.settings.pf_value_row_gap }}px;
+        {%- if section.settings.pf_value_columns > 1 -%}
+          column-gap: max(
+            0px,
+            calc(
+              {{ section.settings.pf_value_col_gap }}px - var(--pf-value-gutter) * 2 /
+                {{ section.settings.pf_value_columns | minus: 1 }}
+            )
+          );
+        {%- endif -%}
+        padding-inline: var(--pf-value-gutter);
       }
 
       /* Photo on top, label centred below, same shape as the .pf-colors
@@ -899,8 +909,9 @@
 
       #shopify-section-{{ section.id }} .facets .option-value :is(img, svg),
       #shopify-section-{{ section.id }} .facets .option-value__swatch {
-        width: {{ section.settings.pf_value_media_size }}px;
-        height: {{ section.settings.pf_value_media_size }}px;
+        width: min({{ section.settings.pf_value_media_size }}px, 100%);
+        height: auto;
+        aspect-ratio: 1;
         object-fit: cover;
         border-radius: var(--rounded-full);
         border: 1px solid rgb(0 0 0 / 0.12);
