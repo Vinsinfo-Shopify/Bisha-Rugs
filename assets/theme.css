@@ -11406,6 +11406,13 @@ ul {
   overflow: hidden;
 }
 
+.product-card-title {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+  min-height: calc(22px * 2);
+}
+
 .shopify-section--main-product .product-info .complementary-products .product-card-title {
   font-size: 14px;
   line-height: 18px;
@@ -11520,7 +11527,8 @@ ul {
     background: rgb(43 39 36 / 0.9);
   }
 }
-.custom_rugs.pdp .image-with-text-container{
+
+.custom_rugs.pdp .image-with-text-container {
   margin-top: 60px;
 }
 
@@ -11572,11 +11580,11 @@ ul {
   color: var(--ct-value-color);
 }
 
-.comparison-table__description > :first-child {
+.comparison-table__description> :first-child {
   margin-block-start: 0;
 }
 
-.comparison-table__description > :last-child {
+.comparison-table__description> :last-child {
   margin-block-end: 0;
 }
 
@@ -11601,6 +11609,7 @@ ul {
   padding-block: var(--ct-pad-y);
   min-width: 0;
 }
+
 .comparison-table__cell--label,
 .comparison-table__cell--intro {
   padding-inline-start: 0;
@@ -11865,7 +11874,7 @@ a.marquee__item:hover .marquee__text {
   padding-inline: var(--marquee-item-gap);
 }
 
-.marquee--static .marquee__group > .marquee__separator:last-child {
+.marquee--static .marquee__group>.marquee__separator:last-child {
   display: none;
 }
 
@@ -11889,6 +11898,7 @@ a.marquee__item:hover .marquee__text {
     --marquee-item-gap: calc((var(--marquee-item-gap-desktop) + var(--marquee-item-gap-mobile)) / 2);
   }
 }
+
 @media screen and (max-width: 699px) {
   .marquee {
     --marquee-item-gap: var(--marquee-item-gap-mobile);
