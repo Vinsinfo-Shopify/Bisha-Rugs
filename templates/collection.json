@@ -98,8 +98,8 @@
           "type": "heading",
           "settings": {
             "text": "<p>{{ collection.title }}</p>",
-            "padding_top": 0,
-            "padding_bottom": 0,
+            "padding_top": 4,
+            "padding_bottom": 2,
             "heading_tag": "h1"
           }
         },
@@ -107,7 +107,7 @@
           "type": "richtext",
           "settings": {
             "content": "{{ collection.metafields.custom.collection_banner_content | metafield_tag }}",
-            "character_limit": 0
+            "character_limit": 110
           }
         },
         "icon_with_text_9ad9K6": {
@@ -194,11 +194,11 @@
         "filter_layout": "sidebar",
         "quick_links_menu": "",
         "show_sort_by": true,
-        "enable_new_filters": false,
-        "production_filters": "Availability, Price",
+        "enable_new_filters": true,
+        "production_filters": "Availability, Price, Style",
         "pf_filters_heading": "Filters",
-        "pf_filters_heading_gap": 26,
-        "pf_sidebar_width": 300,
+        "pf_filters_heading_gap": 18,
+        "pf_sidebar_width": 294,
         "pf_sidebar_gap": 32,
         "pf_sidebar_inset": 8,
         "pf_products_per_row": 3,
@@ -207,24 +207,24 @@
         "pf_value_col_gap": 37,
         "pf_value_row_gap": 27,
         "pf_accordion_icon_width": 13,
-        "pf_accordion_icon_color": "#807e7a",
+        "pf_accordion_icon_color": "#000000",
         "pf_hide_color_in_sidebar": true,
         "pf_checkbox_size": 18,
         "pf_checkbox_radius": 2,
         "pf_checkbox_gap": 12,
-        "pf_checkbox_row_gap": 18,
-        "pf_checkbox_nudge": 1,
+        "pf_checkbox_row_gap": 10,
+        "pf_checkbox_nudge": -7,
         "pf_checkbox_checked": "#55583c",
         "pf_checkbox_border": "#d9d7d0",
         "pf_hide_view_switcher": true,
         "pf_hide_toolbar_rules": true,
         "color_filter_heading": "Shop by Color:",
         "color_filter_label": "Color",
-        "color_swatch_size": 56,
+        "color_swatch_size": 64,
         "color_strip_gap_top": 24,
         "color_strip_gap_top_mobile": 20,
-        "color_strip_gap": 0,
-        "pf_toolbar_gap": 49,
+        "color_strip_gap": 16,
+        "pf_toolbar_gap": 10,
         "color_ring_bleed": 4,
         "color_hide_heading_mobile": true,
         "color_swatch_gap": 28,
@@ -453,8 +453,7 @@
           "repeater": "{{ collection.metafields.custom.collection_faqs.value }}",
           "settings": {
             "question": "{{ block.repeater.question.value }}",
-            "answer": "{{ block.repeater.answer | metafield_tag }}",
-            "custom_class": ""
+            "answer": "{{ block.repeater.answer | metafield_tag }}"
           }
         },
         "question_3WWPqk": {
@@ -511,7 +510,6 @@
         "color_scheme": "",
         "separate_section_with_border": true,
         "show_categories": false,
-        "open_first_question": true,
         "custom_class": "collection_faq",
         "faq_custom_class": "",
         "show_breadcrumb": false,
@@ -531,7 +529,7 @@
         "sidebar_custom_class": "",
         "show_image": true,
         "image": "shopify://shop_images/c0a4d61bbc28d2127363ecf547d1f6829f8d6d42_1.png",
-        "image_max_height": 641
+        "image_max_height": 500
       }
     },
     "multi_column_YffJWe": {
@@ -609,7 +607,6 @@
         "custom_class": "Collection_contact_us",
         "separate_section_with_border": true,
         "remove_section_spacing": true,
-        "full_width": false,
         "columns_per_row": 3,
         "stack_on_mobile": true,
         "enable_carousel": false,
@@ -621,7 +618,6 @@
         "column_gap_desktop": 28,
         "row_gap_desktop": 28,
         "media_height": "379px",
-        "media_fit": "cover",
         "subheading": "CONTACT US",
         "title": "Still Have Questions?",
         "heading_style": "h2",
