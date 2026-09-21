@@ -28,7 +28,7 @@
             "subheading": "",
             "heading_tag": "h3",
             "custom_heading_size": 24,
-            "content": "<p>Share a few details about your studio, takes about a minute.</p>",
+            "content": "<p>Share a few details about your studio, <br/>takes about a minute.</p>",
             "link_url": "",
             "link_text": "",
             "show_rating": false,
