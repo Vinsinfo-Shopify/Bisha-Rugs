@@ -9142,7 +9142,7 @@ ul {
 }
 
 .prose .multi-column-card_content {
-  margin-top: 8px;
+  margin-top: 8px !important;
 }
 
 .form-row .form-control {
@@ -9664,6 +9664,9 @@ ul {
 
 .shopify-section--faq .container .section-stack {
   gap: 0px;
+}
+.shopify-section--faq .faq-content-column{
+  padding-bottom: 37px;
 }
 
 .blog-sidebar__recent-post-image_content {
@@ -10348,7 +10351,7 @@ ul {
 }
 
 .member_stories .section_header_content {
-  margin: 0px;
+  margin: 0px !important;
 }
 
 .member_stories .multi-column {
@@ -10590,11 +10593,16 @@ ul {
   .member_stories .section_header_subheading {
     font-weight: 500;
     line-height: 140%;
+    letter-spacing: 0%;
   }
 
   .member_stories .section_header_heading {
     font-size: 24px;
     line-height: 120%;
+    letter-spacing: 0%;
+  }
+  .member_stories .section-stack{
+    gap: 23px;
   }
 
   .member_stories .section_header_heading {
@@ -10610,7 +10618,7 @@ ul {
     line-height: 15px;
     font-weight: 400;
     letter-spacing: 0%;
-    margin: 0;
+    margin: 0 !important;
   }
 
   .member_stories .multi-column-card_heading {
@@ -10618,6 +10626,9 @@ ul {
     font-weight: 600;
     line-height: 15px;
   }
+   .member_stories .multi-column {
+    row-gap: 17px !important;
+   }
 
   .member_stories {
     padding-top: 44px;
@@ -10665,7 +10676,7 @@ ul {
 }
 
 .trade_program .section_header_content:not(:has(*)) {
-  margin-block-start: 0;
+  margin-block-start: 0 !important;
 }
 
 .trade_program .faq__content {
@@ -10727,13 +10738,15 @@ ul {
   .trade_program .section_header_heading {
     font-size: 24px !important;
     line-height: 120%;
+    margin-bottom: 0px;
   }
 
   .trade_program .accordion__toggle {
     column-gap: 16px;
-    padding-block: 16px;
     font-size: 14px;
     line-height: 17.5px;
+    padding-block-start: 17px;
+    padding-block-end: 18px;
   }
 
   .trade_program .accordion__content {
@@ -10744,6 +10757,7 @@ ul {
     font-size: 12px;
     line-height: 140%;
   }
+  
 }
 
 .trade_program_footer .multiimage-with-text__content {
@@ -10772,7 +10786,7 @@ ul {
   font-size: 16px;
   line-height: 23px;
   letter-spacing: 0;
-  margin-top: 12px;
+  margin-top: 12px !important;
 }
 
 .trade_program_footer .multiimage-with-text__button-row button {
@@ -10797,7 +10811,7 @@ ul {
 .multi-column-card_number {
   margin: 0 0 8px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 20.8px;
   letter-spacing: 1.82px;
 }
@@ -10814,22 +10828,43 @@ ul {
 .application_process .multi-column-card_heading-wrapper {
   margin: 0;
 }
-
+.application_process .multi-column-card_heading-wrapper{
+  margin-top: 6px !important;
+  margin-bottom: 4px !important;
+}
 .application_process .multi-column-card_subheading {
   flex-basis: 100%;
 }
 
+@media screen and (max-width: 998px) {
+  .application_process .multi-column-card_heading-group {
+    column-gap: 0;
+  }
+
+  .application_process .multi-column-card_number {
+    flex: 0 0 var(--step-indent);
+  }
+
+  .application_process .multi-column-card_subheading,
+  .application_process .multi-column-card_content {
+    padding-inline-start: var(--step-indent);
+  }
+}
+
 .application_process .multi-column__item {
+  --step-indent: 40px;
   padding: 20px 0;
   border-top: 1px solid rgba(var(--color-foreground), 0.12);
 }
 
 .application_process .section_header_content {
-  margin: 0px;
+  margin: 0px !important;
 }
 
 .application_process .section-stack {
   gap: 24px;
+  padding-top: 36px;
+  padding-bottom: 70px;
 }
 
 .trade_program_banner_cta .banner-cta__content {
@@ -10906,7 +10941,7 @@ ul {
   .application_process .prose .multi-column-card_content,
   .trade_work .prose .multi-column-card_content,
   .member_stories .prose .multi-column-card_content {
-    margin-top: 6px;
+    margin-top: 6px !important;
   }
 
   .member_stories .multi-column-card_content {
@@ -10942,7 +10977,7 @@ ul {
 
   .trade_program_footer .multiimage-with-text__button-row button {
     line-height: 140%;
-    padding: 9px 31.5px;
+    padding: 9px 31.5px 9px 32.5px;
     border-radius: 0;
   }
 
@@ -10952,6 +10987,33 @@ ul {
   .faq__content .accordion__toggle .text-with-icon{
     font-size: 16px;
     line-height: 17.5px;
+  }
+  .application_process .section-stack{
+    padding: 41px 0px;
+  }
+  .application_process .multi-column__item{
+    padding: 17px 0px;
+  }
+  .multi-column-card_number{
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 100%;
+    letter-spacing: 0%;
+  }
+  .application_process .prose .multi-column-card_content{
+    line-height: 20px;
+  }
+  .trade_partnership{
+    margin: 10px 0px; 
+  }
+  .trade_work.section-spacing{
+    padding: 25px 0px;
+  }
+  .trade_work .section-stack{
+    gap:24px
+  }
+  .shopify-section--faq .faq-content-column{
+    padding-bottom: 0px;
   }
 
 }
