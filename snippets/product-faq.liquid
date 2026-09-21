@@ -84,10 +84,6 @@
     .product-faq-widget {
       display: block;
     }
-
-    /* This widget lives inside the ".prose" wrapper the "accordion" snippet applies to its
-       content; ".prose"'s generic sibling-spacing rules would otherwise misalign the tabs
-       and add inconsistent gaps between items, so we keep this widget's own spacing in control. */
     .product-faq-widget__tabs,
     .product-faq-widget__tab,
     .product-faq-widget__list,
@@ -103,7 +99,9 @@
       margin-block-end: 1.5rem;
       overflow-x: auto;
     }
-
+    .product-faq-widget__tabs::-webkit-scrollbar {
+      display: none;
+    }
     .product-faq-widget__tab {
       appearance: none;
       background: none;
@@ -149,15 +147,18 @@
       display: flex;
       column-gap: .4em;
       font-weight: 600;
-      font-size: 1rem;
-      line-height: 1.5;
-      margin: 0 0 .6rem;
+      font-size: 14px;
+      line-height: 140%;
+      margin: 0;
+      color: rgb(var(--text-color));
     }
 
     .product-faq-widget__answer {
-      color: rgb(var(--text-color) / .75);
-      font-size: .9375rem;
-      line-height: 1.65;
+      color: rgb(var(--text-color));
+      font-size: 14px;
+      line-height: 140%;
+      font-weight: 400;
+      margin:0;
     }
 
     .product-faq-widget__answer p+p {
@@ -187,5 +188,5 @@
     <script src="{{ 'product-faq.js' | asset_url }}" defer></script>
   {%- endcapture -%}
 
-  {%- render 'accordion', title: block.settings.title, content: faq_tabs_content, icon: 'none', prose_content: true, size: 'lg', block: block -%}
+  {%- render 'accordion', title: block.settings.title, content: faq_tabs_content, icon: 'none', prose_content: true, block: block -%}
 {%- endif -%}
