@@ -18,25 +18,33 @@
   # exclusion parameter, because facets.liquid already accepts allowed_filters.
   # The shared snippet is unchanged, and a filter added in Search & Discovery
   # later is included here automatically.
-  if section.settings.enable_new_filters and section.settings.pf_hide_color_in_sidebar
+  if section.settings.enable_new_filters
     assign colour_key = section.settings.color_filter_label | downcase | strip
     assign sidebar_allow = ''
 
     for f in collection.filters
       assign f_label = f.label | downcase | strip
       assign f_param = f.param_name | downcase
-      assign is_colour = false
+      assign skip_filter = false
 
-      if f_label == colour_key or f_param contains 'color' or f_param contains 'colour'
-        assign is_colour = true
+      if section.settings.pf_hide_color_in_sidebar
+        if f_label == colour_key or f_param contains 'color' or f_param contains 'colour'
+          assign skip_filter = true
+        endif
       endif
 
-      unless is_colour
+      if section.settings.pf_hide_availability
+        if f_param == 'filter.v.availability' or f_label == 'availability'
+          assign skip_filter = true
+        endif
+      endif
+
+      unless skip_filter
         assign sidebar_allow = sidebar_allow | append: f.label | append: ','
       endunless
     endfor
 
-    assign production_filters = sidebar_allow
+    assign production_filters = sidebar_allow | default: 'pf-no-filters'
   endif
 
   # Driven by the existing gate rather than a new setting: the checkbox is
@@ -45,6 +53,12 @@
 
   if section.settings.enable_new_filters
     assign hide_facet_checkbox = false
+  endif
+
+  assign pf_all_option_filters = ''
+
+  if section.settings.enable_new_filters
+    assign pf_all_option_filters = section.settings.pf_all_option_filters
   endif
 
   # The design shows the groups open on load. Derived from the gate rather than
@@ -257,22 +271,67 @@
       flex: none;
       scroll-snap-align: start;
     }
-    #shopify-section-{{ section.id }} .active-facets > facet-link {
+    #shopify-section-{{ section.id }} .active-facets > facet-link,
+    #shopify-section-{{ section.id }} .active-facets__end {
       position: sticky;
       inset-inline-end: 0;
       flex: none;
       display: flex;
       align-items: center;
+    }
+
+    #shopify-section-{{ section.id }} .active-facets > facet-link,
+    #shopify-section-{{ section.id }} .active-facets__end > facet-link {
+      display: flex;
+      align-items: center;
       padding: 8px;
       background: rgb(var(--background-without-opacity));
+    }
+
+    /* Mobile only, per the design. */
+    #shopify-section-{{ section.id }} .active-facets__next {
+      display: none;
     }
     #shopify-section-{{ section.id }} .active-facets .facets-clear-all {
       white-space: nowrap;
     }
 
     @media screen and (max-width: 749px) {
-      #shopify-section-{{ section.id }} .active-facets > facet-link {
+      #shopify-section-{{ section.id }} .active-facets > facet-link,
+      #shopify-section-{{ section.id }} .active-facets__end > facet-link {
          padding: 0px;
+      }
+
+      /* Arrow indicator: a filled disc that overhangs the pinned group so it
+         reads as floating over the last chip, with a ring of page background
+         separating it from that chip. */
+      #shopify-section-{{ section.id }} .active-facets__end {
+        gap: 10px;
+        background: rgb(var(--background-without-opacity));
+      }
+
+      #shopify-section-{{ section.id }} .active-facets__next {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 22px;
+        height: 22px;
+        margin-inline-start: -10px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: #2B2724;
+        color: #FFFBF3;
+        box-shadow: 0 0 0 2px rgb(var(--background-without-opacity));
+      }
+
+      /* The theme fades every button on hover; this one stays solid. */
+      #shopify-section-{{ section.id }} .active-facets__next:hover {
+        opacity: 1;
+      }
+
+      #shopify-section-{{ section.id }} .active-facets__next[hidden] {
+        display: none;
       }
       #shopify-section-{{ section.id }} .container {
         --container-gutter: 12px;
@@ -511,6 +570,19 @@
 
     #shopify-section-{{ section.id }} .pf-colors__track::-webkit-scrollbar {
       display: none;
+    }
+
+    @media screen and (min-width: 750px) {
+      #shopify-section-{{ section.id }} > .color-scheme {
+        overflow-x: clip;
+      }
+
+      #shopify-section-{{ section.id }} .pf-colors__track {
+        margin-inline-end: calc(50% - 50vw + var(--scrollbar-width, 0px) / 2);
+        padding-inline-end: calc(
+          50vw - 50% - var(--scrollbar-width, 0px) / 2 + {{ section.settings.color_ring_bleed }}px
+        );
+      }
     }
 
     #shopify-section-{{ section.id }} .pf-color {
@@ -769,13 +841,11 @@
         width: 16px;
         height: 16px;
         margin-block-start: -7px;
-        background: #000000;
       }
 
       #shopify-section-{{ section.id }} .facets .range::-moz-range-thumb {
         width: 16px;
         height: 16px;
-        background: #000000;
       }
 
       #shopify-section-{{ section.id }} .facets .input-group {
@@ -796,7 +866,7 @@
 
       #shopify-section-{{ section.id }} .facets .input-prefix > .field {
         font-size: 16px;
-        font-weight: 500;
+        font-weight: 400;
         color: #000000;
       }
 
@@ -882,6 +952,87 @@
           box-shadow: none;
         }
       {%- endif -%}
+      #shopify-section-{{ section.id }} .facets-sidebar {
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100vh - var(--sticky-area-height, 0px) - var(--collection-toolbar-height, 0px) - 40px);
+      }
+
+      #shopify-section-{{ section.id }} .facets-sidebar > facets-form,
+      #shopify-section-{{ section.id }} .facets-sidebar .facets {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+
+      #shopify-section-{{ section.id }} .facets-sidebar .accordion-list {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding-inline-end: 12px;
+        scrollbar-width: thin;
+        scrollbar-color: {{ section.settings.pf_accent_color }} rgb(0 0 0 / 0.08);
+      }
+
+      #shopify-section-{{ section.id }} .facets-sidebar .accordion-list::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      #shopify-section-{{ section.id }} .facets-sidebar .accordion-list::-webkit-scrollbar-track {
+        background: rgb(0 0 0 / 0.08);
+        border-radius: 999px;
+      }
+
+      #shopify-section-{{ section.id }} .facets-sidebar .accordion-list::-webkit-scrollbar-thumb {
+        background: {{ section.settings.pf_accent_color }};
+        border-radius: 999px;
+      }
+    }
+
+    #shopify-section-{{ section.id }} .facets .range-group,
+    facets-drawer .range-group {
+      background: linear-gradient(
+        to var(--transform-origin-end),
+        rgb(0 0 0 / 0.12) var(--range-min),
+        {{ section.settings.pf_accent_color }} var(--range-min),
+        {{ section.settings.pf_accent_color }} var(--range-max),
+        rgb(0 0 0 / 0.12) var(--range-max)
+      );
+    }
+
+    #shopify-section-{{ section.id }} .facets .range::-webkit-slider-thumb {
+      background: {{ section.settings.pf_accent_color }};
+    }
+
+    facets-drawer .range::-webkit-slider-thumb {
+      background: {{ section.settings.pf_accent_color }};
+    }
+
+    #shopify-section-{{ section.id }} .facets .range::-moz-range-thumb {
+      background: {{ section.settings.pf_accent_color }};
+    }
+
+    facets-drawer .range::-moz-range-thumb {
+      background: {{ section.settings.pf_accent_color }};
+    }
+
+    #shopify-section-{{ section.id }} .facets .option-value__swatch--all,
+    facets-drawer .option-value__swatch--all {
+      display: block;
+      background: conic-gradient(
+        from 180deg,
+        #c9d6df, #e8d5c4, #d9c3a9, #b8c4a0, #d4a5a5, #a8b8c8, #c9d6df
+      );
+    }
+    #shopify-section-{{ section.id }} .facets .option-value:hover .option-value__swatch--all,
+    #shopify-section-{{ section.id }} .facets input:checked + .option-value .option-value__swatch--all,
+    facets-drawer .option-value:hover .option-value__swatch--all,
+    facets-drawer input:checked + .option-value .option-value__swatch--all {
+      box-shadow:
+        inset 0 0 0 1.5px rgb(var(--text-color)),
+        inset 0 0 0 4px rgb(var(--background-without-opacity));
     }
 
     @media screen and (min-width: 749px) {
@@ -1124,6 +1275,8 @@
                   quick_links_menu: section.settings.quick_links_menu,
                   allowed_filters: production_filters,
                   hide_facet_checkbox: hide_facet_checkbox,
+                  all_option_filters: pf_all_option_filters,
+                  all_option_image: section.settings.pf_all_option_image,
                   context: 'drawer'
                 -%}
 
@@ -1170,6 +1323,8 @@
                     quick_links_menu: section.settings.quick_links_menu,
                     allowed_filters: production_filters,
                     hide_facet_checkbox: hide_facet_checkbox,
+                    all_option_filters: pf_all_option_filters,
+                    all_option_image: section.settings.pf_all_option_image,
                     context: 'sidebar'
                   -%}
 
@@ -1293,7 +1448,6 @@
                       <div class="collection-toolbar__button-container">
                         <button type="button" aria-controls="sort-by-popover" class="collection-toolbar__button heading text-xs w-full">
                           <span class="text-with-icon justify-center">
-                            {{- 'collection.faceting.sort_by' | t -}}
                             {%- if section.settings.enable_new_filters -%}
                               {%- liquid
                                 assign pf_sort_value_label = ''
@@ -1303,7 +1457,10 @@
                                   endif
                                 endfor
                               -%}
+                              <span class="pf-sort-label">{{- 'collection.faceting.sort_by' | t -}}</span>
                               <span class="pf-sort-value">{{ pf_sort_value_label }}</span>
+                            {%- else -%}
+                              {{- 'collection.faceting.sort_by' | t -}}
                             {%- endif -%}
                             {%- render 'icon' with 'chevron-down' -%}
                           </span>
@@ -1394,7 +1551,11 @@
                   {%- endif -%}
                 </height-observer>
         {%- endif -%}
-                {%- render 'active-facets', results: collection, allowed_filters: production_filters -%}
+                {%- render 'active-facets',
+                  results: collection,
+                  allowed_filters: production_filters,
+                  scroll_indicator: section.settings.enable_new_filters
+                -%}
 
                 <product-list
                   id="product-list-{{ section.id }}"
@@ -1437,6 +1598,77 @@
         var collapsed = sidebar.classList.toggle('is-collapsed');
         toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
       });
+    }
+    if (!window.__pfFacetAllBound) {
+      window.__pfFacetAllBound = true;
+
+      var pfSyncAll = function (list) {
+        var allInput = list.querySelector('input[data-facet-all]');
+        if (!allInput) return;
+        var values = list.querySelectorAll('input[type="checkbox"][name]');
+        allInput.checked = !Array.prototype.some.call(values, function (input) {
+          return input.checked;
+        });
+      };
+
+      document.addEventListener('change', function (event) {
+        var input = event.target;
+        if (!input || input.type !== 'checkbox') return;
+
+        var list = input.closest('.option-value-list');
+        if (!list || !list.querySelector('input[data-facet-all]')) return;
+
+        if (input.hasAttribute('data-facet-all')) {
+          input.checked = true;
+          Array.prototype.forEach.call(list.querySelectorAll('input[type="checkbox"][name]'), function (value) {
+            value.checked = false;
+          });
+        } else {
+          pfSyncAll(list);
+        }
+      });
+    }
+    if (!customElements.get('facets-scroll-next')) {
+      customElements.define(
+        'facets-scroll-next',
+        class extends HTMLElement {
+          constructor() {
+            super();
+            this.onClick = this.onClick.bind(this);
+            this.update = this.update.bind(this);
+          }
+
+          connectedCallback() {
+            this.scroller = this.parentElement;
+            this.button = this.querySelector('[data-facets-next]');
+            if (!this.scroller || !this.button) return;
+
+            this.button.addEventListener('click', this.onClick);
+            this.scroller.addEventListener('scroll', this.update, { passive: true });
+            window.addEventListener('resize', this.update);
+            requestAnimationFrame(this.update);
+          }
+
+          disconnectedCallback() {
+            if (!this.button) return;
+
+            this.button.removeEventListener('click', this.onClick);
+            this.scroller.removeEventListener('scroll', this.update);
+            window.removeEventListener('resize', this.update);
+          }
+
+          onClick() {
+            var direction = getComputedStyle(this.scroller).direction === 'rtl' ? -1 : 1;
+            this.scroller.scrollBy({ left: this.scroller.clientWidth * 0.6 * direction, behavior: 'smooth' });
+          }
+
+          update() {
+            var remaining =
+              this.scroller.scrollWidth - this.scroller.clientWidth - Math.abs(this.scroller.scrollLeft);
+            this.button.hidden = remaining <= 1;
+          }
+        }
+      );
     }
   </script>
 {%- endif -%}
@@ -1714,6 +1946,33 @@
       "label": "Hide Color from the sidebar",
       "info": "Colour has its own strip above the toolbar, so the sidebar entry would be a duplicate control.",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_hide_availability",
+      "label": "Hide Availability from the filters",
+      "info": "The design has no availability group. This only decides what this section renders; availability itself is unchanged everywhere else.",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "pf_accent_color",
+      "label": "Filter accent colour",
+      "info": "Used by the price range bar and handles, the panel scrollbar and the Apply button.",
+      "default": "#55583C"
+    },
+    {
+      "type": "text",
+      "id": "pf_all_option_filters",
+      "label": "Filters with an \"All\" option",
+      "info": "Comma separated, matched on the filter label or its param_name. These image filters get a leading \"All\" tile that clears the group; its count is the collection's total product count. Leave empty for none.",
+      "default": "Style, Shape"
+    },
+    {
+      "type": "image_picker",
+      "id": "pf_all_option_image",
+      "label": "\"All\" option image",
+      "info": "Optional. A gradient tile is drawn when this is empty."
     },
     {
       "type": "range",

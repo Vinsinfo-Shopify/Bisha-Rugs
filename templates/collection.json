@@ -209,6 +209,9 @@
         "pf_accordion_icon_width": 13,
         "pf_accordion_icon_color": "#000000",
         "pf_hide_color_in_sidebar": true,
+        "pf_hide_availability": true,
+        "pf_accent_color": "#55583c",
+        "pf_all_option_filters": "Style, Shape",
         "pf_checkbox_size": 18,
         "pf_checkbox_radius": 2,
         "pf_checkbox_gap": 12,
@@ -309,6 +312,252 @@
         "layout_variant": "",
         "remove_vertical_spacing": true,
         "show_features": false
+      }
+    },
+    "find_perfect_look_UiX8Wp": {
+      "type": "find-perfect-look",
+      "blocks": {
+        "image_8LhQP8": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_1.png",
+            "ratio": "4 / 5",
+            "product_1": "oushak-rug-9x12-turkish-knot-rug-hand-knotted-vintage-antique-oushak-wool-area-rug-for-living-room-and-dining-room-quick-ship",
+            "product_1_horizontal_position": 30,
+            "product_1_vertical_position": 85,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_q9DmhG": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_3_c0c747f8-418d-4c40-86b0-b255956c95d4.png",
+            "ratio": "1 / 1",
+            "product_1": "handmade-oushak-wool-rug-muted-pink-brown-vintage-turkish-design",
+            "product_1_horizontal_position": 72,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_MqT9QB": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_5.png",
+            "ratio": "4 / 5",
+            "product_1": "l-010-agatha-hand-knotted-rug",
+            "product_1_horizontal_position": 14,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_qWmzXa": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_2.png",
+            "ratio": "1 / 1",
+            "product_1": "white-color-modern-design-rug-bisha-rugs",
+            "product_1_horizontal_position": 85,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_6LH4GY": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_4.png",
+            "ratio": "4 / 5",
+            "product_1": "handmade-oushak-wool-rug-peach-ivory-brown-floral-medallion",
+            "product_1_horizontal_position": 68,
+            "product_1_vertical_position": 77,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_cBqCWK": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_6.png",
+            "ratio": "1 / 1",
+            "product_1": "l-023-beth-mini-hand-knotted-rug",
+            "product_1_horizontal_position": 48,
+            "product_1_vertical_position": 85,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_4htHih": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_1.png",
+            "ratio": "4 / 5",
+            "product_1": "oushak-rug-9x12-turkish-knot-rug-hand-knotted-vintage-antique-oushak-wool-area-rug-for-living-room-and-dining-room-quick-ship",
+            "product_1_horizontal_position": 30,
+            "product_1_vertical_position": 85,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_aUhejD": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_3_c0c747f8-418d-4c40-86b0-b255956c95d4.png",
+            "ratio": "1 / 1",
+            "product_1": "handmade-oushak-wool-rug-muted-pink-brown-vintage-turkish-design",
+            "product_1_horizontal_position": 72,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_QJbUTn": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_5.png",
+            "ratio": "4 / 5",
+            "product_1": "l-010-agatha-hand-knotted-rug",
+            "product_1_horizontal_position": 14,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_n3xeFb": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_2.png",
+            "ratio": "1 / 1",
+            "product_1": "white-color-modern-design-rug-bisha-rugs",
+            "product_1_horizontal_position": 85,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_zkzqqV": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_4.png",
+            "ratio": "4 / 5",
+            "product_1": "handmade-oushak-wool-rug-peach-ivory-brown-floral-medallion",
+            "product_1_horizontal_position": 68,
+            "product_1_vertical_position": 77,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_YaPbmt": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_6.png",
+            "ratio": "1 / 1",
+            "product_1": "l-023-beth-mini-hand-knotted-rug",
+            "product_1_horizontal_position": 48,
+            "product_1_vertical_position": 85,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        }
+      },
+      "block_order": [
+        "image_8LhQP8",
+        "image_q9DmhG",
+        "image_MqT9QB",
+        "image_qWmzXa",
+        "image_6LH4GY",
+        "image_cBqCWK",
+        "image_4htHih",
+        "image_aUhejD",
+        "image_QJbUTn",
+        "image_n3xeFb",
+        "image_zkzqqV",
+        "image_YaPbmt"
+      ],
+      "name": "Find the perfect look",
+      "settings": {
+        "color_scheme": "",
+        "background": "#fffbf3",
+        "padding_top": 70,
+        "padding_bottom": 70,
+        "subheading": "GET INSPIRED",
+        "title": "Find the Perfect Look",
+        "heading_style": "h2",
+        "eyebrow_gap": 4,
+        "heading_weight": "400",
+        "header_gap": 28,
+        "columns": 3,
+        "columns_mobile": "2",
+        "grid_gap": 12,
+        "grid_gap_mobile": 8,
+        "image_radius": 2,
+        "hotspot_size": 14,
+        "hotspot_color": "#ffffff",
+        "card_width_max": 344,
+        "card_width_share": 80,
+        "card_min_width": 260,
+        "card_width_mobile_px": 344,
+        "card_opacity_pct": 82,
+        "thumb_width": 66,
+        "card_margin_mobile_px": 20,
+        "gutter_mobile": 12,
+        "card_radius": 2,
+        "card_border_color": "#e6e6e6",
+        "cta_text": "SEE ALL INSPIRATION",
+        "cta_link": "shopify://collections/all",
+        "cta_background": "#4f5b3f",
+        "cta_text_color": "#ffffff",
+        "cta_gap": 32
       }
     },
     "collection_list_xqVd7g": {
@@ -453,7 +702,8 @@
           "repeater": "{{ collection.metafields.custom.collection_faqs.value }}",
           "settings": {
             "question": "{{ block.repeater.question.value }}",
-            "answer": "{{ block.repeater.answer | metafield_tag }}"
+            "answer": "{{ block.repeater.answer | metafield_tag }}",
+            "custom_class": ""
           }
         },
         "question_3WWPqk": {
@@ -510,6 +760,7 @@
         "color_scheme": "",
         "separate_section_with_border": true,
         "show_categories": false,
+        "open_first_question": true,
         "custom_class": "collection_faq",
         "faq_custom_class": "",
         "show_breadcrumb": false,
@@ -607,6 +858,7 @@
         "custom_class": "Collection_contact_us",
         "separate_section_with_border": true,
         "remove_section_spacing": true,
+        "full_width": false,
         "columns_per_row": 3,
         "stack_on_mobile": true,
         "enable_carousel": false,
@@ -618,6 +870,7 @@
         "column_gap_desktop": 28,
         "row_gap_desktop": 28,
         "media_height": "379px",
+        "media_fit": "cover",
         "subheading": "CONTACT US",
         "title": "Still Have Questions?",
         "heading_style": "h2",
@@ -640,6 +893,7 @@
     "collection-banner",
     "main",
     "image_with_text_zkLCMr",
+    "find_perfect_look_UiX8Wp",
     "collection_list_xqVd7g",
     "recently_viewed_products_9enjJe",
     "faq_cCHDjP",
