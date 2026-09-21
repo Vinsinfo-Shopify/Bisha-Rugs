@@ -528,6 +528,29 @@
             "border_color": ""
           }
         },
+        "separator_xzhrpL": {
+          "type": "separator",
+          "settings": {}
+        },
+        "contact_consultation_93CjwT": {
+          "type": "contact_consultation",
+          "settings": {
+            "heading": "Got Questions? Reach Out To Us",
+            "description": "We're here to help you pick the perfect rug for your space, talk to our experts.",
+            "phone_label": "+1 (415) 980-7774",
+            "phone_link": "tel:+14159807774",
+            "email": "love@bisharugs.com",
+            "consultation_image": "shopify://shop_images/appointment.png",
+            "consultation_heading": "Free Virtual Consultation",
+            "consultation_text": "Connect via video call with our design experts to explore materials, colors and custom options for your space.",
+            "consultation_button_label": "Book Now",
+            "consultation_button_link": ""
+          }
+        },
+        "separator_XnPFgP": {
+          "type": "separator",
+          "settings": {}
+        },
         "complementary_products": {
           "type": "complementary_products",
           "settings": {
@@ -582,6 +605,9 @@
         "accordion_RLayEy",
         "product_faq_widget",
         "image_text_card_tradeProgram",
+        "separator_xzhrpL",
+        "contact_consultation_93CjwT",
+        "separator_XnPFgP",
         "complementary_products"
       ],
       "settings": {
