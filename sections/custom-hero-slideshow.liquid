@@ -253,7 +253,18 @@
   .hero-slide__img--mobile  { display: block; }
 
   .hero-slide__image {
-    aspect-ratio: 2728 / 2480;   /* keep image undistorted */
+    aspect-ratio: var(--hero-mobile-w) / var(--hero-mobile-h);  /* 375 / 251 */
+    width: 100%;
+    height: auto;
+  }
+
+  .hero-slide__image img,
+  .hero-slide__image picture {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
   }
 
   /* Content — Figma mobile spec */
