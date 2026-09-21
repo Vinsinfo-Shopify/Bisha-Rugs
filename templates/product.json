@@ -406,16 +406,20 @@
             "content": "{{ product.description }}",
             "liquid": "",
             "page": "",
+            "tag_1_icon": "shopify://shop_images/Frame_1437257754.png",
             "tag_1_text": "Eco-Friendly",
+            "tag_2_icon": "shopify://shop_images/solar_hand-heart-linear_24a89c7b-829e-430a-9169-9457f150df6b.png",
             "tag_2_text": "Hand-Woven",
+            "tag_3_icon": "shopify://shop_images/akar-icons_check-box_2.png",
             "tag_3_text": "Custom Sizes & Colors",
-            "note_text": "",
-            "card_heading": "",
-            "card_text": "",
-            "card_button_label": "",
-            "card_button_link": "",
-            "card_button_background": "",
-            "card_button_text_color": ""
+            "note_text": "<p><strong>Please Note:</strong> Due to variations in mobile phone & computer screens, there may be slight color differences between the actual rug and the image displayed on your screen.</p>",
+            "card_image": "shopify://shop_images/d32ac65c516f1c324c1b42db7699e39b9bfbbe3c_4.png",
+            "card_heading": "Can't Find the Perfect Rug?  Let's Create It Together.",
+            "card_text": "<p>Choose the ideal size, colors, materials, and design with guidance from our rug experts. Our artisans will transform your vision to reality.</p>",
+            "card_button_label": "Customize now",
+            "card_button_link": "shopify://pages/order-custom-rugs",
+            "card_button_background": "#55583C",
+            "card_button_text_color": "#FFFFFF"
           }
         },
         "accordion_dWgcNj": {
