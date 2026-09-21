@@ -54,7 +54,7 @@
   {%- endif -%}
 
   #shopify-section-{{ section.id }} {
-    --product-grid: "product-gallery" "product-info" {% if has_content_below_gallery %}"product-content"{% endif %} / minmax(0, 1fr);
+    --product-grid: "product-mobile-summary" "product-gallery" "product-info" {% if has_content_below_gallery %}"product-content"{% endif %} / minmax(0, 1fr);
 
     {%- if allow_transparent_header -%}
       --product-gallery-zoom-button-inset-block-start: calc(var(--sticky-area-height, 0px) + 1.25rem); /* 1.25rem is the default block padding, we want the zoom button to be at least 1.25rem away from the sticky header */
@@ -84,6 +84,8 @@
   <div class="container {% unless section.settings.container_size == 'full' %}container--{{ section.settings.container_size }}{% endunless %}">
     <product-rerender id="product-info-{{ product.id }}-{{ section.id }}" observe-form="{{ product_form_id }}" allow-partial-rerender>
       <div class="product">
+        {%- render 'product-mobile-summary', product: product -%}
+
         {%- if product.media.size > 0 -%}
           {%- render 'product-gallery',
             product: product,

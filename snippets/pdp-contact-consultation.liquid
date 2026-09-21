@@ -47,20 +47,21 @@
           | image_tag: loading: 'lazy', sizes: '72px', widths: '72,144', class: 'pdp-consultation__image'
         -}}
       {%- endif -%}
+      <div class="pdp-consultation__body_content">
+        <div class="pdp-consultation__body">
+          {%- if settings.consultation_heading != blank -%}
+            <p class="pdp-consultation__heading">{{- settings.consultation_heading -}}</p>
+          {%- endif -%}
 
-      <div class="pdp-consultation__body">
-        {%- if settings.consultation_heading != blank -%}
-          <p class="pdp-consultation__heading">{{- settings.consultation_heading -}}</p>
-        {%- endif -%}
+          {%- if settings.consultation_text != blank -%}
+            <p class="pdp-consultation__text">{{- settings.consultation_text -}}</p>
+          {%- endif -%}
+        </div>
 
-        {%- if settings.consultation_text != blank -%}
-          <p class="pdp-consultation__text">{{- settings.consultation_text -}}</p>
+        {%- if settings.consultation_button_label != blank -%}
+          {%- render 'button', href: settings.consultation_button_link, content: settings.consultation_button_label, size: 'sm' -%}
         {%- endif -%}
       </div>
-
-      {%- if settings.consultation_button_label != blank -%}
-        {%- render 'button', href: settings.consultation_button_link, content: settings.consultation_button_label, size: 'sm' -%}
-      {%- endif -%}
     </div>
   {%- endif -%}
 </div>
