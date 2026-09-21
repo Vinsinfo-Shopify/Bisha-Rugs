@@ -9510,17 +9510,18 @@ ul {
   font-size: 16px;
 }
 
-/* .template-page .container .section-header h1 {
+.template-page:has(.shopify-section--main-page) .container .section-header h1 {
   font-size: 38px;
 }
 
-.template-page .container .prose h1 {
+.template-page:has(.shopify-section--main-page) .container .prose h1 {
   font-size: 32px;
 }
 
-.template-page .container .prose h2 {
+.template-page:has(.shopify-section--main-page) .container .prose h2 {
   font-size: 28px;
-} */
+}
+
 
 @media screen and (max-width: 1100px) {
   .collection_banner .image-with-text>.prose {
