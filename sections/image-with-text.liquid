@@ -18,12 +18,12 @@
     margin-inline: auto;
   }
 
-  {%- if section.settings.full_width -%}
-    #shopify-section-{{ section.id }} .image-with-text-container {
-      width: 100%;
-    }
-  {%- endif -%}
-
+{%- if section.settings.full_width -%}
+  #shopify-section-{{ section.id }} .image-with-text-container {
+    width: 100%;
+    max-width: none;
+  }
+{%- endif -%}
   .image-with-text--the-craft {
     border: 0;
   }
@@ -630,7 +630,7 @@
 
     @media screen and (min-width: 1000px) {
       #shopify-section-{{ section.id }} .collection_banner {
-        --container-max-width: 1300px;
+        --container-max-width: 1440px;
         --container-gutter: 70px;
       }
 
