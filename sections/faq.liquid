@@ -60,13 +60,14 @@
     justify-content: flex-start;
   }
   #shopify-section-{{ section.id }} .faq-image-wrapper {
-    border-radius: 9px;
     overflow: hidden;
     align-self: start;
+    max-height: {{ section.settings.image_max_height }}px;
   }
   #shopify-section-{{ section.id }} .faq-image-wrapper img {
     width: 100%;
     height: 100%;
+    max-height: {{ section.settings.image_max_height }}px;
     object-fit: cover;
     display: block;
   }
@@ -120,8 +121,8 @@
       align-items: start;
     }
     #shopify-section-{{ section.id }} .faq-layout--with-image {
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-      column-gap: 50px;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 3fr);
+      column-gap: 121px;
       row-gap: 0;
       align-items: start;
     }
@@ -520,6 +521,13 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image"
+    },
+    {
+      "type": "number",
+      "id": "image_max_height",
+      "label": "Image max height (px)",
+      "placeholder": "500",
+      "default": 500
     }
   ],
   "blocks": [

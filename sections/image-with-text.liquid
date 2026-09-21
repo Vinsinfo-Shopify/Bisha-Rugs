@@ -18,6 +18,13 @@
     margin-inline: auto;
   }
 
+  {%- if section.settings.full_width -%}
+    #shopify-section-{{ section.id }} .image-with-text-container {
+      max-width: none;
+      width: 100%;
+    }
+  {%- endif -%}
+
   .image-with-text--the-craft {
     border: 0;
   }
@@ -1447,6 +1454,13 @@
       "default": "sm"
     },
     {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "info": "Removes the container's max-width so the section spans the full browser width. Section padding still applies.",
+      "default": false
+    },
+    {
       "type": "range",
       "id": "trade_media_gap",
       "label": "Trade: gap between image and content",
@@ -1759,6 +1773,10 @@
             {
               "value": "solid",
               "label": "t:global.text.button_style_options.solid"
+            },
+            {
+              "value": "link",
+              "label": "t:global.text.link_style_options.link"
             }
           ],
           "default": "solid"
