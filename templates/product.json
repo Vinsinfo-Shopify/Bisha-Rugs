@@ -529,11 +529,11 @@
         "image_text_card_tradeProgram": {
           "type": "image_text_card",
           "settings": {
-            "image": "shopify://shop_images/Trade_Program_-_Desktop.png",
-            "image_width": 80,
+            "image": "shopify://shop_images/Trade_Program_-_Mobile.png",
+            "image_width": 132,
             "image_height": 80,
             "heading": "Special Offers for Interior Designers & Architects",
-            "text": "<p>Join Bisha's Trade Program, designed to help bring your design vision to life.</p><ul><li>Trade Discounts</li><li>Fully customizable rugs</li><li>Dedicated project support</li></ul>",
+            "text": "<ul><li>Trade Discounts</li><li>Fully customizable rugs</li><li>Dedicated project support</li></ul>",
             "show_checklist_icons": true,
             "button_label": "Learn More",
             "button_link": "shopify://pages/bisha-rugs-trade-program",
