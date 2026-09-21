@@ -3693,6 +3693,7 @@ tr[onclick]:hover {
   flex-wrap: wrap;
   display: flex;
   margin-block-start: 0 !important;
+  flex-direction: column;
 }
 
 .image-text-card--checklist .prose ul {
@@ -3818,6 +3819,50 @@ tr[onclick]:hover {
   border-radius: var(--input-border-radius);
   object-fit: cover;
   flex-shrink: 0;
+}
+
+@media screen and (max-width: 551px) {
+  .pdp-consultation__body_content {
+    align-items: flex-start !important;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 699px) {
+  .image-text-card {
+    flex-direction: column;
+  }
+
+  .image-text-card__heading {
+    margin-block-start: 10px;
+  }
+
+  .image-text-card__image {
+    width: 100% !important;
+    height: 160px !important;
+  }
+
+  .accordion-tags {
+    column-gap: .5rem;
+  }
+
+  .accordion-tag {
+    padding: .4rem .65rem;
+    font-size: 13px;
+  }
+
+  .accordion-option-card {
+    flex-direction: column;
+  }
+
+  .accordion-option-card__image {
+    width: 100%;
+    height: 160px;
+  }
+
+  .pdp-review__rating {
+    flex-wrap: wrap;
+  }
 }
 
 .pdp-review {
@@ -4025,6 +4070,12 @@ tr[onclick]:hover {
   row-gap: .25rem;
   flex: 1 1 auto;
   display: grid;
+}
+
+.pdp-consultation__body_content {
+  display: flex;
+  gap: 12px;
+  align-items: center
 }
 
 .pdp-consultation__heading {
@@ -7151,7 +7202,66 @@ shopify-account::part(signed-out-avatar) {
 .product-info {
   --product-info-gap: 1rem;
   z-index: 2;
+  min-width: 0;
   grid-area: product-info;
+}
+
+.product-mobile-summary {
+  display: none;
+}
+
+@media screen and (max-width: 999px) {
+  .shopify-section--main-product .product-info.product-mobile-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .shopify-section--main-product .product-info.product-mobile-summary .pdp-pills {
+    margin-block-start: 10px;
+    margin-block-end: 0px;
+  }
+
+  .shopify-section--main-product .product-info.product-mobile-summary .product-title {
+    font-size: 26px;
+  }
+
+  .shopify-section--main-product .product-info.product-mobile-summary .badge--custom.pdp-savings {
+    order: 1;
+  }
+
+  .shopify-section--main-product .product-info.product-mobile-summary .pdp-short-description {
+    font-size: 14px;
+  }
+
+  .shopify-section--main-product .product-info.product-mobile-summary .pdp-price-section {
+    margin-block-end: 15px;
+  }
+
+  .shopify-section--main-product .product-info__block-item[data-mobile-hero],
+  .shopify-section--main-product .product-info__block-item[data-block-type="liquid"]:has(.pdp-pills),
+  .shopify-section--main-product .product-info__block-item[data-block-type="liquid"]:has(.pdp-savings) {
+    display: none !important;
+  }
+
+  .shopify-section--main-product .product-gallery__thumbnail img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+  }
+
+  .feature-badge-list .product-info__block-item {
+    grid-column: unset;
+  }
+
+  body,
+  html {
+    overflow-x: hidden;
+  }
+
+  .accordion__content.prose .accordion-option-card_heading {
+    margin-block-start: 10px;
+  }
 }
 
 .product-info__block-list> :not(:nth-child(1 of :not(:empty))) {
@@ -7320,6 +7430,7 @@ shopify-account::part(signed-out-avatar) {
   max-width: 40rem;
   margin-inline: auto;
   display: grid;
+  margin-block-end: 20px;
 }
 
 .complementary-products__header {

@@ -1,0 +1,46 @@
+{%- doc -%}
+  Renders a mobile-only duplicate of the product's pile-type/product-type tag, title,
+  rating, short description, price and savings badge, shown above the product gallery on
+  viewports narrower than 1000px (see ".product-mobile-summary" in theme.css and the
+  "product-mobile-summary" grid area in sections/main-product.liquid).
+
+  The "real", editable blocks still render in their normal position inside product-info
+  and stay visible there on desktop; they're hidden on mobile via the "data-mobile-hero"
+  attribute added in snippets/product-info.liquid. This duplicate is presentational only
+  (it re-renders the same underlying snippets with plain product data, not the blocks
+  themselves), so it intentionally carries no block.shopify_attributes.
+
+  The price can change per variant, and <product-rerender> (see assets/theme.js) only
+  patches elements it can match by "data-block-type" + "data-block-id" against the
+  freshly-fetched section HTML. So the price here carries the same "data-block-type" as
+  its real counterpart, plus the real price block's ID with a "-mobile" suffix (kept
+  distinct so the two copies don't get cross-matched, but still reproducible between this
+  render and the one <product-rerender> fetches after a variant change). The tag, title,
+  rating and short description are all product-level (not variant-level), so they never
+  change on variant swap and don't need this treatment.
+
+  @param {object} [product]
+{%- enddoc -%}
+
+{%- if product != blank -%}
+  {%- assign price_block = section.blocks | where: 'type', 'price' | first -%}
+
+  <div class="product-info product-mobile-summary">
+    {%- render 'pdp-product-pill' -%}
+
+    <h2 class="product-title">{{- product.title | downcase -}}</h2>
+
+    {%- render 'pdp-rating' -%}
+    {%- render 'pdp-short-description' -%}
+
+    {%- if product.selected_or_first_available_variant != nil -%}
+      <div class="h-stack gap-3 pdp-price-section">
+        <div class="product-info__block-item" data-block-type="price" {% if price_block %}data-block-id="{{ price_block.id }}-mobile"{% endif %}>
+          {%- render 'price-list', product: product, variant: product.selected_or_first_available_variant, context: 'product' -%}
+        </div>
+
+        {%- render 'pdp-price-savings' -%}
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

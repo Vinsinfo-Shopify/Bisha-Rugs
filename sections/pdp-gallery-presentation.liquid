@@ -96,38 +96,10 @@
     section's own min-width query and this rule cannot reach them.
   {%- endcomment -%}
   @media screen and (max-width: 999px) {
-    {%- comment -%}
-      The stacked layout is a grid of named areas, so swapping the area order
-      moves the WHOLE information column - purchase controls included. The
-      design needs the column split: title, description, rating and price above
-      the gallery; variant picker, quantity and buy buttons below it.
-
-      display: contents on the two wrappers takes them out of the box tree
-      without removing their children, so every block becomes a direct child of
-      one flex column alongside the gallery. Order can then interleave blocks
-      from what were two different parents.
-
-      product-info.liquid gives every block a data-block-type attribute, so the
-      groups are selected by what a block IS rather than by position - add,
-      remove or reorder blocks in the editor and the split still holds.
-
-      No duplicated markup, no script moving nodes, no absolute positioning and
-      no negative margins. Desktop is untouched: this is inside a max-width
-      query and the grid is left alone above it.
-    {%- endcomment -%}
-    {%- comment -%}
-      A grid, not a flex column. In a column every child is its own line, so
-      the price and the savings pill - separate blocks - could never sit
-      together however they were styled. Two content-sized tracks let the pill
-      be placed beside the prices while every other block spans both.
-    {%- endcomment -%}
     .shopify-section--main-product .product {
-      display: grid;
-      grid-template-columns: max-content 1fr;
-      align-items: start;
+      display: block;
     }
 
-    .shopify-section--main-product .product-info__block-item,
     .shopify-section--main-product .product-gallery,
     .shopify-section--main-product .product-info__block-group {
       grid-column: 1 / -1;
@@ -491,12 +463,8 @@
       --product-gallery-carousel-grid: auto / auto-flow {{ section.settings.mobile_media_width }}%;
       --product-gallery-carousel-gap: {{ section.settings.mobile_gap }}px;
       --product-gallery-carousel-scroll-snap-type: x mandatory;
-      scroll-snap-type: x mandatory;
-      /* one item per swipe: without this a momentum flick sails past several
-         snap points */
-      scroll-snap-stop: always;
-      /* lazy-loaded media under a mandatory snap makes the browser nudge
-         scrollLeft as images arrive, revealing a sliver of the previous item */
+      scroll-snap-type: x mandatory;     
+      scroll-snap-stop: always;      
       overflow-anchor: none;
       overscroll-behavior-x: contain;
       padding-inline-start: {{ section.settings.mobile_inset }}px;
