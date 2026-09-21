@@ -12013,6 +12013,7 @@ a.marquee__item:hover .marquee__text {
   font-style: italic;
   line-height: 160%;
   font-weight: 500;
+  max-width: 1100px;
 }
 
 .featured_in .section_header_content p {
@@ -12035,7 +12036,7 @@ a.marquee__item:hover .marquee__text {
 /* Mobile: one edge-to-edge row that scrolls when the logos outgrow the screen. */
 @media screen and (max-width: 698px) {
   .featured_in .section-stack {
-    gap: 22px;
+    gap: 14px;
   }
 
   .featured_in .section_header_heading {
@@ -12043,15 +12044,10 @@ a.marquee__item:hover .marquee__text {
     margin-top: 4px;
   }
 
-  .featured_in .section_header_subheading {
-    font-size: 11px;
-    letter-spacing: 1.65px;
-  }
 
   .featured_in .prose .section_header_content {
-    margin-top: 12px;
-    font-size: 14px;
-    line-height: 150%;
+    margin-top: 16px;
+    font-size: 16px;
   }
 
   .featured_in .multi-column:not(.multi-column--carousel) {
