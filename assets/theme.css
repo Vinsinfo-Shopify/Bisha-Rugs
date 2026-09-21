@@ -6646,14 +6646,6 @@ shopify-account::part(signed-out-avatar) {
 .multi-column__item--overlap:has(.multi-column__media)>.prose> :first-child {
   margin-block-start: -.5lh !important;
 }
-
-/* Multi-column "Full width" section setting. Only the max-width cap is lifted:
-   .container keeps computing its own margins, so the section still sits on the
-   theme's standard gutter (1.2rem / 2rem / 3rem) at every breakpoint, and
-   --distance-to-bleed stays correct for the mobile carousel's edge-to-edge
-   scroll. The .shopify-section--multi-column prefix is what outranks the
-   template-level `body.template-index .container` / `body.template-product
-   .container` caps in theme.liquid. */
 .shopify-section--multi-column .multi-column-section--full-width>.container {
   --container-max-width: 100%;
 }
@@ -9251,11 +9243,6 @@ ul {
   padding-bottom: 46px;
 }
 
-/* Gutter, not margin: pinning margin-inline overrode .container's own
-   computation, so --container-max-width was ignored and these sections stayed
-   full width regardless of their Full width setting. As a gutter it is the
-   floor instead - the section sits on its container width, and widens to a
-   70px inset only when Full width lifts the cap. */
 .why_choose_bisha .container {
   --container-gutter: 70px;
 }
