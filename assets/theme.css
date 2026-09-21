@@ -1977,8 +1977,6 @@ model-media .shopify-model-viewer-ui {
   outline: 0;
 }
 
-/* Underline only: drawn as a pseudo-element so no box, edge or border can
-   render alongside it. */
 .pagination__link[aria-current="page"]:after {
   content: "";
   background: currentColor;
@@ -10169,11 +10167,6 @@ ul {
   padding-bottom: 37px;
 }
 
-/* An expanded answer carries the shared accordion's 20px bottom padding, which
-   leaves an empty band above the divider. Drop it so the answer ends on the
-   divider; the closed-state spacing lives on .accordion__toggle and is untouched.
-   The two :not()s keep the collection/PDP and Trade Program FAQs on their own
-   tuned values - both set .accordion__content padding themselves further down. */
 .shopify-section--faq .section-spacing:not(.collection_faq):not(.trade_program) .accordion__disclosure[open] .accordion__content {
   padding-block-end: 0;
 }
@@ -11764,8 +11757,6 @@ ul {
   height: auto;
 }
 
-/* Targets the shapes, not the <svg>: each icon path carries its own stroke-width
-   presentation attribute, which would otherwise win over an inherited value. */
 .product-card__quick-add-button>svg :is(path, rect, circle) {
   stroke-width: 1.2;
 }
