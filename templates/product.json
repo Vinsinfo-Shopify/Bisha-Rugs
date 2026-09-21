@@ -517,7 +517,7 @@
             "shipping_question_4": "What if my rug arrives damaged?",
             "shipping_answer_4": "<p>In the rare event that a rug arrives damaged during transit, please contact us within 48 hours of delivery with photographs of the rug and packaging. We will work quickly to resolve the issue with a replacement or appropriate solution.</p>",
             "shipping_question_5": "How can I contact Bisha Rugs?",
-            "shipping_answer_5": "<p>We are always happy to assist with questions about sizing, design, or custom orders.</p><p><strong>Email:</strong> Love@bisharugs.com</p><p><strong>Website:</strong> https://bisharugs.com</p>"
+            "shipping_answer_5": "<p>We are always happy to assist with questions about sizing, design, or custom orders.</p><p><strong>Email:</strong> <a href=\"mailto:Love@bisharugs.com\" title=\"mailto:Love@bisharugs.com\">Love@bisharugs.com</a></p><p><strong>Website:</strong> <a href=\"https://bisharugs.com\" title=\"https://bisharugs.com\">https://bisharugs.com</a></p>"
           }
         },
         "image_text_card_tradeProgram": {
@@ -530,10 +530,10 @@
             "button_label": "Learn More",
             "button_link": "shopify://pages/bisha-rugs-trade-program",
             "button_style": "solid",
-            "button_background": "#b35642",
+            "button_background": "#55583C",
             "button_text_color": "#ffffff",
-            "background": "#f3eee4",
-            "text_color": "",
+            "background": "#E9E6DB",
+            "text_color": "#000000",
             "border_color": ""
           }
         },
