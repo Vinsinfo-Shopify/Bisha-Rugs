@@ -48,10 +48,6 @@
     }
   }
 
-  /* --- Video block --- */
-  /* Renders in the same slot as <picture> and needs to fill and crop the
-     same box, on every layout variant, so it inherits sizing from picture
-     wherever the variants below set an explicit width/height on picture. */
   #shopify-section-{{ section.id }} .image-with-text > video {
     width: 100%;
     height: 100%;
@@ -954,14 +950,6 @@
 <div class="{% unless section.settings.remove_vertical_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {% if section.settings.layout_variant != blank %}image-with-text--{{ section.settings.layout_variant }}{% endif %} {{ section.settings.custom_class }} ">
   <div class="image-with-text-container section-custom-padding">
     <image-with-text class="image-with-text {% if section.settings.image_position == 'end' %}image-with-text--reverse{% endif %}">
-      {%- comment -%}
-        Media decision:
-        - Toggle ON, a video is uploaded, AND an image is also set -> play the video.
-        - Toggle ON but no video uploaded -> fall through to the image (or the
-          placeholder if there is no image either).
-        - Toggle OFF -> always the image/placeholder branch, video is ignored.
-        - No image and toggle OFF -> unchanged placeholder behaviour.
-      {%- endcomment -%}
       {%- assign show_video = false -%}
       {%- if section.settings.enable_video and section.settings.video != blank and section.settings.image != blank -%}
         {%- assign show_video = true -%}
