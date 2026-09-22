@@ -175,7 +175,7 @@
             "link": "",
             "icon": "none",
             "custom_icon": "shopify://shop_images/hugeicons_shipping-truck-01_1_6cf58179-dc43-4947-9e5d-6e1b4308c496.png",
-            "icon_width": 24,
+            "icon_width": 20,
             "background": "rgba(0,0,0,0)",
             "text_color": "#000000",
             "border_color": ""
@@ -188,7 +188,7 @@
             "link": "",
             "icon": "none",
             "custom_icon": "shopify://shop_images/solar_box-outline_1_bf3e91fc-af70-44fc-9e25-adbf79357a8a.png",
-            "icon_width": 24,
+            "icon_width": 20,
             "background": "rgba(0,0,0,0)",
             "text_color": "#000000",
             "border_color": ""
@@ -201,7 +201,7 @@
             "link": "",
             "icon": "none",
             "custom_icon": "shopify://shop_images/solar_hand-heart-linear_24a89c7b-829e-430a-9169-9457f150df6b.png",
-            "icon_width": 24,
+            "icon_width": 20,
             "background": "rgba(0,0,0,0)",
             "text_color": "#000000",
             "border_color": ""
@@ -214,7 +214,7 @@
             "link": "",
             "icon": "none",
             "custom_icon": "shopify://shop_images/hugeicons_delivery-return-01_1_f492d797-6777-41ef-812b-a864922d3ce3.png",
-            "icon_width": 24,
+            "icon_width": 20,
             "background": "rgba(0,0,0,0)",
             "text_color": "#000000",
             "border_color": ""
