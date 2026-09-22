@@ -7434,7 +7434,13 @@ shopify-account::part(signed-out-avatar) {
   font-weight: 700;
 }
 .buy-buttons .button{
-    font-weight: 700;
+  font-weight: 700;
+  font-family: Figtree;
+  font-size: 18px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  text-transform: uppercase;
 }
 .pickup-location {
   align-items: start;
