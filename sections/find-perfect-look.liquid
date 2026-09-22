@@ -768,7 +768,7 @@
                   {%- endif -%}
 
                   <div>
-                    <p class="fpl__card-title">{{- hotspot_product.title -}}</p>
+                    <p class="fpl__card-title">{{- hotspot_product.title | downcase | capitalize -}}</p>
 
                     <span class="fpl__card-rating">
                       {%- render 'product-rating', product: hotspot_product, display_mode: 'rating_with_count' -%}
