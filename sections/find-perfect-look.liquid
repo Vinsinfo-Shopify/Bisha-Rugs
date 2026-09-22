@@ -283,19 +283,9 @@
         1.95px 3.91px 10.84px rgb(0 0 0 / 0.18);
     }
 
-
-    #shopify-section-{{ section.id }} .fpl__dot:is(:hover, :focus-visible) {
-      transform: translate(-50%, -50%);
-      box-shadow:
-        0 0 0 1.26px rgb(255 255 255 / 0.6),
-        1.95px 3.91px 10.84px rgb(0 0 0 / 0.1);
-    }
-
-    /* Visible on a pale wall and on a dark rug alike: white ring, dark halo. */
     #shopify-section-{{ section.id }} .fpl__dot:focus-visible {
-      outline: 2px solid #ffffff;
+      outline: 2px solid #2b2724;
       outline-offset: 2px;
-      box-shadow: 0 0 0 4px rgb(0 0 0 / 0.5);
     }
 
     /* The dot is white at rest, so the open state reads through size and a
