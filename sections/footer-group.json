@@ -13,7 +13,6 @@
   "sections": {
     "newsletter_rifYEN": {
       "type": "newsletter",
-      "disabled": true,
       "name": "t:sections.newsletter.presets.newsletter.name",
       "settings": {
         "home_top_spacing": 50,
