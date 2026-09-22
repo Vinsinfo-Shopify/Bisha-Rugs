@@ -3620,7 +3620,9 @@ tr[onclick]:hover {
 .notice-banner p {
   margin: 0;
 }
-
+.notice-banner p strong{
+  font-weight: 600;
+}
 .checklist {
   grid-template-columns: repeat(2, 1fr);
   gap: .75rem 1rem;
