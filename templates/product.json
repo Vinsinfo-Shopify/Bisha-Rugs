@@ -915,6 +915,7 @@
         "reveal_on_scroll": true,
         "image_position": "end",
         "content_width": "lg",
+        "section_width": "container",
         "full_width": false,
         "trade_media_gap": 0,
         "trade_feature_gap_mobile": 12,
@@ -1392,9 +1393,9 @@
             "link_text": "",
             "show_rating": false,
             "rating": 5,
-            "rating_color": "#E8B923",
+            "rating_color": "#e8b923",
             "number": "",
-            "number_color": "#B76E45",
+            "number_color": "#b76e45",
             "mobile_detail_text": "",
             "review_layout": false
           }
@@ -1412,9 +1413,9 @@
             "link_text": "",
             "show_rating": false,
             "rating": 5,
-            "rating_color": "#E8B923",
+            "rating_color": "#e8b923",
             "number": "",
-            "number_color": "#B76E45",
+            "number_color": "#b76e45",
             "mobile_detail_text": "",
             "review_layout": false
           }
@@ -1432,9 +1433,9 @@
             "link_text": "",
             "show_rating": false,
             "rating": 5,
-            "rating_color": "#E8B923",
+            "rating_color": "#e8b923",
             "number": "",
-            "number_color": "#B76E45",
+            "number_color": "#b76e45",
             "mobile_detail_text": "",
             "review_layout": false
           }
@@ -1452,9 +1453,9 @@
             "link_text": "",
             "show_rating": false,
             "rating": 5,
-            "rating_color": "#E8B923",
+            "rating_color": "#e8b923",
             "number": "",
-            "number_color": "#B76E45",
+            "number_color": "#b76e45",
             "mobile_detail_text": "",
             "review_layout": false
           }
@@ -1559,6 +1560,7 @@
         "reveal_on_scroll": true,
         "image_position": "start",
         "content_width": "sm",
+        "section_width": "page",
         "full_width": true,
         "trade_media_gap": 0,
         "trade_feature_gap_mobile": 12,
