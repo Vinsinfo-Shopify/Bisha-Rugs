@@ -186,6 +186,13 @@
       object-fit: cover;
       display: block;
     }
+        /* The poster image is removed by video-media when its own play button
+       fires. That button is hidden here, so the class the script sets is what
+       clears it instead. */
+    #shopify-section-{{ section.id }} .ig__item.is-playing video-media > img,
+    #shopify-section-{{ section.id }} .ig__item.is-playing video-media::part(poster) {
+      display: none;
+    }
             /* Shown whenever a video tile is not playing — before first play and after
        any pause — so the control never changes size or position. */
     #shopify-section-{{ section.id }} .ig__item:has(video):not(.is-playing)::after {
