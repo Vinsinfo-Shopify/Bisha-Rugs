@@ -90,10 +90,6 @@ button,
   background-image: none;
 }
 
-button:hover {
-  opacity: .85;
-}
-
 button,
 label,
 summary,
