@@ -390,6 +390,15 @@
         inset-inline-end: {{ section.settings.arrow_inset_mobile }}px;
         inset-inline-start: auto;
       }
+            #shopify-section-{{ section.id }} .ig__item:has(video):not(.is-playing)::after {
+        width: 39.5px;
+        height: 39.5px;
+      }
+
+      #shopify-section-{{ section.id }} .ig__item:has(video):not(.is-playing)::before {
+        border-width: 11.6px 0 11.6px 22px;
+        transform: translate(calc(-50% + 2px), -50%);
+      }
     }
   </style>
 
