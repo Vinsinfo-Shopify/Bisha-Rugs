@@ -297,7 +297,10 @@
         {{ section.settings.card_width_max }}px,
         calc(100vw - 32px)
       );
-      transform: translate(calc(-50% + var(--fpl-shift, 0px)), calc(-100% - 16px));
+      transform: translate(
+        calc(-50% + var(--fpl-shift, 0px)),
+        calc(-100% - 17px - (var(--fpl-dot-inner) + 16px) / 2)
+      );
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
       align-items: center;
