@@ -186,6 +186,38 @@
       object-fit: cover;
       display: block;
     }
+        /* Paused mid-playback: the theme's play button is gone by then, so the
+       tile would sit frozen with nothing to indicate it can be resumed.
+       pointer-events: none keeps the click on the tile itself. */
+    #shopify-section-{{ section.id }} .ig__item.is-paused::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 56px;
+      height: 56px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: {{ section.settings.play_button_background }};
+      box-shadow: 0 2px 10px rgb(0 0 0 / 0.25);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* The triangle, drawn with borders so no asset is needed. The 3px nudge
+       optically centres it: a triangle's visual centre sits left of its box. */
+    #shopify-section-{{ section.id }} .ig__item.is-paused::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(calc(-50% + 3px), -50%);
+      border-style: solid;
+      border-width: 10px 0 10px 16px;
+      border-color: transparent transparent transparent #2b2724;
+      pointer-events: none;
+      z-index: 4;
+    }
 
     #shopify-section-{{ section.id }} .ig__item .media,
     #shopify-section-{{ section.id }} .ig__item deferred-media {
