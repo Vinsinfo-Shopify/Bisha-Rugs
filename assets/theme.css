@@ -7282,7 +7282,11 @@ shopify-account::part(signed-out-avatar) {
     margin-block-start: 10px;
   }
 }
-
+.shopify-section--main-product .product-info__block-item[data-block-type="button"] .button:hover {
+  background-color: unset !important;
+  color: unset !important;
+  border-color: unset !important;
+}
 .product-info__block-list> :not(:nth-child(1 of :not(:empty))) {
   margin-block-start: var(--product-info-gap);
 }
