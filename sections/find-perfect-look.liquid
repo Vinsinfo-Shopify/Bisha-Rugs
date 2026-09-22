@@ -186,11 +186,6 @@
       display: none;
     }
 
-    #shopify-section-{{ section.id }} .fpl__item {
-      position: relative;
-      min-width: 0;
-    }
-
     /* The open card must sit above every later item in the grid. */
     #shopify-section-{{ section.id }} .fpl__item.is-open {
       z-index: 3;
@@ -216,6 +211,8 @@
       --fpl-dot-inner: {{ section.settings.hotspot_size }}px;
       position: relative;
       min-width: 0;
+      display: flex;
+      flex-direction: column;
     }
 
         /* ---------- Hotspot ----------
