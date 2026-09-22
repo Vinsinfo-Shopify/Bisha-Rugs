@@ -7336,6 +7336,7 @@ shopify-account::part(signed-out-avatar) {
 
 .product-info__block-item[data-block-type="text"] .prose {
   font-size: 14px;
+  font-weight: 500;
 }
 
 @media screen and (max-width: 699px) {
