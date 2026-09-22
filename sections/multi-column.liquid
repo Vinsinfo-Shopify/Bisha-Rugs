@@ -1,5 +1,22 @@
 {%- if section.blocks.size > 0 -%}
 <style>
+  {% if collection.handle == 'oushak-rugs' %}
+    .explore_our_range {
+      display: block;
+    }
+
+    .perfect_look {
+      display: none;
+    }
+{% elsif collection.handle == 'all' %}
+    .explore_our_range {
+      display: none;
+    }
+
+    .perfect_look {
+      display: block;
+    }
+{% endif %}
   #shopify-section-{{ section.id }} {
     --multi-column-gap: {{ section.settings.column_gap_mobile }}px;
     --multi-column-row-gap: {{ section.settings.row_gap_mobile }}px;
