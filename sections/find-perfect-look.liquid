@@ -213,31 +213,48 @@
       display: block;
     }
 
-    /* ---------- Hotspot ---------- */
+        /* ---------- Hotspot ----------
+       Figma: 30px disc, 8px ring, 14px white dot. The outer size is derived
+       from the inner one (+16px = 8px ring each side) so the schema setting
+       still controls the whole object. */
     #shopify-section-{{ section.id }} .fpl__dot {
+      --fpl-dot-inner: {{ section.settings.hotspot_size }}px;
       position: absolute;
       left: var(--fpl-x);
       top: var(--fpl-y);
-      width: {{ section.settings.hotspot_size }}px;
-      height: {{ section.settings.hotspot_size }}px;
+      width: calc(var(--fpl-dot-inner) + 16px);
+      height: calc(var(--fpl-dot-inner) + 16px);
       padding: 0;
       margin: 0;
+      box-sizing: border-box;
       transform: translate(-50%, -50%);
       border-radius: var(--rounded-full);
-      background: {{ section.settings.hotspot_color }};
-      /* No outer ring. The only dark element is a soft drop shadow, which is
-         what keeps a white dot readable on a pale wall or a cream rug without
-         turning into a glow. */
+      background: rgb(32 32 32 / 0.47);
       border: 0;
-      box-shadow: 0 1px 5px rgb(0 0 0 / 0.45);
+      /* Outer-aligned 1.26px ring, then the Figma drop shadow. */
+      box-shadow:
+        0 0 0 1.26px rgb(255 255 255 / 0.33),
+        1.95px 3.91px 10.84px rgb(0 0 0 / 0.1);
       cursor: pointer;
       transition: transform 0.2s ease-in-out;
       z-index: 2;
     }
 
-    /* The dot stays visually small to match the design, but the pressable area
-       is 44px so it is not a fiddly target on a phone. */
+    /* The white dot at the centre. */
     #shopify-section-{{ section.id }} .fpl__dot::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: var(--fpl-dot-inner);
+      height: var(--fpl-dot-inner);
+      transform: translate(-50%, -50%);
+      border-radius: var(--rounded-full);
+      background: {{ section.settings.hotspot_color }};
+    }
+
+    /* Pressable area only. The disc is 30px; 44px is the touch minimum. */
+    #shopify-section-{{ section.id }} .fpl__dot::after {
       content: '';
       position: absolute;
       top: 50%;
@@ -247,28 +264,25 @@
       transform: translate(-50%, -50%);
     }
 
-    /* A single expanding ring. Subtle enough to read as a cue rather than an
-       animation, and it keeps the dot legible on both light and dark images. */
-    #shopify-section-{{ section.id }} .fpl__dot::after {
-      content: '';
-      position: absolute;
-      inset: -5px;
-      border-radius: var(--rounded-full);
-      border: 1px solid {{ section.settings.hotspot_color }};
-      animation: fpl-pulse-{{ section.id }} 2.4s ease-out infinite;
-      pointer-events: none;
+    #shopify-section-{{ section.id }} .fpl__dot:is(:hover, :focus-visible) {
+      transform: translate(-50%, -50%) scale(1.1);
     }
 
-    @keyframes fpl-pulse-{{ section.id }} {
-      0% { transform: scale(0.85); opacity: 0.9; }
-      70% { transform: scale(1.7); opacity: 0; }
-      100% { transform: scale(1.7); opacity: 0; }
+    /* The border is already white, so the focus ring needs a dark outer edge
+       to stay visible against a pale image. */
+    #shopify-section-{{ section.id }} .fpl__dot:focus-visible {
+      outline: 2px solid #2b2724;
+      outline-offset: 2px;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      #shopify-section-{{ section.id }} .fpl__dot::after {
-        animation: none;
-      }
+    #shopify-section-{{ section.id }} .fpl__dot[aria-expanded='true'] {
+      transform: translate(-50%, -50%) scale(1.12);
+      background: rgb(32 32 32 / 0.62);
+      box-shadow:
+        0 0 0 1.26px rgb(255 255 255 / 0.5),
+        1.95px 3.91px 10.84px rgb(0 0 0 / 0.18);
+    }
+
     }
 
     #shopify-section-{{ section.id }} .fpl__dot:is(:hover, :focus-visible) {
