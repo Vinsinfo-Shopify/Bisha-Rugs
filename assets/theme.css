@@ -10158,6 +10158,7 @@ ul {
 .breadcrumbs .breadcrumb-current {
   font-weight: 500;
   color: rgb(var(--text-color) / .55);
+  text-transform: capitalize;
 }
 
 .breadcrumbs .breadcrumb-separator {
