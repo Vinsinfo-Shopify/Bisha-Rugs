@@ -204,15 +204,21 @@
       z-index: 3;
     }
 
+        /* An SVG, not a border triangle: border-radius cannot round the tip of a
+       border mitre. stroke-linejoin: round with a stroke in the fill colour
+       rounds all three corners. Stroke width is 2x the 1.39px Figma radius. */
     #shopify-section-{{ section.id }} .ig__item:has(video):not(.is-playing)::before {
       content: '';
       position: absolute;
       top: 50%;
       left: 50%;
+      width: 24px;
+      height: 27px;
       transform: translate(calc(-50% + 3px), -50%);
-      border-style: solid;
-      border-width: 13.4px 0 13.4px 24px;
-      border-color: transparent transparent transparent #FFF9FC;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 27'%3E%3Cpath d='M2 2.6 L21.4 13.5 L2 24.4 Z' fill='%23FFF9FC' stroke='%23FFF9FC' stroke-width='2.8' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
       pointer-events: none;
       z-index: 4;
     }
