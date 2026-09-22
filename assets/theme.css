@@ -11392,6 +11392,9 @@ ul {
 .application_process .multi-column-card_subheading {
   flex-basis: 100%;
 }
+.fpl__header .prose .section_header_content{
+  margin: 0px;
+}
 
 @media screen and (max-width: 998px) {
   .application_process .multi-column-card_heading-group {
