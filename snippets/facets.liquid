@@ -9,11 +9,23 @@
   @param {string} [context] - an optional context to generate unique ID if facets are outputted several times
   @param {string} [allowed_filters] - an optional comma separated allow-list of filters to render, matched on either the filter label or its param_name, case insensitive. When omitted (the default) every filter from the resource is rendered, so existing callers are unaffected.
   @param {boolean} [hide_facet_checkbox] - whether list filter values hide their checkbox and show a dot instead. Defaults to true, which is the theme's existing appearance, so callers that do not pass it are unaffected. Pass false to render a real checkbox.
+  @param {string} [all_option_filters] - an optional comma separated list of filters (matched on label or param_name, case insensitive) that get a leading "All" tile clearing every value of that group. Only applies to image/swatch grids.
+  @param {string} [all_option_label] - the label of that tile. Defaults to "All".
+  @param {object} [all_option_image] - an optional image for that tile. A gradient is drawn when it is empty.
   @param {object} [section]
 {%- enddoc -%}
 
 {%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
 {%- capture id_prefix -%}facets-{{ context }}{%- endcapture -%}
+
+{%- liquid
+  assign all_option_count = results.all_products_count | default: results.results_count
+  assign all_option_list = ''
+
+  if all_option_filters != blank
+    assign all_option_list = all_option_filters | downcase | replace: ', ', ',' | strip | split: ','
+  endif
+-%}
 
 <facets-form
   {% if update_on_change %}
@@ -151,9 +163,53 @@
                     else
                       assign wrapper_class_list = 'v-stack gap-2.5'
                     endif
+
+                    assign show_all_option = false
+
+                    if is_image_grid and all_option_list != ''
+                      assign this_filter_label = filter.label | downcase | strip
+                      assign this_filter_param = filter.param_name | downcase | strip
+
+                      for wanted_all in all_option_list
+                        assign wanted_all_key = wanted_all | strip
+
+                        if this_filter_label == wanted_all_key or this_filter_param == wanted_all_key
+                          assign show_all_option = true
+                          break
+                        endif
+                      endfor
+                    endif
                   -%}
 
                   <div class="{{ wrapper_class_list }}">
+                    {%- if show_all_option -%}
+                      {%- capture all_option_id -%}{{ id_prefix }}-all-{{ filter.param_name | handle }}{%- endcapture -%}
+
+                      <input
+                        class="sr-only"
+                        type="checkbox"
+                        id="{{ all_option_id }}"
+                        data-facet-all
+                        {% if filter.active_values.size == 0 %}checked{% endif %}
+                      >
+                      <label class="option-value" for="{{ all_option_id }}">
+                        {%- if all_option_image != blank -%}
+                          {{-
+                            all_option_image
+                            | image_url: width: 180
+                            | image_tag: loading: 'lazy', sizes: '(max-width: 749px) 20vw, 90px', widths: '67,134,180', class: 'option-value__swatch'
+                          -}}
+                        {%- else -%}
+                          <span class="option-value__swatch option-value__swatch--all"></span>
+                        {%- endif -%}
+
+                        <span>
+                          {{- all_option_label | default: 'All' -}}
+                          {%- if all_option_count != blank %}&nbsp;({{ all_option_count }}){% endif -%}
+                        </span>
+                      </label>
+                    {%- endif -%}
+
                     {% liquid
                       for filter_value in filter.values
                         assign value_id_prefix = id_prefix | append: '-' | append: forloop.index

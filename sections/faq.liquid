@@ -227,6 +227,7 @@
                   <div class="faq__content">
                     {%- if dynamic_faqs != blank -%}
 
+                      {%- assign first_question_rendered = false -%}
                       {%- for faq in dynamic_faqs -%}
                         {%- if faq.question.value != blank and faq.answer.value != blank -%}
                         {%- capture answer -%}
@@ -235,12 +236,24 @@
                           </div>
                         {%- endcapture -%}
 
-                          {%- render 'accordion', title: faq.question.value, content: answer, show_title_as_text: true -%}
+                          {%- assign should_open_faq = false -%}
+                          {%- if section.settings.open_first_question and first_question_rendered == false -%}
+                            {%- assign should_open_faq = true -%}
+                            {%- assign first_question_rendered = true -%}
+                          {%- endif -%}
+
+                          {%- render 'accordion',
+                            title: faq.question.value,
+                            content: answer,
+                            show_title_as_text: true,
+                            open: should_open_faq
+                          -%}
                         {%- endif -%}
                       {%- endfor -%}
 
                     {%- else -%}
 
+                      {%- assign first_question_rendered = false -%}
                       {%- for block in section.blocks -%}
                         {%- case block.type -%}
                           {%- when 'category' -%}
@@ -272,7 +285,20 @@
                                 </div>
                               {%- endcapture -%}
 
-                              {%- render 'accordion', title: block.settings.question, content: answer, show_title_as_text: true, block: block, class: block.settings.custom_class -%}
+                              {%- assign should_open_faq = false -%}
+                              {%- if section.settings.open_first_question and first_question_rendered == false -%}
+                                {%- assign should_open_faq = true -%}
+                                {%- assign first_question_rendered = true -%}
+                              {%- endif -%}
+
+                              {%- render 'accordion',
+                                title: block.settings.question,
+                                content: answer,
+                                show_title_as_text: true,
+                                block: block,
+                                class: block.settings.custom_class,
+                                open: should_open_faq
+                              -%}
                             {%- endif -%}
                         {%- endcase -%}
                       {%- endfor -%}
@@ -303,7 +329,7 @@
           })();
         </script>
 
-  {%- comment -%}We also output the content with JSON microdata for SEO{%- endcomment -%}
+        {%- comment -%}We also output the content with JSON microdata for SEO{%- endcomment -%}
 
 <script type="application/ld+json">
   {%- if dynamic_faqs != blank -%}
@@ -345,6 +371,9 @@
     }
   {%- endif -%}
 </script>
+      </div>
+    </div>
+  </div>
 {%- endif -%}
 
 {% schema %}
@@ -372,6 +401,13 @@
       "type": "checkbox",
       "id": "show_categories",
       "label": "t:sections.faq.show_categories"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first_question",
+      "label": "Open first question by default",
+      "info": "Expands the first FAQ item when the page loads.",
+      "default": false
     },
     {
       "type": "header",

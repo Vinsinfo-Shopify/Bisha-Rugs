@@ -3,6 +3,7 @@
   decide to show or not the filter group name
 
   @param {object} results - : either collection or search drop to extract the active facets from
+  @param {boolean} [scroll_indicator] - if set to true, the trailing controls are grouped in a pinned element that also carries an arrow button scrolling the row. Omitted by default, so existing callers keep the previous markup.
   @param {object} [section]
 {%- enddoc -%}
 
@@ -49,6 +50,9 @@
     {%- endif -%}
   {%- endfor -%}
 
+{%- endcapture -%}
+
+{%- capture clear_all -%}
   {%- if active_values_count > 1 -%}
     {%- if request.page_type == 'collection' -%}
       {%- assign default_url = collection.url -%}
@@ -67,5 +71,21 @@
 {%- if active_values_count > 0 -%}
   <div class="active-facets {% if section.settings.filter_layout == 'drawer' %}justify-center{% endif %}">
     {{- active_facets -}}
+    {%- if scroll_indicator -%}
+      <facets-scroll-next class="active-facets__end">
+        <button
+          type="button"
+          class="active-facets__next"
+          data-facets-next
+          aria-label="{{ 'general.accessibility.next' | t }}"
+        >
+          {%- render 'icon' with 'chevron-right', width: 8, direction_aware: true -%}
+        </button>
+
+        {{- clear_all -}}
+      </facets-scroll-next>
+    {%- else -%}
+      {{- clear_all -}}
+    {%- endif -%}
   </div>
 {%- endif -%}
