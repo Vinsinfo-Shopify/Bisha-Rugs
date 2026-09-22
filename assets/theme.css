@@ -3427,7 +3427,7 @@ tr[onclick]:hover {
 }
 
 .product-info__block-item[data-block-type="button"] .text-with-icon {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .product-info__block-item[data-block-type="feature-with-icon"] .feature-badge {
