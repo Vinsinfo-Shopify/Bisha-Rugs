@@ -423,7 +423,37 @@
               {%- else -%}
                 {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder' -}}
 
-                  <script>
+          
+              {%- endif -%}
+
+              {%- comment -%}
+                The link sits above the media so the whole tile is tappable, but
+                it is a separate element: it never wraps the video, which would
+                swallow the play button's own click.
+              {%- endcomment -%}
+              {%- if block.settings.link != blank -%}
+                <a
+                  class="ig__link"
+                  href="{{ block.settings.link }}"
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="{{ block.settings.alt | default: section.settings.handle | escape }}"
+                ></a>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </scroll-carousel>
+
+        <carousel-next-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
+          <button type="button" class="prev-next-button prev-next-button--next circle-button circle-button--lg hover:animate-icon-inline">
+            <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+            {%- render 'icon' with 'arrow-right', direction_aware: true -%}
+          </button>
+        </carousel-next-button>
+      </div>
+    </div>
+  </div>
+          <script>
     (function () {
       var root = document.getElementById('shopify-section-{{ section.id }}');
       if (!root) return;
@@ -454,36 +484,8 @@
       );
     })();
   </script>
-              {%- endif -%}
-
-              {%- comment -%}
-                The link sits above the media so the whole tile is tappable, but
-                it is a separate element: it never wraps the video, which would
-                swallow the play button's own click.
-              {%- endcomment -%}
-              {%- if block.settings.link != blank -%}
-                <a
-                  class="ig__link"
-                  href="{{ block.settings.link }}"
-                  target="_blank"
-                  rel="noopener"
-                  aria-label="{{ block.settings.alt | default: section.settings.handle | escape }}"
-                ></a>
-              {%- endif -%}
-            </div>
-          {%- endfor -%}
-        </scroll-carousel>
-
-        <carousel-next-button class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
-          <button type="button" class="prev-next-button prev-next-button--next circle-button circle-button--lg hover:animate-icon-inline">
-            <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
-            {%- render 'icon' with 'arrow-right', direction_aware: true -%}
-          </button>
-        </carousel-next-button>
-      </div>
-    </div>
-  </div>
 {%- endif -%}
+
 
 {% schema %}
 {
