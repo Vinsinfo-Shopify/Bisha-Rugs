@@ -285,7 +285,10 @@
 
 
     #shopify-section-{{ section.id }} .fpl__dot:is(:hover, :focus-visible) {
-      transform: translate(-50%, -50%) scale(1.25);
+      transform: translate(-50%, -50%);
+      box-shadow:
+        0 0 0 1.26px rgb(255 255 255 / 0.6),
+        1.95px 3.91px 10.84px rgb(0 0 0 / 0.1);
     }
 
     /* Visible on a pale wall and on a dark rug alike: white ring, dark halo. */
