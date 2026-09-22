@@ -47,6 +47,14 @@
       margin-inline: auto;
     }
   }
+
+  #shopify-section-{{ section.id }} .image-with-text > video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
   /* --- Character-limit paragraph truncation --- */
   #shopify-section-{{ section.id }} .char-limit-content__full[hidden],
   #shopify-section-{{ section.id }} .char-limit-content__short[hidden] {
@@ -115,6 +123,7 @@
  
   @media screen and (max-width: 749px) {
     #shopify-section-{{ section.id }} .image-with-text > picture,
+    #shopify-section-{{ section.id }} .image-with-text > video,
     #shopify-section-{{ section.id }} .image-with-text > .placeholder {
       order: {% if section.settings.media_position_mobile == 'after_text' %}2{% else %}0{% endif %};
     }
@@ -173,17 +182,20 @@
   {%- if section.settings.layout_variant == 'the-craft' -%}
     @media screen and (min-width: 1000px) {
        #shopify-section-{{ section.id }} .image-with-text > picture,
-    #shopify-section-{{ section.id }} .image-with-text > picture img {
+    #shopify-section-{{ section.id }} .image-with-text > picture img,
+    #shopify-section-{{ section.id }} .image-with-text > video {
       height: 380px;
       width: 640px;
       max-width: 640px;
     }
 
-    #shopify-section-{{ section.id }} .image-with-text > picture {
+    #shopify-section-{{ section.id }} .image-with-text > picture,
+    #shopify-section-{{ section.id }} .image-with-text > video {
       margin-inline-start: auto;
     }
 
-    #shopify-section-{{ section.id }} .image-with-text > picture img {
+    #shopify-section-{{ section.id }} .image-with-text > picture img,
+    #shopify-section-{{ section.id }} .image-with-text > video {
       object-fit: cover;
       display: block;
     }
@@ -427,13 +439,15 @@
       min-height: 357px;
     }
 
-    #shopify-section-{{ section.id }} .image-with-text > picture {
+    #shopify-section-{{ section.id }} .image-with-text > picture,
+    #shopify-section-{{ section.id }} .image-with-text > video {
       margin-inline: 0;
       width: 100%;
       height: 357px;
     }
 
-    #shopify-section-{{ section.id }} .image-with-text > picture img {
+    #shopify-section-{{ section.id }} .image-with-text > picture img,
+    #shopify-section-{{ section.id }} .image-with-text > video {
       width: 100%;
       height: 357px;
       aspect-ratio: auto;
@@ -511,12 +525,14 @@
       flex-direction: column;
     }
 
-    #shopify-section-{{ section.id }} .image-with-text > picture {
+    #shopify-section-{{ section.id }} .image-with-text > picture,
+    #shopify-section-{{ section.id }} .image-with-text > video {
       margin-inline: calc(-1 * var(--section-padding-left)) calc(-1 * var(--section-padding-right));
       width: calc(100% + var(--section-padding-left) + var(--section-padding-right));
     }
 
-    #shopify-section-{{ section.id }} .image-with-text > picture img {
+    #shopify-section-{{ section.id }} .image-with-text > picture img,
+    #shopify-section-{{ section.id }} .image-with-text > video {
       width: 100%;
       aspect-ratio: 375 / 253;
       object-fit: cover;
@@ -592,7 +608,8 @@
     #shopify-section-{{ section.id }} .prose .button {
       margin-bottom: 24px;
     }
-    #shopify-section-{{ section.id }} .image-with-text > picture {
+    #shopify-section-{{ section.id }} .image-with-text > picture,
+    #shopify-section-{{ section.id }} .image-with-text > video {
   margin-inline: calc(-1 * var(--section-padding-left)) calc(-1 * var(--section-padding-right));
   width: calc(100% + var(--section-padding-left) + var(--section-padding-right));
   max-width: 100vw;
@@ -684,14 +701,16 @@
        562 x 223. The ratio is set rather than a height so the box cannot be
        distorted; cover crops to fill it. theme.css already caps the width at
        562px, which is left in place. */
-    #shopify-section-{{ section.id }} .collection_banner .image-with-text picture {
+    #shopify-section-{{ section.id }} .collection_banner .image-with-text picture,
+    #shopify-section-{{ section.id }} .collection_banner .image-with-text video {
       max-width: 562px;
       aspect-ratio: 562 / 223;
       max-height: none;
       display: block;
     }
 
-    #shopify-section-{{ section.id }} .collection_banner .image-with-text picture :is(img, svg) {
+    #shopify-section-{{ section.id }} .collection_banner .image-with-text picture :is(img, svg),
+    #shopify-section-{{ section.id }} .collection_banner .image-with-text video {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -854,7 +873,8 @@
          The instance already sets its mobile side padding to 0, so the image
          only needs its ratio and full width here. The text keeps the container
          padding, which is why the padding is not removed from the section. */
-      #shopify-section-{{ section.id }} .collection_banner .image-with-text picture {
+      #shopify-section-{{ section.id }} .collection_banner .image-with-text picture,
+      #shopify-section-{{ section.id }} .collection_banner .image-with-text video {
         max-width: none;
         width: 100%;
         aspect-ratio: 375 / 155;
@@ -930,7 +950,23 @@
 <div class="{% unless section.settings.remove_vertical_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {% if section.settings.layout_variant != blank %}image-with-text--{{ section.settings.layout_variant }}{% endif %} {{ section.settings.custom_class }} ">
   <div class="image-with-text-container section-custom-padding">
     <image-with-text class="image-with-text {% if section.settings.image_position == 'end' %}image-with-text--reverse{% endif %}">
-      {%- if section.settings.image != blank -%}
+      {%- assign show_video = false -%}
+      {%- if section.settings.enable_video and section.settings.video != blank and section.settings.image != blank -%}
+        {%- assign show_video = true -%}
+      {%- endif -%}
+
+      {%- if show_video -%}
+        {{
+          section.settings.video
+          | video_tag:
+            image_size: '1600x',
+            autoplay: true,
+            loop: true,
+            muted: true,
+            controls: false,
+            playsinline: true
+        }}
+      {%- elsif section.settings.image != blank -%}
         <picture>
           {%- assign sizes = '(max-width: 749px) 100vw, 50vw' -%}
 
@@ -1412,6 +1448,23 @@
       "id": "mobile_image",
       "label": "t:global.image.mobile_image",
       "info": "t:sections.image_with_text.mobile_image_size_recommendation"
+    },
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Optional. Only used when \"Show video instead of image\" is on and an image above is also set."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video",
+      "label": "Show video instead of image",
+      "info": "When on and both a video and an image are set, the video plays in place of the image. If no video is uploaded, or this is off, the image (or placeholder) is used instead.",
+      "default": false
     },
     {
       "type": "select",

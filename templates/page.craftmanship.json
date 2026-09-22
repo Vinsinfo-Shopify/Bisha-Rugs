@@ -85,7 +85,7 @@
             "icon": "shopify://shop_images/cff864219a3a7f086c67a50e5e7dd58c66657ffe.png",
             "text": "Hand Crafted in India",
             "icon_size": 20,
-            "text_size": 18
+            "text_size": 16
           }
         },
         "icon_with_text_xk6GN9": {
@@ -94,7 +94,7 @@
             "icon": "shopify://shop_images/Group.png",
             "text": "Generational Master Artisans",
             "icon_size": 20,
-            "text_size": 18
+            "text_size": 16
           }
         }
       },
@@ -112,17 +112,19 @@
         "separate_section_with_border": false,
         "padding_top": 60,
         "padding_bottom": 60,
-        "padding_left": 70,
-        "padding_right": 70,
+        "padding_left": 0,
+        "padding_right": 0,
         "padding_top_mobile": 20,
         "padding_bottom_mobile": 50,
         "padding_left_mobile": 12,
         "padding_right_mobile": 12,
         "image": "shopify://shop_images/a040de119455a72a631b73b39e834e632f5ddeef_1.png",
+        "enable_video": true,
         "media_position_mobile": "after_text",
         "reveal_on_scroll": true,
         "image_position": "end",
         "content_width": "lg",
+        "section_width": "container",
         "trade_media_gap": 0,
         "trade_feature_gap_mobile": 12,
         "trade_para_top": 16,
@@ -458,6 +460,7 @@
         "custom_class": "why_choose_bisha",
         "separate_section_with_border": false,
         "remove_section_spacing": false,
+        "full_width": false,
         "columns_per_row": 3,
         "stack_on_mobile": false,
         "enable_carousel": false,
@@ -469,6 +472,7 @@
         "column_gap_desktop": 16,
         "row_gap_desktop": 44,
         "media_height": "445px",
+        "media_fit": "cover",
         "subheading": "The Making",
         "title": "From Wool to Woven Masterpiece.",
         "heading_style": "h2",
@@ -539,10 +543,12 @@
         "padding_left_mobile": 12,
         "padding_right_mobile": 12,
         "image": "shopify://shop_images/e613975cecffa062b79ca0e7e1e4ed5ab2fdc53e_2.png",
+        "enable_video": false,
         "media_position_mobile": "before_text",
         "reveal_on_scroll": true,
         "image_position": "start",
         "content_width": "lg",
+        "section_width": "page",
         "trade_media_gap": 0,
         "trade_feature_gap_mobile": 12,
         "trade_para_top": 16,
