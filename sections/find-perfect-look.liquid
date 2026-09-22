@@ -621,7 +621,7 @@
     }
   </style>
 
-  <div class="fpl color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div class="fpl color-scheme color-scheme--{{ section.settings.color_scheme.id }}{% if section.settings.custom_class != blank %} {{ section.settings.custom_class }}{% endif %}">
     <div class="fpl__inner container container--xl">
       <div class="fpl__header">
         {%- render 'section-header',
@@ -1012,6 +1012,12 @@
       "id": "color_scheme",
       "label": "t:global.colors.scheme",
       "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class",
+      "info": "Added to the section's outer wrapper. Useful for section-specific overrides or JS hooks."
     },
     {
       "type": "color",

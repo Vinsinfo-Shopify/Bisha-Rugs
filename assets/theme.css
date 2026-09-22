@@ -7282,10 +7282,21 @@ shopify-account::part(signed-out-avatar) {
     margin-block-start: 10px;
   }
 }
-.shopify-section--main-product .product-info__block-item[data-block-type="button"] .button:hover {
-  background-color: unset !important;
-  color: unset !important;
-  border-color: unset !important;
+
+.shopify-section--main-product .product-info__block-item[data-block-type="button"] .button {
+  background-color: rgb(var(--button-background));
+  --initial-gradient: linear-gradient(transparent, transparent);
+  --hover-gradient: linear-gradient(rgb(var(--button-outline-color)), rgb(var(--button-outline-color)));
+  --initial-background-position: right center;
+  --hover-background-position: right center;
+}
+
+@media screen and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .shopify-section--main-product
+    .product-info__block-item[data-block-type="button"]
+    .button:not([disabled]):hover {
+    border-color: rgb(var(--button-outline-color));
+  }
 }
 .product-info__block-list> :not(:nth-child(1 of :not(:empty))) {
   margin-block-start: var(--product-info-gap);
