@@ -186,35 +186,33 @@
       object-fit: cover;
       display: block;
     }
-        /* Paused mid-playback: the theme's play button is gone by then, so the
-       tile would sit frozen with nothing to indicate it can be resumed.
-       pointer-events: none keeps the click on the tile itself. */
-    #shopify-section-{{ section.id }} .ig__item.is-paused::after {
+            /* Shown whenever a video tile is not playing — before first play and after
+       any pause — so the control never changes size or position. */
+    #shopify-section-{{ section.id }} .ig__item:has(video):not(.is-playing)::after {
       content: '';
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 56px;
-      height: 56px;
+      width: 59.5px;
+      height: 59.5px;
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      background: {{ section.settings.play_button_background }};
-      box-shadow: 0 2px 10px rgb(0 0 0 / 0.25);
+      background: rgb(255 255 255 / 0.26);
+      backdrop-filter: blur(1.86px);
+      -webkit-backdrop-filter: blur(1.86px);
       pointer-events: none;
       z-index: 3;
     }
 
-    /* The triangle, drawn with borders so no asset is needed. The 3px nudge
-       optically centres it: a triangle's visual centre sits left of its box. */
-    #shopify-section-{{ section.id }} .ig__item.is-paused::before {
+    #shopify-section-{{ section.id }} .ig__item:has(video):not(.is-playing)::before {
       content: '';
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(calc(-50% + 3px), -50%);
       border-style: solid;
-      border-width: 10px 0 10px 16px;
-      border-color: transparent transparent transparent #2b2724;
+      border-width: 17.4px 0 17.4px 33px;
+      border-color: transparent transparent transparent #FFF9FC;
       pointer-events: none;
       z-index: 4;
     }
