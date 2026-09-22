@@ -10162,7 +10162,6 @@ ul {
 
 .breadcrumbs .breadcrumb-separator {
   color: rgb(var(--text-color));
-  margin: 0 2px;
   font-weight: 400;
 }
 
