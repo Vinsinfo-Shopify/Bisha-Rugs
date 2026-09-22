@@ -489,7 +489,7 @@
       </div>
     </div>
   </div>
-            <script>
+  <script>
     (function () {
       var root = document.getElementById('shopify-section-{{ section.id }}');
       if (!root) return;
@@ -503,8 +503,6 @@
           var video = item.querySelector('video');
           if (!video) return;
 
-          if (video.paused && video.currentTime === 0) return;
-
           event.preventDefault();
           event.stopPropagation();
 
@@ -517,21 +515,16 @@
         true
       );
 
-      // play and pause do not bubble, so these are capture-phase listeners.
-      // Driving the class off the video's own events means it is correct even
-      // when the theme pauses a video because another one started.
+      // play/pause do not bubble, so these are capture-phase.
       function mark(event) {
         var video = event.target;
         if (!video || video.tagName !== 'VIDEO') return;
         var item = video.closest('.ig__item');
-        if (!item) return;
-        // currentTime 0 is the poster state, which already has the theme's
-        // own play button. Only a mid-playback pause gets our icon.
-        item.classList.toggle('is-paused', video.paused && video.currentTime > 0);
+        if (item) item.classList.toggle('is-playing', !video.paused);
       }
 
-      root.addEventListener('pause', mark, true);
       root.addEventListener('play', mark, true);
+      root.addEventListener('pause', mark, true);
       root.addEventListener('ended', mark, true);
     })();
   </script>
