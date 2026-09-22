@@ -965,7 +965,7 @@
             // flipping down does not push it off the bottom instead.
             rect = card.getBoundingClientRect();
             const ceiling = Math.max(this.margin, bounds ? bounds.top : this.margin);
-            const spaceBelow = window.innerHeight - rect.bottom - rect.height - 32;
+            const spaceBelow = window.innerHeight - rect.bottom - rect.height - 48;
             if (rect.top < ceiling && spaceBelow > 0) card.classList.add('is-below');
           }
         }
