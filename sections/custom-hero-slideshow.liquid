@@ -366,13 +366,7 @@
             {%- endif -%}
             {%- if block.settings.button_label != blank -%}
               {%- if block.settings.button_label != blank -%}
-  {%- render 'button',
-    content: block.settings.button_label,
-    href: block.settings.button_link | default: '#',
-    style: 'solid',
-    background: section.settings.button_bg,
-    text_color: section.settings.button_text_color
-  -%}
+  {%- render 'button', content: block.settings.button_label, href: block.settings.button_link, default: '#', style: 'solid', background: section.settings.button_bg, text_color: section.settings.button_text_color -%}
 {%- endif -%}
             {%- endif -%}
           </div>
@@ -617,3 +611,18 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'button',\r\n    content: block.settings.button_label,\r\n    href:
+    block.settings.button_link | default: '#',\r\n    style: 'solid',\r\n    background:
+    section.settings.button_bg,\r\n    text_color: section.settings.button_text_color\r\n
+    \ -%}"
+  to: "{%- render 'button', content: block.settings.button_label, href: block.settings.button_link,
+    default: '#', style: 'solid', background: section.settings.button_bg, text_color:
+    section.settings.button_text_color -%}"
+  position: 11091..11304
+{% endcomment %}
