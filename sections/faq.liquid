@@ -320,6 +320,15 @@
           {%- endif -%}
         </div>
 
+        <script>
+          (function () {
+            var container = document.querySelector('#shopify-section-{{ section.id }} .faq__content');
+            if (!container) return;
+            var first = container.querySelector('details');
+            if (first) first.open = true;
+          })();
+        </script>
+
         {%- comment -%}We also output the content with JSON microdata for SEO{%- endcomment -%}
 
 <script type="application/ld+json">
