@@ -7434,7 +7434,9 @@ shopify-account::part(signed-out-avatar) {
   display: grid;
   font-weight: 700;
 }
-
+.buy-buttons .button{
+    font-weight: 700;
+}
 .pickup-location {
   align-items: start;
   gap: .25rem;
