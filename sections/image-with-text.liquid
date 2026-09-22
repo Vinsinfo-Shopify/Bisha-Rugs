@@ -8,6 +8,7 @@
 <style>
   #shopify-section-{{ section.id }} {
     --image-with-text-content-max-width: {% if section.settings.content_width == 'sm' %}430px{% elsif section.settings.content_width == 'md' %}780px{% else %}100%{% endif %};
+    --image-with-text-section-width: {% case section.settings.section_width %}{% when 'full' %}none{% when 'container' %}1300px{% else %}1440px{% endcase %};
     --section-padding-top: {{ section.settings.padding_top }}px;
     --section-padding-bottom: {{ section.settings.padding_bottom }}px;
     --section-padding-left: {{ section.settings.padding_left }}px;
@@ -16,7 +17,19 @@
  
   #shopify-section-{{ section.id }} .image-with-text-container {
     margin-inline: auto;
+    max-width: var(--image-with-text-section-width);
   }
+{%- if section.settings.section_width == 'full' -%}
+  #shopify-section-{{ section.id }} > .container {
+    --container-max-width: 100%;
+    margin-inline: 0;
+  }
+
+  #shopify-section-{{ section.id }} .image-with-text-container {
+    width: 100%;
+    max-width: none;
+  }
+{%- endif -%}
 
 {%- if section.settings.full_width -%}
   #shopify-section-{{ section.id }} .image-with-text-container {
@@ -914,7 +927,7 @@
 
   {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
 
-<div class="{% unless section.settings.remove_vertical_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {% if section.settings.layout_variant != blank %}image-with-text--{{ section.settings.layout_variant }}{% endif %} {{ section.settings.custom_class }}  container container--lg">
+<div class="{% unless section.settings.remove_vertical_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {% if section.settings.layout_variant != blank %}image-with-text--{{ section.settings.layout_variant }}{% endif %} {{ section.settings.custom_class }} ">
   <div class="image-with-text-container section-custom-padding">
     <image-with-text class="image-with-text {% if section.settings.image_position == 'end' %}image-with-text--reverse{% endif %}">
       {%- if section.settings.image != blank -%}
@@ -1458,11 +1471,25 @@
       "default": "sm"
     },
     {
-      "type": "checkbox",
-      "id": "full_width",
-      "label": "Full width",
-      "info": "Removes the container's max-width so the section spans the full browser width. Section padding still applies.",
-      "default": false
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "info": "Sets how wide this section's content column is. Full width ignores the theme's page column; the section's own left/right padding still applies.",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full Width (100%)"
+        },
+        {
+          "value": "page",
+          "label": "Page Width (1440px)"
+        },
+        {
+          "value": "container",
+          "label": "Container (1300px)"
+        }
+      ],
+      "default": "page"
     },
     {
       "type": "range",
