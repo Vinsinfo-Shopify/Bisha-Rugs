@@ -28,7 +28,12 @@
     border: 0;
   }
  
- 
+   @media screen and (min-width: 1440px) {
+    .image-with-text-container {
+      max-width: 1440px;
+      margin-inline: auto;
+    }
+  }
   /* --- Character-limit paragraph truncation --- */
   #shopify-section-{{ section.id }} .char-limit-content__full[hidden],
   #shopify-section-{{ section.id }} .char-limit-content__short[hidden] {

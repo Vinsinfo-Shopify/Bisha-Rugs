@@ -212,6 +212,7 @@
         "pf_hide_availability": true,
         "pf_accent_color": "#55583c",
         "pf_all_option_filters": "Style, Shape",
+        "pf_all_option_image": "shopify://shop_images/00df73a76c09ff5a794bf6f169ec525810b8146f_6.png",
         "pf_checkbox_size": 18,
         "pf_checkbox_radius": 2,
         "pf_checkbox_gap": 12,
