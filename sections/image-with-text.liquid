@@ -201,10 +201,13 @@
       #shopify-section-{{ section.id }} .image-with-text > .prose {
         padding-inline-end: 40px;
       }
-        #shopify-section-{{ section.id }} .image-with-text-container {
-          padding-left: 70px;
-          padding-right: 70px;
-        }
+          #shopify-section-{{ section.id }} .image-with-text-container {
+            box-sizing: border-box;
+            margin-inline: auto;
+            max-width: calc(var(--image-with-text-section-width) + 140px);
+            padding-left: 70px;
+            padding-right: 70px;
+          }
     }
     @media screen and (max-width: 749px) {
       #shopify-section-{{ section.id }} .image-with-text {
