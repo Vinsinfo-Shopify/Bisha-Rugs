@@ -212,13 +212,17 @@
       object-fit: cover;
       display: block;
     }
+    #shopify-section-{{ section.id }} .fpl__item {
+      --fpl-dot-inner: {{ section.settings.hotspot_size }}px;
+      position: relative;
+      min-width: 0;
+    }
 
         /* ---------- Hotspot ----------
        Figma: 30px disc, 8px ring, 14px white dot. The outer size is derived
        from the inner one (+16px = 8px ring each side) so the schema setting
        still controls the whole object. */
     #shopify-section-{{ section.id }} .fpl__dot {
-      --fpl-dot-inner: {{ section.settings.hotspot_size }}px;
       position: absolute;
       left: var(--fpl-x);
       top: var(--fpl-y);
