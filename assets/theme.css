@@ -7290,7 +7290,7 @@ shopify-account::part(signed-out-avatar) {
   line-height: 100%;
 }
 .product-info__block-item[data-block-type="button"] + .product-info__block-group.feature-badge-list {
-  width: 80% !important;
+  width: 85% !important;
   margin: 0 auto !important;
 }
 
