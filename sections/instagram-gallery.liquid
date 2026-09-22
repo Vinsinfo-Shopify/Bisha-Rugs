@@ -423,27 +423,35 @@
               {%- else -%}
                 {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder' -}}
 
-                <script>
+                  <script>
     (function () {
       var root = document.getElementById('shopify-section-{{ section.id }}');
       if (!root) return;
 
-      root.addEventListener('click', function (event) {
-        var item = event.target.closest('.ig__item');
-        if (!item || !root.contains(item)) return;
+      root.addEventListener(
+        'click',
+        function (event) {
+          var item = event.target.closest('.ig__item');
+          if (!item || !root.contains(item)) return;
 
-        var video = item.querySelector('video');
-        if (!video) return;
+          var video = item.querySelector('video');
+          if (!video) return;
 
-        // Let the theme's own play button handle the very first play.
-        if (event.target.closest('[class*="play"], button')) return;
+          // Never fight the theme's own play button — it starts playback and
+          // handles pausing the other videos in the group.
+          if (video.paused && video.currentTime === 0) return;
 
-        if (video.paused) {
-          video.play();
-        } else {
-          video.pause();
-        }
-      }, true);
+          event.preventDefault();
+          event.stopPropagation();
+
+          if (video.paused) {
+            video.play();
+          } else {
+            video.pause();
+          }
+        },
+        true
+      );
     })();
   </script>
               {%- endif -%}
