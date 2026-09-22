@@ -76,7 +76,7 @@
         "reveal_on_scroll": true,
         "image_position": "end",
         "content_width": "lg",
-        "full_width": false,
+        "section_width": "page",
         "trade_media_gap": 0,
         "trade_feature_gap_mobile": 12,
         "trade_para_top": 16,
@@ -145,7 +145,7 @@
         "reveal_on_scroll": false,
         "image_position": "end",
         "content_width": "lg",
-        "full_width": false,
+        "section_width": "page",
         "trade_media_gap": 0,
         "trade_feature_gap_mobile": 12,
         "trade_para_top": 16,
@@ -300,7 +300,7 @@
         "reveal_on_scroll": true,
         "image_position": "start",
         "content_width": "sm",
-        "full_width": false,
+        "section_width": "page",
         "trade_media_gap": 0,
         "trade_feature_gap_mobile": 12,
         "trade_para_top": 16,
@@ -783,7 +783,7 @@
         "sidebar_custom_class": "",
         "show_image": true,
         "image": "shopify://shop_images/c0a4d61bbc28d2127363ecf547d1f6829f8d6d42_1.png",
-        "image_max_height": 500
+        "image_max_height": 641
       }
     },
     "multi_column_YffJWe": {
