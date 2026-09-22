@@ -7289,7 +7289,16 @@ shopify-account::part(signed-out-avatar) {
   --hover-background-position: right center;
   line-height: 100%;
 }
+.product-info__block-item[data-block-type="button"] + .product-info__block-group.feature-badge-list {
+  width: 80% !important;
+  margin: 0 auto !important;
+}
 
+@media screen and (max-width: 999px) {
+  .product-info__block-item[data-block-type="button"] + .product-info__block-group.feature-badge-list {
+    width: 100% !important;
+  }
+}
 @media screen and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .shopify-section--main-product
     .product-info__block-item[data-block-type="button"]
