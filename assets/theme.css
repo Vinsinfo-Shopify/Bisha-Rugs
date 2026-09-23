@@ -3942,6 +3942,9 @@ tr[onclick]:hover {
 .pdp-review__name {
   font-weight: 700;
   font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  vertical-align: middle;
 }
 
 .pdp-review__verified {
