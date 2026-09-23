@@ -138,12 +138,48 @@
       display: block;
     }
 
-    /* Play button. media.liquid renders it inside video-media as a shadow part,
-       already absolutely centred by theme.css, so its colour is passed as a
-       parameter rather than overridden here. Only opacity is adjusted, and that
-       is scoped to this section. */
-    #shopify-section-{{ section.id }} video-media::part(play-button) {
-      opacity: {{ section.settings.play_button_opacity | divided_by: 100.0 }};
+        /* The theme's button is replaced by the overlay below: its SVG lives in a
+       shadow root and cannot be resized or recoloured to match the design. */
+    #shopify-section-{{ section.id }} .real-homes__media video-media::part(play-button) {
+      display: none;
+    }
+
+    /* Shown whenever a video card is not playing — before the first play and
+       after any pause — so the control never moves or changes size. */
+    #shopify-section-{{ section.id }} .real-homes__card:has(video):not(.is-playing) .real-homes__media::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 69.5px;
+      height: 69.5px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: rgb(34 34 34 / 0.36);
+      backdrop-filter: blur(3.27px);
+      -webkit-backdrop-filter: blur(3.27px);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* An SVG, not a CSS border triangle: border-radius rounds an element's
+       corners and cannot round the tip of a border mitre. stroke-linejoin with
+       a stroke in the fill colour rounds all three. Stroke = 2x the 1.63px
+       Figma radius, and it scales with the box, so mobile only changes size. */
+    #shopify-section-{{ section.id }} .real-homes__card:has(video):not(.is-playing) .real-homes__media::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 41px;
+      height: 39px;
+      transform: translate(calc(-50% + 3px), -50%);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 41 39'%3E%3Cpath d='M2.5 3.2 L37.8 19.5 L2.5 35.8 Z' fill='%23FFFFFF' stroke='%23FFFFFF' stroke-width='3.26' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      pointer-events: none;
+      z-index: 3;
     }
 
     /* ---------- Product information ---------- */
