@@ -7625,7 +7625,7 @@ shopify-account::part(signed-out-avatar) {
 }
 
 .product-sticky-bar__info img {
-  width: 3.75rem;
+  width: 3rem;
 }
 
 @media screen and (min-width: 700px) {
