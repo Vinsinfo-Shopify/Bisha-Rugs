@@ -237,6 +237,9 @@
     width: {{ section.settings.rating_star_size }}px;
     height: {{ section.settings.rating_star_size }}px;
   }
+  .shopify-section--main-product .pdp-rating .rating-badge__stars > svg > path{
+   fill: #B18D4C;
+  }
 
   {%- comment -%}
     theme.css gives the rating text its own smaller size through .text-xxs and
@@ -373,7 +376,9 @@
     align-items: baseline;
     gap: 0 {{ section.settings.price_gap }}px;
   }
-
+  .shopify-section--main-product .product-info__block-item[data-block-type='price'] .price-list .text-subdued{
+    color:#858585;
+  }
   {%- comment -%}
     product-info__block-list is a plain block container - its children are
     block-level and stacked with margins, which is why the pill starts a new

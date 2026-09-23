@@ -38,6 +38,7 @@
         "service_item_4_image": "shopify://shop_images/solar_box-outline_1_bf3e91fc-af70-44fc-9e25-adbf79357a8a.png",
         "show_service_strip": true,
         "service_strip_scroll": true,
+        "service_strip_show_dots": true,
         "service_strip_speed": 40,
         "service_strip_background": "#6e2a2b",
         "service_strip_text_color": "#ffffff",
@@ -57,6 +58,7 @@
         "promo_tier_2_threshold": 1000,
         "promo_locked_text": "Add [amount] more to get [reward]",
         "promo_unlocked_text": "Congratulations, you've unlocked [reward]",
+        "show_cross_sell": false,
         "cross_sell_products": [
           "l-010-agatha-hand-knotted-rug",
           "hand-knotted-turkish-oushak-rug-8x10-pastel-floral-wool-carpet",

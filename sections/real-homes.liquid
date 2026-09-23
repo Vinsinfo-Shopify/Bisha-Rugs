@@ -220,6 +220,35 @@
   color: #ffffff;
 }
 
+    /* ---------- Desktop: side cards vs centre card ----------
+       Scoped to min-width so the mobile block below is untouched. */
+    @media screen and (min-width: 700px) {
+      /* Side cards — smaller title */
+      #shopify-section-{{ section.id }} .real-homes__card:not(.is-active) .real-homes__title {
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+      /* Side cards — smaller price */
+      #shopify-section-{{ section.id }} .real-homes__card:not(.is-active) .real-homes__price,
+      #shopify-section-{{ section.id }} .real-homes__card:not(.is-active) .real-homes__price .price-list > * {
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+      /* Side cards — compare-at price stays the smaller of the pair */
+      #shopify-section-{{ section.id }} .real-homes__card:not(.is-active) .real-homes__price .line-through {
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      /* Centre card — compare-at price raised from 12px */
+      #shopify-section-{{ section.id }} .real-homes__card.is-active .real-homes__price .line-through {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+
     /* ---------- Mobile ----------
        Same markup and the same block order. Only the card size changes, so the
        active card stays centred with its neighbours peeking either side. */

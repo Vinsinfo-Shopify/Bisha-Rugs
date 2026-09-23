@@ -3427,7 +3427,7 @@ tr[onclick]:hover {
 }
 
 .product-info__block-item[data-block-type="button"] .text-with-icon {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .product-info__block-item[data-block-type="feature-with-icon"] .feature-badge {
@@ -3536,7 +3536,16 @@ tr[onclick]:hover {
   font-size: .625rem;
   display: flex;
 }
-
+.shopify-section--main-product .pdp-media-badges .badge {
+    border-style: solid;
+    border-color: #fff;
+    border-width: 1px 1px 1px 0px;
+    box-sizing: border-box;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+    padding: 2px 12px;
+}
 .badge--on-sale {
   background: rgb(var(--on-sale-badge-background));
   color: rgb(var(--on-sale-badge-text));
@@ -3620,7 +3629,9 @@ tr[onclick]:hover {
 .notice-banner p {
   margin: 0;
 }
-
+.notice-banner p strong{
+  font-weight: 600;
+}
 .checklist {
   grid-template-columns: repeat(2, 1fr);
   gap: .75rem 1rem;
@@ -7285,8 +7296,18 @@ shopify-account::part(signed-out-avatar) {
   --hover-gradient: linear-gradient(rgb(var(--button-outline-color)), rgb(var(--button-outline-color)));
   --initial-background-position: right center;
   --hover-background-position: right center;
+  line-height: 100%;
+}
+.product-info__block-item[data-block-type="button"] + .product-info__block-group.feature-badge-list {
+  width: 85% !important;
+  margin: 0 auto !important;
 }
 
+@media screen and (max-width: 999px) {
+  .product-info__block-item[data-block-type="button"] + .product-info__block-group.feature-badge-list {
+    width: 100% !important;
+  }
+}
 @media screen and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .shopify-section--main-product
     .product-info__block-item[data-block-type="button"]
@@ -7336,6 +7357,7 @@ shopify-account::part(signed-out-avatar) {
 
 .product-info__block-item[data-block-type="text"] .prose {
   font-size: 14px;
+  font-weight: 500;
 }
 
 @media screen and (max-width: 699px) {
@@ -7431,7 +7453,13 @@ shopify-account::part(signed-out-avatar) {
   font-weight: 700;
 }
 .buy-buttons .button{
-    font-weight: 700;
+  font-weight: 700;
+  font-family: Figtree;
+  font-size: 18px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  text-transform: uppercase;
 }
 .pickup-location {
   align-items: start;
@@ -10139,11 +10167,11 @@ ul {
 .breadcrumbs .breadcrumb-current {
   font-weight: 500;
   color: rgb(var(--text-color) / .55);
+  text-transform: capitalize;
 }
 
 .breadcrumbs .breadcrumb-separator {
   color: rgb(var(--text-color));
-  margin: 0 2px;
   font-weight: 400;
 }
 

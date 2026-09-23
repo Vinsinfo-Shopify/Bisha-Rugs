@@ -76,7 +76,7 @@
           {{- rating_value }}{% if rating_count > 0 %} ({{ 'product.rating_count' | t: count: rating_count }}){% endif -%}
         </span>
       {%- else -%}
-        <span class="smallcaps text-xxs text-subdued">({{ rating_value }})</span>
+        <span class="smallcaps text-xxs text-subdued">{{ rating_value }}</span>
     {%- endcase -%}
   </span>
 {%- endunless -%}

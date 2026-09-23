@@ -186,12 +186,56 @@
       object-fit: cover;
       display: block;
     }
+      /* Shown whenever a video tile is not playing — before first play and after
+       any pause — so the control never changes size or position. */
+    #shopify-section-{{ section.id }} .ig__item:has(video):not(.is-playing)::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 59.5px;
+      height: 59.5px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: rgb(255 255 255 / 0.26);
+      backdrop-filter: blur(1.86px);
+      -webkit-backdrop-filter: blur(1.86px);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+        /* An SVG, not a border triangle: border-radius cannot round the tip of a
+       border mitre. stroke-linejoin: round with a stroke in the fill colour
+       rounds all three corners. Stroke width is 2x the 1.39px Figma radius. */
+    #shopify-section-{{ section.id }} .ig__item:has(video):not(.is-playing)::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 24px;
+      height: 27px;
+      transform: translate(calc(-50% + 3px), -50%);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 27'%3E%3Cpath d='M2 2.6 L21.4 13.5 L2 24.4 Z' fill='%23FFF9FC' stroke='%23FFF9FC' stroke-width='2.8' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      pointer-events: none;
+      z-index: 4;
+    }
 
     #shopify-section-{{ section.id }} .ig__item .media,
-    #shopify-section-{{ section.id }} .ig__item deferred-media {
+    #shopify-section-{{ section.id }} .ig__item deferred-media,
+    #shopify-section-{{ section.id }} .ig__item video-media {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
+      aspect-ratio: auto;
       display: block;
+    }
+
+    #shopify-section-{{ section.id }} .ig__item video-media::part(play-button) {
+      display: none;
     }
 
     /* Optional spacing after the final item. Zero by default, so the last item
@@ -352,6 +396,16 @@
         inset-inline-end: {{ section.settings.arrow_inset_mobile }}px;
         inset-inline-start: auto;
       }
+            #shopify-section-{{ section.id }} .ig__item:has(video):not(.is-playing)::after {
+        width: 40px;
+        height: 40px;
+      }
+
+            #shopify-section-{{ section.id }} .ig__item:has(video):not(.is-playing)::before {
+        width: 18px;
+        height: 20px;
+        transform: translate(calc(-50% + 2px), -50%);
+      }
     }
   </style>
 
@@ -422,6 +476,8 @@
                 -}}
               {%- else -%}
                 {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder' -}}
+
+          
               {%- endif -%}
 
               {%- comment -%}
@@ -451,7 +507,48 @@
       </div>
     </div>
   </div>
+  <script>
+    (function () {
+      var root = document.getElementById('shopify-section-{{ section.id }}');
+      if (!root) return;
+
+      root.addEventListener(
+        'click',
+        function (event) {
+          var item = event.target.closest('.ig__item');
+          if (!item || !root.contains(item)) return;
+
+          var video = item.querySelector('video');
+          if (!video) return;
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          if (video.paused) {
+            if (video.hasAttribute('poster')) video.removeAttribute('poster');
+            video.play();
+          } else {
+            video.pause();
+          }
+        },
+        true
+      );
+
+      // play/pause do not bubble, so these are capture-phase.
+      function mark(event) {
+        var video = event.target;
+        if (!video || video.tagName !== 'VIDEO') return;
+        var item = video.closest('.ig__item');
+        if (item) item.classList.toggle('is-playing', !video.paused);
+      }
+
+      root.addEventListener('play', mark, true);
+      root.addEventListener('pause', mark, true);
+      root.addEventListener('ended', mark, true);
+    })();
+  </script>
 {%- endif -%}
+
 
 {% schema %}
 {
