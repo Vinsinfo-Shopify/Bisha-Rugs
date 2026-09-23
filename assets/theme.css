@@ -7639,7 +7639,11 @@ shopify-account::part(signed-out-avatar) {
     display: grid;
   }
 }
-
+@media screen and (max-width: 999px) {
+  .product-sticky-bar {
+    inset-block: 0 auto;
+  }
+}
 @media screen and (max-width: 699px) {
   .quick-order-list__table {
     display: block;
