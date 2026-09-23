@@ -3947,10 +3947,13 @@ tr[onclick]:hover {
 .pdp-review__verified {
   align-items: center;
   column-gap: .25rem;
-  color: #1b8a4a;
+  color: #56583D;
   display: flex;
-  font-size: .75rem;
   flex-shrink: 0;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 140%;
+  letter-spacing: 0%;
 }
 
 .pdp-review__rating {
