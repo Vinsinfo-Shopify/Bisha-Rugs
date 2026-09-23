@@ -170,6 +170,7 @@
             {%- if product.selected_or_first_available_variant != null -%}
               {%- render 'price-list', variant: product.selected_or_first_available_variant, hide_unit_price: true, context: 'card' -%}
             {%- endif -%}
+             {%- render 'pdp-price-savings' -%}
           </div>
         </div>
       </div>
