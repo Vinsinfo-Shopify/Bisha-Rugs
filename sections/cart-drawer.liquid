@@ -103,11 +103,11 @@
   {%- else -%}
     {%- render 'cart-drawer-service-strip', section: section -%}
 
-    {%- render 'cart-drawer-promo',
+        {%- render 'cart-drawer-promo',
       section: section,
-      tier_1_amount: tier_1_amount,
       tier_2_amount: tier_2_amount,
-      tier_1_reached: tier_1_reached
+      tier_2_reached: tier_2_reached,
+      first_order_eligible: first_order_eligible
     -%}
 
     <div class="cart-drawer__items">
