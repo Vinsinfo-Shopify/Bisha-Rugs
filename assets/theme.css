@@ -4043,9 +4043,6 @@ tr[onclick]:hover {
   object-fit: cover;
   display: block;
 }
-.pdp-real-homes__media video-media{
-  --play-button-background: #AFAFAF;
-}
 .pdp-contact {
   background: rgb(var(--text-color) / 0.04);
   border-radius: var(--input-border-radius);
