@@ -3874,10 +3874,6 @@ tr[onclick]:hover {
     font-size: 13px;
   }
 
-  .accordion-option-card {
-    flex-direction: column;
-  }
-
   .accordion-option-card__image {
     width: 100%;
     height: 160px;
