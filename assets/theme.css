@@ -11907,11 +11907,14 @@ ul {
 
 .shopify-section--main-product .product-info .complementary-products .product-card-title {
   font-size: 14px;
-  line-height: 18px;
-  min-height: calc(18px * 2);
+  line-height: 140%;
+  min-height: calc(20px * 2);
   font-weight: 700;
+  font-family: var(--text-font-family);
 }
-
+.shopify-section--main-product .product-info .complementary-products .gap-1 {
+    gap: 5px;
+}
 .shopify-section--main-product .complementary-products .product-card__tag-wrapper {
   display: none;
 }
