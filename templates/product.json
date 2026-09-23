@@ -912,7 +912,7 @@
         "padding_right_mobile": 12,
         "image": "shopify://shop_images/9352e889885af92e68da5c3aee0d24b03cb3f394_1.png",
         "enable_video": true,
-        "media_position_mobile": "after_text",
+        "media_position_mobile": "before_text",
         "reveal_on_scroll": true,
         "image_position": "end",
         "content_width": "lg",
