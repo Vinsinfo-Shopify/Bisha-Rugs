@@ -8025,7 +8025,7 @@ shopify-account::part(signed-out-avatar) {
 
 .shopify-policy__container {
   gap: var(--section-stack-gap);
-  max-width: 56.25rem;
+  max-width: var(--container-lg-max-width);
   grid-auto-columns: minmax(0, 1fr);
   margin-block-start: var(--section-vertical-spacing-tight);
   margin-block-end: var(--section-vertical-spacing-tight);
