@@ -1901,6 +1901,9 @@ model-media .shopify-model-viewer-ui {
   .order-summary__body tr:last-child td {
     padding-block-end: calc(var(--table-cell-padding-block) * 2);
   }
+  .container{
+    --container-gutter:12px;
+  }
 }
 
 @media screen and (min-width: 700px) {
@@ -10891,6 +10894,7 @@ ul {
   font-size: 18px;
   line-height: 140%;
   font-weight: 700;
+  color: #202020;
 }
 
 .Collection_contact_us .prose .link {
@@ -10898,6 +10902,10 @@ ul {
   font-size: 16px;
   font-weight: 600;
   line-height: 140%;
+  color: #55583C;
+  text-decoration-thickness: 10%;
+  text-underline-offset: 0%;
+  text-decoration-skip-ink: auto;
 }
 .Collection_contact_us .prose .multi-column-card_content{
   font-weight: 500;
@@ -11020,6 +11028,9 @@ ul {
     padding-bottom: 34px;
     margin-bottom: 50px;
   }
+  .Collection_contact_us .multi-column__item{
+    padding: 16px 11px;
+  }
 
   .recent_products .container {
     padding-top: 30px;
@@ -11032,6 +11043,10 @@ ul {
 
   .recent_products .section-stack {
     gap: 16px;
+  }
+  .multi-column-card_icon {
+    width: 22px;
+    height: 22px;
   }
 
   /* .section-stack .section-header .h2{

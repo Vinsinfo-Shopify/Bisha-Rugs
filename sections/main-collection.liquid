@@ -355,8 +355,10 @@
 
       
 
-           /* Mobile Filter / Sort bar. Measured from the 375 frame: 66 tall,
-         divider 45 at centre, halves 24px icon + 14 gap + a 4px text stack. */
+      #shopify-section-{{ section.id }} .pf-mobilebar-shell {
+        display: block;
+      }
+
       #shopify-section-{{ section.id }} .pf-mobilebar {
         display: grid;
         grid-template-columns: 1fr 1px 1fr;
@@ -367,9 +369,14 @@
         /* Full screen width while the grid and chips stay in the gutter. */
         margin-inline: calc(var(--container-gutter) * -1);
         width: calc(100% + (var(--container-gutter) * 2));
-        position: sticky;
-        top: var(--header-height, 0px);
-        z-index: 10;
+      }
+      #shopify-section-{{ section.id }} .pf-mobilebar-shell.is-pinned .pf-mobilebar {
+        position: fixed;
+        inset-inline: 0;
+        inset-block-start: 0;
+        width: auto;
+        margin-inline: 0;
+        z-index: 3;
       }
 
       #shopify-section-{{ section.id }} .pf-mobilebar::before {
@@ -482,11 +489,13 @@
         color: #55583C;
         padding: 10px;
       }
-            #shopify-section-{{ section.id }} .collection-toolbar {
+      #shopify-section-{{ section.id }} .collection-toolbar {
         display: block;
-        margin-block: 16px 12px;
         box-shadow: none;
         border: 0;
+      }
+      #shopify-section-{{ section.id }} .collection {
+        scroll-margin-block-start: calc(var(--collection-toolbar-height, 0px) + 66px + 20px);
       }
       #shopify-section-{{ section.id }} .active-facets .removable-facet .tap-area {
         display: grid;
@@ -500,7 +509,7 @@
       #shopify-section-{{ section.id }} .collection-toolbar__products-count {
         position: relative;
         z-index: 0;
-        padding-block-start: 15px;
+        padding-block-start: 5px;
         padding-block-end: 5px;
       }
     }
@@ -696,7 +705,7 @@
         display: none;
       }
 
-      #shopify-section-{{ section.id }} .pf-mobilebar {
+      #shopify-section-{{ section.id }} .pf-mobilebar-shell {
         display: none;
       }
       #shopify-section-{{ section.id }} .collection {
@@ -1047,7 +1056,7 @@
     }
 
     @media screen and (min-width: 749px) {
-      #shopify-section-{{ section.id }} .pf-mobilebar {
+      #shopify-section-{{ section.id }} .pf-mobilebar-shell {
         display: none;
       }
     }
@@ -1363,7 +1372,6 @@
                   production.
                 {%- endcomment -%}
                 {%- if show_filters or section.settings.show_sort_by or section.settings.show_grid_mode_selector or section.settings.show_results_count -%}
-                <height-observer variable="collection-toolbar" class="collection-toolbar">
                   {%- if section.settings.enable_new_filters -%}
                                       {%- liquid
                         assign selected_sort_by_value = collection.sort_by | default: collection.default_sort_by
@@ -1400,6 +1408,7 @@
                         endif
                       -%}
 
+                      <pf-sticky-bar class="pf-mobilebar-shell">
                       <div class="pf-mobilebar">
                         <button type="button" aria-controls="facets-drawer" class="pf-mobilebar__half">
                                               <span class="pf-mobilebar__icon" aria-hidden="true">
@@ -1428,7 +1437,10 @@
                           </span>
                         </button>
                       </div>
+                      </pf-sticky-bar>
                     {%- endif -%}
+
+                <height-observer variable="collection-toolbar" class="collection-toolbar">
                               <div class="collection-toolbar__button-list">
                     {%- comment -%}
                       Mobile Filter / Sort bar.
@@ -1677,6 +1689,99 @@
             var remaining =
               this.scroller.scrollWidth - this.scroller.clientWidth - Math.abs(this.scroller.scrollLeft);
             this.button.hidden = remaining <= 1;
+          }
+        }
+      );
+    }
+    if (!customElements.get('pf-sticky-bar')) {
+      customElements.define(
+        'pf-sticky-bar',
+        class extends HTMLElement {
+          constructor() {
+            super();
+            this.onScroll = this.onScroll.bind(this);
+            this.update = this.update.bind(this);
+          }
+
+          connectedCallback() {
+            this.bar = this.querySelector('.pf-mobilebar');
+            if (!this.bar) return;
+
+            this.pinned = false;
+            this.frame = null;
+            this.media = window.matchMedia('(max-width: 749px)');
+
+            window.addEventListener('scroll', this.onScroll, { passive: true });
+            window.addEventListener('resize', this.onScroll, { passive: true });
+
+            if (this.media.addEventListener) {
+              this.media.addEventListener('change', this.onScroll);
+            } else {
+              this.media.addListener(this.onScroll);
+            }
+
+            this.update();
+          }
+
+          disconnectedCallback() {
+            if (!this.bar) return;
+
+            window.removeEventListener('scroll', this.onScroll);
+            window.removeEventListener('resize', this.onScroll);
+
+            if (this.media.removeEventListener) {
+              this.media.removeEventListener('change', this.onScroll);
+            } else {
+              this.media.removeListener(this.onScroll);
+            }
+
+            if (this.frame) cancelAnimationFrame(this.frame);
+          }
+
+          onScroll() {
+            if (this.frame) return;
+            this.frame = requestAnimationFrame(
+              function () {
+                this.frame = null;
+                this.update();
+              }.bind(this)
+            );
+          }
+          offset() {
+            var header = document.querySelector('.shopify-section--header');
+            if (!header) return 0;
+
+            return Math.max(0, header.getBoundingClientRect().bottom);
+          }
+
+          update() {
+            if (!this.media.matches) return this.unpin();
+
+            var bounds = this.getBoundingClientRect();
+            var offset = this.offset();
+
+            if (bounds.top > offset) return this.unpin();
+
+            var height = this.bar.getBoundingClientRect().height;
+            this.style.height = height + 'px';
+
+            if (!this.pinned) {
+              this.classList.add('is-pinned');
+              this.pinned = true;
+            }
+            var container = this.parentElement;
+            var limit = container ? container.getBoundingClientRect().bottom - height : offset;
+
+            this.bar.style.insetBlockStart = Math.min(offset, limit) + 'px';
+          }
+
+          unpin() {
+            if (!this.pinned) return;
+
+            this.classList.remove('is-pinned');
+            this.style.removeProperty('height');
+            this.bar.style.removeProperty('inset-block-start');
+            this.pinned = false;
           }
         }
       );
