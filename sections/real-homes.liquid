@@ -524,6 +524,38 @@ width: 28px;
               // final. Instant, so nothing is visible.
               requestAnimationFrame(() => this.centre(this.track.querySelector('.is-active'), false));
             });
+                        // Bubble phase, bound to the track. enableDrag's capture handler
+            // stops propagation when a drag moved more than 5px, so a drag
+            // never reaches this and never toggles playback.
+            this.track.addEventListener('click', (event) => {
+              const card = event.target.closest('.real-homes__card');
+              if (!card || !this.track.contains(card)) return;
+
+              const video = card.querySelector('video');
+              if (!video) return;
+
+              event.preventDefault();
+              event.stopPropagation();
+
+              if (video.paused) {
+                if (video.hasAttribute('poster')) video.removeAttribute('poster');
+                video.play();
+              } else {
+                video.pause();
+              }
+            });
+
+            // play and pause do not bubble, so these are capture-phase.
+            const markPlaying = (event) => {
+              const video = event.target;
+              if (!video || video.tagName !== 'VIDEO') return;
+              const card = video.closest('.real-homes__card');
+              if (card) card.classList.toggle('is-playing', !video.paused);
+            };
+
+            this.track.addEventListener('play', markPlaying, true);
+            this.track.addEventListener('pause', markPlaying, true);
+            this.track.addEventListener('ended', markPlaying, true);
           }
 
           disconnectedCallback() {
