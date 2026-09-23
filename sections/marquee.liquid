@@ -57,7 +57,7 @@
       --marquee-duration-mobile: {{ section.settings.duration_mobile }}s;
       --marquee-direction: {{ scroll_direction }};
       --marquee-copies: {{ copies }};
-      --marquee-font-family: {% if section.settings.text_font == 'heading' %}"Forum"{% else %}var(--text-font-family){% endif %};
+      --marquee-font-family: {% if section.settings.text_font == 'heading' %}'Forum'{% else %}var(--text-font-family){% endif %};
     "
   >
     <div class="marquee__viewport">
