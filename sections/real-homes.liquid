@@ -541,6 +541,7 @@ width: 28px;
               // the video with its group. A programmatic click works even
               // though the button is display: none.
               if (!video) {
+                console.log('first click: no video yet');
                 const host = card.querySelector('video-media');
                 const btn = host && host.shadowRoot
                   && host.shadowRoot.querySelector('[part~="play-button"]');
@@ -552,6 +553,7 @@ width: 28px;
                 const start = () => {
                   const v = card.querySelector('video');
                   if (v) {
+                    console.log('video appeared after', tries, 'frames, paused:', v.paused);
                     if (v.hasAttribute('poster')) v.removeAttribute('poster');
                     if (v.paused) v.play();
                     return;
