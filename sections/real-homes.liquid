@@ -531,17 +531,11 @@ width: 28px;
               const card = event.target.closest('.real-homes__card');
               if (!card || !this.track.contains(card)) return;
 
-                             const host = card.querySelector('video-media');
-              if (host && host.contains(event.target)) {
-                const btn = host.shadowRoot
-                  && host.shadowRoot.querySelector('[part~="play-button"]');
-                // The button only exists before the first play. If it is still
-                // there, this click is the theme's — leave it alone.
-                if (btn && getComputedStyle(btn).display !== 'none') return;
-              }
-
               const video = card.querySelector('video');
-              if (!video) return;
+              if (!video || (video.paused && video.currentTime === 0 && !video.dataset.rhStarted)) {
+                if (video) video.dataset.rhStarted = '1';
+                return;
+              }
 
               event.preventDefault();
               event.stopPropagation();
