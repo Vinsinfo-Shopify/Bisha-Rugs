@@ -12117,7 +12117,8 @@ ul {
 
 .comparison-table__cell {
   padding-inline: var(--ct-pad-x);
-  padding-block: var(--ct-pad-y);
+  padding-block-start: calc(var(--ct-pad-y) - 5px);
+  padding-block-end: calc(var(--ct-pad-y) + 10px);
   min-width: 0;
 }
 
