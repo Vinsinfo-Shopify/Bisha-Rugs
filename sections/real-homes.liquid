@@ -537,7 +537,7 @@ width: 28px;
                   && host.shadowRoot.querySelector('[part~="play-button"]');
                 // The button only exists before the first play. If it is still
                 // there, this click is the theme's — leave it alone.
-                if (btn) return;
+                if (btn && getComputedStyle(btn).display !== 'none') return;
               }
 
               const video = card.querySelector('video');
