@@ -6584,6 +6584,11 @@ shopify-account::part(signed-out-avatar) {
 .why_oushak_section .image-with-text {
   gap: 50px;
 }
+@media screen and (max-width: 999px) {
+  .why_oushak_section .image-with-text {
+    gap: 20px;
+  }
+}
 .why_oushak_section .image_with_text_content ul{
   row-gap: 15px;
 }
