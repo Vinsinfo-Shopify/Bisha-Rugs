@@ -11895,6 +11895,7 @@ ul {
   line-height: 140%;
   min-height: calc(20px * 2);
   font-weight: 700;
+  font-family: var(--text-font-family);
 }
 
 .shopify-section--main-product .complementary-products .product-card__tag-wrapper {
