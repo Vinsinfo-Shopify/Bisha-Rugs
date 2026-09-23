@@ -4043,7 +4043,7 @@ tr[onclick]:hover {
   object-fit: cover;
   display: block;
 }
-.pdp-real-homes__media svg path{
+.pdp-real-homes__media video-media{
   --play-button-background: #AFAFAF;
 }
 .pdp-contact {
