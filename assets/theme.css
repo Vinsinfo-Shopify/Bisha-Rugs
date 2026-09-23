@@ -3724,7 +3724,6 @@ tr[onclick]:hover {
   flex-wrap: wrap;
   display: flex;
   margin-block-start: 0 !important;
-  flex-direction: column;
 }
 
 .image-text-card--checklist .prose ul {
@@ -3734,7 +3733,7 @@ tr[onclick]:hover {
 
 .image-text-card--checklist .prose li {
   position: relative;
-  padding-inline-start: 1.6em;
+  padding-inline-start: 1.2em;
   margin-block-start: 0 !important;
   flex: 0 0 auto;
   display: flex;
