@@ -3973,8 +3973,11 @@ tr[onclick]:hover {
 }
 
 .pdp-review__rating-value {
-  color: rgb(var(--text-color) / .65);
-  font-size: .875rem;
+  color: rgb(var(--text-color));
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 140%;
+  letter-spacing: 0%;
 }
 
 .pdp-review__quote {
