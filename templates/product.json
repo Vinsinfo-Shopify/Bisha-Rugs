@@ -917,7 +917,7 @@
         "image_position": "end",
         "content_width": "lg",
         "section_width": "container",
-        "trade_media_gap": 0,
+        "trade_media_gap": 20,
         "trade_feature_gap_mobile": 12,
         "trade_para_top": 16,
         "trade_para_bottom": 24,
