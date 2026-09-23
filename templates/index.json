@@ -514,21 +514,23 @@
             "link": ""
           }
         },
-        "card_MqJwEU": {
+        "card_diaXT9": {
           "type": "card",
           "settings": {
             "enabled": true,
-            "image": "shopify://shop_images/Shop_by_Style_-_Geometric.png",
-            "product": "9x12-hand-knotted-oushak-wool-rug-moss-green-turkish-area-rug",
+            "video": "shopify://files/videos/Hey friends! I’m so excited to share this incredible upgrade in our library room. True quality a_de4e250a-0244-40f4-b22e-2743aff23d0c.mp4",
+            "image": "shopify://shop_images/Shop_by_Style_-_Abstract.png",
+            "product": "l-030-cleo-hand-knotted-rug-bisha-rugs",
             "link": ""
           }
         },
-        "card_zUymC3": {
+        "card_P4cah9": {
           "type": "card",
           "settings": {
             "enabled": true,
-            "image": "shopify://shop_images/c0a4d61bbc28d2127363ecf547d1f6829f8d6d42_1.png",
-            "product": "oushak-rug-9x12-turkish-knot-rug-hand-knotted-vintage-antique-oushak-wool-area-rug-for-living-room-and-dining-room-quick-ship",
+            "video": "shopify://files/videos/No todas las alfombras se sienten iguales… y esta lo demuestra al instante ✨Handcrafted in India.mp4",
+            "image": "shopify://shop_images/Shop_by_Style_-_Minimalist.png",
+            "product": "hand-knotted-wool-oushak-rug-brown-ivory-antique-style",
             "link": ""
           }
         }
@@ -537,8 +539,8 @@
         "card_tFabhH",
         "card_marr7x",
         "card_kWamFg",
-        "card_MqJwEU",
-        "card_zUymC3"
+        "card_diaXT9",
+        "card_P4cah9"
       ],
       "name": "Real homes",
       "settings": {
