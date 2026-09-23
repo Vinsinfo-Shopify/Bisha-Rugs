@@ -6643,7 +6643,7 @@ shopify-account::part(signed-out-avatar) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: center;
   }
-  .image_with_text_content li{
+  .image_with_text_content:where(ol,ul):not(.unstyled-list) li{
     padding-inline-start: 0px;
   }
   .image-with-text>.prose {
