@@ -333,33 +333,34 @@
           })();
         </script>
 
-        <script>
+                <script>
           if (!customElements.get('faq-accordion-group')) {
             customElements.define(
               'faq-accordion-group',
               class extends HTMLElement {
                 constructor() {
                   super();
-                  this.onClick = this.onClick.bind(this);
+                  this.onToggle = this.onToggle.bind(this);
                 }
 
                 connectedCallback() {
-                  this.addEventListener('click', this.onClick);
+                  // 'toggle' fires AFTER the browser has changed details.open,
+                  // so the state read here is the new one. A click listener
+                  // reads the state before the toggle and gets it backwards.
+                  // toggle does not bubble, hence the capture phase.
+                  this.addEventListener('toggle', this.onToggle, true);
                 }
 
                 disconnectedCallback() {
-                  this.removeEventListener('click', this.onClick);
+                  this.removeEventListener('toggle', this.onToggle, true);
                 }
 
-                onClick(event) {
-                  var summary = event.target.closest('summary');
-                  if (!summary) return;
+                onToggle(event) {
+                  var details = event.target;
+                  if (details.tagName !== 'DETAILS' || !details.open) return;
 
-                  var current = summary.closest('accordion-disclosure');
+                  var current = details.closest('accordion-disclosure');
                   if (!current || !this.contains(current)) return;
-
-                  var details = current.querySelector('details');
-                  if (!details || details.getAttribute('aria-expanded') !== 'true') return;
 
                   Array.prototype.forEach.call(
                     this.querySelectorAll('accordion-disclosure'),
@@ -369,6 +370,8 @@
                       var otherDetails = other.querySelector('details');
                       if (!otherDetails || !otherDetails.open) return;
 
+                      // The theme's own close() runs the collapse animation.
+                      // Setting .open directly would snap it shut.
                       if (typeof other.close === 'function') {
                         other.close();
                       } else {
