@@ -544,7 +544,21 @@ width: 28px;
                 const host = card.querySelector('video-media');
                 const btn = host && host.shadowRoot
                   && host.shadowRoot.querySelector('[part~="play-button"]');
-                if (btn) btn.click();
+                if (!btn) return;
+
+                btn.click();
+
+                let tries = 0;
+                const start = () => {
+                  const v = card.querySelector('video');
+                  if (v) {
+                    if (v.hasAttribute('poster')) v.removeAttribute('poster');
+                    if (v.paused) v.play();
+                    return;
+                  }
+                  if (++tries < 30) requestAnimationFrame(start);
+                };
+                requestAnimationFrame(start);
                 return;
               }
 
