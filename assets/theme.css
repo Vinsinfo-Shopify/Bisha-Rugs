@@ -4003,7 +4003,9 @@ tr[onclick]:hover {
   line-height: 140%;
   letter-spacing: 0%;
 }
-
+.product-info__block-item .pdp-real-homes .pdp-real-homes__title{
+  font-family: 'DM Sans';
+}
 .product-info__block-item .accordion .accordion__content.prose {
   font-weight: 400;
   font-size: 14px;
