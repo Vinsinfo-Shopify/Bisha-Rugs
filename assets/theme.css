@@ -12517,3 +12517,201 @@ a.marquee__item:hover .marquee__text {
     min-width: 0;
   }
 }
+
+/* ==========================================================================
+   Trade program - sections/trade-program.liquid
+
+   Editable content on the left, a Shopify app block (Powerful Form Builder)
+   on the right. Every rule is scoped to .trade-program, so no other section
+   and no other Powerful Form Builder form on the store is affected.
+
+   The merchant-driven values (column widths, gaps, card colours, padding)
+   are emitted as custom properties by the section itself; the fallbacks
+   below keep this file valid on its own.
+   ========================================================================== */
+
+.trade-program {
+  --trade-program-row-gap: 32px;
+  --trade-program-column-gap: 64px;
+  --trade-program-content-column: 1fr;
+  --trade-program-form-column: 1fr;
+  --trade-program-eyebrow-color: currentColor;
+  --trade-program-image-ratio: 2 / 1;
+  --trade-program-form-background: rgb(var(--background));
+  --trade-program-form-border-color: rgb(var(--border-color));
+  --trade-program-form-border-radius: 4px;
+  --trade-program-form-padding: 20px;
+}
+
+.trade-program__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--trade-program-row-gap);
+  align-items: start;
+}
+
+/* min-width: 0 on both columns keeps long form fields from pushing the grid
+   wider than the container. */
+.trade-program__content,
+.trade-program__form {
+  min-width: 0;
+}
+
+/* --- Left column ---------------------------------------------------------- */
+
+.trade-program__eyebrow {
+  margin: 0;
+  color: var(--trade-program-eyebrow-color);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.trade-program__heading {
+  margin: 12px 0 0;
+}
+
+/* Whichever element the merchant left in place leads the column. */
+.trade-program__content > :first-child {
+  margin-top: 0;
+}
+
+.trade-program__description {
+  margin-top: 16px;
+  max-width: 46ch;
+}
+
+.trade-program__description > :first-child {
+  margin-top: 0;
+}
+
+.trade-program__description > :last-child {
+  margin-bottom: 0;
+}
+
+.trade-program__media {
+  margin-top: 28px;
+}
+
+.trade-program__media :is(img, .placeholder) {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.trade-program--image-cropped .trade-program__media :is(img, .placeholder) {
+  aspect-ratio: var(--trade-program-image-ratio);
+  height: 100%;
+  object-fit: cover;
+}
+
+.trade-program__info {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 16px;
+  row-gap: 8px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trade-program__info-item {
+  display: grid;
+  row-gap: 4px;
+}
+
+.trade-program__info-value {
+  font-family: var(--heading-font-family);
+  font-style: var(--heading-font-style);
+  font-weight: var(--heading-font-weight);
+  font-size: var(--text-h3);
+  line-height: 1.3;
+}
+
+.trade-program__info-label {
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  opacity: 0.7;
+}
+
+/* --- Right column (app block container) ----------------------------------- */
+
+.trade-program__form {
+  background: var(--trade-program-form-background);
+  border: 1px solid var(--trade-program-form-border-color);
+  border-radius: var(--trade-program-form-border-radius);
+  padding: var(--trade-program-form-padding);
+}
+
+.trade-program__app-block + .trade-program__app-block {
+  margin-top: 24px;
+}
+
+/* The app block owns its own markup and settings. Only the width is
+   normalised here so the form fills - and never outgrows - the column.
+   Both selectors stay under .trade-program, so Powerful Form Builder forms
+   elsewhere on the store are untouched. */
+.trade-program .trade_program_form {
+  width: 100%;
+  max-width: 100%;
+}
+
+.trade-program .trade_program_form :is(img, iframe, table) {
+  max-width: 100%;
+}
+
+/* --- Desktop -------------------------------------------------------------- */
+
+@media screen and (min-width: 1000px) {
+  .trade-program__grid {
+    grid-template-columns:
+      minmax(0, var(--trade-program-content-column))
+      minmax(0, var(--trade-program-form-column));
+    column-gap: var(--trade-program-column-gap);
+  }
+
+  /* No app block added: the content keeps the full width instead of leaving
+     an empty half. */
+  .trade-program--no-form .trade-program__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .trade-program__heading {
+    margin-top: 16px;
+  }
+
+  .trade-program__description {
+    margin-top: 20px;
+  }
+
+  .trade-program__media {
+    margin-top: 36px;
+  }
+
+  .trade-program__info {
+    margin-top: 36px;
+    column-gap: 24px;
+  }
+}
+
+/* --- Mobile --------------------------------------------------------------- */
+
+@media screen and (max-width: 698px) {
+  .trade-program__description {
+    max-width: none;
+  }
+
+  .trade-program__media {
+    margin-top: 20px;
+  }
+
+  .trade-program__info {
+    margin-top: 20px;
+    column-gap: 12px;
+  }
+
+  .trade-program__info-value {
+    font-size: var(--text-base);
+  }
+}
