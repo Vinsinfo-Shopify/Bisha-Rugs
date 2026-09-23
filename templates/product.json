@@ -1500,6 +1500,15 @@
         "padding_right_desktop": 0
       }
     },
+    "179015785989c39d96": {
+      "type": "apps",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false
+      }
+    },
     "image_with_text_YaGxKL": {
       "type": "image-with-text",
       "blocks": {
@@ -1582,7 +1591,7 @@
         "color_scheme": "",
         "separate_section_with_border": true,
         "hide_product_information": false,
-        "custom_css_class": "recent_products",
+        "custom_css_class": "",
         "stack_products": false,
         "recommendations_count": 10,
         "products_per_row_mobile": "2",
@@ -1745,6 +1754,7 @@
     "multi_column_TxrEcw",
     "faq_PAcnCq",
     "multi_column_X7gh3E",
+    "179015785989c39d96",
     "image_with_text_YaGxKL",
     "related-products",
     "color_palette_P6iqLw",
