@@ -11904,7 +11904,9 @@ ul {
   -webkit-line-clamp: 2;
   overflow: hidden;
 }
-
+.recent_products .product-card-title,.expore-more_section .product-card-title {
+  line-height: 140%;
+}
 .product-card-title {
   font-size: 16px;
   line-height: 140%;
