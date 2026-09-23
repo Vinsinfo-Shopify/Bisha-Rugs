@@ -6643,7 +6643,9 @@ shopify-account::part(signed-out-avatar) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: center;
   }
-
+  .image_with_text_content li{
+    padding-inline-start: 0px;
+  }
   .image-with-text>.prose {
     padding-inline-start: var(--image-with-text-gap);
   }
