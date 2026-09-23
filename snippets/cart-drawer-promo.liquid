@@ -65,7 +65,12 @@
           style="--cart-drawer-promo-progress: {{ promo_progress }}%;"
         >
           <span class="cart-drawer-promo__fill"></span>
-
+          <span
+            class="cart-drawer-promo__node is-reached"
+            style="--cart-drawer-promo-node: {{ section.settings.promo_tier_1_position | default: 35 }}%;"
+          >
+            {%- render 'icon' with 'success', width: 8, class: 'cart-drawer-promo__tick' -%}
+          </span>
           <span
             class="cart-drawer-promo__node {% if tier_2_reached %}is-reached{% endif %}"
             style="--cart-drawer-promo-node: 100%;"
