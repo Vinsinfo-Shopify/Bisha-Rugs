@@ -10924,6 +10924,7 @@ ul {
   font-size: 18px;
   line-height: 140%;
   font-weight: 700;
+  color: #202020;
 }
 
 .Collection_contact_us .prose .link {
@@ -10931,9 +10932,12 @@ ul {
   font-size: 16px;
   font-weight: 600;
   line-height: 140%;
+  color: #55583C;
+
 }
 .Collection_contact_us .prose .multi-column-card_content{
   font-weight: 500;
+  color: #202020;
 }
 
 .member_stories .multi-column__item--review {
@@ -11041,6 +11045,7 @@ ul {
 
   .Collection_contact_us .multi-column-card_content {
     font-size: 14px;
+    color: #202020;
   }
 
   .Collection_contact_us .prose .link {
