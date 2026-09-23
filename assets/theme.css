@@ -12715,3 +12715,11 @@ a.marquee__item:hover .marquee__text {
     font-size: var(--text-base);
   }
 }
+@media screen and (min-width: 1000px) {
+  .application_process .section-stack {
+    padding-inline: 25px;
+  }
+  .member_stories .section-stack {
+    padding-inline: 14px;
+  }
+}
