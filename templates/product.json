@@ -737,8 +737,8 @@
         "text_color": "#000000",
         "icon_color": "#000000",
         "separator_color": "#000000",
-        "show_border_top": true,
-        "show_border_bottom": true,
+        "show_border_top": false,
+        "show_border_bottom": false,
         "border_width": 1,
         "border_color": "#e7dfcc"
       }
