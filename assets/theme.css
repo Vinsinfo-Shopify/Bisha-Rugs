@@ -3536,7 +3536,12 @@ tr[onclick]:hover {
   font-size: .625rem;
   display: flex;
 }
-
+.shopify-section shopify-section--main-product .badge{
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 160%;
+  letter-spacing: 0%;
+}
 .badge--on-sale {
   background: rgb(var(--on-sale-badge-background));
   color: rgb(var(--on-sale-badge-text));
