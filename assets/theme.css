@@ -3697,6 +3697,18 @@ tr[onclick]:hover {
   letter-spacing: 0%;
 }
 
+.image-text-card__content p{
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
+}
+.product-info__block-item[data-block-type="text"]:has(+ .product-info__block-group.feature-badge-list) .prose strong {
+  font-size: 16px;
+}
+.product-info__block-item[data-block-type="text"] + .product-info__block-group.feature-badge-list .feature-badge p{
+   line-height: 100%;
+}
 .image-text-card__info .button {
   font-weight: 700;
   font-size: 14px;
@@ -3933,15 +3945,21 @@ tr[onclick]:hover {
 .pdp-review__name {
   font-weight: 700;
   font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  vertical-align: middle;
 }
 
 .pdp-review__verified {
   align-items: center;
   column-gap: .25rem;
-  color: #1b8a4a;
+  color: #56583D;
   display: flex;
-  font-size: .75rem;
   flex-shrink: 0;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 140%;
+  letter-spacing: 0%;
 }
 
 .pdp-review__rating {
@@ -3956,10 +3974,15 @@ tr[onclick]:hover {
   column-gap: .125rem;
   display: flex;
 }
-
+.pdp-review__stars svg path{
+  fill:#000000; 
+}
 .pdp-review__rating-value {
-  color: rgb(var(--text-color) / .65);
-  font-size: .875rem;
+  color: rgb(var(--text-color));
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 140%;
+  letter-spacing: 0%;
 }
 
 .pdp-review__quote {
@@ -4023,7 +4046,6 @@ tr[onclick]:hover {
   object-fit: cover;
   display: block;
 }
-
 .pdp-contact {
   background: rgb(var(--text-color) / 0.04);
   border-radius: var(--input-border-radius);
@@ -4249,11 +4271,11 @@ tr[onclick]:hover {
 .animated-plus:before {
   width: var(--animated-plus-size);
   opacity: 1;
-  height: 1px;
+  height: 2px;
 }
 
 .animated-plus:after {
-  width: 1px;
+  width: 2px;
   height: var(--animated-plus-size);
 }
 
