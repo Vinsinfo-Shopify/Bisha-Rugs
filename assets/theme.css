@@ -3703,6 +3703,9 @@ tr[onclick]:hover {
 .product-info__block-item[data-block-type="text"]:has(+ .product-info__block-group.feature-badge-list) .prose strong {
   font-size: 16px;
 }
+.product-info__block-item[data-block-type="text"] + .product-info__block-group.feature-badge-list .feature-badge p{
+   line-height: 100%;
+}
 .image-text-card__info .button {
   font-weight: 700;
   font-size: 14px;
