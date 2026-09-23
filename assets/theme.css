@@ -12145,7 +12145,7 @@ ul {
 }
 
 .comparison-table__cell--last-column {
-    background: var(--ct-background);
+  background: var(--ct-background);
 }
 
 .comparison-table__cell--head,
