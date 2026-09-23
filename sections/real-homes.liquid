@@ -141,7 +141,7 @@
         /* The theme's button is replaced by the overlay below: its SVG lives in a
        shadow root and cannot be resized or recoloured to match the design. */
     #shopify-section-{{ section.id }} .real-homes__media video-media::part(play-button) {
-      opacity: 0;
+      display: none;
     }
 
     /* Shown whenever a video card is not playing — before the first play and
@@ -532,10 +532,37 @@ width: 28px;
               if (!card || !this.track.contains(card)) return;
 
               const video = card.querySelector('video');
-              if (!video) return;
 
               event.preventDefault();
               event.stopPropagation();
+
+              // No <video> yet: video-media defers it. Firing the theme's own
+              // button is what loads the source, starts playback and registers
+              // the video with its group. A programmatic click works even
+              // though the button is display: none.
+              if (!video) {
+                console.log('first click: no video yet');
+                const host = card.querySelector('video-media');
+                const btn = host && host.shadowRoot
+                  && host.shadowRoot.querySelector('[part~="play-button"]');
+                if (!btn) return;
+
+                btn.click();
+
+                let tries = 0;
+                const start = () => {
+                  const v = card.querySelector('video');
+                  if (v) {
+                    console.log('video appeared after', tries, 'frames, paused:', v.paused);
+                    if (v.hasAttribute('poster')) v.removeAttribute('poster');
+                    if (v.paused) v.play();
+                    return;
+                  }
+                  if (++tries < 30) requestAnimationFrame(start);
+                };
+                requestAnimationFrame(start);
+                return;
+              }
 
               if (video.paused) {
                 if (video.hasAttribute('poster')) video.removeAttribute('poster');
