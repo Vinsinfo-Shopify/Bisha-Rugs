@@ -531,8 +531,22 @@ width: 28px;
               const card = event.target.closest('.real-homes__card');
               if (!card || !this.track.contains(card)) return;
 
-              const video = card.querySelector('video');
-              if (!video) return;
+                            const video = card.querySelector('video');
+
+              // First click on a deferred card: no <video> exists yet. Fire the
+              // theme's own button so video-media loads the source, starts it,
+              // and registers it with its group — then let it handle this click.
+              if (!video) {
+                const host = card.querySelector('video-media');
+                const btn = host && host.shadowRoot
+                  && host.shadowRoot.querySelector('[part~="play-button"]');
+                if (btn) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  btn.click();
+                }
+                return;
+              }
 
               event.preventDefault();
               event.stopPropagation();
