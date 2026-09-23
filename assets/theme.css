@@ -3536,7 +3536,7 @@ tr[onclick]:hover {
   font-size: .625rem;
   display: flex;
 }
-.shopify-section shopify-section--main-product .badge-list .badge {
+.shopify-section--main-product .badge-list .badge {
     border-style: solid;
     border-color: #fff;
     border-width: 1px 1px 1px 0px;
