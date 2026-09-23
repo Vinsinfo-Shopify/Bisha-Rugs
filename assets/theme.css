@@ -3439,7 +3439,11 @@ tr[onclick]:hover {
   line-height: 140%;
   letter-spacing: 0%;
 }
-
+@media screen and (max-width: 700px) {
+  .product-info__block-item[data-block-type="feature-with-icon"] .feature-badge {
+    font-size: 12px;
+  }
+}
 .text-with-icon>svg {
   flex-shrink: 0;
 }
