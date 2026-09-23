@@ -718,7 +718,7 @@
         "icon_size_mobile": 20,
         "icon_stroke_width": 1,
         "icon_gap": 6,
-        "text_font": "body",
+        "text_font": "heading",
         "text_size": 18,
         "text_size_mobile": 16,
         "text_weight": "400",
