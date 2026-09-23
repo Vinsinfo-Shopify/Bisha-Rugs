@@ -236,7 +236,9 @@
   .shopify-section--main-product .pdp-rating .rating-badge__stars > svg {
     width: {{ section.settings.rating_star_size }}px;
     height: {{ section.settings.rating_star_size }}px;
-    color: #B18D4C;
+  }
+  .shopify-section--main-product .pdp-rating .rating-badge__stars > svg > path{
+   fill: #B18D4C;
   }
 
   {%- comment -%}
