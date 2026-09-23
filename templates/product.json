@@ -730,7 +730,7 @@
         "item_gap": 40,
         "item_gap_mobile": 12,
         "padding_top": 10,
-        "padding_bottom": 12,
+        "padding_bottom": 10,
         "padding_top_mobile": 8,
         "padding_bottom_mobile": 8,
         "background": "#f3eee4",
