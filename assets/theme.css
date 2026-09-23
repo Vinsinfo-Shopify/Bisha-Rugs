@@ -4097,6 +4097,7 @@ tr[onclick]:hover {
   column-gap: 1rem;
   padding: 12px;
   display: flex;
+  margin-block-start: 10px;
 }
 
 .pdp-consultation__image {
