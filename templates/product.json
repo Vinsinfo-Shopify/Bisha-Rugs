@@ -714,7 +714,7 @@
         "duration_mobile": 25,
         "pause_on_hover": true,
         "fade_edges": false,
-        "icon_size": 22,
+        "icon_size": 20,
         "icon_size_mobile": 20,
         "icon_stroke_width": 1,
         "icon_gap": 6,
