@@ -236,7 +236,7 @@
     {%- endif -%}
    
     {%- liquid
-      assign product_tag = product.type
+      assign product_tag = product.type | replace: 'Rugs','' | replace: 'rugs',''
     -%}
 
 {%- unless hide_product_information -%}
