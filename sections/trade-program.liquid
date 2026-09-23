@@ -1,0 +1,482 @@
+{%- comment -%}
+  ------------------------------------------------------------------------------------------------------------------------
+  TRADE PROGRAM
+
+  Two-column layout:
+    - Left  : merchant-editable content (eyebrow, heading, description, image, three information items).
+    - Right : a Shopify app block. The Powerful Form Builder block is picked through "Add block" in the theme editor,
+              and already carries its own `trade_program_form` class, so no form markup is recreated here.
+
+  The section renders correctly with or without an app block. Static styles live in assets/theme.css under
+  `.trade-program`; only the merchant-driven custom properties are emitted below.
+  ------------------------------------------------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- liquid
+  assign app_block_count = 0
+  for block in section.blocks
+    if block.type == '@app'
+      assign app_block_count = app_block_count | plus: 1
+    endif
+  endfor
+
+  assign show_form_column = false
+  if app_block_count > 0 or request.design_mode
+    assign show_form_column = true
+  endif
+
+  assign has_info_items = false
+  if section.settings.info_1_value != blank
+    assign has_info_items = true
+  elsif section.settings.info_2_value != blank
+    assign has_info_items = true
+  elsif section.settings.info_3_value != blank
+    assign has_info_items = true
+  endif
+
+  assign form_column_width = 100 | minus: section.settings.content_column_width
+
+  assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    padding-block-start: {{ section.settings.padding_top_mobile }}px;
+    padding-block-end: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  #shopify-section-{{ section.id }} .trade-program {
+    --trade-program-row-gap: {{ section.settings.row_gap_mobile }}px;
+    --trade-program-content-column: {{ section.settings.content_column_width }}fr;
+    --trade-program-form-column: {{ form_column_width }}fr;
+    --trade-program-form-padding: {{ section.settings.form_padding_mobile }}px;
+    --trade-program-form-border-radius: {{ section.settings.form_border_radius }}px;
+
+    {%- if section.settings.eyebrow_color != blank and section.settings.eyebrow_color != 'rgba(0,0,0,0)' -%}
+      --trade-program-eyebrow-color: {{ section.settings.eyebrow_color }};
+    {%- endif -%}
+
+    {%- if section.settings.form_background != blank and section.settings.form_background != 'rgba(0,0,0,0)' -%}
+      --trade-program-form-background: {{ section.settings.form_background }};
+    {%- endif -%}
+
+    {%- if section.settings.form_border_color != blank and section.settings.form_border_color != 'rgba(0,0,0,0)' -%}
+      --trade-program-form-border-color: {{ section.settings.form_border_color }};
+    {%- endif -%}
+
+    {%- if section.settings.image_ratio != 'adapt' -%}
+      --trade-program-image-ratio: {{ section.settings.image_ratio }};
+    {%- endif -%}
+  }
+
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} {
+      padding-block-start: {{ section.settings.padding_top_desktop }}px;
+      padding-block-end: {{ section.settings.padding_bottom_desktop }}px;
+    }
+
+    #shopify-section-{{ section.id }} .trade-program {
+      --trade-program-column-gap: {{ section.settings.column_gap_desktop }}px;
+      --trade-program-form-padding: {{ section.settings.form_padding_desktop }}px;
+    }
+  }
+</style>
+
+<div class="trade-program color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }}{% unless section.settings.remove_section_spacing %} section-spacing{% endunless %}{% if section.settings.separate_section_with_border %} bordered-section{% endif %}{% if section.settings.image_ratio != 'adapt' %} trade-program--image-cropped{% endif %}{% unless show_form_column %} trade-program--no-form{% endunless %}{% if section.settings.custom_class != blank %} {{ section.settings.custom_class }}{% endif %}">
+  <div class="container">
+    <div class="trade-program__grid">
+      {%- comment -%}
+        --------------------------------------------------------------------------------------------------------------
+        LEFT COLUMN — theme editor managed content
+        --------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+
+      <div class="trade-program__content">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="trade-program__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="trade-program__heading {{ section.settings.heading_style | default: 'h2' }}">
+            {{- section.settings.heading -}}
+          </h2>
+        {%- endif -%}
+
+        {%- if section.settings.description != blank -%}
+          <div class="trade-program__description">{{ section.settings.description }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.image != blank -%}
+          <div class="trade-program__media">
+            {%- capture image_sizes -%}(max-width: 999px) 100vw, min(650px, 50vw){%- endcapture -%}
+
+            {{-
+              section.settings.image
+              | image_url: width: section.settings.image.width
+              | image_tag:
+                loading: 'lazy',
+                sizes: image_sizes,
+                widths: '300,400,500,600,700,800,900,1000,1200,1400'
+            -}}
+          </div>
+        {%- elsif request.design_mode -%}
+          <div class="trade-program__media">
+            {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder' -}}
+          </div>
+        {%- endif -%}
+
+        {%- if has_info_items -%}
+          <ul class="trade-program__info" role="list">
+            {%- for index in (1..3) -%}
+              {%- liquid
+                case index
+                  when 1
+                    assign info_value = section.settings.info_1_value
+                    assign info_label = section.settings.info_1_label
+                  when 2
+                    assign info_value = section.settings.info_2_value
+                    assign info_label = section.settings.info_2_label
+                  else
+                    assign info_value = section.settings.info_3_value
+                    assign info_label = section.settings.info_3_label
+                endcase
+              -%}
+
+              {%- if info_value != blank or info_label != blank -%}
+                <li class="trade-program__info-item">
+                  {%- if info_value != blank -%}
+                    <span class="trade-program__info-value">{{ info_value }}</span>
+                  {%- endif -%}
+
+                  {%- if info_label != blank -%}
+                    <span class="trade-program__info-label">{{ info_label }}</span>
+                  {%- endif -%}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%}
+        --------------------------------------------------------------------------------------------------------------
+        RIGHT COLUMN — app block container (Powerful Form Builder)
+
+        Only "@app" blocks are rendered, so adding, removing or reordering the block in the theme editor is safe. When
+        no app block is present the column collapses on the storefront and the left content takes the full width.
+        --------------------------------------------------------------------------------------------------------------
+      {%- endcomment -%}
+
+      {%- if show_form_column -%}
+        <div class="trade-program__form">
+          {%- for block in section.blocks -%}
+            {%- if block.type == '@app' -%}
+              <div class="trade-program__app-block" {{ block.shopify_attributes }}>
+                {%- render block -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if app_block_count == 0 and request.design_mode -%}
+            {%- assign app_block_placeholder = 'Use "Add block" to place the Powerful Form Builder app block here.' -%}
+            {%- render 'banner', content: app_block_placeholder, text_alignment: 'center' -%}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Trade program",
+  "class": "shopify-section--trade-program",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Two-column section: editable content on the left, and an app block (Powerful Form Builder) added through \"Add block\" on the right."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "separate_section_with_border",
+      "label": "t:global.section.separate_section_with_border",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class",
+      "info": "Add one or more space-separated classes to target this section with custom CSS."
+    },
+    {
+      "type": "header",
+      "content": "t:global.text.content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Join the trade program"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow color",
+      "default": "#b35642"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:global.text.heading",
+      "default": "Exclusive Rug Rates Your Clients Won't Find Elsewhere"
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "t:global.text.heading_style",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:global.text.content",
+      "default": "<p>Partner with Bisha Rugs for trade pricing, dedicated support, and rugs made to your project's exact palette and scale.</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:global.image.image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:global.image.image"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "adapt", "label": "t:global.sizes.original_image_ratio" },
+        { "value": "2 / 1", "label": "2:1" },
+        { "value": "16 / 9", "label": "16:9" },
+        { "value": "3 / 2", "label": "3:2" },
+        { "value": "4 / 3", "label": "4:3" },
+        { "value": "1 / 1", "label": "1:1" }
+      ],
+      "default": "2 / 1"
+    },
+    {
+      "type": "header",
+      "content": "Information items"
+    },
+    {
+      "type": "text",
+      "id": "info_1_value",
+      "label": "Discount",
+      "default": "Up to 30%"
+    },
+    {
+      "type": "text",
+      "id": "info_1_label",
+      "label": "Discount label",
+      "default": "Trade discount"
+    },
+    {
+      "type": "text",
+      "id": "info_2_value",
+      "label": "Approval time",
+      "default": "48 hrs"
+    },
+    {
+      "type": "text",
+      "id": "info_2_label",
+      "label": "Approval time label",
+      "default": "Average approval"
+    },
+    {
+      "type": "text",
+      "id": "info_3_value",
+      "label": "Shipping",
+      "default": "Free"
+    },
+    {
+      "type": "text",
+      "id": "info_3_label",
+      "label": "Shipping label",
+      "default": "Shipping"
+    },
+    {
+      "type": "header",
+      "content": "Form column"
+    },
+    {
+      "type": "paragraph",
+      "content": "The form itself is managed in the Powerful Form Builder app. Only the container around it is styled here."
+    },
+    {
+      "type": "color",
+      "id": "form_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "form_border_color",
+      "label": "t:global.colors.border",
+      "default": "#e7e0d4"
+    },
+    {
+      "type": "range",
+      "id": "form_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "form_padding_desktop",
+      "label": "Padding (desktop)",
+      "min": 0,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "form_padding_mobile",
+      "label": "Padding (mobile)",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "t:global.sizes.size"
+    },
+    {
+      "type": "range",
+      "id": "content_column_width",
+      "label": "Left column width (desktop)",
+      "min": 35,
+      "max": 65,
+      "step": 1,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "column_gap_desktop",
+      "label": "Column gap (desktop)",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "label": "Row gap (mobile)",
+      "min": 12,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "t:global.padding.section_padding_heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_section_spacing",
+      "label": "t:global.spacing.remove_vertical_spacing",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:global.padding.mobile_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "t:global.padding.padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "t:global.padding.padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:global.padding.desktop_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "t:global.padding.padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "t:global.padding.padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trade program",
+      "category": "t:global.categories.call_to_action",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}
