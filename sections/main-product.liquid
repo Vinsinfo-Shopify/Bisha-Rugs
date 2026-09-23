@@ -166,7 +166,7 @@
 
           <div class="v-stack">
             <span class="h6">{{ product.title }}</span>
-            <div class="v-stack">
+            <div class="v-stack gap-1">
               {%- if product.selected_or_first_available_variant != null -%}
                 {%- render 'price-list', variant: product.selected_or_first_available_variant, hide_unit_price: true, context: 'card' -%}
               {%- endif -%}
