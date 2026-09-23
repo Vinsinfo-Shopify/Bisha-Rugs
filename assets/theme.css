@@ -11907,7 +11907,7 @@ ul {
 
 .product-card-title {
   font-size: 16px;
-  line-height: 22px;
+  line-height: 140%;
   font-weight: 700;
   min-height: calc(22px * 2);
 }
