@@ -1469,7 +1469,7 @@
       ],
       "name": "t:sections.multi_column.presets.multi_column.name",
       "settings": {
-        "color_scheme": "",
+        "color_scheme": "scheme-2",
         "custom_class": "featured_in",
         "separate_section_with_border": true,
         "remove_section_spacing": false,
