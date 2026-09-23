@@ -327,13 +327,10 @@
             if (!container) return;
             var first = container.querySelector('details');
             if (!first) return;
-
-            first.open = true;
-            first.setAttribute('aria-expanded', 'true');
           })();
         </script>
 
-                <script>
+        <script>
           if (!customElements.get('faq-accordion-group')) {
             customElements.define(
               'faq-accordion-group',
