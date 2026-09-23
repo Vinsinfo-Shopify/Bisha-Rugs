@@ -488,8 +488,9 @@
           "type": "card",
           "settings": {
             "enabled": true,
+            "video": "shopify://files/videos/Hey friends! I’m so excited to share this incredible upgrade in our library room. True quality a_de4e250a-0244-40f4-b22e-2743aff23d0c.mp4",
             "image": "shopify://shop_images/Shop_by_Style_-_Abstract.png",
-            "product": "hand-knotted-oushak-wool-rug-gray-ivory-and-pastel-turkish-carpet",
+            "product": "l-030-cleo-hand-knotted-rug-bisha-rugs",
             "link": ""
           }
         },
@@ -497,8 +498,9 @@
           "type": "card",
           "settings": {
             "enabled": true,
+            "video": "shopify://files/videos/No todas las alfombras se sienten iguales… y esta lo demuestra al instante ✨Handcrafted in India.mp4",
             "image": "shopify://shop_images/Shop_by_Style_-_Minimalist.png",
-            "product": "white-color-modern-design-rug-bisha-rugs",
+            "product": "hand-knotted-wool-oushak-rug-brown-ivory-antique-style",
             "link": ""
           }
         },
@@ -506,8 +508,9 @@
           "type": "card",
           "settings": {
             "enabled": true,
+            "video": "shopify://files/videos/1.mov",
             "image": "shopify://shop_images/Shop_by_Style_-_Floral.png",
-            "product": "l-030-cleo-hand-knotted-rug-bisha-rugs",
+            "product": "white-color-modern-design-rug-bisha-rugs",
             "link": ""
           }
         },
