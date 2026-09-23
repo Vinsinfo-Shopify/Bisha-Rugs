@@ -1,18 +1,20 @@
 {%- liquid
-  assign tier_1_amount = 0
-  assign tier_2_amount = 0
+    assign tier_1_amount = 0
+  assign tier_1_reached = false
 
-  if section.settings.promo_tier_1_threshold > 0
-    assign tier_1_amount = section.settings.promo_tier_1_threshold | times: 100
+  assign first_order_eligible = true
+  if customer != blank and customer.orders_count > 0
+    assign first_order_eligible = false
   endif
 
+  assign tier_2_amount = 0
   if section.settings.promo_tier_2_threshold > 0
     assign tier_2_amount = section.settings.promo_tier_2_threshold | times: 100
   endif
 
-  assign tier_1_reached = false
-  if tier_1_amount > 0 and cart.total_price >= tier_1_amount
-    assign tier_1_reached = true
+  assign tier_2_reached = false
+  if tier_2_amount > 0 and cart.total_price >= tier_2_amount
+    assign tier_2_reached = true
   endif
 
   assign compare_at_savings = 0
