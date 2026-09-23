@@ -18,7 +18,7 @@
 {%- enddoc -%}
 
 {%- liquid
-  assign product_tag = product.type
+  assign product_tag = product.type | replace: ' Rugs', '' 
 -%}
 
 {%- if product_tag != blank -%}
