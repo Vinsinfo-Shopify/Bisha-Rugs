@@ -900,7 +900,7 @@
       "name": "t:sections.image_with_text.presets.image_with_text.name",
       "settings": {
         "color_scheme": "scheme-1",
-        "custom_class": "who_we_are",
+        "custom_class": "who_we_are why_oushak_section",
         "separate_section_with_border": false,
         "padding_top": 60,
         "padding_bottom": 60,
