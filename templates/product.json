@@ -33,7 +33,7 @@
         "info_row_gap_mobile": 6,
         "description_points": 2,
         "description_line_gap": 6,
-        "price_gap": 12,
+        "price_gap": 6,
         "pill_gap": 12,
         "pill_background": "#ffffff",
         "badge_top": 10,
