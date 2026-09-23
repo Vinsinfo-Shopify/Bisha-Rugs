@@ -3668,6 +3668,7 @@ tr[onclick]:hover {
   border-radius: var(--input-border-radius);
   object-fit: cover;
   flex-shrink: 0;
+ 
 }
 
 .image-text-card--checklist {
@@ -3677,6 +3678,7 @@ tr[onclick]:hover {
 .image-text-card--checklist .image-text-card__image {
   height: auto;
   align-self: stretch;
+  max-height: 131px;
 }
 
 .image-text-card__heading {
