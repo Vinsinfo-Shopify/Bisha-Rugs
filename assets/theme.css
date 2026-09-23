@@ -3971,7 +3971,9 @@ tr[onclick]:hover {
   column-gap: .125rem;
   display: flex;
 }
-
+.pdp-review__stars svg path{
+  fill:#000000; 
+}
 .pdp-review__rating-value {
   color: rgb(var(--text-color));
   font-weight: 500;
