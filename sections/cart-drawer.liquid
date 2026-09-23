@@ -116,7 +116,9 @@
       {%- endfor -%}
     </div>
 
-    {%- render 'cart-drawer-customers-also-bought', section: section -%}
+    {%- if section.settings.show_cross_sell -%}
+      {%- render 'cart-drawer-customers-also-bought', section: section -%}
+    {%- endif -%}
 
     {%- render 'cart-drawer-contact', section: section -%}
 
