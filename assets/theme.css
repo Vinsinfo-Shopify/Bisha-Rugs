@@ -4268,11 +4268,11 @@ tr[onclick]:hover {
 .animated-plus:before {
   width: var(--animated-plus-size);
   opacity: 1;
-  height: 1px;
+  height: 2px;
 }
 
 .animated-plus:after {
-  width: 1px;
+  width: 2px;
   height: var(--animated-plus-size);
 }
 
