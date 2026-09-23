@@ -3873,7 +3873,7 @@ tr[onclick]:hover {
     font-size: 13px;
   }
   .accordion-option-card img{
-    display: none;
+    display: none !important;
   }
   .accordion-option-card__image {
     width: 100%;
