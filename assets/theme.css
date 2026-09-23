@@ -11897,6 +11897,12 @@ ul {
   font-weight: 700;
   font-family: var(--text-font-family);
 }
+.shopify-section--main-product .product-info .complementary-products .rating-badge .text-xxs.text-subdued{
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 140%;
+  letter-spacing: 0%;
+}
 .shopify-section--main-product .product-info .complementary-products .gap-1 {
     gap: 5px;
 }
