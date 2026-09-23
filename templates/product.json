@@ -1591,7 +1591,7 @@
         "color_scheme": "",
         "separate_section_with_border": true,
         "hide_product_information": false,
-        "custom_css_class": "",
+        "custom_css_class": "expore-more_section",
         "stack_products": false,
         "recommendations_count": 10,
         "products_per_row_mobile": "2",
