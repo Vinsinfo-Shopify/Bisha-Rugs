@@ -12258,11 +12258,13 @@ ul {
 
   .comparison-table__scroller::-webkit-scrollbar {
     height: 3px;
+    border-radius: 10px;
   }
 
   .comparison-table__scroller::-webkit-scrollbar-track {
     background: rgb(0 0 0 / 0.08);
     border-radius: 3px;
+    border-radius: 10px;
   }
 
   .comparison-table__scroller::-webkit-scrollbar-thumb {
