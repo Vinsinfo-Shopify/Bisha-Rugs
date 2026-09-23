@@ -3867,22 +3867,7 @@ tr[onclick]:hover {
 }
 
 @media screen and (max-width: 699px) {
-  .image-text-card {
-    flex-direction: column;
-  }
-
-  .image-text-card__heading {
-    margin-block-start: 10px;
-  }
-
-  .image-text-card__image {
-    width: 100% !important;
-    height: 160px !important;
-  }
-
-  .accordion-tags {
-    column-gap: .5rem;
-  }
+ 
 
   .accordion-tag {
     padding: .4rem .65rem;
