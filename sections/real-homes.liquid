@@ -532,13 +532,21 @@ width: 28px;
               if (!card || !this.track.contains(card)) return;
 
               const video = card.querySelector('video');
-              if (!video || (video.paused && video.currentTime === 0 && !video.dataset.rhStarted)) {
-                if (video) video.dataset.rhStarted = '1';
-                return;
-              }
 
               event.preventDefault();
               event.stopPropagation();
+
+              // No <video> yet: video-media defers it. Firing the theme's own
+              // button is what loads the source, starts playback and registers
+              // the video with its group. A programmatic click works even
+              // though the button is display: none.
+              if (!video) {
+                const host = card.querySelector('video-media');
+                const btn = host && host.shadowRoot
+                  && host.shadowRoot.querySelector('[part~="play-button"]');
+                if (btn) btn.click();
+                return;
+              }
 
               if (video.paused) {
                 if (video.hasAttribute('poster')) video.removeAttribute('poster');
