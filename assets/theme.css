@@ -3443,6 +3443,9 @@ tr[onclick]:hover {
   .product-info__block-item[data-block-type="feature-with-icon"] .feature-badge {
     font-size: 12px;
   }
+  .feature-badge-list{
+     gap: 10px;
+  }
 }
 .text-with-icon>svg {
   flex-shrink: 0;
