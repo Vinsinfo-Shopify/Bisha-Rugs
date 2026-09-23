@@ -3700,6 +3700,9 @@ tr[onclick]:hover {
   line-height: 140%;
   letter-spacing: 0%;
 }
+.product-info__block-item[data-block-type="text"]:has(+ .product-info__block-group.feature-badge-list) .prose strong {
+  font-size: 16px;
+}
 .image-text-card__info .button {
   font-weight: 700;
   font-size: 14px;
