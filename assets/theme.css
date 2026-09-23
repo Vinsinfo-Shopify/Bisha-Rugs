@@ -3733,7 +3733,7 @@ tr[onclick]:hover {
 
 .image-text-card--checklist .prose li {
   position: relative;
-  padding-inline-start: 1.2em;
+  padding-inline-start: 1.5em;
   margin-block-start: 0 !important;
   flex: 0 0 auto;
   display: flex;
