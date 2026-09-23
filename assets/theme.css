@@ -12112,7 +12112,9 @@ ul {
 
 .comparison-table__scroller {
   overflow-x: auto;
-  overscroll-behavior-x: contain;
+}
+
+.comparison-table__scroller:focus-visible {
   outline: 2px solid var(--ct-heading-color);
   outline-offset: 2px;
 }
@@ -12258,18 +12260,16 @@ ul {
 
   .comparison-table__scroller::-webkit-scrollbar {
     height: 3px;
-    border-radius: 10px;
   }
 
   .comparison-table__scroller::-webkit-scrollbar-track {
     background: rgb(0 0 0 / 0.08);
-    border-radius: 310px;
-    border-radius: 10px;
+    border-radius: 3px;
   }
 
   .comparison-table__scroller::-webkit-scrollbar-thumb {
     background: var(--ct-scrollbar-color);
-    border-radius: 10px;
+    border-radius: 3px;
   }
 }
 
