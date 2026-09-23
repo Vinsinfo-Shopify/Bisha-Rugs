@@ -4130,7 +4130,9 @@ tr[onclick]:hover {
 .pdp-consultation__heading {
   margin: 0;
   font-weight: 700;
-  font-size: .875rem;
+  font-size: 14px;
+  line-height: 140%;
+  color: rgb(var(--text-color));
 }
 
 .pdp-consultation__text {
