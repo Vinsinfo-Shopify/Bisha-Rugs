@@ -125,6 +125,7 @@
       column-gap: 121px;
       row-gap: 0;
       align-items: start;
+      padding-left: 10px;
     }
   }
 </style>
@@ -224,7 +225,7 @@
                   </faq-toc>
                 {%- endif -%}
 
-                  <div class="faq__content">
+                  <faq-accordion-group class="faq__content">
                     {%- if dynamic_faqs != blank -%}
 
                       {%- assign first_question_rendered = false -%}
@@ -304,7 +305,7 @@
                       {%- endfor -%}
 
                     {%- endif -%}
-                  </div>
+                  </faq-accordion-group>
               </div>
             </div>
           </div>
@@ -325,8 +326,61 @@
             var container = document.querySelector('#shopify-section-{{ section.id }} .faq__content');
             if (!container) return;
             var first = container.querySelector('details');
-            if (first) first.open = true;
+            if (!first) return;
+
+            first.open = true;
+            first.setAttribute('aria-expanded', 'true');
           })();
+        </script>
+
+        <script>
+          if (!customElements.get('faq-accordion-group')) {
+            customElements.define(
+              'faq-accordion-group',
+              class extends HTMLElement {
+                constructor() {
+                  super();
+                  this.onClick = this.onClick.bind(this);
+                }
+
+                connectedCallback() {
+                  this.addEventListener('click', this.onClick);
+                }
+
+                disconnectedCallback() {
+                  this.removeEventListener('click', this.onClick);
+                }
+
+                onClick(event) {
+                  var summary = event.target.closest('summary');
+                  if (!summary) return;
+
+                  var current = summary.closest('accordion-disclosure');
+                  if (!current || !this.contains(current)) return;
+
+                  var details = current.querySelector('details');
+                  if (!details || details.getAttribute('aria-expanded') !== 'true') return;
+
+                  Array.prototype.forEach.call(
+                    this.querySelectorAll('accordion-disclosure'),
+                    function (other) {
+                      if (other === current) return;
+
+                      var otherDetails = other.querySelector('details');
+                      if (!otherDetails || !otherDetails.open) return;
+
+                      if (typeof other.close === 'function') {
+                        other.close();
+                      } else {
+                        otherDetails.open = false;
+                        otherDetails.setAttribute('aria-expanded', 'false');
+                      }
+                    }
+                  );
+                }
+              }
+            );
+          }
         </script>
 
         {%- comment -%}We also output the content with JSON microdata for SEO{%- endcomment -%}
