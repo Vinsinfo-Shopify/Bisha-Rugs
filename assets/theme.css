@@ -4114,7 +4114,11 @@ tr[onclick]:hover {
   object-fit: cover;
   flex-shrink: 0;
 }
-
+@media screen and (max-width: 551px) {
+  .pdp-consultation__image {
+    height: 120px;
+  }
+}
 .pdp-consultation__body {
   row-gap: .25rem;
   flex: 1 1 auto;
