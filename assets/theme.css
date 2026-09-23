@@ -6581,7 +6581,9 @@ shopify-account::part(signed-out-avatar) {
     min-width: 100%;
   }
 }
-
+.why_oushak_section .image-with-text {
+  gap: 50px;
+}
 .image-with-text {
   display: grid;
   overflow: hidden;
