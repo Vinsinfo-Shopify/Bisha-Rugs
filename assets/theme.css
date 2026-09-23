@@ -11893,7 +11893,7 @@ ul {
   shape-rendering: geometricPrecision;
 }
 
-.product-card-title {
+.product-card-title, .recent_products .product-card-title,.expore-more_section .product-card-title {
   font-family: var(--text-font-family);
   font-size: 18px;
   line-height: 25px;
