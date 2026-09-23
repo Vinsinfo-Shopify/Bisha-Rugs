@@ -12113,9 +12113,6 @@ ul {
 .comparison-table__scroller {
   overflow-x: auto;
   overscroll-behavior-x: contain;
-}
-
-.comparison-table__scroller:focus-visible {
   outline: 2px solid var(--ct-heading-color);
   outline-offset: 2px;
 }
