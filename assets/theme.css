@@ -11897,7 +11897,9 @@ ul {
   font-weight: 700;
   font-family: var(--text-font-family);
 }
-
+.shopify-section--main-product .product-info .complementary-products .gap-1 {
+    gap: 5px;
+}
 .shopify-section--main-product .complementary-products .product-card__tag-wrapper {
   display: none;
 }
