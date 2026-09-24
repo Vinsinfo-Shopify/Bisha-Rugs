@@ -267,7 +267,13 @@
 
     --accent: {{ color_scheme.settings.primary_button_background.rgb }};
     --text-color: {{ color_scheme.settings.text_color.rgb }};
+
     --background: {{ color_scheme.settings.background.rgba }};
+    @media screen and (min-width: 1000px) {
+      {%- if  color_scheme.settings.background.rgba == 'rgba(0,0,0,0)' -%}
+       --background: {{ settings.color_schemes[0].settings.background.rgb }};
+      {%- endif -%}
+    }
     --background-without-opacity: {{ color_scheme.settings.background.rgb }};
     --background-gradient: {{ color_scheme.settings.background_gradient }};
 
