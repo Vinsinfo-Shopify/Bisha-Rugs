@@ -204,6 +204,50 @@
       color: inherit;
       text-decoration: none;
     }
+        /* Playing: the same circle, two bars instead of the triangle. */
+    #shopify-section-{{ section.id }} .real-homes__card:has(video).is-playing .real-homes__media::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 69.5px;
+      height: 69.5px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: rgb(34 34 34 / 0.36);
+      backdrop-filter: blur(3.27px);
+      -webkit-backdrop-filter: blur(3.27px);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__card:has(video).is-playing:hover .real-homes__media::after {
+      opacity: 1;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__card:has(video).is-playing .real-homes__media::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 26px;
+      height: 32px;
+      transform: translate(-50%, -50%);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 32'%3E%3Crect x='2' y='2' width='8' height='28' rx='1.6' fill='%23FFFFFF'/%3E%3Crect x='16' y='2' width='8' height='28' rx='1.6' fill='%23FFFFFF'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__card:has(video).is-playing:hover .real-homes__media::before {
+      opacity: 1;
+    }
 
     #shopify-section-{{ section.id }} .real-homes__thumb {
       width: 50px;
