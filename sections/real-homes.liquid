@@ -595,7 +595,11 @@ width: 28px;
             this.track.removeEventListener('scroll', this.onScroll);
             window.removeEventListener('resize', this.onScroll);
             if (this.onPointerMove) window.removeEventListener('pointermove', this.onPointerMove);
-            if (this.onPointerUp) window.removeEventListener('pointerup', this.onPointerUp);
+            if (this.onPointerUp) {
+              window.removeEventListener('pointerup', this.onPointerUp);
+              window.removeEventListener('pointercancel', this.onPointerUp);
+              window.removeEventListener('blur', this.onPointerUp);
+            }
           }
 
           makeClone(card) {
