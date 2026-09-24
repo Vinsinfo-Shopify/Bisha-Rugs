@@ -3785,7 +3785,7 @@ tr[onclick]:hover {
     column-gap: .8rem;
   }
   .pdp-contact{
-    padding: 7px;
+    padding: 10px 7px !important;
   }
 }
 @media screen and (max-width: 480px) {
