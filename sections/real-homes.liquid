@@ -622,16 +622,15 @@ width: 28px;
                       this.track.style.scrollBehavior = 'auto';
                       this.track.scrollLeft += real.offsetLeft - card.offsetLeft;
                       this.track.style.scrollBehavior = previous;
-                      landed = real;
+                                            landed = real;
+                      // Only re-centre when a clone jump actually moved things.
+                      // Doing it unconditionally caused a visible nudge after
+                      // the scroll had already settled.
+                      this.cards.forEach((c) => c.classList.toggle('is-active', c === landed));
+                      this.centre(landed, true);
                     }
                   }
 
-                  this.cards.forEach((c) => c.classList.toggle('is-active', c === landed));
-                  this.centre(landed, true);
-
-                  // One click centres AND plays. Done here rather than on the
-                  // click itself so the group pause fires after the card has
-                  // landed, not while it is still animating.
                   this.play(landed);
                 }, 600);
                 return;
