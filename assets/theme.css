@@ -3771,8 +3771,11 @@ tr[onclick]:hover {
 }
 @media screen and (max-width: 551px) {
   .image-text-card {
-    column-gap: 10px;
+    column-gap: 7px;
     padding: 7px;
+  }
+  .image-text-card--checklist .image-text-card__image{
+   width: 82px;
   }
 }
 .accordion-tags {
