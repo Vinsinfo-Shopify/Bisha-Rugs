@@ -549,12 +549,20 @@ width: 28px;
               const started = existing && existing.currentTime > 0;
                                           console.log('click:', card.dataset.rhIndex, 'started:', started, 'active:', card.classList.contains('is-active'), 'offset:', this.centreOffset(card), 'scrollLeft:', this.track.scrollLeft);
 
-              if (!started && !card.classList.contains('is-active')) {
+                            if (!started && !card.classList.contains('is-active')) {
                 event.preventDefault();
                 event.stopPropagation();
+
+                // centre() scrolls, which fires scroll, which schedules
+                // settle(). settle() then re-centres on whatever nearest()
+                // picks mid-animation — the card we just left. busy blocks that
+                // until the animation has finished.
+                this.busy = true;
                 this.centre(card, false);
                 this.mark();
-                requestAnimationFrame(() => this.centre(this.track.querySelector('.is-active'), false));
+                setTimeout(() => {
+                  this.busy = false;
+                }, 600);
                 return;
               }
 
