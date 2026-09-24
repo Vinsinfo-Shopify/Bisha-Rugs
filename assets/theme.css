@@ -3774,6 +3774,9 @@ tr[onclick]:hover {
     column-gap: 7px;
     padding: 7px;
   }  
+  .image-text-card__heading {
+    font-size: 14px;
+  }
 }
 @media screen and (max-width: 480px) {
   .image-text-card--checklist .image-text-card__image{
