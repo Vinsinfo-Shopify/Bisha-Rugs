@@ -720,6 +720,11 @@ width: 28px;
             this.track.scrollTo({ left: this.centreOffset(card), behavior: instant ? 'auto' : 'smooth' });
           }
                     play(card) {
+                      this.cards.forEach((other) => {
+              if (other === card) return;
+              const v = other.querySelector('video');
+              if (v && !v.paused) v.pause();
+            });
             const video = card.querySelector('video');
 
             if (video) {
