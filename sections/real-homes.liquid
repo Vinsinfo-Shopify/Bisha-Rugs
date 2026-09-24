@@ -110,6 +110,11 @@
       display: none;
     }
 
+    #shopify-section-{{ section.id }} .real-homes__track :is(img, video) {
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
     #shopify-section-{{ section.id }} .real-homes__card {
   flex: 0 0 280px;
   scroll-snap-align: center;
@@ -434,7 +439,7 @@ width: 28px;
                     {{-
                       card_product.featured_image
                       | image_url: width: 120
-                      | image_tag: class: 'real-homes__thumb', loading: 'lazy', widths: '88,120,160'
+                      | image_tag: class: 'real-homes__thumb', loading: 'lazy', widths: '88,120,160', draggable: 'false'
                     -}}
                   {%- endif -%}
 
