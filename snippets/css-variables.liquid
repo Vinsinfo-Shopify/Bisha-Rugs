@@ -289,8 +289,12 @@
     --circle-button-text-color: {{ color_scheme.settings.circle_button_icon.rgb }};
   }
   @media screen and (min-width: 1000px) {
+    {%- for color_scheme in settings.color_schemes -%}
+      {%- if color_scheme.id == 1 -%}
+        --background: {{ color_scheme.settings.background.rgb }} / {{ color_scheme.settings.background.alpha }};
+      {%- endif -%}
+    {%- endfor-%}
     .color-scheme--dialog {
-        --background: {{ settings.color_schemes[0].settings.background.rgb }} / {{ settings.color_schemes[0].settings.background.alpha }};
 
       {%- if color_scheme.settings.background.rgba == 'rgba(255, 255, 255, 1.0)' -%}
       {%- else -%}
