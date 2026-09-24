@@ -115,7 +115,7 @@
             "swatch_selector_style": "none",
             "variant_image_options": "",
             "variant_image_show_underline": false,
-            "size_chart_page": "",
+            "size_chart_page": "size-guide",
             "shape_heading": "Select Shape",
             "enter_size_heading": "Enter Size"
           }
