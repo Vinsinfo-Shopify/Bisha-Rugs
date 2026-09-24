@@ -17,6 +17,27 @@
     assign tier_2_reached = true
   endif
 
+    assign promo_discount_applied = false
+  assign promo_discount_title = section.settings.promo_discount_title | downcase | strip
+
+  for discount_application in cart.cart_level_discount_applications
+    if discount_application.total_allocated_amount > 0
+      if promo_discount_title == blank
+        assign promo_discount_applied = true
+      else
+        assign applied_title = discount_application.title | downcase | strip
+        if applied_title == promo_discount_title
+          assign promo_discount_applied = true
+        endif
+      endif
+    endif
+  endfor
+
+  assign show_promo_tier_2 = first_order_eligible
+  if tier_2_reached and promo_discount_applied == false
+    assign show_promo_tier_2 = false
+  endif
+
   assign compare_at_savings = 0
   for item in cart.items
     if item.variant.compare_at_price > item.variant.price
