@@ -32,7 +32,6 @@
         "eyebrow_color": "#b35642",
         "eyebrow_font_size_mobile": 12,
         "eyebrow_font_size_desktop": 18,
-        "eyebrow_letter_spacing": 0,
         "eyebrow_text_transform": "uppercase",
         "heading": "Exclusive Rug Rates Your Clients Won't Find Elsewhere",
         "heading_color": "rgba(0,0,0,0)",
@@ -85,7 +84,12 @@
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 38,
         "padding_top_desktop": 0,
-        "padding_bottom_desktop": 0
+        "padding_bottom_desktop": 0,
+        "show_step_labels": true,
+        "step_1_label": "Personal Details",
+        "step_2_label": "Company Details",
+        "step_3_label": "Design & Document",
+        "step_item_selector": ""
       }
     },
     "1790166099e53ca823": {
@@ -358,7 +362,7 @@
         "content_width": 400,
         "overlay_text_color": "#ffffff",
         "button_label": "Apply for the trade program",
-        "button_link": "",
+        "button_link": "shopify://pages/bisha-rugs-trade-program",
         "button_size": 18,
         "button_size_mobile": 16,
         "button_background": "#ffffff",
