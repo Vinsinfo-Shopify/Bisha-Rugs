@@ -9,6 +9,106 @@
  */
 {
   "sections": {
+    "trade_program_U9DyYU": {
+      "type": "trade-program",
+      "blocks": {
+        "powerful_form_builder_app_block_Nx7VJE": {
+          "type": "shopify://apps/powerful-form-builder/blocks/app-block/e4bcb1eb-35b2-42e6-bc37-bfe0e1542c9d",
+          "settings": {
+            "shortcode": "<div class=\"globo-formbuilder\" data-id=\"MTY1NjA5\"></div>"
+          }
+        }
+      },
+      "block_order": [
+        "powerful_form_builder_app_block_Nx7VJE"
+      ],
+      "name": "Trade program",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": false,
+        "custom_class": "",
+        "content_alignment": "start",
+        "eyebrow": "Join the trade program",
+        "eyebrow_color": "#b35642",
+        "eyebrow_font_size_mobile": 12,
+        "eyebrow_font_size_desktop": 18,
+        "eyebrow_letter_spacing": 0,
+        "eyebrow_text_transform": "uppercase",
+        "heading": "Exclusive Rug Rates Your Clients Won't Find Elsewhere",
+        "heading_color": "rgba(0,0,0,0)",
+        "heading_font_size_mobile": 28,
+        "heading_font_size_desktop": 50,
+        "heading_spacing_mobile": 0,
+        "heading_spacing_desktop": 14,
+        "description": "<p>Partner with Bisha Rugs for trade pricing, dedicated support, and rugs made to your project's exact palette and scale.</p>",
+        "description_color": "rgba(0,0,0,0)",
+        "description_font_size_mobile": 14,
+        "description_font_size_desktop": 18,
+        "description_max_width": 46,
+        "description_spacing_mobile": 16,
+        "description_spacing_desktop": 24,
+        "image": "shopify://shop_images/g-form-165594-appearance.imageUrl-mue23zxw-67f614b16e199e7dad30b186514df82a328c6e4a_1.png",
+        "image_ratio": "2 / 1",
+        "image_width": 100,
+        "image_max_height": 245,
+        "media_spacing_mobile": 0,
+        "media_spacing_desktop": 24,
+        "info_1_value": "Up to 30%",
+        "info_1_label": "Trade discount",
+        "info_2_value": "48 hrs",
+        "info_2_label": "Average approval",
+        "info_3_value": "Free",
+        "info_3_label": "Shipping",
+        "info_value_color": "rgba(0,0,0,0)",
+        "info_value_font_size_mobile": 22,
+        "info_value_font_size_desktop": 28,
+        "info_label_color": "#8f8f8f",
+        "info_label_font_size_mobile": 12,
+        "info_label_font_size_desktop": 18,
+        "info_column_gap_mobile": 12,
+        "info_column_gap_desktop": 16,
+        "info_spacing_mobile": 38,
+        "info_spacing_desktop": 24,
+        "mobile_content_alignment": "center",
+        "mobile_image_full_width": true,
+        "mobile_image_height": 180,
+        "mobile_overlay_text_color": "#ffffff",
+        "mobile_overlay_darken": 30,
+        "content_column_width": 53,
+        "column_gap_desktop": 56,
+        "row_gap_mobile": 12,
+        "grid_padding_inline_mobile": 0,
+        "grid_padding_inline_desktop": 0,
+        "remove_section_spacing": false,
+        "section_vertical_spacing_mobile": 0,
+        "section_vertical_spacing_desktop": 60,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 38,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0
+      }
+    },
+    "1790166099e53ca823": {
+      "type": "apps",
+      "blocks": {
+        "powerful_form_builder_app_block_cyxtnP": {
+          "type": "shopify://apps/powerful-form-builder/blocks/app-block/e4bcb1eb-35b2-42e6-bc37-bfe0e1542c9d",
+          "settings": {
+            "shortcode": "<div class=\"globo-formbuilder\" data-id=\"MTY1NjA5\"></div>"
+          }
+        }
+      },
+      "block_order": [
+        "powerful_form_builder_app_block_cyxtnP"
+      ],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false
+      }
+    },
     "main": {
       "type": "main-page",
       "disabled": true,
@@ -555,6 +655,7 @@
         "color_scheme": "",
         "separate_section_with_border": true,
         "show_categories": false,
+        "open_first_question": false,
         "custom_class": "trade_program",
         "faq_custom_class": "",
         "show_breadcrumb": false,
@@ -597,6 +698,8 @@
     }
   },
   "order": [
+    "trade_program_U9DyYU",
+    "1790166099e53ca823",
     "main",
     "multi_column_6PWCEb",
     "text_with_icons_zcHVxf",

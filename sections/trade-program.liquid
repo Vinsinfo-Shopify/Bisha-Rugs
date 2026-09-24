@@ -1,17 +1,3 @@
-{%- comment -%}
-  ------------------------------------------------------------------------------------------------------------------------
-  TRADE PROGRAM
-
-  Two-column layout:
-    - Left  : merchant-editable content (eyebrow, heading, description, image, three information items).
-    - Right : a Shopify app block. The Powerful Form Builder block is picked through "Add block" in the theme editor,
-              and already carries its own `trade_program_form` class, so no form markup is recreated here.
-
-  The section renders correctly with or without an app block. Static styles live in assets/theme.css under
-  `.trade-program`; only the merchant-driven custom properties are emitted below.
-  ------------------------------------------------------------------------------------------------------------------------
-{%- endcomment -%}
-
 {%- liquid
   assign app_block_count = 0
   for block in section.blocks
@@ -37,6 +23,31 @@
   assign form_column_width = 100 | minus: section.settings.content_column_width
 
   assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5
+
+  assign has_media = false
+  if section.settings.image != blank or request.design_mode
+    assign has_media = true
+  endif
+
+  assign mobile_text_align = 'start'
+  assign mobile_media_margin = '0 auto'
+  if section.settings.mobile_content_alignment == 'center'
+    assign mobile_text_align = 'center'
+    assign mobile_media_margin = 'auto'
+  endif
+
+  assign desktop_text_align = 'start'
+  assign desktop_media_margin = '0 auto'
+  if section.settings.content_alignment == 'center'
+    assign desktop_text_align = 'center'
+    assign desktop_media_margin = 'auto'
+  endif
+
+  assign overlay_darken = section.settings.mobile_overlay_darken | divided_by: 100.0
+  assign has_image_max_height = false
+  if section.settings.image_max_height > 0
+    assign has_image_max_height = true
+  endif
 -%}
 
 <style>
@@ -46,29 +57,67 @@
   }
 
   #shopify-section-{{ section.id }} .trade-program {
+    --section-vertical-spacing-override: {{ section.settings.section_vertical_spacing_mobile }}px;
     --trade-program-row-gap: {{ section.settings.row_gap_mobile }}px;
     --trade-program-content-column: {{ section.settings.content_column_width }}fr;
     --trade-program-form-column: {{ form_column_width }}fr;
-    --trade-program-form-padding: {{ section.settings.form_padding_mobile }}px;
-    --trade-program-form-border-radius: {{ section.settings.form_border_radius }}px;
+    --trade-program-grid-padding-inline: {{ section.settings.grid_padding_inline_mobile }}px;
+
+    --trade-program-eyebrow-font-size: {{ section.settings.eyebrow_font_size_mobile }}px;
+    --trade-program-eyebrow-letter-spacing: {{ section.settings.eyebrow_letter_spacing }}px;
+    --trade-program-eyebrow-text-transform: {{ section.settings.eyebrow_text_transform }};
+    --trade-program-heading-font-size: {{ section.settings.heading_font_size_mobile }}px;
+    --trade-program-description-font-size: {{ section.settings.description_font_size_mobile }}px;
+    --trade-program-info-value-font-size: {{ section.settings.info_value_font_size_mobile }}px;
+    --trade-program-info-label-font-size: {{ section.settings.info_label_font_size_mobile }}px;
+
+
+    --trade-program-heading-spacing: {{ section.settings.heading_spacing_mobile }}px;
+    --trade-program-description-spacing: {{ section.settings.description_spacing_mobile }}px;
+    --trade-program-media-spacing: {{ section.settings.media_spacing_mobile }}px;
+    --trade-program-info-spacing: {{ section.settings.info_spacing_mobile }}px;
+    --trade-program-info-column-gap: {{ section.settings.info_column_gap_mobile }}px;
+
+    --trade-program-image-width: {{ section.settings.image_width }}%;
+    --trade-program-content-text-align: {{ mobile_text_align }};
+    --trade-program-media-margin-inline: {{ mobile_media_margin }};
+
+    /* Mobile image overlay */
+    --trade-program-mobile-image-height: {{ section.settings.mobile_image_height }}px;
+    --trade-program-mobile-overlay-scrim: rgb(0 0 0 / {{ overlay_darken }});
+
+    {%- if section.settings.mobile_overlay_text_color != blank and section.settings.mobile_overlay_text_color != 'rgba(0,0,0,0)' -%}
+      --trade-program-mobile-overlay-color: {{ section.settings.mobile_overlay_text_color }};
+    {%- endif -%}
 
     {%- if section.settings.eyebrow_color != blank and section.settings.eyebrow_color != 'rgba(0,0,0,0)' -%}
       --trade-program-eyebrow-color: {{ section.settings.eyebrow_color }};
     {%- endif -%}
 
-    {%- if section.settings.form_background != blank and section.settings.form_background != 'rgba(0,0,0,0)' -%}
-      --trade-program-form-background: {{ section.settings.form_background }};
+    {%- if section.settings.heading_color != blank and section.settings.heading_color != 'rgba(0,0,0,0)' -%}
+      --trade-program-heading-color: {{ section.settings.heading_color }};
     {%- endif -%}
 
-    {%- if section.settings.form_border_color != blank and section.settings.form_border_color != 'rgba(0,0,0,0)' -%}
-      --trade-program-form-border-color: {{ section.settings.form_border_color }};
+    {%- if section.settings.description_color != blank and section.settings.description_color != 'rgba(0,0,0,0)' -%}
+      --trade-program-description-color: {{ section.settings.description_color }};
+    {%- endif -%}
+
+    {%- if section.settings.info_value_color != blank and section.settings.info_value_color != 'rgba(0,0,0,0)' -%}
+      --trade-program-info-value-color: {{ section.settings.info_value_color }};
+    {%- endif -%}
+
+    {%- if section.settings.info_label_color != blank and section.settings.info_label_color != 'rgba(0,0,0,0)' -%}
+      --trade-program-info-label-color: {{ section.settings.info_label_color }};
+      --trade-program-info-label-opacity: 1;
     {%- endif -%}
 
     {%- if section.settings.image_ratio != 'adapt' -%}
       --trade-program-image-ratio: {{ section.settings.image_ratio }};
     {%- endif -%}
   }
-
+    .container{
+      --container-gutter: 90px;
+    }
   @media screen and (min-width: 1000px) {
     #shopify-section-{{ section.id }} {
       padding-block-start: {{ section.settings.padding_top_desktop }}px;
@@ -76,14 +125,42 @@
     }
 
     #shopify-section-{{ section.id }} .trade-program {
+      --section-vertical-spacing-override: {{ section.settings.section_vertical_spacing_desktop }}px;
       --trade-program-column-gap: {{ section.settings.column_gap_desktop }}px;
-      --trade-program-form-padding: {{ section.settings.form_padding_desktop }}px;
+      --trade-program-grid-padding-inline: {{ section.settings.grid_padding_inline_desktop }}px;
+
+      /* Typography — desktop */
+      --trade-program-eyebrow-font-size: {{ section.settings.eyebrow_font_size_desktop }}px;
+      --trade-program-heading-font-size: {{ section.settings.heading_font_size_desktop }}px;
+      --trade-program-description-font-size: {{ section.settings.description_font_size_desktop }}px;
+      --trade-program-description-max-width: {{ section.settings.description_max_width }}ch;
+      --trade-program-info-value-font-size: {{ section.settings.info_value_font_size_desktop }}px;
+      --trade-program-info-label-font-size: {{ section.settings.info_label_font_size_desktop }}px;
+      --trade-program-heading-spacing: {{ section.settings.heading_spacing_desktop }}px;
+      --trade-program-description-spacing: {{ section.settings.description_spacing_desktop }}px;
+      --trade-program-media-spacing: {{ section.settings.media_spacing_desktop }}px;
+      --trade-program-info-spacing: {{ section.settings.info_spacing_desktop }}px;
+      --trade-program-info-column-gap: {{ section.settings.info_column_gap_desktop }}px;
+
+      --trade-program-content-text-align: {{ desktop_text_align }};
+      --trade-program-media-margin-inline: {{ desktop_media_margin }};
+    }
+
+    {%- if has_image_max_height -%}
+      #shopify-section-{{ section.id }} .trade-program__media :is(img, .placeholder) {
+        max-height: {{ section.settings.image_max_height }}px;
+      }
+    {%- endif -%}
+  }
+  @media screen and (max-width: 768px){
+    .container{
+      --container-gutter: 20px;
     }
   }
 </style>
 
-<div class="trade-program color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }}{% unless section.settings.remove_section_spacing %} section-spacing{% endunless %}{% if section.settings.separate_section_with_border %} bordered-section{% endif %}{% if section.settings.image_ratio != 'adapt' %} trade-program--image-cropped{% endif %}{% unless show_form_column %} trade-program--no-form{% endunless %}{% if section.settings.custom_class != blank %} {{ section.settings.custom_class }}{% endif %}">
-  <div class="container">
+<div class="trade-program color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }}{% unless section.settings.remove_section_spacing %} section-spacing{% endunless %}{% if section.settings.separate_section_with_border %} bordered-section{% endif %}{% if section.settings.image_ratio != 'adapt' %} trade-program--image-cropped{% endif %}{% if has_media %} trade-program--has-media{% endif %}{% if section.settings.mobile_image_full_width %} trade-program--mobile-bleed{% endif %}{% unless show_form_column %} trade-program--no-form{% endunless %}{% if section.settings.custom_class != blank %} {{ section.settings.custom_class }}{% endif %}">
+  <div class="container ">
     <div class="trade-program__grid">
       {%- comment -%}
         --------------------------------------------------------------------------------------------------------------
@@ -92,14 +169,17 @@
       {%- endcomment -%}
 
       <div class="trade-program__content">
-        {%- if section.settings.eyebrow != blank -%}
-          <p class="trade-program__eyebrow">{{ section.settings.eyebrow }}</p>
-        {%- endif -%}
 
-        {%- if section.settings.heading != blank -%}
-          <h2 class="trade-program__heading {{ section.settings.heading_style | default: 'h2' }}">
-            {{- section.settings.heading -}}
-          </h2>
+        {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+          <div class="trade-program__intro">
+            {%- if section.settings.eyebrow != blank -%}
+              <p class="trade-program__eyebrow">{{ section.settings.eyebrow }}</p>
+            {%- endif -%}
+
+            {%- if section.settings.heading != blank -%}
+              <h2 class="trade-program__heading">{{ section.settings.heading }}</h2>
+            {%- endif -%}
+          </div>
         {%- endif -%}
 
         {%- if section.settings.description != blank -%}
@@ -108,7 +188,7 @@
 
         {%- if section.settings.image != blank -%}
           <div class="trade-program__media">
-            {%- capture image_sizes -%}(max-width: 999px) 100vw, min(650px, 50vw){%- endcapture -%}
+            {%- capture image_sizes -%}(max-width: 245px) 100vw, min(200px, 50vw){%- endcapture -%}
 
             {{-
               section.settings.image
@@ -219,8 +299,18 @@
       "info": "Add one or more space-separated classes to target this section with custom CSS."
     },
     {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Text alignment (desktop)",
+      "options": [
+        { "value": "start", "label": "t:global.position.left" },
+        { "value": "center", "label": "t:global.position.center" }
+      ],
+      "default": "start"
+    },
+    {
       "type": "header",
-      "content": "t:global.text.content"
+      "content": "Eyebrow"
     },
     {
       "type": "text",
@@ -235,30 +325,158 @@
       "default": "#b35642"
     },
     {
+      "type": "range",
+      "id": "eyebrow_font_size_mobile",
+      "label": "Font size (mobile)",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size_desktop",
+      "label": "Font size (desktop)",
+      "min": 8,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "eyebrow_text_transform",
+      "label": "Capitalization",
+      "options": [
+        { "value": "none", "label": "As typed" },
+        { "value": "uppercase", "label": "Uppercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "header",
+      "content": "t:global.text.heading"
+    },
+    {
       "type": "inline_richtext",
       "id": "heading",
       "label": "t:global.text.heading",
       "default": "Exclusive Rug Rates Your Clients Won't Find Elsewhere"
     },
     {
-      "type": "select",
-      "id": "heading_style",
-      "label": "t:global.text.heading_style",
-      "options": [
-        { "value": "h1", "label": "H1" },
-        { "value": "h2", "label": "H2" },
-        { "value": "h3", "label": "H3" },
-        { "value": "h4", "label": "H4" },
-        { "value": "h5", "label": "H5" },
-        { "value": "h6", "label": "H6" }
-      ],
-      "default": "h1"
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:global.colors.text",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Font size (mobile)",
+      "min": 14,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "label": "Font size (desktop)",
+      "min": 16,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing_mobile",
+      "label": "Space above (mobile)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing_desktop",
+      "label": "Space above (desktop)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "t:global.text.content"
     },
     {
       "type": "richtext",
       "id": "description",
       "label": "t:global.text.content",
       "default": "<p>Partner with Bisha Rugs for trade pricing, dedicated support, and rugs made to your project's exact palette and scale.</p>"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "t:global.colors.text",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "range",
+      "id": "description_font_size_mobile",
+      "label": "Font size (mobile)",
+      "min": 10,
+      "max": 26,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "description_font_size_desktop",
+      "label": "Font size (desktop)",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "description_max_width",
+      "label": "Maximum line length (desktop)",
+      "info": "Measured in characters. Full width on mobile.",
+      "min": 20,
+      "max": 80,
+      "step": 1,
+      "unit": "ch",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "description_spacing_mobile",
+      "label": "Space above (mobile)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "description_spacing_desktop",
+      "label": "Space above (desktop)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 20
     },
     {
       "type": "header",
@@ -282,6 +500,43 @@
         { "value": "1 / 1", "label": "1:1" }
       ],
       "default": "2 / 1"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Image width",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "number",
+      "id": "image_max_height",
+      "label": "Image max height",
+      "info": "In pixels. The image scales down proportionally when it would be taller than this. Leave blank or use 0 for no limit. Applies from 1000px up — below that, use \"Image height (mobile)\".",
+      "default": 420
+    },
+    {
+      "type": "range",
+      "id": "media_spacing_mobile",
+      "label": "Space above (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "media_spacing_desktop",
+      "label": "Space above (desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 36
     },
     {
       "type": "header",
@@ -324,54 +579,149 @@
       "default": "Shipping"
     },
     {
-      "type": "header",
-      "content": "Form column"
-    },
-    {
-      "type": "paragraph",
-      "content": "The form itself is managed in the Powerful Form Builder app. Only the container around it is styled here."
-    },
-    {
       "type": "color",
-      "id": "form_background",
-      "label": "Background",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "form_border_color",
-      "label": "t:global.colors.border",
-      "default": "#e7e0d4"
+      "id": "info_value_color",
+      "label": "Value color",
+      "default": "rgba(0,0,0,0)"
     },
     {
       "type": "range",
-      "id": "form_border_radius",
-      "label": "Border radius",
-      "min": 0,
-      "max": 32,
+      "id": "info_value_font_size_mobile",
+      "label": "Value font size (mobile)",
+      "min": 10,
+      "max": 40,
       "step": 1,
       "unit": "px",
-      "default": 4
+      "default": 16
     },
     {
       "type": "range",
-      "id": "form_padding_desktop",
-      "label": "Padding (desktop)",
-      "min": 0,
-      "max": 72,
-      "step": 2,
+      "id": "info_value_font_size_desktop",
+      "label": "Value font size (desktop)",
+      "min": 12,
+      "max": 56,
+      "step": 1,
       "unit": "px",
-      "default": 32
+      "default": 22
+    },
+    {
+      "type": "color",
+      "id": "info_label_color",
+      "label": "Label color",
+      "info": "Leaving this transparent keeps the label slightly faded.",
+      "default": "rgba(0,0,0,0)"
     },
     {
       "type": "range",
-      "id": "form_padding_mobile",
-      "label": "Padding (mobile)",
+      "id": "info_label_font_size_mobile",
+      "label": "Label font size (mobile)",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "info_label_font_size_desktop",
+      "label": "Label font size (desktop)",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "info_column_gap_mobile",
+      "label": "Gap between items (mobile)",
       "min": 0,
       "max": 48,
       "step": 2,
       "unit": "px",
-      "default": 20
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "info_column_gap_desktop",
+      "label": "Gap between items (desktop)",
+      "min": 0,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "info_spacing_mobile",
+      "label": "Space above (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "info_spacing_desktop",
+      "label": "Space above (desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Mobile layout"
+    },
+    {
+      "type": "paragraph",
+      "content": "Below 1000px the section stacks: image (with the eyebrow and heading over it), description, form, then the information row."
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "label": "Text alignment (mobile)",
+      "options": [
+        { "value": "center", "label": "t:global.position.center" },
+        { "value": "start", "label": "t:global.position.left" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_image_full_width",
+      "label": "Extend image to the screen edges",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "label": "Image height (mobile)",
+      "info": "Minimum height. The image grows if the heading needs more room.",
+      "min": 120,
+      "max": 480,
+      "step": 10,
+      "unit": "px",
+      "default": 200
+    },
+    {
+      "type": "color",
+      "id": "mobile_overlay_text_color",
+      "label": "Overlay text color",
+      "info": "Used for the eyebrow and heading while they sit over the image.",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "mobile_overlay_darken",
+      "label": "Image darkening",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 30
     },
     {
       "type": "header",
@@ -408,6 +758,27 @@
       "default": 32
     },
     {
+      "type": "range",
+      "id": "grid_padding_inline_mobile",
+      "label": "Inner side padding (mobile)",
+      "info": "Extra padding inside the section, on top of the theme's page gutter.",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "grid_padding_inline_desktop",
+      "label": "Inner side padding (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 90
+    },
+    {
       "type": "header",
       "content": "t:global.padding.section_padding_heading"
     },
@@ -416,6 +787,27 @@
       "id": "remove_section_spacing",
       "label": "t:global.spacing.remove_vertical_spacing",
       "default": false
+    },
+    {
+      "type": "range",
+      "id": "section_vertical_spacing_mobile",
+      "label": "Section spacing (mobile)",
+      "info": "Vertical space above and below the section. Ignored when the vertical spacing is removed.",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_vertical_spacing_desktop",
+      "label": "Section spacing (desktop)",
+      "min": 0,
+      "max": 160,
+      "step": 2,
+      "unit": "px",
+      "default": 64
     },
     {
       "type": "header",
