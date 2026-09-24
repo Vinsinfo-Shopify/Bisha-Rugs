@@ -9848,7 +9848,7 @@ ul {
   color: rgb(var(--text-color));
 }
 
-.price-list .text-subdued {
+.price-list compare-at-price.text-subdued {
   font-size: 14px;
   line-height: 140%;
   font-weight: 500;
