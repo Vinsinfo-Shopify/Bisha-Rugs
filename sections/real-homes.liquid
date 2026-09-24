@@ -545,7 +545,10 @@ width: 28px;
 
               // A side card centres itself. Only the centre card's clicks fall
               // through to the video toggle below.
-              if (!card.classList.contains('is-active')) {
+              const existing = card.querySelector('video');
+              const started = existing && (!existing.paused || existing.currentTime > 0);
+
+              if (!started && !card.classList.contains('is-active')) {
                 event.preventDefault();
                 event.stopPropagation();
                 this.centre(card, false);
