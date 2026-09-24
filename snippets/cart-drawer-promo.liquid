@@ -27,11 +27,10 @@
       </p>
     {%- endif -%}
 
-    {%- unless first_order_eligible and tier_2_amount > 0 -%}
+        {%- unless first_order_eligible and tier_2_amount > 0 -%}
       <div class="cart-drawer-promo__meter">
         <div class="cart-drawer-promo__track" style="--cart-drawer-promo-progress: 100%;">
           <span class="cart-drawer-promo__fill"></span>
-
           <span class="cart-drawer-promo__node is-reached" style="--cart-drawer-promo-node: 100%;">
             {%- render 'icon' with 'success', width: 8, class: 'cart-drawer-promo__tick' -%}
           </span>
