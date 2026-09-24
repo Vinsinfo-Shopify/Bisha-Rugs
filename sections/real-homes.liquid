@@ -636,7 +636,7 @@ width: 28px;
             return card.offsetLeft + card.offsetWidth / 2 - this.track.clientWidth / 2;
           }
 
-          centre(card, instant) {
+                    centre(card, instant) {
             if (!card) return;
             this.track.scrollTo({ left: this.centreOffset(card), behavior: instant ? 'auto' : 'smooth' });
           }
