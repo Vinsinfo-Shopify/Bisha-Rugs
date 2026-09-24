@@ -547,7 +547,7 @@ width: 28px;
               // through to the video toggle below.
               const existing = card.querySelector('video');
               const started = existing && existing.currentTime > 0;
-                            console.log('click:', card.dataset.rhIndex, 'started:', started, 'active:', card.classList.contains('is-active'));
+                                          console.log('click:', card.dataset.rhIndex, 'started:', started, 'active:', card.classList.contains('is-active'), 'offset:', this.centreOffset(card), 'scrollLeft:', this.track.scrollLeft);
 
               if (!started && !card.classList.contains('is-active')) {
                 event.preventDefault();
