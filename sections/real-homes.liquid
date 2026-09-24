@@ -546,7 +546,7 @@ width: 28px;
               // A side card centres itself. Only the centre card's clicks fall
               // through to the video toggle below.
               const existing = card.querySelector('video');
-              const started = existing && (!existing.paused || existing.currentTime > 0);
+              const started = existing && existing.currentTime > 0;
                             console.log('click:', card.dataset.rhIndex, 'started:', started, 'active:', card.classList.contains('is-active'));
 
               if (!started && !card.classList.contains('is-active')) {
