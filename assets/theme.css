@@ -3777,6 +3777,10 @@ tr[onclick]:hover {
   .image-text-card__heading {
     font-size: 14px;
   }
+  .image-text-card--checklist .prose :is(ul,ol){
+    column-gap: 1rem;
+    row-gap: .3em;
+  }
 }
 @media screen and (max-width: 480px) {
   .image-text-card--checklist .image-text-card__image{
@@ -3789,6 +3793,7 @@ tr[onclick]:hover {
     font-weight: 700;
     font-size: 12px;
   }
+  
 }
 .accordion-tags {
   align-items: center;
