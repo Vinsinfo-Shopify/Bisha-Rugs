@@ -104,14 +104,19 @@
           </span>
         </div>
 
-                {%- if section.settings.promo_tier_1_label != blank or section.settings.promo_tier_2_label != blank -%}
+        {%- if section.settings.promo_tier_1_label != blank or section.settings.promo_tier_2_label != blank -%}
           <div class="cart-drawer-promo__labels">
-            <span class="cart-drawer-promo__label" style="--cart-drawer-promo-node: {{ section.settings.promo_tier_1_position | default: 35 }}%;">
-              {{- section.settings.promo_tier_1_label -}}
-            </span>
-            <span class="cart-drawer-promo__label cart-drawer-promo__label--end">
-              {{- section.settings.promo_tier_2_label -}}
-            </span>
+            {%- if section.settings.promo_tier_1_label != blank -%}
+              <span class="cart-drawer-promo__label" style="--cart-drawer-promo-node: {{ section.settings.promo_tier_1_position }}%;">
+                {{- section.settings.promo_tier_1_label -}}
+              </span>
+            {%- endif -%}
+
+            {%- if section.settings.promo_tier_2_label != blank -%}
+              <span class="cart-drawer-promo__label cart-drawer-promo__label--end">
+                {{- section.settings.promo_tier_2_label -}}
+              </span>
+            {%- endif -%}
           </div>
         {%- endif -%}
       </div>
