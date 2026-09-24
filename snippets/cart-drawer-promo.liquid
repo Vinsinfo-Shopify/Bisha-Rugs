@@ -27,10 +27,26 @@
       </p>
     {%- endif -%}
 
-    {%- comment -%}
-      The bar only appears for a customer who can actually receive the discount:
-      a signed-in customer with no orders, or a guest, whose history is unknown.
-    {%- endcomment -%}
+    {%- unless first_order_eligible and tier_2_amount > 0 -%}
+      <div class="cart-drawer-promo__meter">
+        <div class="cart-drawer-promo__track" style="--cart-drawer-promo-progress: 100%;">
+          <span class="cart-drawer-promo__fill"></span>
+
+          <span class="cart-drawer-promo__node is-reached" style="--cart-drawer-promo-node: 100%;">
+            {%- render 'icon' with 'success', width: 8, class: 'cart-drawer-promo__tick' -%}
+          </span>
+        </div>
+
+        {%- if section.settings.promo_tier_1_label != blank -%}
+          <div class="cart-drawer-promo__labels">
+            <span class="cart-drawer-promo__label cart-drawer-promo__label--end">
+              {{- section.settings.promo_tier_1_label -}}
+            </span>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endunless -%}
+
     {%- if first_order_eligible and tier_2_amount > 0 -%}
       {%- liquid
         assign promo_progress = cart.total_price | times: 100 | divided_by: tier_2_amount
