@@ -290,7 +290,7 @@
   }
    @media screen and (min-width: 1000px) {
     .color-scheme--dialog {
-      {%- if  color_scheme.settings.background.rgba == 'rgba(0,0,0,0)' -%}
+      {%- if  color_scheme.settings.background.rgba == 'rgba(255, 255, 255, 1.0)' -%}
         --background: {{ settings.color_schemes[0].settings.background.rgb }};
       {%- else -%}
         --background: {{ color_scheme.settings.background.rgba }};
