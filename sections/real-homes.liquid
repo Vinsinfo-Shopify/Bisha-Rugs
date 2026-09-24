@@ -99,7 +99,7 @@
       display: flex;
       align-items: center;
       gap: var(--rh-gap);
-      overflow: auto hidden;
+      overflow: hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: x proximity;
       scroll-behavior: smooth;
@@ -373,6 +373,11 @@ width: 28px;
         width: 28.5px;
         height: 27px;
         transform: translate(calc(-50% + 2px), -50%);
+      }
+            #shopify-section-{{ section.id }} .real-homes__track {
+        overflow: auto hidden;
+        scroll-snap-type: x mandatory;
+        overscroll-behavior-x: contain;
       }
     }
   </style>
@@ -674,50 +679,54 @@ width: 28px;
           }
 
                     enableDrag() {
-            this.drag = { active: false, startX: 0, startScroll: 0, moved: 0 };
+            this.drag = { startX: 0, active: false };
 
             this.onPointerDown = (event) => {
               if (event.pointerType !== 'mouse') return;
               if (!this.track.contains(event.target)) return;
               event.preventDefault();
-
               this.drag.active = true;
-              this.drag.moved = 0;
               this.drag.startX = event.clientX;
-              this.drag.startScroll = this.track.scrollLeft;
-              this.track.style.scrollSnapType = 'none';
-              this.track.style.scrollBehavior = 'auto';
             };
 
-            this.onPointerMove = (event) => {
+            // The track never follows the cursor. The gesture is measured on
+            // release and resolved to one step, so there is no intermediate
+            // state that can be left running if an event is missed.
+            this.onPointerUp = (event) => {
               if (!this.drag.active) return;
-
-              // The only guard that matters: no button held means no drag,
-              // whatever happened to the release event.
-              if (!event.buttons) {
-                this.endDrag();
-                return;
-              }
+              this.drag.active = false;
 
               const delta = event.clientX - this.drag.startX;
-              this.drag.moved = Math.max(this.drag.moved, Math.abs(delta));
-              this.track.scrollLeft = this.drag.startScroll - delta;
+              if (Math.abs(delta) < 40) return;   // a click, not a drag
+
+              this.step(delta < 0 ? 1 : -1);
             };
 
-            this.onPointerUp = () => this.endDrag();
-
             this.track.addEventListener('pointerdown', this.onPointerDown);
-            document.addEventListener('pointermove', this.onPointerMove);
             document.addEventListener('pointerup', this.onPointerUp);
             document.addEventListener('pointercancel', this.onPointerUp);
 
             this.track.addEventListener('click', (event) => {
-              if (this.drag.moved > 5) {
+              if (this.justDragged) {
                 event.preventDefault();
                 event.stopPropagation();
-                this.drag.moved = 0;
+                this.justDragged = false;
               }
             }, true);
+          }
+
+          step(direction) {
+            const current = this.track.querySelector('.is-active') || this.nearest();
+            if (!current) return;
+
+            const index = this.cards.indexOf(current);
+            const target = this.cards[index + direction];
+            if (!target) return;
+
+            this.justDragged = true;
+            this.centre(target, false);
+            this.mark();
+            requestAnimationFrame(() => this.centre(this.track.querySelector('.is-active'), false));
           }
 
           endDrag() {
