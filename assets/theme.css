@@ -12518,29 +12518,45 @@ a.marquee__item:hover .marquee__text {
   }
 }
 
-/* ==========================================================================
-   Trade program - sections/trade-program.liquid
-
-   Editable content on the left, a Shopify app block (Powerful Form Builder)
-   on the right. Every rule is scoped to .trade-program, so no other section
-   and no other Powerful Form Builder form on the store is affected.
-
-   The merchant-driven values (column widths, gaps, card colours, padding)
-   are emitted as custom properties by the section itself; the fallbacks
-   below keep this file valid on its own.
-   ========================================================================== */
-
 .trade-program {
   --trade-program-row-gap: 32px;
   --trade-program-column-gap: 64px;
   --trade-program-content-column: 1fr;
   --trade-program-form-column: 1fr;
+  --trade-program-grid-padding-inline: 0px;
+  --trade-program-content-text-align: start;
+
   --trade-program-eyebrow-color: currentColor;
+  --trade-program-eyebrow-font-size: var(--text-xs);
+  --trade-program-eyebrow-letter-spacing: 0.16em;
+  --trade-program-eyebrow-text-transform: uppercase;
+
+  --trade-program-heading-color: currentColor;
+  --trade-program-heading-font-size: var(--text-h2);
+  --trade-program-heading-spacing: 12px;
+
+  --trade-program-description-color: currentColor;
+  --trade-program-description-font-size: var(--text-base);
+  --trade-program-description-max-width: none;
+  --trade-program-description-spacing: 16px;
+
   --trade-program-image-ratio: 2 / 1;
-  --trade-program-form-background: rgb(var(--background));
-  --trade-program-form-border-color: rgb(var(--border-color));
-  --trade-program-form-border-radius: 4px;
-  --trade-program-form-padding: 20px;
+  --trade-program-image-width: 100%;
+  --trade-program-media-margin-inline: 0 auto;
+  --trade-program-media-spacing: 28px;
+
+  --trade-program-info-spacing: 28px;
+  --trade-program-info-column-gap: 16px;
+  --trade-program-info-item-gap: 4px;
+  --trade-program-info-value-color: currentColor;
+  --trade-program-info-value-font-size: var(--text-h3);
+  --trade-program-info-label-color: currentColor;
+  --trade-program-info-label-font-size: var(--text-xs);
+  --trade-program-info-label-opacity: 0.7;
+
+  --trade-program-mobile-image-height: 200px;
+  --trade-program-mobile-overlay-color: #ffffff;
+  --trade-program-mobile-overlay-scrim: rgb(0 0 0 / 0.3);
 }
 
 .trade-program__grid {
@@ -12548,38 +12564,49 @@ a.marquee__item:hover .marquee__text {
   grid-template-columns: minmax(0, 1fr);
   row-gap: var(--trade-program-row-gap);
   align-items: start;
+  padding-inline: var(--trade-program-grid-padding-inline);
 }
 
-/* min-width: 0 on both columns keeps long form fields from pushing the grid
-   wider than the container. */
 .trade-program__content,
 .trade-program__form {
   min-width: 0;
 }
 
-/* --- Left column ---------------------------------------------------------- */
+.trade-program__content {
+  text-align: var(--trade-program-content-text-align);
+}
+
 
 .trade-program__eyebrow {
-  margin: 0;
+  margin-top: 23px;
   color: var(--trade-program-eyebrow-color);
-  font-size: var(--text-xs);
-  line-height: 1.4;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-size: var(--trade-program-eyebrow-font-size);
+  line-height: 140%;
+  letter-spacing: 0%;
+  text-transform: var(--trade-program-eyebrow-text-transform);
+  font-weight: 400;
 }
 
 .trade-program__heading {
-  margin: 12px 0 0;
-}
-
-/* Whichever element the merchant left in place leads the column. */
-.trade-program__content > :first-child {
-  margin-top: 0;
+  margin: var(--trade-program-heading-spacing) 0 0;
+  color: var(--trade-program-heading-color);
+  font-family: 'Forum';
+  font-style: var(--heading-font-style);
+  font-weight: 400;
+  font-size: var(--trade-program-heading-font-size);
+  line-height: 100%;
+  letter-spacing: 0%;
+  overflow-wrap: anywhere;
 }
 
 .trade-program__description {
-  margin-top: 16px;
-  max-width: 46ch;
+  margin-top: var(--trade-program-description-spacing);
+  max-width: var(--trade-program-description-max-width);
+  color: var(--trade-program-description-color);
+  font-size: var(--trade-program-description-font-size);
+  line-height: 140%;
+  font-weight: 400;
+  letter-spacing: 0%;
 }
 
 .trade-program__description > :first-child {
@@ -12591,7 +12618,9 @@ a.marquee__item:hover .marquee__text {
 }
 
 .trade-program__media {
-  margin-top: 28px;
+  margin-top: var(--trade-program-media-spacing);
+  max-width: var(--trade-program-image-width);
+  margin-inline: var(--trade-program-media-margin-inline);
 }
 
 .trade-program__media :is(img, .placeholder) {
@@ -12609,49 +12638,74 @@ a.marquee__item:hover .marquee__text {
 .trade-program__info {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  column-gap: 16px;
+  column-gap: var(--trade-program-info-column-gap);
   row-gap: 8px;
-  margin: 28px 0 0;
+  margin: var(--trade-program-info-spacing) 0 0;
   padding: 0;
   list-style: none;
 }
 
 .trade-program__info-item {
   display: grid;
-  row-gap: 4px;
+  row-gap: var(--trade-program-info-item-gap);
 }
 
 .trade-program__info-value {
-  font-family: var(--heading-font-family);
+  color: var(--trade-program-info-value-color);
+  font-family: 'Forum';
   font-style: var(--heading-font-style);
-  font-weight: var(--heading-font-weight);
-  font-size: var(--text-h3);
-  line-height: 1.3;
+  font-weight: 400;
+  font-size: var(--trade-program-info-value-font-size);
+  line-height: 120%;
+  letter-spacing: 0%;
 }
 
 .trade-program__info-label {
-  font-size: var(--text-xs);
-  line-height: 1.4;
-  opacity: 0.7;
+  color: var(--trade-program-info-label-color);
+  font-size: var(--trade-program-info-label-font-size);
+  line-height: 140%;
+  letter-spacing: 0%;
 }
 
-/* --- Right column (app block container) ----------------------------------- */
-
-.trade-program__form {
-  background: var(--trade-program-form-background);
-  border: 1px solid var(--trade-program-form-border-color);
-  border-radius: var(--trade-program-form-border-radius);
-  padding: var(--trade-program-form-padding);
-}
 
 .trade-program__app-block + .trade-program__app-block {
   margin-top: 24px;
 }
+.trade_program_form{
+  background-color: #ffffff;
+  padding: 66px 36px;
+}
+.trade_program_form .globo-form-app{
+  margin: 0px;
+}
+.trade_program_form .globo-form-app .gfb__footer button{
+  font-family: 'Figtree';
+  font-weight: 700;
+  line-height: 100%;
+}
+.trade_program_form .globo-form-app .header .title{
+  font-size: 36px !important;
+  font-weight: 400;
+  line-height: 120%;
+  letter-spacing: 0%;
+}
+.trade_program_form .globo-form-app .header .description{
+  font-family: 'Figtree';
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: 0%;
+  color: #000000;
+}
+.trade_program_form  .globo-form-app .globo-form-control label.globo-label span.label-content{
+  font-family: 'Figtree';
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 100%;
+  letter-spacing: 0.37px;
+}
 
-/* The app block owns its own markup and settings. Only the width is
-   normalised here so the form fills - and never outgrows - the column.
-   Both selectors stay under .trade-program, so Powerful Form Builder forms
-   elsewhere on the store are untouched. */
+
 .trade-program .trade_program_form {
   width: 100%;
   max-width: 100%;
@@ -12660,8 +12714,16 @@ a.marquee__item:hover .marquee__text {
 .trade-program .trade_program_form :is(img, iframe, table) {
   max-width: 100%;
 }
+.trade_program_form .globo-form-control input{
+  color: #8F8F8F;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: 0%;
+  background: none;
+  border: 1px solid #D2D2D2;
+  box-shadow: none;
+}
 
-/* --- Desktop -------------------------------------------------------------- */
 
 @media screen and (min-width: 1000px) {
   .trade-program__grid {
@@ -12676,45 +12738,119 @@ a.marquee__item:hover .marquee__text {
   .trade-program--no-form .trade-program__grid {
     grid-template-columns: minmax(0, 1fr);
   }
-
-  .trade-program__heading {
-    margin-top: 16px;
-  }
-
-  .trade-program__description {
-    margin-top: 20px;
-  }
-
-  .trade-program__media {
-    margin-top: 36px;
-  }
-
-  .trade-program__info {
-    margin-top: 36px;
-    column-gap: 24px;
-  }
 }
 
-/* --- Mobile --------------------------------------------------------------- */
+@media screen and (max-width: 999px) {
+  .trade-program__grid {
+    row-gap: 0;
+  }
 
-@media screen and (max-width: 698px) {
-  .trade-program__description {
+  .trade-program__content {
+    display: contents;
+  }
+  .trade-program__media {
+    grid-area: 1 / 1;
+    order: 1;
+    align-self: stretch;
+    position: relative;
     max-width: none;
+    margin-inline: 0;
+    margin-top: var(--trade-program-media-spacing);
+    min-height: var(--trade-program-mobile-image-height);
+    overflow: hidden;
   }
 
-  .trade-program__media {
-    margin-top: 20px;
+  .trade-program--mobile-bleed .trade-program__media {
+    margin-inline: calc(-1 * (var(--distance-to-bleed) + var(--trade-program-grid-padding-inline)));
   }
 
+  .trade-program .trade-program__media :is(img, .placeholder) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: cover;
+  }
+
+  .trade-program--has-media .trade-program__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--trade-program-mobile-overlay-scrim);
+  }
+
+  .trade-program__intro {
+    order: 1;
+  }
+
+  .trade-program--has-media .trade-program__intro {
+    grid-area: 1 / 1;
+    z-index: 1;
+    align-self: center;
+    width: 100%;
+    padding: 24px max(var(--container-gutter), 20px);
+    margin-top: var(--trade-program-media-spacing);
+    color: var(--trade-program-mobile-overlay-color);
+  }
+
+  .trade-program--has-media .trade-program__intro .trade-program__eyebrow,
+  .trade-program--has-media .trade-program__intro .trade-program__heading {
+    color: inherit;
+  }
+
+  .trade-program__description {
+    order: 2;
+  }
+
+  .trade-program__form {
+    order: 3;
+    margin-top: var(--trade-program-row-gap);
+  }
   .trade-program__info {
-    margin-top: 20px;
-    column-gap: 12px;
+    order: 4;
+    column-gap: 0;
   }
 
-  .trade-program__info-value {
-    font-size: var(--text-base);
+  .trade-program__info-item {
+    justify-items: var(--trade-program-content-text-align);
+    padding-inline: calc(var(--trade-program-info-column-gap) / 2);
+  }
+
+  .trade-program__info-item + .trade-program__info-item {
+    border-inline-start: 1px solid rgb(var(--border-color));
+  }
+
+  .trade-program__heading{
+    line-height: 120%;
+  }
+  .trade-program__eyebrow {
+    font-weight: 500;
+  }
+  .trade-program__info-value{
+    line-height: 100%;
+  }
+  .trade-program__info-label{
+    line-height: 12.8px;
+  }
+  .trade_program_form{
+    padding: 21px 23px 17px 21px;
+  }
+  .trade_program_form .globo-form-app .header .title{
+    font-size: 24px !important;
+    margin-bottom: 4px;
+  }
+  .trade_program_form .globo-form-app .header .description{
+    font-size: 14px;
+  }
+  .trade_program_form .globo-form-app .globo-form-control label.globo-label span.label-content{
+    font-size: 14px;
+  }
+  .trade_program_form .globo-form-control input{
+    font-size: 14px;
   }
 }
+
 @media screen and (min-width: 1000px) {
   .application_process .section-stack {
     padding-inline: 25px;
