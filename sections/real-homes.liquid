@@ -596,8 +596,6 @@ width: 28px;
             window.removeEventListener('resize', this.onScroll);
             if (this.onPointerMove) window.removeEventListener('pointermove', this.onPointerMove);
             if (this.onPointerUp) {
-              window.removeEventListener('pointerup', this.onPointerUp);
-              window.removeEventListener('pointercancel', this.onPointerUp);
               window.removeEventListener('blur', this.onPointerUp);
             }
           }
@@ -699,8 +697,6 @@ width: 28px;
               startScroll = this.track.scrollLeft;
               this.track.style.scrollSnapType = 'none';
 
-              // Capture routes every subsequent pointer event to the track,
-              // even if the cursor leaves the window or lands on an iframe.
               try {
                 this.track.setPointerCapture(pointerId);
               } catch (e) {}
@@ -715,7 +711,10 @@ width: 28px;
 
             this.onPointerUp = (event) => {
               if (!dragging) return;
-              if (event && event.pointerId !== pointerId) return;
+              // blur is a FocusEvent and carries no pointerId, so it must not be
+              // filtered out by the id check.
+              if (event && event.pointerId !== undefined && event.pointerId !== pointerId) return;
+
               dragging = false;
               this.track.style.scrollSnapType = '';
               if (pointerId !== null) {
@@ -727,12 +726,15 @@ width: 28px;
               this.onScroll();
             };
 
+            // setPointerCapture makes the TRACK the event target, so a window
+            // listener alone never sees the release — which is what left the
+            // drag running until the next click. Both are bound; the id guard
+            // makes the duplicate harmless.
+            this.track.addEventListener('pointerup', this.onPointerUp);
+            this.track.addEventListener('pointercancel', this.onPointerUp);
             window.addEventListener('pointermove', this.onPointerMove);
             window.addEventListener('pointerup', this.onPointerUp);
-            // pointercancel fires when the browser takes over the gesture; without
-            // it that case leaves dragging stuck on, same as the native drag did.
             window.addEventListener('pointercancel', this.onPointerUp);
-            // A pointerup outside the document never reaches the window listener.
             window.addEventListener('blur', this.onPointerUp);
 
             this.track.addEventListener(
