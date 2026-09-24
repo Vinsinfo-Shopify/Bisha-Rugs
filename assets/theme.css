@@ -3782,6 +3782,10 @@ tr[onclick]:hover {
   .image-text-card--checklist .prose li {
     font-size: 12px;
   }
+  .image-text-card--checklist .button {
+    font-weight: 700;
+    font-size: 12px;
+  }
 }
 .accordion-tags {
   align-items: center;
