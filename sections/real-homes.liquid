@@ -496,6 +496,7 @@ width: 28px;
         'real-homes-carousel',
         class extends HTMLElement {
           connectedCallback() {
+            console.log('real-homes connectedCallback');
             this.track = this.querySelector('[data-rh-track]');
             if (!this.track) return;
 
