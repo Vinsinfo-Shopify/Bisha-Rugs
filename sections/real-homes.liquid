@@ -562,10 +562,28 @@ width: 28px;
                 // enlarged.
                 this.cards.forEach((c) => c.classList.toggle('is-active', c === card));
 
-                setTimeout(() => {
+                                setTimeout(() => {
                   this.busy = false;
-                  this.cards.forEach((c) => c.classList.toggle('is-active', c === card));
-                  this.centre(card, false);
+
+                  // Clicking always moves one card further along the strip, so
+                  // without this the run of clones is eventually exhausted and
+                  // nothing more can be centred. Jumping to the matching
+                  // original restores the full run in both directions; the two
+                  // are identical, so the jump is invisible.
+                  let landed = card;
+                  if (this.loop && card.dataset.rhClone) {
+                    const real = this.originals[Number(card.dataset.rhIndex)];
+                    if (real) {
+                      const previous = this.track.style.scrollBehavior;
+                      this.track.style.scrollBehavior = 'auto';
+                      this.track.scrollLeft += real.offsetLeft - card.offsetLeft;
+                      this.track.style.scrollBehavior = previous;
+                      landed = real;
+                    }
+                  }
+
+                  this.cards.forEach((c) => c.classList.toggle('is-active', c === landed));
+                  this.centre(landed, true);
                 }, 600);
                 return;
               }
