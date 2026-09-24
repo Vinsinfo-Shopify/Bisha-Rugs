@@ -676,91 +676,58 @@ width: 28px;
           }
 
                     enableDrag() {
-            let dragging = false;
-            let startX = 0;
-            let startScroll = 0;
-            let moved = 0;
-            let pointerId = null;
+            this.drag = { active: false, startX: 0, startScroll: 0, moved: 0 };
 
-            this.track.addEventListener('pointerdown', (event) => {
+            this.onPointerDown = (event) => {
               if (event.pointerType !== 'mouse') return;
-
-              // Images and videos are natively draggable. Left unchecked the
-              // browser starts its own drag, which swallows pointerup: dragging
-              // stays true and the track then follows the cursor with no button
-              // held. preventDefault stops the native drag at source.
+              if (!this.track.contains(event.target)) return;
               event.preventDefault();
 
-              dragging = true;
-              moved = 0;
-              pointerId = event.pointerId;
-              startX = event.clientX;
-              startScroll = this.track.scrollLeft;
+              this.drag.active = true;
+              this.drag.moved = 0;
+              this.drag.startX = event.clientX;
+              this.drag.startScroll = this.track.scrollLeft;
               this.track.style.scrollSnapType = 'none';
-
-              try {
-                this.track.setPointerCapture(pointerId);
-              } catch (e) {}
-            });
+              this.track.style.scrollBehavior = 'auto';
+            };
 
             this.onPointerMove = (event) => {
-              if (!dragging) return;
+              if (!this.drag.active) return;
 
-              // buttons is 0 when no button is held. Checking it here means a
-              // missed pointerup cannot leave the track following the cursor:
-              // the next move ends the drag itself. This is the guard that
-              // matters — the pointerup listeners are only for promptness.
-              if (event.buttons === 0) {
-                this.onPointerUp(event);
+              // The only guard that matters: no button held means no drag,
+              // whatever happened to the release event.
+              if (!event.buttons) {
+                this.endDrag();
                 return;
               }
 
-              if (event.pointerId !== pointerId) return;
-
-              const delta = event.clientX - startX;
-              moved = Math.max(moved, Math.abs(delta));
-              this.track.scrollLeft = startScroll - delta;
+              const delta = event.clientX - this.drag.startX;
+              this.drag.moved = Math.max(this.drag.moved, Math.abs(delta));
+              this.track.scrollLeft = this.drag.startScroll - delta;
             };
 
-            this.onPointerUp = (event) => {
-              if (!dragging) return;
-              // blur is a FocusEvent and carries no pointerId, so it must not be
-              // filtered out by the id check.
-              if (event && event.pointerId !== undefined && event.pointerId !== pointerId) return;
+            this.onPointerUp = () => this.endDrag();
 
-              dragging = false;
-              this.track.style.scrollSnapType = '';
-              if (pointerId !== null) {
-                try {
-                  this.track.releasePointerCapture(pointerId);
-                } catch (e) {}
-                pointerId = null;
+            this.track.addEventListener('pointerdown', this.onPointerDown);
+            document.addEventListener('pointermove', this.onPointerMove);
+            document.addEventListener('pointerup', this.onPointerUp);
+            document.addEventListener('pointercancel', this.onPointerUp);
+
+            this.track.addEventListener('click', (event) => {
+              if (this.drag.moved > 5) {
+                event.preventDefault();
+                event.stopPropagation();
+                this.drag.moved = 0;
               }
-              this.onScroll();
-            };
+            }, true);
+          }
 
-            // setPointerCapture makes the TRACK the event target, so a window
-            // listener alone never sees the release — which is what left the
-            // drag running until the next click. Both are bound; the id guard
-            // makes the duplicate harmless.
-            this.track.addEventListener('pointerup', this.onPointerUp);
-            this.track.addEventListener('pointercancel', this.onPointerUp);
-            window.addEventListener('pointermove', this.onPointerMove);
-            window.addEventListener('pointerup', this.onPointerUp);
-            window.addEventListener('pointercancel', this.onPointerUp);
-            window.addEventListener('blur', this.onPointerUp);
-
-            this.track.addEventListener(
-              'click',
-              (event) => {
-                if (moved > 5) {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  moved = 0;
-                }
-              },
-              true
-            );
+          endDrag() {
+            if (!this.drag || !this.drag.active) return;
+            this.drag.active = false;
+            this.track.style.scrollSnapType = '';
+            this.track.style.scrollBehavior = '';
+            this.onScroll();
           }
         }
       );
