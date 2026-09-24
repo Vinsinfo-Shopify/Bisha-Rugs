@@ -679,40 +679,27 @@ width: 28px;
           }
 
                     enableDrag() {
-            this.drag = { startX: 0, active: false };
+            // Click to centre. There is no drag: the track never follows the
+            // cursor, so there is no in-progress state that can be left running
+            // if a release event is missed. Mouse wheel, trackpad and touch
+            // still scroll the track natively.
+            this.onCardClick = (event) => {
+              const card = event.target.closest('.real-homes__card');
+              if (!card || !this.track.contains(card)) return;
 
-            this.onPointerDown = (event) => {
-              if (event.pointerType !== 'mouse') return;
-              if (!this.track.contains(event.target)) return;
+              // The centre card is already centred: its click belongs to the
+              // video toggle and the product link, so it is left alone.
+              if (card.classList.contains('is-active')) return;
+
               event.preventDefault();
-              this.drag.active = true;
-              this.drag.startX = event.clientX;
+              event.stopPropagation();
+
+              this.centre(card, false);
+              this.mark();
+              requestAnimationFrame(() => this.centre(this.track.querySelector('.is-active'), false));
             };
 
-            // The track never follows the cursor. The gesture is measured on
-            // release and resolved to one step, so there is no intermediate
-            // state that can be left running if an event is missed.
-            this.onPointerUp = (event) => {
-              if (!this.drag.active) return;
-              this.drag.active = false;
-
-              const delta = event.clientX - this.drag.startX;
-              if (Math.abs(delta) < 40) return;   // a click, not a drag
-
-              this.step(delta < 0 ? 1 : -1);
-            };
-
-            this.track.addEventListener('pointerdown', this.onPointerDown);
-            document.addEventListener('pointerup', this.onPointerUp);
-            document.addEventListener('pointercancel', this.onPointerUp);
-
-            this.track.addEventListener('click', (event) => {
-              if (this.justDragged) {
-                event.preventDefault();
-                event.stopPropagation();
-                this.justDragged = false;
-              }
-            }, true);
+            this.track.addEventListener('click', this.onCardClick, true);
           }
 
           step(direction) {
