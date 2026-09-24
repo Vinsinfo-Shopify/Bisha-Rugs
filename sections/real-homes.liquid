@@ -667,6 +667,36 @@ width: 28px;
             if (!card) return;
             this.track.scrollTo({ left: this.centreOffset(card), behavior: instant ? 'auto' : 'smooth' });
           }
+                    play(card) {
+            const video = card.querySelector('video');
+
+            if (video) {
+              if (video.hasAttribute('poster')) video.removeAttribute('poster');
+              if (video.paused) video.play();
+              return;
+            }
+
+            // Deferred: the theme's button is what loads the source and
+            // registers the video with its group.
+            const host = card.querySelector('video-media');
+            const btn = host && host.shadowRoot
+              && host.shadowRoot.querySelector('[part~="play-button"]');
+            if (!btn) return;
+
+            btn.click();
+
+            let tries = 0;
+            const start = () => {
+              const v = card.querySelector('video');
+              if (v) {
+                if (v.hasAttribute('poster')) v.removeAttribute('poster');
+                if (v.paused) v.play();
+                return;
+              }
+              if (++tries < 30) requestAnimationFrame(start);
+            };
+            requestAnimationFrame(start);
+          }
 
           nearest() {
             const middle = this.track.scrollLeft + this.track.clientWidth / 2;
