@@ -52,6 +52,14 @@
         if promo_progress > 100
           assign promo_progress = 100
         endif
+                comment
+          Free shipping is already earned, so the fill must never stop short of
+          its marker — a ticked node sitting in the empty part of the track
+          reads as a bug.
+        endcomment
+        if promo_progress < section.settings.promo_tier_1_position
+          assign promo_progress = section.settings.promo_tier_1_position
+        endif
 
         if tier_2_reached
           assign promo_message = section.settings.promo_unlocked_text | replace: '[reward]', section.settings.promo_tier_2_label
@@ -96,7 +104,7 @@
           </span>
         </div>
 
-        {%- if section.settings.promo_tier_2_label != blank -%}
+                {%- if section.settings.promo_tier_1_label != blank or section.settings.promo_tier_2_label != blank -%}
           <div class="cart-drawer-promo__labels">
             <span class="cart-drawer-promo__label" style="--cart-drawer-promo-node: {{ section.settings.promo_tier_1_position | default: 35 }}%;">
               {{- section.settings.promo_tier_1_label -}}
