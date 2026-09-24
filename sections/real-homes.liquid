@@ -669,9 +669,8 @@ width: 28px;
                 return;
               }
 
-              if (video.paused) {
-                if (video.hasAttribute('poster')) video.removeAttribute('poster');
-                video.play();
+                            if (video.paused) {
+                this.play(card);
               } else {
                 video.pause();
               }
