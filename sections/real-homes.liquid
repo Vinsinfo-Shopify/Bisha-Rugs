@@ -563,6 +563,7 @@ width: 28px;
                 this.cards.forEach((c) => c.classList.toggle('is-active', c === card));
 
                                 setTimeout(() => {
+                                                    console.log('index:', card.dataset.rhIndex, 'clone:', card.dataset.rhClone, 'position:', this.cards.indexOf(card), 'of', this.cards.length);
                   this.busy = false;
 
                   // Clicking always moves one card further along the strip, so
