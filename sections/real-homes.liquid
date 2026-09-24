@@ -539,9 +539,20 @@ width: 28px;
                         // Bubble phase, bound to the track. enableDrag's capture handler
             // stops propagation when a drag moved more than 5px, so a drag
             // never reaches this and never toggles playback.
-            this.track.addEventListener('click', (event) => {
+                        this.track.addEventListener('click', (event) => {
               const card = event.target.closest('.real-homes__card');
               if (!card || !this.track.contains(card)) return;
+
+              // A side card centres itself. Only the centre card's clicks fall
+              // through to the video toggle below.
+              if (!card.classList.contains('is-active')) {
+                event.preventDefault();
+                event.stopPropagation();
+                this.centre(card, false);
+                this.mark();
+                requestAnimationFrame(() => this.centre(this.track.querySelector('.is-active'), false));
+                return;
+              }
 
               const video = card.querySelector('video');
 
