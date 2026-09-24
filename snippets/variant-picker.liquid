@@ -106,8 +106,18 @@
             assign any_size_entry = true
           endif
         endif
+        assign show_size_chart = false
+        assign size_chart_inline = false
+        if is_size_option and resolved_option_selector_style == 'dropdown' and enter_size_heading != blank
+          assign size_chart_inline = true
+        endif
+        if size_chart_page != blank and size_label_list contains option_downcase
+          assign show_size_chart = true
+        endif
       %}
-
+      {%- if show_size_chart -%}
+        {%- capture size_chart_id -%}size-chart-{{ option.position }}-{{ form_id }}{%- endcapture -%}
+      {%- endif -%}
       <fieldset class="variant-picker__option v-stack gap-2">
         <div class="variant-picker__option-info h-stack justify-between gap-2">
           <div class="h-stack gap-1">
@@ -119,15 +129,12 @@
               <span>{{ option.selected_value }}</span>
             {%- endif -%}
           </div>
-
-          {%- if size_chart_page != blank and size_label_list contains option_downcase -%}
-            {%- capture id -%}size-chart-{{ option.position }}-{{ form_id }}{%- endcapture -%}
-
-            <button type="button" class="link" aria-controls="{{ id | escape }}" aria-expanded="false">
-              {{- 'product.general.size_chart' | t -}}
+           {%- if show_size_chart and size_chart_inline == false -%}
+            <button type="button" class="link" aria-controls="{{ size_chart_id | escape }}" aria-expanded="false">
+                {{- 'product.general.size_chart' | t -}}
             </button>
 
-            <x-modal id="{{ id | escape }}" class="modal modal--lg color-scheme color-scheme--dialog">
+            <x-modal id="{{ size_chart_id | escape }}" class="modal modal--lg color-scheme color-scheme--dialog">
               <span class="h5" slot="header">{{ size_chart_page.title }}</span>
 
               <div class="prose">
@@ -163,11 +170,26 @@
           {%- endif -%}
 
           {%- if is_size_option and enter_size_heading != blank -%}
-            <p class="size-entry__heading">
-              {{ enter_size_heading }}: <span style="font-weight:400;">{{ option.selected_value }}</span>
-            </p>
-          {%- endif -%}
+            <div class="size-entry__heading h-stack justify-between gap-2">
+              <p style="margin:0;">
+                {{ enter_size_heading }}: <span style="font-weight:400;">{{ option.selected_value }}</span>
+              </p>
 
+              {%- if show_size_chart and size_chart_inline -%}
+                <button type="button" class="link" style="font-weight:400;" aria-controls="{{ size_chart_id | escape }}" aria-expanded="false">
+                  {{- 'product.general.size_chart' | t -}}
+                </button>
+
+                <x-modal id="{{ size_chart_id | escape }}" class="modal modal--lg color-scheme color-scheme--dialog">
+                  <span class="h5" slot="header">{{ size_chart_page.title }}</span>
+
+                  <div class="prose">
+                    {{- size_chart_page.content -}}
+                  </div>
+                </x-modal>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
           <div class="relative">
             {%- capture popover_id -%}popover-variant-dropdown-{{ section.id }}-{{ product.id }}-{{ option.position }}{%- endcapture -%}
 
@@ -406,6 +428,14 @@
           margin: 0;
           padding-block: 16px;
           color: #202020;
+        }
+        .size-entry__heading button {
+          font-weight: 500 !important;
+          font-size: 14px;
+          line-height: 140%;
+          letter-spacing: 0%;
+          vertical-align: middle;
+          color: rgb(var(--text-color));
         }
       </style>
 

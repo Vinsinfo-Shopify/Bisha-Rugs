@@ -94,20 +94,26 @@
       display: block;
     }
 
-    #shopify-section-{{ section.id }} .real-homes__track {
+        #shopify-section-{{ section.id }} .real-homes__track {
       position: relative;
       display: flex;
       align-items: center;
       gap: var(--rh-gap);
-      overflow: auto hidden;
-      overscroll-behavior-x: contain;
-      scroll-snap-type: x proximity;
+      overflow: hidden;
       scroll-behavior: smooth;
-      scrollbar-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__card:not(.is-active) {
+      cursor: pointer;
     }
 
     #shopify-section-{{ section.id }} .real-homes__track::-webkit-scrollbar {
       display: none;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__track :is(img, video) {
+      -webkit-user-drag: none;
+      user-select: none;
     }
 
     #shopify-section-{{ section.id }} .real-homes__card {
@@ -369,6 +375,11 @@ width: 28px;
         height: 27px;
         transform: translate(calc(-50% + 2px), -50%);
       }
+            #shopify-section-{{ section.id }} .real-homes__track {
+        overflow: auto hidden;
+        scroll-snap-type: x mandatory;
+        overscroll-behavior-x: contain;
+      }
     }
   </style>
 
@@ -434,7 +445,7 @@ width: 28px;
                     {{-
                       card_product.featured_image
                       | image_url: width: 120
-                      | image_tag: class: 'real-homes__thumb', loading: 'lazy', widths: '88,120,160'
+                      | image_tag: class: 'real-homes__thumb', loading: 'lazy', widths: '88,120,160', draggable: 'false'
                     -}}
                   {%- endif -%}
 
@@ -485,6 +496,7 @@ width: 28px;
         'real-homes-carousel',
         class extends HTMLElement {
           connectedCallback() {
+            console.log('real-homes connectedCallback');
             this.track = this.querySelector('[data-rh-track]');
             if (!this.track) return;
 
@@ -527,9 +539,20 @@ width: 28px;
                         // Bubble phase, bound to the track. enableDrag's capture handler
             // stops propagation when a drag moved more than 5px, so a drag
             // never reaches this and never toggles playback.
-            this.track.addEventListener('click', (event) => {
+                        this.track.addEventListener('click', (event) => {
               const card = event.target.closest('.real-homes__card');
               if (!card || !this.track.contains(card)) return;
+
+              // A side card centres itself. Only the centre card's clicks fall
+              // through to the video toggle below.
+              if (!card.classList.contains('is-active')) {
+                event.preventDefault();
+                event.stopPropagation();
+                this.centre(card, false);
+                this.mark();
+                requestAnimationFrame(() => this.centre(this.track.querySelector('.is-active'), false));
+                return;
+              }
 
               const video = card.querySelector('video');
 
@@ -585,12 +608,10 @@ width: 28px;
             this.track.addEventListener('ended', markPlaying, true);
           }
 
-          disconnectedCallback() {
-            if (!this.track) return;
-            this.track.removeEventListener('scroll', this.onScroll);
+                    disconnectedCallback() {
+                                    if (this.onCardClick) this.track.removeEventListener('click', this.onCardClick, true);
             window.removeEventListener('resize', this.onScroll);
-            if (this.onPointerMove) window.removeEventListener('pointermove', this.onPointerMove);
-            if (this.onPointerUp) window.removeEventListener('pointerup', this.onPointerUp);
+            if (this.track) this.track.removeEventListener('scroll', this.onScroll);
           }
 
           makeClone(card) {
@@ -668,54 +689,10 @@ width: 28px;
           }
 
           enableDrag() {
-            let dragging = false;
-            let startX = 0;
-            let startScroll = 0;
-            let moved = 0;
-
-            this.track.addEventListener('pointerdown', (event) => {
-              if (event.pointerType !== 'mouse') return;
-              dragging = true;
-              moved = 0;
-              startX = event.clientX;
-              startScroll = this.track.scrollLeft;
-              this.track.style.scrollSnapType = 'none';
-            });
-
-            // Kept as references so they can be removed again. The theme editor
-            // re-renders the section on every setting change, and anonymous
-            // window listeners from the previous render would otherwise stack up
-            // and keep scrolling a track that no longer exists.
-            this.onPointerMove = (event) => {
-              if (!dragging) return;
-              const delta = event.clientX - startX;
-              moved = Math.max(moved, Math.abs(delta));
-              this.track.scrollLeft = startScroll - delta;
-            };
-
-            this.onPointerUp = () => {
-              if (!dragging) return;
-              dragging = false;
-              this.track.style.scrollSnapType = '';
-              this.onScroll();
-            };
-
-            window.addEventListener('pointermove', this.onPointerMove);
-            window.addEventListener('pointerup', this.onPointerUp);
-
-            // A drag that ends on the product link must not navigate.
-            this.track.addEventListener(
-              'click',
-              (event) => {
-                if (moved > 5) {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  moved = 0;
-                }
-              },
-              true
-            );
+         
           }
+
+
         }
       );
     }

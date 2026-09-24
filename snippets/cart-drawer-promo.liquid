@@ -27,15 +27,38 @@
       </p>
     {%- endif -%}
 
-    {%- comment -%}
-      The bar only appears for a customer who can actually receive the discount:
-      a signed-in customer with no orders, or a guest, whose history is unknown.
-    {%- endcomment -%}
+        {%- unless first_order_eligible and tier_2_amount > 0 -%}
+      <div class="cart-drawer-promo__meter">
+        <div class="cart-drawer-promo__track" style="--cart-drawer-promo-progress: 100%;">
+          <span class="cart-drawer-promo__fill"></span>
+          <span class="cart-drawer-promo__node is-reached" style="--cart-drawer-promo-node: 100%;">
+            {%- render 'icon' with 'success', width: 8, class: 'cart-drawer-promo__tick' -%}
+          </span>
+        </div>
+
+        {%- if section.settings.promo_tier_1_label != blank -%}
+          <div class="cart-drawer-promo__labels">
+            <span class="cart-drawer-promo__label cart-drawer-promo__label--end">
+              {{- section.settings.promo_tier_1_label -}}
+            </span>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endunless -%}
+
     {%- if first_order_eligible and tier_2_amount > 0 -%}
       {%- liquid
         assign promo_progress = cart.total_price | times: 100 | divided_by: tier_2_amount
         if promo_progress > 100
           assign promo_progress = 100
+        endif
+                comment
+          Free shipping is already earned, so the fill must never stop short of
+          its marker — a ticked node sitting in the empty part of the track
+          reads as a bug.
+        endcomment
+        if promo_progress < section.settings.promo_tier_1_position
+          assign promo_progress = section.settings.promo_tier_1_position
         endif
 
         if tier_2_reached
@@ -81,14 +104,19 @@
           </span>
         </div>
 
-        {%- if section.settings.promo_tier_2_label != blank -%}
+        {%- if section.settings.promo_tier_1_label != blank or section.settings.promo_tier_2_label != blank -%}
           <div class="cart-drawer-promo__labels">
-            <span class="cart-drawer-promo__label" style="--cart-drawer-promo-node: {{ section.settings.promo_tier_1_position | default: 35 }}%;">
-              {{- section.settings.promo_tier_1_label -}}
-            </span>
-            <span class="cart-drawer-promo__label cart-drawer-promo__label--end">
-              {{- section.settings.promo_tier_2_label -}}
-            </span>
+            {%- if section.settings.promo_tier_1_label != blank -%}
+              <span class="cart-drawer-promo__label" style="--cart-drawer-promo-node: {{ section.settings.promo_tier_1_position }}%;">
+                {{- section.settings.promo_tier_1_label -}}
+              </span>
+            {%- endif -%}
+
+            {%- if section.settings.promo_tier_2_label != blank -%}
+              <span class="cart-drawer-promo__label cart-drawer-promo__label--end">
+                {{- section.settings.promo_tier_2_label -}}
+              </span>
+            {%- endif -%}
           </div>
         {%- endif -%}
       </div>
