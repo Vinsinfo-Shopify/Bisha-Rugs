@@ -46,7 +46,7 @@
         "service_strip_text_size_mobile": 12,
         "service_strip_icon_size_desktop": 16,
         "service_strip_icon_size_mobile": 14,
-        "promo_discount_title": "",
+        "promo_discount_title": "TEST-FLAT5OFF",
         "promo_always_text": "Congratulations, you've got free shipping",
         "show_promo_bar": true,
         "promo_accent_color": "#56583d",
