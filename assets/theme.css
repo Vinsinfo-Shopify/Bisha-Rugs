@@ -3784,6 +3784,9 @@ tr[onclick]:hover {
   .pdp-contact__methods{
     column-gap: .8rem;
   }
+  .pdp-contact{
+    padding: 7px;
+  }
 }
 @media screen and (max-width: 480px) {
   .image-text-card--checklist .image-text-card__image{
