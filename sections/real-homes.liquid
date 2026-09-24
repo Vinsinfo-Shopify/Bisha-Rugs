@@ -591,11 +591,7 @@ width: 28px;
           }
 
                     disconnectedCallback() {
-            // These are on document, so they must be removed even when the
-            // track is already gone — otherwise a dead instance keeps handling
-            // pointermove and scrolls a track that no longer exists.
-            if (this.onPointerMove) document.removeEventListener('pointermove', this.onPointerMove);
-            if (this.onPointerUp) {
+                        if (this.onPointerUp) {
               document.removeEventListener('pointerup', this.onPointerUp);
               document.removeEventListener('pointercancel', this.onPointerUp);
             }
