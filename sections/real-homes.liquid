@@ -692,27 +692,7 @@ width: 28px;
          
           }
 
-          step(direction) {
-            const current = this.track.querySelector('.is-active') || this.nearest();
-            if (!current) return;
 
-            const index = this.cards.indexOf(current);
-            const target = this.cards[index + direction];
-            if (!target) return;
-
-            this.justDragged = true;
-            this.centre(target, false);
-            this.mark();
-            requestAnimationFrame(() => this.centre(this.track.querySelector('.is-active'), false));
-          }
-
-          endDrag() {
-            if (!this.drag || !this.drag.active) return;
-            this.drag.active = false;
-            this.track.style.scrollSnapType = '';
-            this.track.style.scrollBehavior = '';
-            this.onScroll();
-          }
         }
       );
     }
