@@ -667,43 +667,65 @@ width: 28px;
             });
           }
 
-          enableDrag() {
+                    enableDrag() {
             let dragging = false;
             let startX = 0;
             let startScroll = 0;
             let moved = 0;
+            let pointerId = null;
 
             this.track.addEventListener('pointerdown', (event) => {
               if (event.pointerType !== 'mouse') return;
+
+              // Images and videos are natively draggable. Left unchecked the
+              // browser starts its own drag, which swallows pointerup: dragging
+              // stays true and the track then follows the cursor with no button
+              // held. preventDefault stops the native drag at source.
+              event.preventDefault();
+
               dragging = true;
               moved = 0;
+              pointerId = event.pointerId;
               startX = event.clientX;
               startScroll = this.track.scrollLeft;
               this.track.style.scrollSnapType = 'none';
+
+              // Capture routes every subsequent pointer event to the track,
+              // even if the cursor leaves the window or lands on an iframe.
+              try {
+                this.track.setPointerCapture(pointerId);
+              } catch (e) {}
             });
 
-            // Kept as references so they can be removed again. The theme editor
-            // re-renders the section on every setting change, and anonymous
-            // window listeners from the previous render would otherwise stack up
-            // and keep scrolling a track that no longer exists.
             this.onPointerMove = (event) => {
-              if (!dragging) return;
+              if (!dragging || event.pointerId !== pointerId) return;
               const delta = event.clientX - startX;
               moved = Math.max(moved, Math.abs(delta));
               this.track.scrollLeft = startScroll - delta;
             };
 
-            this.onPointerUp = () => {
+            this.onPointerUp = (event) => {
               if (!dragging) return;
+              if (event && event.pointerId !== pointerId) return;
               dragging = false;
               this.track.style.scrollSnapType = '';
+              if (pointerId !== null) {
+                try {
+                  this.track.releasePointerCapture(pointerId);
+                } catch (e) {}
+                pointerId = null;
+              }
               this.onScroll();
             };
 
             window.addEventListener('pointermove', this.onPointerMove);
             window.addEventListener('pointerup', this.onPointerUp);
+            // pointercancel fires when the browser takes over the gesture; without
+            // it that case leaves dragging stuck on, same as the native drag did.
+            window.addEventListener('pointercancel', this.onPointerUp);
+            // A pointerup outside the document never reaches the window listener.
+            window.addEventListener('blur', this.onPointerUp);
 
-            // A drag that ends on the product link must not navigate.
             this.track.addEventListener(
               'click',
               (event) => {
