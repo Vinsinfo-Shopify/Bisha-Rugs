@@ -668,7 +668,7 @@ width: 28px;
               const real = this.originals[Number(active.dataset.rhIndex)];
               if (real) {
                 const previous = this.track.style.scrollBehavior;
-                this.track.style.scrollBehavior = '';
+                this.track.style.scrollBehavior = 'auto';
                 this.track.scrollLeft += real.offsetLeft - active.offsetLeft;
                 this.track.style.scrollBehavior = previous;
                 active = real;
