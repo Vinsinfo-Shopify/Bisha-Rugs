@@ -597,10 +597,7 @@ width: 28px;
           }
 
                     disconnectedCallback() {
-                        if (this.onPointerUp) {
-              document.removeEventListener('pointerup', this.onPointerUp);
-              document.removeEventListener('pointercancel', this.onPointerUp);
-            }
+                                    if (this.onCardClick) this.track.removeEventListener('click', this.onCardClick, true);
             window.removeEventListener('resize', this.onScroll);
             if (this.track) this.track.removeEventListener('scroll', this.onScroll);
           }
