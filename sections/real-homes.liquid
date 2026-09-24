@@ -558,15 +558,9 @@ width: 28px;
                 // enlarged.
                 this.cards.forEach((c) => c.classList.toggle('is-active', c === card));
 
-                                setTimeout(() => {
-                                                    console.log('index:', card.dataset.rhIndex, 'clone:', card.dataset.rhClone, 'position:', this.cards.indexOf(card), 'of', this.cards.length);
+                                                setTimeout(() => {
                   this.busy = false;
 
-                  // Clicking always moves one card further along the strip, so
-                  // without this the run of clones is eventually exhausted and
-                  // nothing more can be centred. Jumping to the matching
-                  // original restores the full run in both directions; the two
-                  // are identical, so the jump is invisible.
                   let landed = card;
                   if (this.loop && card.dataset.rhClone) {
                     const real = this.originals[Number(card.dataset.rhIndex)];
@@ -581,6 +575,11 @@ width: 28px;
 
                   this.cards.forEach((c) => c.classList.toggle('is-active', c === landed));
                   this.centre(landed, true);
+
+                  // One click centres AND plays. Done here rather than on the
+                  // click itself so the group pause fires after the card has
+                  // landed, not while it is still animating.
+                  this.play(landed);
                 }, 600);
                 return;
               }
