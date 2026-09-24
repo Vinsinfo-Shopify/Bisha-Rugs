@@ -288,18 +288,9 @@
     --circle-button-background: {{ color_scheme.settings.circle_button_background.rgb }};
     --circle-button-text-color: {{ color_scheme.settings.circle_button_icon.rgb }};
   }
-  @media screen and (min-width: 1000px) {
-    {%- for color_scheme in settings.color_schemes -%}
-      {%- if color_scheme.id == '1' -%}
-        --background: {{ color_scheme.settings.background.rgb }} / {{ color_scheme.settings.background.alpha }};
-      {%- endif -%}
-    {%- endfor-%}
+  @media screen and (min-width: 1000px) {    
     .color-scheme--dialog {
-
-      {%- if color_scheme.settings.background.rgba == 'rgba(255, 255, 255, 1.0)' -%}
-      {%- else -%}
-        --background: {{ color_scheme.settings.background.rgba }};
-      {%- endif -%}
+        --background: 255 251 243 / 1.0;
     }
   }
   {%- if settings.show_page_transition -%}
