@@ -290,7 +290,7 @@
   }
   @media screen and (min-width: 1000px) {
     {%- for color_scheme in settings.color_schemes -%}
-      {%- if color_scheme.id == 1 -%}
+      {%- if color_scheme.id == '1' -%}
         --background: {{ color_scheme.settings.background.rgb }} / {{ color_scheme.settings.background.alpha }};
       {%- endif -%}
     {%- endfor-%}
