@@ -603,16 +603,15 @@ width: 28px;
                 event.preventDefault();
                 event.stopPropagation();
 
-                this.busy = true;
-                this.centre(card, false);
+                                this.busy = true;
 
-                // The clicked card is known, so the class is set directly.
-                // mark() re-derives it from geometry and can land on a clone or
-                // a neighbour mid-animation, which is what left the wrong card
-                // enlarged.
+                // The class goes on first so the card widens WHILE the scroll
+                // runs, not after it. The frame's delay lets the new width
+                // apply before centre() measures the offset.
                 this.cards.forEach((c) => c.classList.toggle('is-active', c === card));
+                requestAnimationFrame(() => this.centre(card, false));
 
-                                                setTimeout(() => {
+                setTimeout(() => {
                   this.busy = false;
 
                   let landed = card;
