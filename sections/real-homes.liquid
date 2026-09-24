@@ -549,19 +549,23 @@ width: 28px;
               const started = existing && existing.currentTime > 0;
                                           console.log('click:', card.dataset.rhIndex, 'started:', started, 'active:', card.classList.contains('is-active'), 'offset:', this.centreOffset(card), 'scrollLeft:', this.track.scrollLeft);
 
-                            if (!started && !card.classList.contains('is-active')) {
+                                          if (!started && !card.classList.contains('is-active')) {
                 event.preventDefault();
                 event.stopPropagation();
 
-                // centre() scrolls, which fires scroll, which schedules
-                // settle(). settle() then re-centres on whatever nearest()
-                // picks mid-animation — the card we just left. busy blocks that
-                // until the animation has finished.
                 this.busy = true;
                 this.centre(card, false);
-                this.mark();
+
+                // The clicked card is known, so the class is set directly.
+                // mark() re-derives it from geometry and can land on a clone or
+                // a neighbour mid-animation, which is what left the wrong card
+                // enlarged.
+                this.cards.forEach((c) => c.classList.toggle('is-active', c === card));
+
                 setTimeout(() => {
                   this.busy = false;
+                  this.cards.forEach((c) => c.classList.toggle('is-active', c === card));
+                  this.centre(card, false);
                 }, 600);
                 return;
               }
