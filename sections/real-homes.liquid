@@ -94,16 +94,17 @@
       display: block;
     }
 
-    #shopify-section-{{ section.id }} .real-homes__track {
+        #shopify-section-{{ section.id }} .real-homes__track {
       position: relative;
       display: flex;
       align-items: center;
       gap: var(--rh-gap);
       overflow: hidden;
-      overscroll-behavior-x: contain;
-      scroll-snap-type: x proximity;
       scroll-behavior: smooth;
-      scrollbar-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__card:not(.is-active) {
+      cursor: pointer;
     }
 
     #shopify-section-{{ section.id }} .real-homes__track::-webkit-scrollbar {
