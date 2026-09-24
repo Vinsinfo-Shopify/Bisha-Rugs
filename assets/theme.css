@@ -3773,9 +3773,14 @@ tr[onclick]:hover {
   .image-text-card {
     column-gap: 7px;
     padding: 7px;
-  }
+  }  
+}
+@media screen and (max-width: 480px) {
   .image-text-card--checklist .image-text-card__image{
-   width: 82px;
+    width: 82px !important;
+  }
+  .image-text-card--checklist .prose li {
+    font-size: 12px;
   }
 }
 .accordion-tags {
