@@ -591,11 +591,12 @@ width: 28px;
           }
 
           disconnectedCallback() {
-            if (!this.track) return;
-            this.track.removeEventListener('scroll', this.onScroll);
-            window.removeEventListener('resize', this.onScroll);
             if (this.onPointerMove) window.removeEventListener('pointermove', this.onPointerMove);
             if (this.onPointerUp) {
+              this.track.removeEventListener('pointerup', this.onPointerUp);
+              this.track.removeEventListener('pointercancel', this.onPointerUp);
+              window.removeEventListener('pointerup', this.onPointerUp);
+              window.removeEventListener('pointercancel', this.onPointerUp);
               window.removeEventListener('blur', this.onPointerUp);
             }
           }
