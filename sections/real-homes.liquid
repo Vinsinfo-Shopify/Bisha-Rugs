@@ -636,9 +636,14 @@ width: 28px;
             return card.offsetLeft + card.offsetWidth / 2 - this.track.clientWidth / 2;
           }
 
-          centre(card, instant) {
+                    centre(card, instant) {
             if (!card) return;
-            this.track.scrollTo({ left: this.centreOffset(card), behavior: instant ? 'auto' : 'smooth' });
+
+            // scrollTo needs a scrollable box. Translating the track works
+            // whatever the overflow is set to.
+            const offset = card.offsetLeft + card.offsetWidth / 2 - this.track.clientWidth / 2;
+            this.track.style.transition = instant ? 'none' : 'transform 0.4s ease';
+            this.track.style.transform = 'translateX(' + (-offset) + 'px)';
           }
 
           nearest() {
