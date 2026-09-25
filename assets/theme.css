@@ -1392,6 +1392,7 @@ shopify-accelerated-checkout-cart {
 .variant-picker__option .select {
   padding: 7px 12px;
   background-color: rgb(var(--text-color) / .03);
+  border-color: #56583D;
 }
 
 .select:required:invalid {
