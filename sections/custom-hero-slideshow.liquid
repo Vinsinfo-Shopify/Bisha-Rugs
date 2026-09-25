@@ -27,12 +27,12 @@
     --hero-mobile-h: 251;
   }
 
-  .hero-slideshow__track {
-    position: relative;
-  }
-
+    /* Slides are stacked in one grid cell: display cannot be animated, so the
+     transition is on transform and opacity instead. A slide sits off-screen on
+     the side it will arrive from, and leaves towards the opposite side. */
   .hero-slideshow__track {
     display: grid;
+    overflow: hidden;
   }
 
   .hero-slide {
@@ -40,15 +40,45 @@
     width: 100%;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.6s ease, visibility 0s linear 0.6s;
+    transform: translateX(100%);
+    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 0.6s ease,
+                visibility 0s linear 0.6s;
+  }
+
+  /* Waiting to enter from the left (the previous arrow was clicked). */
+  .hero-slide.is-from-left {
+    transform: translateX(-100%);
   }
 
   .hero-slide.is-active {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.6s ease, visibility 0s;
-    position: relative;
+    transform: translateX(0);
     z-index: 1;
+    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 0.6s ease,
+                visibility 0s;
+  }
+
+  /* The outgoing slide animates out rather than vanishing. */
+  .hero-slide.is-leaving {
+    opacity: 0;
+    visibility: visible;
+    z-index: 0;
+    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 0.6s ease,
+                visibility 0s linear 0.6s;
+  }
+
+  .hero-slide.is-leaving-left  { transform: translateX(-100%); }
+  .hero-slide.is-leaving-right { transform: translateX(100%); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-slide { transition: opacity 0.2s ease, visibility 0s; transform: none; }
+    .hero-slide.is-from-left,
+    .hero-slide.is-leaving-left,
+    .hero-slide.is-leaving-right { transform: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
