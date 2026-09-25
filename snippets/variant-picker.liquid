@@ -173,7 +173,7 @@
           <size-units class="size-units">
             <div class="size-entry__heading h-stack justify-between gap-2">
               <p style="margin:0;">
-                {{ enter_size_heading }}: <span style="font-weight:400;" data-size-units-value data-size="{{ option.selected_value | escape }}>{{ option.selected_value }}</span>
+                {{ enter_size_heading }}: <span style="font-weight:400;">{{ option.selected_value }}</span>
               </p>
 
               {%- if show_size_chart and size_chart_inline -%}
@@ -203,7 +203,7 @@
             {%- capture popover_id -%}popover-variant-dropdown-{{ section.id }}-{{ product.id }}-{{ option.position }}{%- endcapture -%}
 
             <button type="button" class="select" aria-controls="{{ popover_id }}" aria-expanded="false">
-              <span id="{{ popover_id }}-selected-value"  {% if is_size_option %}data-size-units-value data-size="{{ option.selected_value | escape }}"{% endif %}>{{- option.selected_value -}}</span>
+              <span id="{{ popover_id }}-selected-value">{{- option.selected_value -}}</span>
               {%- render 'icon' with 'dropdown-chevron' -%}
             </button>
 
@@ -226,7 +226,7 @@
                   -%}
 
                   {%- capture option_markup -%}
-                   <span {% if is_size_option %}data-size-units-value data-size="{{ option_value | escape }}"{% endif %}>{{- option_value -}}</span>
+                    <span>{{- option_value -}}</span>
 
                     {%- if option_value.available == false -%}
                       <span>
@@ -523,44 +523,29 @@
             if (UNITS.includes(stored)) currentUnit = stored;
           } catch (error) {}
 
-          const DIMENSION = String.raw`(\d+)(?:\.(\d{1,2}))?\s*(?:'|’|ft\.?|feet)?\s*(?:(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?`;
+          const DIMENSION = String.raw`(\d+(?:\.\d+)?)\s*(?:'|’|ft\.?|feet)?\s*(?:(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?`;
           const SIZE_PATTERN = new RegExp(DIMENSION + String.raw`\s*[x×X]\s*` + DIMENSION + String.raw`(?:\s*(?:ft\.?|feet)\b)?`);
-          const SINGLE_PATTERN = /(\d+)(?:\.(\d{1,2}))?\s*(?:'|’|ft\.?|feet)(?:\s*(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?/;
+          const SINGLE_PATTERN = /(\d+(?:\.\d+)?)\s*(?:'|’|ft\.?|feet)(?:\s*(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?/;
 
-          const toInches = (feet, decimalInches, inches) =>
-            parseInt(feet, 10) * 12 + (decimalInches ? parseInt(decimalInches, 10) : 0) + (inches ? parseFloat(inches) : 0);
+          const toInches = (feet, inches) => parseFloat(feet) * 12 + (inches ? parseFloat(inches) : 0);
 
           const convert = (value, unit) => {
-            if (!value || unit === 'ft') return value;
+            if (unit === 'ft') return value;
 
             const format = (inches) => Math.round(unit === 'cm' ? inches * 2.54 : inches);
             let match = value.match(SIZE_PATTERN);
             let converted;
 
             if (match) {
-              converted = `${format(toInches(match[1], match[2], match[3]))} x ${format(toInches(match[4], match[5], match[6]))} ${unit}`;
+              converted = `${format(toInches(match[1], match[2]))} x ${format(toInches(match[3], match[4]))} ${unit}`;
             } else {
               match = value.match(SINGLE_PATTERN);
               if (!match) return value;
-              converted = `${format(toInches(match[1], match[2], match[3]))} ${unit}`;
+              converted = `${format(toInches(match[1], match[2]))} ${unit}`;
             }
-
             let rest = value.slice(match.index + match[0].length);
             if (rest && !/^\s/.test(rest)) rest = ` ${rest}`;
-
             return value.slice(0, match.index) + converted + rest;
-          };
-
-          const renderAll = () => {
-            document.querySelectorAll('size-units [data-unit]').forEach((button) => {
-              const isActive = button.dataset.unit === currentUnit;
-              button.classList.toggle('is-active', isActive);
-              button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-            });
-
-            document.querySelectorAll('[data-size-units-value]').forEach((label) => {
-              label.textContent = convert(label.dataset.size, currentUnit);
-            });
           };
 
           customElements.define('size-units', class extends HTMLElement {
@@ -574,13 +559,23 @@
                   localStorage.setItem(STORAGE_KEY, currentUnit);
                 } catch (error) {}
 
-                renderAll();
+                document.querySelectorAll('size-units').forEach((element) => element.render());
               });
 
-              renderAll();
+              this.render();
+            }
+
+            render() {
+              this.querySelectorAll('[data-unit]').forEach((button) => {
+                const isActive = button.dataset.unit === currentUnit;
+                button.classList.toggle('is-active', isActive);
+                button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+              });
+
+              const label = this.querySelector('[data-size-units-value]');
+              if (label) label.textContent = convert(label.dataset.size, currentUnit);
             }
           });
-          document.addEventListener('variant:change', () => requestAnimationFrame(renderAll));
         }
       </script>
     {%- endif -%}
