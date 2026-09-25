@@ -13046,3 +13046,57 @@ a.marquee__item:hover .marquee__text {
     stroke-width: 1.23;
   }
 }
+
+/* Position, same as the homepage Bestselling row: the arrows sit outside the
+   product column in the page gutter and are centred on the product image
+   (313 x 380), not on the whole card. */
+:is(.recent_products, .expore-more_section) .product-card__image {
+  aspect-ratio: 313 / 380;
+}
+
+@media screen and (min-width: 1000px) {
+  :is(.recent_products, .expore-more_section) .container {
+    --container-max-width: 1300px;
+    --container-gutter: 70px;
+  }
+}
+
+@media screen and (pointer: fine) {
+  /* Shown from first paint, as on the homepage, not only once measured scrollable */
+  :is(.recent_products, .expore-more_section) .floating-controls-container:not(:has(.is-scrollable:not(.product-card__media-carousel))) .floating-controls-container__control {
+    display: grid;
+  }
+
+  :is(.recent_products, .expore-more_section) .floating-controls-container--inside {
+    --floating-controls-inset-inline: -2.5rem;
+  }
+
+  :is(.recent_products, .expore-more_section) .floating-controls-container__control {
+    inset-block-start: 173px;
+    inset-block-start: calc(((min(81.25rem, 100vw - 2.4rem) - 48px) / 4 * 380 / 313) / 2 - 1.125rem);
+  }
+}
+
+@media screen and (max-width: 699px) {
+  /* Prestige hides the arrows on touch; the homepage shows them on the image edges */
+  :is(.recent_products, .expore-more_section) .floating-controls-container {
+    position: relative;
+  }
+
+  :is(.recent_products, .expore-more_section) .floating-controls-container > :is(carousel-prev-button, carousel-next-button).floating-controls-container__control {
+    z-index: 3;
+    display: grid;
+    position: absolute;
+    inset-block-start: calc(((100vw - 2.125rem) / 2 * 380 / 313) / 2 - 0.875rem);
+  }
+
+  :is(.recent_products, .expore-more_section) .floating-controls-container > carousel-prev-button.floating-controls-container__control {
+    inset-inline-start: -13px;
+    inset-inline-end: auto;
+  }
+
+  :is(.recent_products, .expore-more_section) .floating-controls-container > carousel-next-button.floating-controls-container__control {
+    inset-inline-end: -13px;
+    inset-inline-start: auto;
+  }
+}
