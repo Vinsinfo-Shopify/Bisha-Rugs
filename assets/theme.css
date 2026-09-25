@@ -6681,14 +6681,14 @@ shopify-account::part(signed-out-avatar) {
     gap: 70px;
   }
 }
-@media screen and (min-width: 1400px) {
+@media screen and (min-width: 1350px) {
   .why_oushak_section .image-with-text .prose  {
     width: 93%;
     margin: 0;
   }
 }
 @media screen and (min-width: 1400px) {
-   .custom_rugs.pdp .image-with-text--reverse>.prose  {
+   .custom_rugs.pdp .image-with-text .prose  {
     width: 81%;
     margin: 0;
   }
