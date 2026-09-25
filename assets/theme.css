@@ -13120,3 +13120,9 @@ a.marquee__item:hover .marquee__text {
     inset-inline-start: auto;
   }
 }
+.button,
+.shopify-challenge__button,
+.shopify-payment-button__button--unbranded {
+  --initial-background-position: var(--transform-origin-end);
+  --hover-background-position: var(--transform-origin-start);
+}
