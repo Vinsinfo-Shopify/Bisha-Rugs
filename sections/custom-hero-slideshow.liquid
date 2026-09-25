@@ -475,7 +475,7 @@
       var incoming = slides[target];
 
       outgoing.classList.remove('is-active');
-      outgoing.classList.add('is-leaving', direction === 'next' ? 'is-leaving-left' : 'is-leaving-right');
+            outgoing.classList.add('is-leaving', direction === 'next' ? 'is-leaving-right' : 'is-leaving-left');
 
       // Park the incoming slide on the side it arrives from, force the browser
       // to apply that position, then animate to centre. Without the reflow both
