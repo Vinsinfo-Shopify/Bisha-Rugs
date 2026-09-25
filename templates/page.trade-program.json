@@ -356,7 +356,7 @@
         "content_width": 400,
         "overlay_text_color": "#ffffff",
         "button_label": "Apply for the trade program",
-        "button_link": "shopify://pages/bisha-rugs-trade-program",
+        "button_link": "#trade-program-form",
         "button_size": 18,
         "button_size_mobile": 16,
         "button_background": "#ffffff",
@@ -690,7 +690,7 @@
         "heading_style": "h2",
         "content": "<p>Free to join, approved in 48 hours, with trade pricing on your first order.</p>",
         "button_text": "Apply now",
-        "button_link": "",
+        "button_link": "#trade-program-form",
         "button_style": "button-solid"
       }
     }

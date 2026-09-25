@@ -118,7 +118,7 @@
 
     #shopify-section-{{ section.id }} .real-homes__card {
   flex: 0 0 280px;
-  scroll-snap-align: center;
+  scroll-snap-align: start;
   display: block;
       transition: flex-basis 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
@@ -305,7 +305,11 @@
   border-color: #55583c;
   color: #ffffff;
 }
-
+    #shopify-section-{{ section.id }} .real-homes__inner .real-homes__track{
+      height: 440px;
+      transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    scroll-snap-type: x mandatory;
+    }
     /* ---------- Desktop: side cards vs centre card ----------
        Scoped to min-width so the mobile block below is untouched. */
     @media screen and (min-width: 700px) {
@@ -314,7 +318,9 @@
         font-size: 14px;
         line-height: 20px;
       }
-
+      #shopify-section-{{ section.id }} .real-homes__inner .real-homes__track{
+        height: 605px;
+      }
       /* Side cards — smaller price */
       #shopify-section-{{ section.id }} .real-homes__card:not(.is-active) .real-homes__price,
       #shopify-section-{{ section.id }} .real-homes__card:not(.is-active) .real-homes__price .price-list > * {

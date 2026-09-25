@@ -170,9 +170,10 @@
           {%- endif -%}
 
           {%- if is_size_option and enter_size_heading != blank -%}
+          <size-units class="size-units">
             <div class="size-entry__heading h-stack justify-between gap-2">
               <p style="margin:0;">
-                {{ enter_size_heading }}: <span style="font-weight:400;">{{ option.selected_value }}</span>
+                {{ enter_size_heading }}: <span style="font-weight:400;" data-size-units-value data-size="{{ option.selected_value | escape }}">{{ option.selected_value }}</span>
               </p>
 
               {%- if show_size_chart and size_chart_inline -%}
@@ -189,6 +190,14 @@
                 </x-modal>
               {%- endif -%}
             </div>
+             <div class="size-units__toggle" role="group" aria-label="{{ 'product.general.size_units_label' | t | escape }}">
+              <button type="button" class="size-units__unit is-active" data-unit="ft" aria-pressed="true">{{- 'product.general.size_unit_feet' | t -}}</button>
+              <span class="size-units__divider" aria-hidden="true">|</span>
+              <button type="button" class="size-units__unit" data-unit="in" aria-pressed="false">{{- 'product.general.size_unit_inch' | t -}}</button>
+              <span class="size-units__divider" aria-hidden="true">|</span>
+              <button type="button" class="size-units__unit" data-unit="cm" aria-pressed="false">{{- 'product.general.size_unit_cm' | t -}}</button>
+            </div>
+          </size-units>
           {%- endif -%}
           <div class="relative">
             {%- capture popover_id -%}popover-variant-dropdown-{{ section.id }}-{{ product.id }}-{{ option.position }}{%- endcapture -%}
@@ -437,6 +446,43 @@
           vertical-align: middle;
           color: rgb(var(--text-color));
         }
+          .size-units {
+          display: block;
+        }
+
+        .size-units .size-entry__heading {
+          padding-block-end: 12px;
+        }
+
+        .size-units__toggle {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-family: var(--text-font-family);
+          font-size: 16px;
+          line-height: 140%;
+          color: #202020;
+          vertical-align: middle;
+        }
+
+        .size-units__unit {
+          padding: 0;
+          background: none;
+          border: 0;
+          font: inherit;
+          color: inherit;
+          cursor: pointer;
+        }
+
+        .size-units__unit.is-active {
+          font-weight: 600;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+        }
+
+        .size-units__divider {
+          color: rgb(var(--text-color));
+        }
       </style>
 
       <script>
@@ -466,6 +512,78 @@
               });
             }
           });
+        }
+        if (!customElements.get('size-units')) {
+          const STORAGE_KEY = 'bisha:size-unit';
+          const UNITS = ['ft', 'in', 'cm'];
+          let currentUnit = 'ft';
+
+          try {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (UNITS.includes(stored)) currentUnit = stored;
+          } catch (error) {}
+
+          const DIMENSION = String.raw`(\d+)(?:\.(\d{1,2}))?\s*(?:'|’|ft\.?|feet)?\s*(?:(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?`;
+          const SIZE_PATTERN = new RegExp(DIMENSION + String.raw`\s*[x×X]\s*` + DIMENSION + String.raw`(?:\s*(?:ft\.?|feet)\b)?`);
+          const SINGLE_PATTERN = /(\d+)(?:\.(\d{1,2}))?\s*(?:'|’|ft\.?|feet)(?:\s*(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?/;
+
+          const toInches = (feet, decimalInches, inches) =>
+            parseInt(feet, 10) * 12 + (decimalInches ? parseInt(decimalInches, 10) : 0) + (inches ? parseFloat(inches) : 0);
+
+          const convert = (value, unit) => {
+            if (!value || unit === 'ft') return value;
+
+            const format = (inches) => Math.round(unit === 'cm' ? inches * 2.54 : inches);
+            let match = value.match(SIZE_PATTERN);
+            let converted;
+
+            if (match) {
+              const spaced = /\s[x×X]\s/.test(match[0]);
+              const separator = spaced ? ' x ' : 'x';
+              const unitGap = spaced ? ' ' : '';
+              converted = `${format(toInches(match[1], match[2], match[3]))}${separator}${format(toInches(match[4], match[5], match[6]))}${unitGap}${unit}`;
+            } else {
+              match = value.match(SINGLE_PATTERN);
+              if (!match) return value;
+              const unitGap = /\d\s/.test(match[0]) ? ' ' : '';
+              converted = `${format(toInches(match[1], match[2], match[3]))}${unitGap}${unit}`;
+            }
+            let rest = value.slice(match.index + match[0].length);
+            if (rest && !/^\s/.test(rest)) rest = ` ${rest}`;
+
+            return value.slice(0, match.index) + converted + rest;
+          };
+
+          const renderAll = () => {
+            document.querySelectorAll('size-units [data-unit]').forEach((button) => {
+              const isActive = button.dataset.unit === currentUnit;
+              button.classList.toggle('is-active', isActive);
+              button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+
+            document.querySelectorAll('[data-size-units-value]').forEach((label) => {
+              label.textContent = convert(label.dataset.size, currentUnit);
+            });
+          };
+
+          customElements.define('size-units', class extends HTMLElement {
+            connectedCallback() {
+              this.addEventListener('click', (event) => {
+                const button = event.target.closest('[data-unit]');
+                if (!button) return;
+
+                currentUnit = button.dataset.unit;
+                try {
+                  localStorage.setItem(STORAGE_KEY, currentUnit);
+                } catch (error) {}
+
+                renderAll();
+              });
+
+              renderAll();
+            }
+          });
+          document.addEventListener('variant:change', () => requestAnimationFrame(renderAll));
         }
       </script>
     {%- endif -%}

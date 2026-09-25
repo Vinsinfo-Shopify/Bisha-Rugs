@@ -30,7 +30,10 @@ hr {
   justify-self: stretch;
   height: 0;
 }
-
+.product-info__block-item hr{
+  border-color: #EBEBEB;
+  background-color: #EBEBEB;
+}
 a {
   color: inherit;
   -webkit-text-decoration: inherit;
@@ -839,7 +842,7 @@ shopify-accelerated-checkout-cart {
     position: relative;
   }
 
-  .floating-controls-container:not(:has(.is-scrollable)) .floating-controls-container__control {
+  .floating-controls-container:not(:has(.is-scrollable:not(.product-card__media-carousel))) .floating-controls-container__control {
     display: none;
   }
 
@@ -6687,7 +6690,19 @@ shopify-account::part(signed-out-avatar) {
     margin: 0;
   }
 }
-@media screen and (min-width: 1400px) {
+@media screen and (min-width: 1200px) {
+   .custom_rugs.pdp .image-with-text .prose  {
+    width: 90%;
+    margin: 0;
+  }
+}
+@media screen and (min-width: 1359px) {
+   .custom_rugs.pdp .image-with-text .prose  {
+    width: 86%;
+    margin: 0;
+  }
+}
+@media screen and (min-width: 1440px) {
    .custom_rugs.pdp .image-with-text .prose  {
     width: 81%;
     margin: 0;
@@ -6777,7 +6792,16 @@ shopify-account::part(signed-out-avatar) {
     padding-inline-end: var(--image-with-text-gap);
   }
 }
-
+@media screen and (max-width: 1000px) {
+  .why_oushak_section .image-with-text {
+    --image-with-text-gap: 2rem;
+    grid-template-columns: unset;
+    align-items: unset;
+  }
+  .why_oushak_section .image-with-text picture {
+    order: 0;
+  }
+}
 @media screen and (min-width: 1000px) {
   .image-with-text {
     --image-with-text-gap: 2rem;
@@ -7648,7 +7672,9 @@ shopify-account::part(signed-out-avatar) {
   align-items: center;
   display: flex;
 }
-
+.complementary-products__header .page-dots{
+  display: none;
+}
 .complementary-products__header p {
   margin: 0;
   color: rgb(var(--text-color));
@@ -7736,7 +7762,25 @@ shopify-account::part(signed-out-avatar) {
 .product-sticky-bar__info img {
   width: 3rem;
 }
+.product-sticky-bar .buy-buttons .button {
+      padding: 8px 20px;
+}
+.product-sticky-bar__info .v-stack.gap-1 {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  column-gap: 8px;
+}
 
+.product-sticky-bar__info .v-stack.gap-1 .price-list {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.product-sticky-bar__info .v-stack.gap-1 .pdp-savings {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
 @media screen and (min-width: 700px) {
   .product-sticky-bar {
     inset-block: var(--sticky-area-height) auto;
@@ -9749,11 +9793,6 @@ ul {
 
 .why_choose_bisha .container {
   --container-gutter: 70px;
-}
-
-.our_impact.section-spacing {
-  padding-top: 38px;
-  padding-bottom: 28px;
 }
 
 .our_impact .container {
@@ -12226,7 +12265,6 @@ ul {
 .comparison-table__grid {
   display: grid;
   grid-template-columns: var(--ct-grid-desktop);
-  border-block-end: 1px solid var(--ct-border-color);
 }
 
 .comparison-table__cell {
@@ -12256,20 +12294,20 @@ ul {
 .comparison-table__cell--value,
 .comparison-table__cell--cta:not(.comparison-table__cell--label) {
   background: var(--ct-column-background);
-  border-inline-start: 1px solid var(--ct-border-color);
 }
 
 .comparison-table__cell--last-column {
   background: var(--ct-background);
 }
 
-.comparison-table__cell--head,
 .comparison-table__cell--value,
 .comparison-table__cell--label,
 .comparison-table__cell--cta {
   border-block-start: 1px solid var(--ct-border-color);
 }
-
+.comparison-table__cell--head{
+    padding-block-start: calc(var(--ct-pad-x));
+}
 .comparison-table__cell--intro {
   border-block-start: 0;
 }
@@ -12977,5 +13015,103 @@ a.marquee__item:hover .marquee__text {
   }
   .member_stories .section-stack {
     padding-inline: 13px;
+  }
+}
+:is(.recent_products, .expore-more_section) .floating-controls-container__control .circle-button {
+  --circle-button-size: 2.25rem;
+  --circle-button-background: 43 39 36;
+  --circle-button-text-color: 255 255 255;
+  box-sizing: border-box;
+  background: #2b2724;
+  color: #ffffff;
+  border: 3px solid #ffffff;
+  box-shadow: none;
+}
+
+:is(.recent_products, .expore-more_section) .floating-controls-container__control .circle-button > svg {
+  width: 0.875rem;
+  color: #ffffff;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+:is(.recent_products, .expore-more_section) .prev-next-button[disabled] {
+  opacity: 0.35;
+  visibility: visible;
+}
+
+@media screen and (pointer: fine) {
+  /* Prestige hides an arrow once its button is disabled; keep both in place. */
+  :is(.recent_products, .expore-more_section) .floating-controls-container--on-hover > .floating-controls-container__control,
+  :is(.recent_products, .expore-more_section) .floating-controls-container--on-hover:hover > .floating-controls-container__control:not(:has([disabled])) {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media screen and (max-width: 699px) {
+  :is(.recent_products, .expore-more_section) .floating-controls-container__control .circle-button {
+    --circle-button-size: 1.625rem;
+    border-width: 2.17px;
+  }
+
+  :is(.recent_products, .expore-more_section) .floating-controls-container__control .circle-button > svg {
+    width: 0.6963rem;
+    stroke-width: 1.23;
+  }
+}
+
+/* Position, same as the homepage Bestselling row: the arrows sit outside the
+   product column in the page gutter and are centred on the product image
+   (313 x 380), not on the whole card. */
+:is(.recent_products, .expore-more_section) .product-card__image {
+  aspect-ratio: 313 / 380;
+}
+
+@media screen and (min-width: 1000px) {
+  :is(.recent_products, .expore-more_section) .container {
+    --container-max-width: 1300px;
+    --container-gutter: 70px;
+  }
+}
+
+@media screen and (pointer: fine) {
+  /* Shown from first paint, as on the homepage, not only once measured scrollable */
+  :is(.recent_products, .expore-more_section) .floating-controls-container:not(:has(.is-scrollable:not(.product-card__media-carousel))) .floating-controls-container__control {
+    display: grid;
+  }
+
+  :is(.recent_products, .expore-more_section) .floating-controls-container--inside {
+    --floating-controls-inset-inline: -2.5rem;
+  }
+
+  :is(.recent_products, .expore-more_section) .floating-controls-container__control {
+    inset-block-start: 173px;
+    inset-block-start: calc(((min(81.25rem, 100vw - 2.4rem) - 48px) / 4 * 380 / 313) / 2 - 1.125rem);
+  }
+}
+
+@media screen and (max-width: 699px) {
+  /* Prestige hides the arrows on touch; the homepage shows them on the image edges */
+  :is(.recent_products, .expore-more_section) .floating-controls-container {
+    position: relative;
+  }
+
+  :is(.recent_products, .expore-more_section) .floating-controls-container > :is(carousel-prev-button, carousel-next-button).floating-controls-container__control {
+    z-index: 3;
+    display: grid;
+    position: absolute;
+    inset-block-start: calc(((100vw - 2.125rem) / 2 * 380 / 313) / 2 - 0.875rem);
+  }
+
+  :is(.recent_products, .expore-more_section) .floating-controls-container > carousel-prev-button.floating-controls-container__control {
+    inset-inline-start: -13px;
+    inset-inline-end: auto;
+  }
+
+  :is(.recent_products, .expore-more_section) .floating-controls-container > carousel-next-button.floating-controls-container__control {
+    inset-inline-end: -13px;
+    inset-inline-start: auto;
   }
 }
