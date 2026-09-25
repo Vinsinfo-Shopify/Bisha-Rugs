@@ -513,7 +513,7 @@
             }
           });
         }
-        if (!customElements.get('size-units')) {
+       if (!customElements.get('size-units')) {
           const STORAGE_KEY = 'bisha:size-unit';
           const UNITS = ['ft', 'in', 'cm'];
           let currentUnit = 'ft';
@@ -523,29 +523,50 @@
             if (UNITS.includes(stored)) currentUnit = stored;
           } catch (error) {}
 
-          const DIMENSION = String.raw`(\d+(?:\.\d+)?)\s*(?:'|’|ft\.?|feet)?\s*(?:(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?`;
+          const DIMENSION = String.raw`(\d+)(?:\.(\d{1,2}))?\s*(?:'|’|ft\.?|feet)?\s*(?:(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?`;
           const SIZE_PATTERN = new RegExp(DIMENSION + String.raw`\s*[x×X]\s*` + DIMENSION + String.raw`(?:\s*(?:ft\.?|feet)\b)?`);
-          const SINGLE_PATTERN = /(\d+(?:\.\d+)?)\s*(?:'|’|ft\.?|feet)(?:\s*(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?/;
+          // A single dimension such as "6 ft Round" must carry a feet marker.
+          const SINGLE_PATTERN = /(\d+)(?:\.(\d{1,2}))?\s*(?:'|’|ft\.?|feet)(?:\s*(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?/;
 
-          const toInches = (feet, inches) => parseFloat(feet) * 12 + (inches ? parseFloat(inches) : 0);
+          const toInches = (feet, decimalInches, inches) =>
+            parseInt(feet, 10) * 12 + (decimalInches ? parseInt(decimalInches, 10) : 0) + (inches ? parseFloat(inches) : 0);
 
           const convert = (value, unit) => {
-            if (unit === 'ft') return value;
+            if (!value || unit === 'ft') return value;
 
             const format = (inches) => Math.round(unit === 'cm' ? inches * 2.54 : inches);
             let match = value.match(SIZE_PATTERN);
             let converted;
 
             if (match) {
-              converted = `${format(toInches(match[1], match[2]))} x ${format(toInches(match[3], match[4]))} ${unit}`;
+              const spaced = /\s[x×X]\s/.test(match[0]);
+              const separator = spaced ? ' x ' : 'x';
+              const unitGap = spaced ? ' ' : '';
+              converted = `${format(toInches(match[1], match[2], match[3]))}${separator}${format(toInches(match[4], match[5], match[6]))}${unitGap}${unit}`;
             } else {
               match = value.match(SINGLE_PATTERN);
               if (!match) return value;
-              converted = `${format(toInches(match[1], match[2]))} ${unit}`;
+              const unitGap = /\d\s/.test(match[0]) ? ' ' : '';
+              converted = `${format(toInches(match[1], match[2], match[3]))}${unitGap}${unit}`;
             }
+
+            // The pattern swallows trailing spaces, so put one back before "Runner" etc.
             let rest = value.slice(match.index + match[0].length);
             if (rest && !/^\s/.test(rest)) rest = ` ${rest}`;
+
             return value.slice(0, match.index) + converted + rest;
+          };
+
+          const renderAll = () => {
+            document.querySelectorAll('size-units [data-unit]').forEach((button) => {
+              const isActive = button.dataset.unit === currentUnit;
+              button.classList.toggle('is-active', isActive);
+              button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+
+            document.querySelectorAll('[data-size-units-value]').forEach((label) => {
+              label.textContent = convert(label.dataset.size, currentUnit);
+            });
           };
 
           customElements.define('size-units', class extends HTMLElement {
@@ -559,23 +580,16 @@
                   localStorage.setItem(STORAGE_KEY, currentUnit);
                 } catch (error) {}
 
-                document.querySelectorAll('size-units').forEach((element) => element.render());
+                renderAll();
               });
 
-              this.render();
-            }
-
-            render() {
-              this.querySelectorAll('[data-unit]').forEach((button) => {
-                const isActive = button.dataset.unit === currentUnit;
-                button.classList.toggle('is-active', isActive);
-                button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-              });
-
-              const label = this.querySelector('[data-size-units-value]');
-              if (label) label.textContent = convert(label.dataset.size, currentUnit);
+              renderAll();
             }
           });
+
+          // The re-rendered block (and a popover moved to <body>) may land after
+          // this element connects, so apply once more when the variant settles.
+          document.addEventListener('variant:change', () => requestAnimationFrame(renderAll));
         }
       </script>
     {%- endif -%}
