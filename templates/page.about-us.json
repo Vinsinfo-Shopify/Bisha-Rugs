@@ -66,7 +66,7 @@
         "heading_7ATwmp": {
           "type": "heading",
           "settings": {
-            "text": "<p>More Than a Rug. A Legacy Woven by Hands</p>",
+            "text": "<p>More Than a Rug. A Legacy Woven by Hands</p><p></p>",
             "padding_top": 0,
             "padding_bottom": 0,
             "heading_tag": "h2"
@@ -75,7 +75,7 @@
         "richtext_wqkkh8": {
           "type": "richtext",
           "settings": {
-            "content": "<p>Bisha Rugs was founded with a simple belief: exceptional craftsmanship deserves to be preserved. </p><p>We work directly with <strong>generational artisans across India's rug-weaving communities</strong> to create handmade rugs that honor centuries of tradition while finding a place in modern homes. </p>",
+            "content": "<p>Bisha Rugs was founded with a simple belief: exceptional craftsmanship deserves to be preserved.&nbsp;</p><p>We work directly with <strong>generational artisans across India's rug-weaving communities</strong> to create handmade rugs that honor centuries of tradition &nbsp; while finding a place in modern homes.&nbsp;</p>",
             "character_limit": 0
           }
         },
