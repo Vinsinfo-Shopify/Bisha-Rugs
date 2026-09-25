@@ -12262,7 +12262,6 @@ ul {
 .comparison-table__grid {
   display: grid;
   grid-template-columns: var(--ct-grid-desktop);
-  border-block-end: 1px solid var(--ct-border-color);
 }
 
 .comparison-table__cell {
