@@ -190,7 +190,7 @@
                 </x-modal>
               {%- endif -%}
             </div>
-            <div class="size-units__toggle" role="group" aria-label="{{ 'product.general.size_units_label' | t | escape }}">
+             <div class="size-units__toggle" role="group" aria-label="{{ 'product.general.size_units_label' | t | escape }}">
               <button type="button" class="size-units__unit is-active" data-unit="ft" aria-pressed="true">{{- 'product.general.size_unit_feet' | t -}}</button>
               <span class="size-units__divider" aria-hidden="true">|</span>
               <button type="button" class="size-units__unit" data-unit="in" aria-pressed="false">{{- 'product.general.size_unit_inch' | t -}}</button>
@@ -513,7 +513,7 @@
             }
           });
         }
-       if (!customElements.get('size-units')) {
+        if (!customElements.get('size-units')) {
           const STORAGE_KEY = 'bisha:size-unit';
           const UNITS = ['ft', 'in', 'cm'];
           let currentUnit = 'ft';
@@ -525,7 +525,6 @@
 
           const DIMENSION = String.raw`(\d+)(?:\.(\d{1,2}))?\s*(?:'|’|ft\.?|feet)?\s*(?:(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?`;
           const SIZE_PATTERN = new RegExp(DIMENSION + String.raw`\s*[x×X]\s*` + DIMENSION + String.raw`(?:\s*(?:ft\.?|feet)\b)?`);
-          // A single dimension such as "6 ft Round" must carry a feet marker.
           const SINGLE_PATTERN = /(\d+)(?:\.(\d{1,2}))?\s*(?:'|’|ft\.?|feet)(?:\s*(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?/;
 
           const toInches = (feet, decimalInches, inches) =>
@@ -549,8 +548,6 @@
               const unitGap = /\d\s/.test(match[0]) ? ' ' : '';
               converted = `${format(toInches(match[1], match[2], match[3]))}${unitGap}${unit}`;
             }
-
-            // The pattern swallows trailing spaces, so put one back before "Runner" etc.
             let rest = value.slice(match.index + match[0].length);
             if (rest && !/^\s/.test(rest)) rest = ` ${rest}`;
 
@@ -586,9 +583,6 @@
               renderAll();
             }
           });
-
-          // The re-rendered block (and a popover moved to <body>) may land after
-          // this element connects, so apply once more when the variant settles.
           document.addEventListener('variant:change', () => requestAnimationFrame(renderAll));
         }
       </script>
