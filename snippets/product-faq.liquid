@@ -188,5 +188,5 @@
     <script src="{{ 'product-faq.js' | asset_url }}" defer></script>
   {%- endcapture -%}
 
-  {%- render 'accordion', title: block.settings.title, content: faq_tabs_content, icon: 'none', prose_content: true, block: block -%}
+  {%- render 'accordion', title: block.settings.title, content: faq_tabs_content, icon: 'none', prose_content: true, plus_minus: true, block: block -%}
 {%- endif -%}

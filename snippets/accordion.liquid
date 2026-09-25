@@ -9,6 +9,7 @@
   @param {string} [custom_icon_closed] - custom PNG shown when accordion is closed
   @param {string} [custom_icon_open] - custom PNG shown when accordion is open
   @param {boolean} [open] - if set to true the accordion is open by default
+  @param {boolean} [plus_minus] - if set to true, shows an SVG plus when closed and an SVG minus when open (PDP)
   @param {boolean} [prose_content] - if set to true, the content is considered as prose and the associated class is added
   @param {boolean} [show_title_as_text] - if set to true the title is shown as text instead of using heading style
   @param {boolean} [show_arrow] - if set to true, the accordion will show an arrow instead of the standard + icon
@@ -49,6 +50,11 @@
             {{- custom_icon_closed | image_url: width: 32 | image_tag: class: 'accordion__toggle-icon--closed', width: 12, height: 12, loading: 'lazy' -}}
             {{- custom_icon_open | image_url: width: 32 | image_tag: class: 'accordion__toggle-icon--open', width: 12, height: 12, loading: 'lazy' -}}
           </span>
+        {%- elsif plus_minus -%}
+        <span class="accordion__toggle-icon" aria-hidden="true">
+          {%- render 'icon' with 'accordion-plus', class: 'accordion__toggle-icon--closed' width: 15 -%}
+          {%- render 'icon' with 'accordion-minus', class: 'accordion__toggle-icon--open' width: 15  -%}
+        </span>
         {%- elsif show_arrow -%}
           {%- render 'icon' with 'chevron-down', class: 'group-expanded:rotate' -%}
         {%- else -%}

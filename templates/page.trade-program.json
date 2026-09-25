@@ -73,7 +73,6 @@
         "mobile_image_height": 180,
         "mobile_overlay_text_color": "#ffffff",
         "mobile_overlay_darken": 30,
-        "content_column_width": 53,
         "column_gap_desktop": 56,
         "row_gap_mobile": 12,
         "grid_padding_inline_mobile": 0,

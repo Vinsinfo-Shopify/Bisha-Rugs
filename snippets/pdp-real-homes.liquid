@@ -64,7 +64,7 @@
                 media: item_media,
                 autoplay: false,
                 loop: true,
-                controls: true,
+                controls: false,
                 show_play_button: true,
                 group: carousel_id,
                 sizes: '(max-width: 699px) 45vw, 200px'
@@ -81,4 +81,34 @@
       {%- endfor -%}
     </div>
   </div>
+
+  {%- comment -%}
+    Play / pause toggle, matching sections/real-homes.liquid. Capture phase with
+    stopPropagation so the theme's own one-time click listener on video-media
+    never fires (it would re-play a video just paused) and a wrapping link is
+    not followed when the click is on a video. Bound once for every reel.
+  {%- endcomment -%}
+  <script>
+    if (!window.pdpRealHomesBound) {
+      window.pdpRealHomesBound = true;
+
+      document.addEventListener('click', (event) => {
+        const media = event.target.closest('.pdp-real-homes__media');
+        const host = media && media.querySelector('video-media');
+        if (!host) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (host.playing) {
+          host.pause();
+          return;
+        }
+
+        const video = host.querySelector('video');
+        if (video && video.hasAttribute('poster')) video.removeAttribute('poster');
+        host.play();
+      }, true);
+    }
+  </script>
 {%- endif -%}

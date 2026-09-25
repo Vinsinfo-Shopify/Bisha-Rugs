@@ -350,7 +350,7 @@
             {%- if product_description != blank -%}
               {%- if block.settings.collapse_content -%}
                 {%- assign accordion_title = 'product.general.description' | t -%}
-                {%- render 'accordion', title: accordion_title, content: product_description, prose_content: true, block: block -%}
+                {%- render 'accordion', title: accordion_title, content: product_description, plus_minus: true, prose_content: true, block: block -%}
               {%- else -%}
                 <div class="prose">
                   {{- product_description -}}
@@ -843,7 +843,7 @@
             {%- capture accordion_extras -%}{%- render 'accordion-extras', block: block -%}{%- endcapture -%}
             {%- assign accordion_content = accordion_content | append: accordion_extras -%}
             {%- if accordion_title != blank and accordion_content != blank -%}
-              {%- render 'accordion', title: accordion_title, content: accordion_content, prose_content: true, icon: block.settings.icon, custom_icon: block.settings.custom_icon, block: block -%}
+              {%- render 'accordion', title: accordion_title, content: accordion_content, prose_content: true, plus_minus: true, icon: block.settings.icon, custom_icon: block.settings.custom_icon, block: block -%}
             {%- endif -%}
 
           {%- when 'review' -%}
