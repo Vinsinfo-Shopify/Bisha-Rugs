@@ -7762,6 +7762,22 @@ shopify-account::part(signed-out-avatar) {
 .product-sticky-bar .buy-buttons .button {
       padding: 8px 20px;
 }
+.product-sticky-bar__info .v-stack.gap-1 {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.product-sticky-bar__info .v-stack.gap-1 .price-list {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.product-sticky-bar__info .v-stack.gap-1 .pdp-savings {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
 @media screen and (min-width: 700px) {
   .product-sticky-bar {
     inset-block: var(--sticky-area-height) auto;
