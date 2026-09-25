@@ -3914,6 +3914,9 @@ tr[onclick]:hover {
     align-items: flex-start !important;
     flex-direction: column;
   }
+  .pdp-review__name-row{
+    flex-direction: column;
+  }
 }
 .pdp-review__image {
   width: 80px;
