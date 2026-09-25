@@ -4154,7 +4154,7 @@ tr[onclick]:hover {
 
 .pdp-contact__description {
   margin: 0;
-  color: rgb(var(--text-color) / 0.75);
+  color: rgb(var(--text-color));
   font-weight: 400;
   font-size: 14px;
   line-height: 140%;
