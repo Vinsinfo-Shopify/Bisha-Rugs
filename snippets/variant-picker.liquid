@@ -173,7 +173,7 @@
           <size-units class="size-units">
             <div class="size-entry__heading h-stack justify-between gap-2">
               <p style="margin:0;">
-                {{ enter_size_heading }}: <span style="font-weight:400;">{{ option.selected_value }}</span>
+                {{ enter_size_heading }}: <span style="font-weight:400;" data-size-units-value data-size="{{ option.selected_value | escape }}">{{ option.selected_value }}</span>
               </p>
 
               {%- if show_size_chart and size_chart_inline -%}
