@@ -12288,6 +12288,7 @@ ul {
   padding-block: 0;
 }
 
+.comparison-table__cell--head,
 .comparison-table__cell--value,
 .comparison-table__cell--cta:not(.comparison-table__cell--label) {
   background: var(--ct-column-background);
