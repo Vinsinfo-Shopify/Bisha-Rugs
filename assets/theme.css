@@ -6681,6 +6681,12 @@ shopify-account::part(signed-out-avatar) {
     gap: 70px;
   }
 }
+@media screen and (min-width: 1400px) {
+  .why_oushak_section .image-with-text--reverse>.prose  {
+    width: 93%;
+    margin: 0;
+  }
+}
 .why_oushak_section .image_with_text_content ul{
   row-gap: 15px;
 }
