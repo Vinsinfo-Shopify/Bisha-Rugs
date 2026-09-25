@@ -3724,7 +3724,7 @@ tr[onclick]:hover {
 .image-text-card__info .button {
   font-weight: 700;
   font-size: 14px;
-  line-height: 140%;
+  line-height: 100%;
   letter-spacing: 0%;
   vertical-align: middle;
   text-transform: uppercase;
@@ -4235,7 +4235,7 @@ tr[onclick]:hover {
 .pdp-consultation .button {
   font-weight: 700;
   font-size: 14px;
-  line-height: 13px;
+  line-height: 100%;
   letter-spacing: 0%;
   vertical-align: middle;
   min-width: max-content;
