@@ -7759,7 +7759,7 @@ shopify-account::part(signed-out-avatar) {
 .product-sticky-bar__info img {
   width: 3rem;
 }
-.product-sticky-bar__info .buy-buttons .button {
+.product-sticky-bar .buy-buttons .button {
       padding: 8px 20px;
 }
 @media screen and (min-width: 700px) {
