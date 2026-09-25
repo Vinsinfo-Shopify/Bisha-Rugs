@@ -511,16 +511,62 @@
 
     if (!rail || total <= 1) return;
 
-    // One transform moves the whole strip. Nothing per-slide is toggled, so
-    // there is no half-applied state to recover from if a step is interrupted.
-    function goTo(index) {
-      current = (index + total) % total;
-      rail.style.transform = 'translateX(' + (-current * 100) + '%)';
+    // A copy of slide 1 sits after the last one, so advancing past the end is
+    // a single step forward rather than a rewind across the whole strip. Once
+    // it has landed, the rail snaps back to the real slide 1 with the
+    // transition off — the two are identical, so nothing is visible.
+    var clone = slides[0].cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    clone.removeAttribute('data-index');
+    clone.removeAttribute('id');
+    clone.removeAttribute('data-shopify-editor-block');
+    Array.prototype.forEach.call(clone.querySelectorAll('[data-shopify-editor-block]'), function (el) {
+      el.removeAttribute('data-shopify-editor-block');
+    });
+    Array.prototype.forEach.call(clone.querySelectorAll('a, button'), function (el) {
+      el.setAttribute('tabindex', '-1');
+    });
+    rail.appendChild(clone);
 
+    var position = 0;   // where the rail actually is, 0..total (total = clone)
+    var jumping = false;
+
+    function move(to, instant) {
+      position = to;
+      rail.style.transition = instant ? 'none' : '';
+      rail.style.transform = 'translateX(' + (-position * 100) + '%)';
+      if (instant) void rail.offsetWidth;   // apply before the transition returns
+    }
+
+    function goTo(index) {
+      if (jumping) return;
+
+      // Forward past the last slide goes to the clone, not back to the start.
+      if (index === total) {
+        jumping = true;
+        current = 0;
+        move(total, false);
+        syncDots();
+        return;
+      }
+
+      current = (index + total) % total;
+      move(current, false);
+      syncDots();
+    }
+
+    rail.addEventListener('transitionend', function (event) {
+      if (event.propertyName !== 'transform') return;
+      if (position !== total) return;
+      move(0, true);
+      rail.style.transition = '';
+      jumping = false;
+    });
+
+    function syncDots() {
       Array.prototype.forEach.call(dots, function (dot, i) {
         dot.classList.toggle('is-active', i === current);
       });
-
       updateArrows();
     }
 
@@ -529,7 +575,7 @@
       if (nextBtn) nextBtn.hidden = current === total - 1;
     }
 
-    function next() { goTo(current + 1); }
+    function next() { goTo(position + 1); }
     function prev() { goTo(current - 1); }
 
     function startAuto() {
