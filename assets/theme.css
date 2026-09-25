@@ -12292,7 +12292,6 @@ ul {
 .comparison-table__cell--value,
 .comparison-table__cell--cta:not(.comparison-table__cell--label) {
   background: var(--ct-column-background);
-  border-inline-start: 1px solid var(--ct-border-color);
 }
 
 .comparison-table__cell--last-column {
