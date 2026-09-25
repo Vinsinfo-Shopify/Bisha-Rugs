@@ -6687,15 +6687,21 @@ shopify-account::part(signed-out-avatar) {
     margin: 0;
   }
 }
-@media screen and (min-width: 1440px) {
+@media screen and (min-width: 1200px) {
    .custom_rugs.pdp .image-with-text .prose  {
-    width: 81%;
+    width: 90%;
     margin: 0;
   }
 }
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1359px) {
    .custom_rugs.pdp .image-with-text .prose  {
-    width: 84%;
+    width: 86%;
+    margin: 0;
+  }
+}
+@media screen and (min-width: 1440px) {
+   .custom_rugs.pdp .image-with-text .prose  {
+    width: 81%;
     margin: 0;
   }
 }
