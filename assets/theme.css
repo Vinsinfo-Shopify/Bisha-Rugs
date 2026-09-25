@@ -9622,7 +9622,7 @@ ul {
   display: grid;
 }
 
-.accordion__toggle-icon>img {
+.accordion__toggle-icon> :is(img, svg) {
   grid-area: 1 / 1;
 }
 
