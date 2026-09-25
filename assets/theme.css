@@ -11558,7 +11558,7 @@ ul {
   margin-top: 12px !important;
 }
 
-.trade_program_footer .multiimage-with-text__button-row button {
+.trade_program_footer .multiimage-with-text__button-row .button {
   font-weight: 700;
   font-size: 16px;
   line-height: 25.6px;
@@ -11751,7 +11751,7 @@ ul {
     margin-top: 16px;
   }
 
-  .trade_program_footer .multiimage-with-text__button-row button {
+  .trade_program_footer .multiimage-with-text__button-row .button {
     line-height: 140%;
     padding: 9px 31.5px 9px 32.5px;
     border-radius: 0;
