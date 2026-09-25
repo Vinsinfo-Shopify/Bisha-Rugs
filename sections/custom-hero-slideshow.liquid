@@ -4,6 +4,12 @@
   - Mobile: stacked (image top, content bottom)
   - Editable slides via blocks, configurable autoplay, arrows + dots
   - Fonts: Forum (heading, loaded via @font-face), DM Sans (description), Figtree (button)
+
+  Transition: a filmstrip. Every slide sits side by side in one flex rail, and
+  the rail is shifted left by one slide width per step. A single transform
+  drives the whole motion, so there is no incoming/outgoing state to coordinate
+  and nothing that can be left half-applied. display cannot be animated, which
+  is why the original show/hide approach had no transition at all.
 {%- endcomment -%}
 
 {%- assign section_id = section.id -%}
@@ -16,99 +22,44 @@
     --hero-btn-text: {{ section.settings.button_text_color }};
     --hero-dot: {{ section.settings.dot_color }};
     --hero-dot-active: {{ section.settings.dot_active_color }};
-  }
+    --hero-mobile-w: 375;
+    --hero-mobile-h: 251;
 
-  #HeroSlideshow-{{ section_id }} {
     position: relative;
     overflow: hidden;
     background: var(--hero-cream);
     container-type: inline-size;
-    --hero-mobile-w: 375;
-    --hero-mobile-h: 251;
   }
 
-    /* Slides are stacked in one grid cell: display cannot be animated, so the
-     transition is on transform and opacity instead. A slide sits off-screen on
-     the side it will arrive from, and leaves towards the opposite side. */
-  .hero-slideshow__track {
-    display: grid;
+  /* ---------- Filmstrip ---------- */
+  #HeroSlideshow-{{ section_id }} .hero-slideshow__track {
+    position: relative;
     overflow: hidden;
   }
 
-  .hero-slide {
-    grid-area: 1 / 1;
-    width: 100%;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(-100%);
-    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-                opacity 0.6s ease,
-                visibility 0s linear 0.6s;
+  #HeroSlideshow-{{ section_id }} .hero-slideshow__rail {
+    display: flex;
+    will-change: transform;
+    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
   }
 
-  /* Waiting to enter from the left (the previous arrow was clicked). */
-  .hero-slide.is-from-right {
-    transform: translateX(-100%);
-  }
-
-  .hero-slide.is-active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0);
-    z-index: 1;
-    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-                opacity 0.6s ease,
-                visibility 0s;
-  }
-
-  /* The outgoing slide animates out rather than vanishing. */
-  .hero-slide.is-leaving {
-    opacity: 0;
-    visibility: visible;
-    z-index: 0;
-    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-                opacity 0.6s ease,
-                visibility 0s linear 0.6s;
-  }
-
-  .hero-slide.is-leaving-left  { transform: translateX(-100%); }
-  .hero-slide.is-leaving-right { transform: translateX(100%); }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero-slide { transition: opacity 0.2s ease, visibility 0s; transform: none; }
-    .hero-slide.is-from-left,
-    .hero-slide.is-leaving-left,
-    .hero-slide.is-leaving-right { transform: none; }
+  #HeroSlideshow-{{ section_id }} .hero-slide {
+    flex: 0 0 100%;
+    min-width: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-slide { transition: none; }
+    #HeroSlideshow-{{ section_id }} .hero-slideshow__rail {
+      transition: none;
+    }
   }
 
-
-@media screen and (min-width: 750px) {
-  :root { --container-gutter: clamp(24px, 5vw, 70px); }
-
-  .hero-slide__inner {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    min-height: min(45.45vw, 680px);  /* 682×620 Figma frame, made fluid */
+  /* ---------- Slide layout ---------- */
+  #HeroSlideshow-{{ section_id }} .hero-slide__inner {
+    display: grid;
   }
-  .hero-slide--image-right .hero-slide__inner { grid-template-areas: "content image"; }
-  .hero-slide--image-left  .hero-slide__inner { grid-template-areas: "image content"; }
 
-  .hero-slide__image {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: auto;   /* row height drives it; cover crops, never distorts */
-  }
-}
-
-
-.hero-slide__inner {
-  display: grid;
-}
-
-  .hero-slide__content {
+  #HeroSlideshow-{{ section_id }} .hero-slide__content {
     grid-area: content;
     background: var(--hero-cream);
     color: var(--hero-text);
@@ -116,50 +67,52 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding-left: var(--container-gutter);   /* match header left edge */
-    padding-right: 40px;               
+    padding-left: var(--container-gutter);
+    padding-right: 40px;
     box-sizing: border-box;
   }
 
-  .hero-slide__content > * {
-    max-width: 473px;           
+  #HeroSlideshow-{{ section_id }} .hero-slide__content > * {
+    max-width: 473px;
   }
 
-  .hero-slide__image {
+  #HeroSlideshow-{{ section_id }} .hero-slide__image {
     grid-area: image;
     position: relative;
     overflow: hidden;
-    aspect-ratio: 2728 / 2480;   /* match the image exactly — no distortion */
-    }
-    .hero-slide__image img {
+    aspect-ratio: 2728 / 2480;
+  }
+
+  #HeroSlideshow-{{ section_id }} .hero-slide__image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
-    }
+  }
 
-  .hero-slide__heading {
+  /* ---------- Typography ---------- */
+  #HeroSlideshow-{{ section_id }} .hero-slide__heading {
     font-family: 'Forum', serif;
     font-weight: 400;
     font-size: 50px;
-    line-height: 1.2;           
+    line-height: 1.2;
     letter-spacing: 0;
-    margin: 0 0 15px;           
+    margin: 0 0 15px;
     color: var(--hero-text);
   }
 
-  .hero-slide__description {
+  #HeroSlideshow-{{ section_id }} .hero-slide__description {
     font-family: 'DM Sans', sans-serif;
     font-weight: 400;
     font-size: 18px;
-    line-height: 1.4;          
+    line-height: 1.4;
     letter-spacing: 0;
-    margin: 0 0 30px;           
+    margin: 0 0 30px;
     color: var(--hero-text);
     max-width: 473px;
   }
 
-  .hero-slide__subheading {
+  #HeroSlideshow-{{ section_id }} .hero-slide__subheading {
     font-family: 'DM Sans', sans-serif;
     font-size: 0.95rem;
     letter-spacing: 0.05em;
@@ -167,35 +120,49 @@
     color: var(--hero-text);
   }
 
-  .hero-slide__button {
+  #HeroSlideshow-{{ section_id }} .hero-slide__button {
     font-family: 'Figtree', sans-serif;
     display: inline-block;
     background: var(--hero-btn-bg);
     color: var(--hero-btn-text);
     font-size: 16px;
     font-weight: 700;
-    line-height: 1.4;           
+    line-height: 1.4;
     letter-spacing: 0;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 12px 28px;         
+    padding: 12px 28px;
     border: none;
     cursor: pointer;
     transition: opacity 0.2s ease;
   }
-  .hero-slide__button:hover { opacity: 0.9; }
 
-  /* Dots */
-  .hero-slideshow__dots {
+  #HeroSlideshow-{{ section_id }} .hero-slide__button:hover {
+    opacity: 0.9;
+  }
+
+  #HeroSlideshow-{{ section_id }} .button {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 22px;
+    padding: 12px 28px;
+  }
+
+  /* ---------- Dots ---------- */
+  #HeroSlideshow-{{ section_id }} .hero-slideshow__dots {
     position: static;
     transform: none;
     display: flex;
     justify-content: center;
     gap: 8px;
     padding: 0.75rem 0;
-    background: #FFFBF3;    
+    background: #FFFBF3;
+    /* Covers the sub-pixel sliver of cream that shows under this strip when its
+       height lands on a fractional device pixel. */
+    box-shadow: 0 1px 0 0 #FFFBF3;
   }
-  .hero-slideshow__dot {
+
+  #HeroSlideshow-{{ section_id }} .hero-slideshow__dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
@@ -203,19 +170,19 @@
     border: none;
     padding: 0;
     cursor: pointer;
-    transition: background 0.2s ease;
-   display: flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     z-index: 3;
     transition: background 0.2s ease, transform 0.2s ease;
-    }
-  .hero-slideshow__dot.is-active {
+  }
+
+  #HeroSlideshow-{{ section_id }} .hero-slideshow__dot.is-active {
     background: var(--hero-dot-active);
   }
 
-    .hero-slideshow__arrow {
+  /* ---------- Arrows ---------- */
+  #HeroSlideshow-{{ section_id }} .hero-slideshow__arrow {
     position: absolute;
     top: 50%;
     right: 1.5rem;
@@ -235,217 +202,295 @@
     transition: background 0.2s ease, transform 0.2s ease;
   }
 
-  .hero-slideshow__arrow--prev {
+  #HeroSlideshow-{{ section_id }} .hero-slideshow__arrow--prev {
     left: 1.5rem;
     right: auto;
   }
-  .hero-slideshow__arrow[hidden] {
-  display: none;
-}
 
-  .hero-slideshow__arrow svg {
+  #HeroSlideshow-{{ section_id }} .hero-slideshow__arrow[hidden] {
+    display: none;
+  }
+
+  #HeroSlideshow-{{ section_id }} .hero-slideshow__arrow svg {
     width: 8px;
     height: 15px;
     stroke-width: 1.5;
   }
-    .hero-slideshow__arrow:hover {
+
+  #HeroSlideshow-{{ section_id }} .hero-slideshow__arrow:hover {
     background: rgba(0, 0, 0, 0.6);
     transform: translateY(-50%) scale(1.05);
+  }
+
+  /* ---------- Image swap ---------- */
+  #HeroSlideshow-{{ section_id }} .hero-slide__img--desktop { display: block; }
+  #HeroSlideshow-{{ section_id }} .hero-slide__img--mobile  { display: none; }
+
+  /* ---------- Desktop ----------
+     The gutter is scoped to this section. Setting it on :root, as this file
+     previously did, changes the value for every other section on the page. */
+  @media screen and (min-width: 750px) {
+    #HeroSlideshow-{{ section_id }} {
+      --container-gutter: clamp(24px, 5vw, 70px);
     }
-    
-    .hero-slide__img--desktop { display: block; }
-    .hero-slide__img--mobile { display: none; }
 
-    @media screen and (min-width: 750px) {
-      :root { --container-gutter: 70px; } 
+    #HeroSlideshow-{{ section_id }} .hero-slide__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      min-height: min(45.45vw, 680px);
     }
-    #HeroSlideshow-{{ section_id }} .button {
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 22px;
-      padding: 12px 28px;
-}
 
-    @media screen and (min-width: 750px) and (max-width: 991px) {
-  .hero-slide__heading {
-    font-size: 34px;           /* down from 50px — fits the narrow column */
-    line-height: 1.15;
-    margin: 0 0 12px;
-  }
-  .hero-slide__description {
-    font-size: 15px;
-    margin: 0 0 20px;
-  }
-  .hero-slide__content {
-    padding-right: 24px;       /* tighten right padding */
-  }
-  .hero-slide__button {
-    font-size: 14px;
-    padding: 12px 22px;
+    #HeroSlideshow-{{ section_id }} .hero-slide--image-right .hero-slide__inner {
+      grid-template-areas: "content image";
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slide--image-left .hero-slide__inner {
+      grid-template-areas: "image content";
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slide__image {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+    }
   }
 
-}
+  @media screen and (min-width: 750px) and (max-width: 991px) {
+    #HeroSlideshow-{{ section_id }} .hero-slide__heading {
+      font-size: 34px;
+      line-height: 1.15;
+      margin: 0 0 12px;
+    }
 
+    #HeroSlideshow-{{ section_id }} .hero-slide__description {
+      font-size: 15px;
+      margin: 0 0 20px;
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slide__content {
+      padding-right: 24px;
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slide__button {
+      font-size: 14px;
+      padding: 12px 22px;
+    }
+  }
+
+  /* ---------- Mobile ---------- */
   @media screen and (max-width: 749px) {
-  /* Stack: image top, content bottom */
+    #HeroSlideshow-{{ section_id }} {
+      --container-gutter: 12px;
+    }
 
-  :root { --container-gutter: 12px; }
-  .hero-slide__inner,
-  .hero-slide--image-left .hero-slide__inner,
-  .hero-slide--image-right .hero-slide__inner {
-    grid-template-columns: 1fr;
-    grid-template-areas: "image" "content";
-    min-height: 0;
+    #HeroSlideshow-{{ section_id }} .hero-slide__inner,
+    #HeroSlideshow-{{ section_id }} .hero-slide--image-left .hero-slide__inner,
+    #HeroSlideshow-{{ section_id }} .hero-slide--image-right .hero-slide__inner {
+      grid-template-columns: 1fr;
+      grid-template-areas: "image" "content";
+      min-height: 0;
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slide__img--desktop { display: none; }
+    #HeroSlideshow-{{ section_id }} .hero-slide__img--mobile  { display: block; }
+
+    #HeroSlideshow-{{ section_id }} .hero-slide__image {
+      aspect-ratio: var(--hero-mobile-w) / var(--hero-mobile-h);
+      width: 100%;
+      height: auto;
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slide__image img,
+    #HeroSlideshow-{{ section_id }} .hero-slide__image picture {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slide__content {
+      padding-top: 8px;
+      padding-bottom: 20px;
+      padding-left: var(--container-gutter);
+      padding-right: var(--container-gutter);
+      align-items: flex-start;
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slide__heading {
+      font-size: 28px;
+      line-height: 1.2;
+      margin: 0 0 8px;
+      max-width: none;
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slide__description {
+      font-family: 'Figtree', sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+      margin: 0 0 20px;
+      max-width: none;
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slide__button {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slideshow__arrow {
+      top: calc(100cqw * var(--hero-mobile-h) / var(--hero-mobile-w) - 11px);
+      bottom: auto;
+      right: 1rem;
+      transform: none;
+      width: 22px;
+      height: 22px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 0.5px solid #ffffff;
+      box-sizing: border-box;
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slideshow__arrow--prev {
+      left: 1rem;
+      right: auto;
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slideshow__arrow svg {
+      width: 10px;
+      height: 10px;
+    }
+
+    #HeroSlideshow-{{ section_id }} .hero-slideshow__arrow:hover {
+      transform: scale(1.05);
+    }
   }
-
-  .hero-slide__img--desktop { display: none; }
-  .hero-slide__img--mobile  { display: block; }
-
-  .hero-slide__image {
-    aspect-ratio: var(--hero-mobile-w) / var(--hero-mobile-h);  /* 375 / 251 */
-    width: 100%;
-    height: auto;
-  }
-
-  .hero-slide__image img,
-  .hero-slide__image picture {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-  }
-
-  /* Content — Figma mobile spec */
-  .hero-slide__content {
-    padding-top: 08px;
-    padding-bottom: 20px;
-    padding-left: var(--container-gutter);
-    padding-right: var(--container-gutter);
-    align-items: flex-start;
-  }
-
-  /* Heading — Forum 28px / 120% */
-  .hero-slide__heading {
-    font-size: 28px;
-    line-height: 1.2;            /* 120% */
-    margin: 0 0 8px;           /* 20px gap */
-    max-width: none;            /* let it use full width on mobile */
-  }
-
-  /* Description — Figtree 14px / 140% (NOT DM Sans on mobile) */
-  .hero-slide__description {
-    font-family: 'Figtree', sans-serif;   /* mobile uses Figtree per Figma */
-    font-size: 14px;
-    line-height: 1.4;           /* 140% */
-    margin: 0 0 20px;           /* 20px gap */
-    max-width: none;
-  }
-
-  /* Button — Figtree 16px / 700 / uppercase (same as desktop) */
-  .hero-slide__button {
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1.4;
-  }
-
-  .hero-slideshow__arrow {
-    top: calc(100cqw * var(--hero-mobile-h) / var(--hero-mobile-w) - 11px);
-    bottom: auto;
-    right: 1rem;
-    transform: none;
-    width: 22px;
-    height: 22px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 0.5px solid #ffffff;
-    box-sizing: border-box;
-  }
-  .hero-slideshow__arrow--prev { left: 1rem; right: auto; }
-  .hero-slideshow__arrow svg { width: 10px; height: 10px; }
-  .hero-slideshow__arrow:hover { transform: scale(1.05); }
-}
 </style>
 
-<div id="HeroSlideshow-{{ section_id }}" class="hero-slideshow" data-autoplay="{{ section.settings.autoplay }}" data-interval="{{ section.settings.autoplay_seconds | times: 1000 }}">
+<div
+  id="HeroSlideshow-{{ section_id }}"
+  class="hero-slideshow"
+  data-autoplay="{{ section.settings.autoplay }}"
+  data-interval="{{ section.settings.autoplay_seconds | times: 1000 }}"
+>
   <div class="hero-slideshow__track">
-    {%- for block in section.blocks -%}
-      <div class="hero-slide hero-slide--image-{{ block.settings.image_position }}{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
-        <div class="hero-slide__inner">
+    {%- comment -%}
+      The rail holds every slide in one row. The arrows sit outside it so they
+      stay put while the rail moves.
+    {%- endcomment -%}
+    <div class="hero-slideshow__rail" data-hero-rail>
+      {%- for block in section.blocks -%}
+        <div
+          class="hero-slide hero-slide--image-{{ block.settings.image_position }}"
+          data-index="{{ forloop.index0 }}"
+          {{ block.shopify_attributes }}
+        >
+          <div class="hero-slide__inner">
             <div class="hero-slide__image">
-                {%- if block.settings.image != blank -%}
-                    <img
-                    class="hero-slide__img hero-slide__img--desktop"
-                    src="{{ block.settings.image | image_url: width: 1600 }}"
-                    alt="{{ block.settings.heading | strip_html | escape }}"
-                    loading="lazy"
-                    width="{{ block.settings.image.width }}"
-                    height="{{ block.settings.image.height }}"
-                    >
-                {%- endif -%}
+              {%- if block.settings.image != blank -%}
+                <img
+                  class="hero-slide__img hero-slide__img--desktop"
+                  src="{{ block.settings.image | image_url: width: 1600 }}"
+                  alt="{{ block.settings.image.alt | default: block.settings.heading | strip_html | escape }}"
+                  {%- comment -%}
+                    Slide 1 is the page's largest paint. Lazy-loading it delays
+                    the metric it defines; every later slide is off-screen and
+                    stays lazy.
+                  {%- endcomment -%}
+                  {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                >
+              {%- endif -%}
 
-                {%- assign mobile_img = block.settings.mobile_image | default: block.settings.image -%}
-                {%- if mobile_img != blank -%}
-                    <img
-                    class="hero-slide__img hero-slide__img--mobile"
-                    src="{{ mobile_img | image_url: width: 1200 }}"
-                    alt="{{ block.settings.heading | strip_html | escape }}"
-                    loading="lazy"
-                    width="{{ mobile_img.width }}"
-                    height="{{ mobile_img.height }}"
-                    >
-                {%- endif -%}
+              {%- assign mobile_img = block.settings.mobile_image | default: block.settings.image -%}
+              {%- if mobile_img != blank -%}
+                <img
+                  class="hero-slide__img hero-slide__img--mobile"
+                  src="{{ mobile_img | image_url: width: 1200 }}"
+                  alt="{{ mobile_img.alt | default: block.settings.heading | strip_html | escape }}"
+                  {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                  width="{{ mobile_img.width }}"
+                  height="{{ mobile_img.height }}"
+                >
+              {%- endif -%}
 
-                {%- if block.settings.image == blank and block.settings.mobile_image == blank -%}
-                    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                {%- endif -%}
+              {%- if block.settings.image == blank and block.settings.mobile_image == blank -%}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
             </div>
 
-          <div class="hero-slide__content">
-            {%- if block.settings.subheading != blank -%}
-              <p class="hero-slide__subheading">{{ block.settings.subheading }}</p>
-            {%- endif -%}
-            {%- if block.settings.heading != blank -%}
-              <h2 class="hero-slide__heading" style="max-width: {{ block.settings.heading_width | default: 586 }}px;">{{ block.settings.heading | newline_to_br }}</h2>
-            {%- endif -%}
-            {%- if block.settings.description != blank -%}
-              <div class="hero-slide__description">{{ block.settings.description }}</div>
-            {%- endif -%}
-                       {%- if block.settings.button_label != blank -%}
-              {%- assign button_href = block.settings.button_link | default: '#' -%}
-              {%- render 'button',
-                content: block.settings.button_label,
-                href: button_href,
-                style: 'solid',
-                background: section.settings.button_bg,
-                text_color: section.settings.button_text_color
-              -%}
-            {%- endif -%} 
+            <div class="hero-slide__content">
+              {%- if block.settings.subheading != blank -%}
+                <p class="hero-slide__subheading">{{ block.settings.subheading }}</p>
+              {%- endif -%}
+
+              {%- if block.settings.heading != blank -%}
+                <h2
+                  class="hero-slide__heading"
+                  style="max-width: min({{ block.settings.heading_width | default: 520 }}px, 100%);"
+                >{{ block.settings.heading | newline_to_br }}</h2>
+              {%- endif -%}
+
+              {%- if block.settings.description != blank -%}
+                <div class="hero-slide__description">{{ block.settings.description }}</div>
+              {%- endif -%}
+
+              {%- comment -%}
+                Liquid rejects a filter inside a render argument, so the
+                fallback is resolved into a variable first.
+              {%- endcomment -%}
+              {%- if block.settings.button_label != blank -%}
+                {%- assign button_href = block.settings.button_link | default: '#' -%}
+                {%- render 'button',
+                  content: block.settings.button_label,
+                  href: button_href,
+                  style: 'solid',
+                  background: section.settings.button_bg,
+                  text_color: section.settings.button_text_color
+                -%}
+              {%- endif -%}
+            </div>
           </div>
         </div>
-      </div>
-    {%- endfor -%}
+      {%- endfor -%}
+    </div>
 
     {%- if section.blocks.size > 1 -%}
-  <button type="button" class="hero-slideshow__arrow hero-slideshow__arrow--prev" aria-label="Previous slide" data-hero-prev>
-    <svg viewBox="8 5 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="15 6 9 12 15 18"/>
-    </svg>
-  </button>
+      <button
+        type="button"
+        class="hero-slideshow__arrow hero-slideshow__arrow--prev"
+        aria-label="Previous slide"
+        data-hero-prev
+      >
+        <svg viewBox="8 5 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 6 9 12 15 18"/>
+        </svg>
+      </button>
 
-  <button type="button" class="hero-slideshow__arrow" aria-label="Next slide" data-hero-next>
-    <svg viewBox="8 5 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="9 18 15 12 9 6"/>
-    </svg>
-  </button>
-{%- endif -%}
+      <button
+        type="button"
+        class="hero-slideshow__arrow"
+        aria-label="Next slide"
+        data-hero-next
+      >
+        <svg viewBox="8 5 8 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+    {%- endif -%}
   </div>
+
   {%- if section.blocks.size > 1 -%}
     <div class="hero-slideshow__dots">
-        {%- for block in section.blocks -%}
-        <button type="button" class="hero-slideshow__dot{% if forloop.first %} is-active{% endif %}" data-hero-dot="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}"></button>
-        {%- endfor -%}
+      {%- for block in section.blocks -%}
+        <button
+          type="button"
+          class="hero-slideshow__dot{% if forloop.first %} is-active{% endif %}"
+          data-hero-dot="{{ forloop.index0 }}"
+          aria-label="Go to slide {{ forloop.index }}"
+        ></button>
+      {%- endfor -%}
     </div>
-    {%- endif -%}
+  {%- endif -%}
 </div>
 
 <script>
@@ -453,6 +498,7 @@
     var root = document.getElementById('HeroSlideshow-{{ section_id }}');
     if (!root) return;
 
+    var rail = root.querySelector('[data-hero-rail]');
     var slides = root.querySelectorAll('.hero-slide');
     var dots = root.querySelectorAll('.hero-slideshow__dot');
     var nextBtn = root.querySelector('[data-hero-next]');
@@ -463,51 +509,35 @@
     var interval = parseInt(root.getAttribute('data-interval'), 10) || 5000;
     var timer = null;
 
-    if (total <= 1) return;
+    if (!rail || total <= 1) return;
 
-      function goTo(index, direction) {
-      var target = (index + total) % total;
-      if (target === current) return;
+    // One transform moves the whole strip. Nothing per-slide is toggled, so
+    // there is no half-applied state to recover from if a step is interrupted.
+    function goTo(index) {
+      current = (index + total) % total;
+      rail.style.transform = 'translateX(' + (-current * 100) + '%)';
 
-      if (!direction) direction = target > current ? 'next' : 'prev';
+      Array.prototype.forEach.call(dots, function (dot, i) {
+        dot.classList.toggle('is-active', i === current);
+      });
 
-      var outgoing = slides[current];
-      var incoming = slides[target];
-
-      outgoing.classList.remove('is-active');
-            outgoing.classList.add('is-leaving', direction === 'next' ? 'is-leaving-right' : 'is-leaving-left');
-
-      // Park the incoming slide on the side it arrives from, force the browser
-      // to apply that position, then animate to centre. Without the reflow both
-      // states land in one frame and it cuts instead of sliding.
-            incoming.classList.remove('is-leaving', 'is-leaving-left', 'is-leaving-right');
-      incoming.classList.toggle('is-from-right', direction === 'next');
-      void incoming.offsetWidth;
-      incoming.classList.add('is-active');
-
-      setTimeout(function () {
-        outgoing.classList.remove('is-leaving', 'is-leaving-left', 'is-leaving-right');
-      }, 600);
-
-      if (dots[current]) dots[current].classList.remove('is-active');
-      current = target;
-      if (dots[current]) dots[current].classList.add('is-active');
       updateArrows();
     }
 
-    function next() { goTo(current + 1, 'next'); }
-    function prev() { goTo(current - 1, 'prev'); }
+    function updateArrows() {
+      if (prevBtn) prevBtn.hidden = current === 0;
+      if (nextBtn) nextBtn.hidden = current === total - 1;
+    }
 
-  function updateArrows() {
-    if (prevBtn) prevBtn.hidden = current === 0;
-    if (nextBtn) nextBtn.hidden = current === total - 1;
-  }
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
 
     function startAuto() {
       if (!autoplay) return;
       stopAuto();
       timer = setInterval(next, interval);
     }
+
     function stopAuto() {
       if (timer) { clearInterval(timer); timer = null; }
     }
@@ -520,7 +550,7 @@
       prevBtn.addEventListener('click', function () { prev(); startAuto(); });
     }
 
-    dots.forEach(function (dot) {
+    Array.prototype.forEach.call(dots, function (dot) {
       dot.addEventListener('click', function () {
         goTo(parseInt(dot.getAttribute('data-hero-dot'), 10));
         startAuto();
@@ -529,6 +559,14 @@
 
     root.addEventListener('mouseenter', stopAuto);
     root.addEventListener('mouseleave', startAuto);
+
+    // Autoplay is paused while a keyboard user is inside the section, so focus
+    // is never pulled out from under them mid-interaction.
+    root.addEventListener('focusin', stopAuto);
+    root.addEventListener('focusout', function (event) {
+      if (!root.contains(event.relatedTarget)) startAuto();
+    });
+
     updateArrows();
     startAuto();
   })();
@@ -613,10 +651,10 @@
           "info": "Recommended 1600 x 1600px"
         },
         {
-            "type": "image_picker",
-            "id": "mobile_image",
-            "label": "Mobile image",
-            "info": "Optional. Shown on mobile. Falls back to the main image if empty."
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
+          "info": "Optional. Shown on mobile. Falls back to the main image if empty."
         },
         {
           "type": "select",
@@ -640,15 +678,15 @@
           "default": "Authentic Oushak Rugs. Made to Last a Lifetime."
         },
         {
-            "type": "range",
-            "id": "heading_width",
-            "min": 300,
-            "max": 720,
-            "step": 10,
-            "unit": "px",
-            "label": "Heading max width",
-            "info": "Adjust to control where the heading wraps",
-            "default": 520
+          "type": "range",
+          "id": "heading_width",
+          "min": 300,
+          "max": 720,
+          "step": 10,
+          "unit": "px",
+          "label": "Heading max width",
+          "info": "Adjust to control where the heading wraps",
+          "default": 520
         },
         {
           "type": "richtext",
