@@ -251,7 +251,7 @@
       {%- endcomment -%}
 
       {%- if show_form_column -%}
-        <div class="trade-program__form">
+        <div class="trade-program__form" id="trade-program-form">
           {%- for block in section.blocks -%}
             {%- if block.type == '@app' -%}
               <div class="trade-program__app-block" {{ block.shopify_attributes }}>
