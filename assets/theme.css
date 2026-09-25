@@ -4184,7 +4184,7 @@ tr[onclick]:hover {
 }
 
 .pdp-consultation {
-  background: rgb(var(--background-without-opacity));
+  background: #FFFFFF;
   border-radius: var(--input-border-radius);
   align-items: center;
   column-gap: 1rem;
