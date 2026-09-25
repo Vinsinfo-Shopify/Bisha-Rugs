@@ -7669,7 +7669,9 @@ shopify-account::part(signed-out-avatar) {
   align-items: center;
   display: flex;
 }
-
+.complementary-products__header .page-dots{
+  display: none;
+}
 .complementary-products__header p {
   margin: 0;
   color: rgb(var(--text-color));
