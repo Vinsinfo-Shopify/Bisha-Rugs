@@ -302,7 +302,9 @@ height-observer {
   padding-block-end: 1.25rem;
   padding-inline-end: 1.25rem;
 }
-
+.product-info__block-group.accordion-group .product-info__block-item:last-of-type .accordion {
+  border-block-width: 0;
+}
 @media screen and (min-width: 1000px) {
   .accordion__toggle.text-lg {
     padding-block: 1.5rem;
