@@ -1901,7 +1901,7 @@
         "eyebrow_gap": 4,
         "header_gap": 24,
         "cta_gap": 24,
-        "card_padding": 16,
+        "card_padding": 10,
         "card_radius": 2,
         "card_background": "#ffffff",
         "card_border": "#e6e6e6",
