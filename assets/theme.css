@@ -418,8 +418,8 @@ height-observer {
 .shopify-payment-button__button--unbranded {
   --initial-gradient: linear-gradient(rgb(var(--button-background)), rgb(var(--button-background)));
   --hover-gradient: linear-gradient(transparent, transparent);
-  --initial-background-position: left center;
-  --hover-background-position: var(--transform-origin-start);
+  --initial-background-position: right center;
+  --hover-background-position: left center;
   -webkit-appearance: none;
   appearance: none;
   text-transform: var(--button-text-transform);
