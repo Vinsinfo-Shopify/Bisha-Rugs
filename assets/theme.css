@@ -6681,9 +6681,9 @@ shopify-account::part(signed-out-avatar) {
     gap: 70px;
   }
 }
-@media screen and (min-width: 1350px) {
+@media screen and (min-width: 1349px) {
   .why_oushak_section .image-with-text .prose  {
-    width: 93%;
+    width: 96%;
     margin: 0;
   }
 }
