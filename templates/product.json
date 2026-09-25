@@ -1158,7 +1158,7 @@
         "label_column_width": 272,
         "label_column_width_mobile": 96,
         "column_min_width_mobile": 172,
-        "cell_padding_inline": 16,
+        "cell_padding_inline": 26,
         "row_padding": 18,
         "padding_top": 54,
         "padding_bottom": 54,
