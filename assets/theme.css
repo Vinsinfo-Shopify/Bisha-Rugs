@@ -3885,7 +3885,9 @@ tr[onclick]:hover {
   line-height: 140%;
   letter-spacing: 0%;
 }
-
+.accordion__content.prose a{
+  font-weight: 600;
+}
 .accordion__content.prose .accordion-option-card .accordion-option-card_info .button {
   font-weight: 700;
   font-size: 14px;
