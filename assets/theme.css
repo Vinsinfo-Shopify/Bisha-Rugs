@@ -6693,6 +6693,12 @@ shopify-account::part(signed-out-avatar) {
     margin: 0;
   }
 }
+@media screen and (min-width: 1200px) {
+   .custom_rugs.pdp .image-with-text .prose  {
+    width: 84%;
+    margin: 0;
+  }
+}
 .why_oushak_section .image_with_text_content ul{
   row-gap: 15px;
 }
