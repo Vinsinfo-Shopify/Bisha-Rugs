@@ -6789,7 +6789,16 @@ shopify-account::part(signed-out-avatar) {
     padding-inline-end: var(--image-with-text-gap);
   }
 }
-
+@media screen and (max-width: 1000px) {
+  .why_oushak_section .image-with-text {
+    --image-with-text-gap: 2rem;
+    grid-template-columns: unset;
+    align-items: unset;
+  }
+  .why_oushak_section .image-with-text picture {
+    order: 0;
+  }
+}
 @media screen and (min-width: 1000px) {
   .image-with-text {
     --image-with-text-gap: 2rem;
