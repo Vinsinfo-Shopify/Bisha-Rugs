@@ -839,7 +839,7 @@ shopify-accelerated-checkout-cart {
     position: relative;
   }
 
-  .floating-controls-container:not(:has(.is-scrollable)) .floating-controls-container__control {
+  .floating-controls-container:not(:has(.is-scrollable:not(.product-card__media-carousel))) .floating-controls-container__control {
     display: none;
   }
 
