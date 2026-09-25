@@ -6682,7 +6682,7 @@ shopify-account::part(signed-out-avatar) {
   }
 }
 @media screen and (min-width: 1400px) {
-  .why_oushak_section .image-with-text--reverse>.prose  {
+  .why_oushak_section .image-with-text .prose  {
     width: 93%;
     margin: 0;
   }
