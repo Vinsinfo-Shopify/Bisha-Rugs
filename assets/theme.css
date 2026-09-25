@@ -13123,6 +13123,6 @@ a.marquee__item:hover .marquee__text {
 .button,
 .shopify-challenge__button,
 .shopify-payment-button__button--unbranded {
-  --initial-background-position: var(--transform-origin-end);
-  --hover-background-position: var(--transform-origin-start);
+  --initial-background-position: right center;
+  --hover-background-position: left center;
 }
