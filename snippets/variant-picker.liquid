@@ -170,6 +170,7 @@
           {%- endif -%}
 
           {%- if is_size_option and enter_size_heading != blank -%}
+          <size-units class="size-units">
             <div class="size-entry__heading h-stack justify-between gap-2">
               <p style="margin:0;">
                 {{ enter_size_heading }}: <span style="font-weight:400;">{{ option.selected_value }}</span>
@@ -189,6 +190,14 @@
                 </x-modal>
               {%- endif -%}
             </div>
+            <div class="size-units__toggle" role="group" aria-label="{{ 'product.general.size_units_label' | t | escape }}">
+              <button type="button" class="size-units__unit is-active" data-unit="ft" aria-pressed="true">{{- 'product.general.size_unit_feet' | t -}}</button>
+              <span class="size-units__divider" aria-hidden="true">|</span>
+              <button type="button" class="size-units__unit" data-unit="in" aria-pressed="false">{{- 'product.general.size_unit_inch' | t -}}</button>
+              <span class="size-units__divider" aria-hidden="true">|</span>
+              <button type="button" class="size-units__unit" data-unit="cm" aria-pressed="false">{{- 'product.general.size_unit_cm' | t -}}</button>
+            </div>
+          </size-units>
           {%- endif -%}
           <div class="relative">
             {%- capture popover_id -%}popover-variant-dropdown-{{ section.id }}-{{ product.id }}-{{ option.position }}{%- endcapture -%}
@@ -436,6 +445,43 @@
           letter-spacing: 0%;
           vertical-align: middle;
           color: rgb(var(--text-color));
+        }
+          .size-units {
+          display: block;
+        }
+
+        .size-units .size-entry__heading {
+          padding-block-end: 12px;
+        }
+
+        .size-units__toggle {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding-block-end: 12px;
+          font-family: var(--text-font-family);
+          font-size: 16px;
+          line-height: 140%;
+          color: #202020;
+        }
+
+        .size-units__unit {
+          padding: 0;
+          background: none;
+          border: 0;
+          font: inherit;
+          color: inherit;
+          cursor: pointer;
+        }
+
+        .size-units__unit.is-active {
+          font-weight: 600;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+        }
+
+        .size-units__divider {
+          color: rgb(var(--text-color) / 0.4);
         }
       </style>
 
