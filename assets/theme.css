@@ -12303,7 +12303,7 @@ ul {
   border-block-start: 1px solid var(--ct-border-color);
 }
 .comparison-table__cell--head{
-
+    padding-block-start: calc(var(--ct-pad-y));
 }
 .comparison-table__cell--intro {
   border-block-start: 0;
