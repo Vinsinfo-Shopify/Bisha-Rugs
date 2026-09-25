@@ -12288,7 +12288,6 @@ ul {
   padding-block: 0;
 }
 
-.comparison-table__cell--head,
 .comparison-table__cell--value,
 .comparison-table__cell--cta:not(.comparison-table__cell--label) {
   background: var(--ct-column-background);
@@ -12299,13 +12298,14 @@ ul {
   background: var(--ct-background);
 }
 
-.comparison-table__cell--head,
 .comparison-table__cell--value,
 .comparison-table__cell--label,
 .comparison-table__cell--cta {
   border-block-start: 1px solid var(--ct-border-color);
 }
+.comparison-table__cell--head{
 
+}
 .comparison-table__cell--intro {
   border-block-start: 0;
 }
