@@ -12554,8 +12554,6 @@ a.marquee__item:hover .marquee__text {
 .trade-program {
   --trade-program-row-gap: 32px;
   --trade-program-column-gap: 64px;
-  --trade-program-content-column: 1fr;
-  --trade-program-form-column: 1fr;
   --trade-program-grid-padding-inline: 0px;
   --trade-program-content-text-align: start;
 
@@ -12716,9 +12714,6 @@ a.marquee__item:hover .marquee__text {
   font-weight: 700;
   line-height: 100%;
 }
-.trade_program_form .globo-form-app .header {
-  margin-bottom: 0px;
-}
 .trade_program_form .globo-form-app .header .title{
   font-size: 36px !important;
   font-weight: 400;
@@ -12750,44 +12745,6 @@ a.marquee__item:hover .marquee__text {
 .trade-program .trade_program_form :is(img, iframe, table) {
   max-width: 100%;
 }
-/* Multi-step progress bar: titles attached under each numbered circle by the
-   trade-program section script. */
-.trade-program__form .trade-program__step-circle {
-  overflow: visible;
-}
-
-.trade-program__form .trade-program__step-circle--anchor {
-  position: relative;
-}
-
-.trade-program__form .trade-program__step-label {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 12px;
-  width: 110px;
-  font-family: 'Figtree';
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 100%;
-  letter-spacing: 0.3;
-  text-align: center;
-  text-indent: 0;
-  text-transform: none;
-  white-space: normal;
-  color: #8F8F8F;
-  pointer-events: none;
-}
-
-.trade-program__form .trade-program__step-label.is-active {
-  color: #241F1A;
-}
-
-.trade-program__form .trade-program__stepper {
-  padding-bottom: 56px;
-}
-
 .trade_program_form .globo-form-control input{
   color: #8F8F8F;
   font-weight: 400;
@@ -12803,23 +12760,14 @@ a.marquee__item:hover .marquee__text {
 .trade_program_form .globo-form-app .message .content{
   font-family: 'Figtree';
 }
-.trade_program_form .globo-form-app .wizard__steps{
-  position: unset;
-}
-.trade_program_form .globo-form-app .wizard__header{
-  bottom: 22px;
-}
-.trade_program_form .globo-form-app .gfb__footer{
-  margin-top: 10px;
-}
 .trade_program_form .globo-form-app .panel{
   padding-top: 45px;
 }
 @media screen and (min-width: 1000px) {
   .trade-program__grid {
-    grid-template-columns:
-      minmax(0, var(--trade-program-content-column))
-      minmax(0, var(--trade-program-form-column));
+      grid-template-columns:
+        minmax(0, 642px)
+        minmax(0, 562px);
     column-gap: var(--trade-program-column-gap);
   }
 
@@ -12939,21 +12887,12 @@ a.marquee__item:hover .marquee__text {
   .trade_program_form .globo-form-control input{
     font-size: 14px;
   }
-  .trade-program__form .trade-program__step-label {
-    margin-top: 8px;
-    width: 88px;
-    font-size: 12px;
-    letter-spacing: 0.18;
+  .trade_program_form .globo-form-app .panel{
+    padding-top: 20px;
   }
-  .trade-program__form .trade-program__stepper {
-    padding-bottom: 44px;
+  .trade_program_form .panels{
+    height: 200px;
   }
-  .trade_program_form .globo-form-app .gfb__footer{
-  margin-top: 0px;
-}
-.trade_program_form .globo-form-app .panel{
-  padding-top: 20px;
-}
 }
 
 @media screen and (min-width: 1000px) {

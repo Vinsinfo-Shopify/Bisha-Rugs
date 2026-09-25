@@ -123,6 +123,9 @@
       padding-block-start: {{ section.settings.padding_top_desktop }}px;
       padding-block-end: {{ section.settings.padding_bottom_desktop }}px;
     }
+    .container{
+      --container-max-width: 1300px;
+    }
 
     #shopify-section-{{ section.id }} .trade-program {
       --section-vertical-spacing-override: {{ section.settings.section_vertical_spacing_desktop }}px;
@@ -266,160 +269,6 @@
     </div>
   </div>
 </div>
-
-{%- if show_form_column and section.settings.show_step_labels -%}
-  <script>
-    (function () {
-      var labels = [
-        {{ section.settings.step_1_label | default: '' | json }},
-        {{ section.settings.step_2_label | default: '' | json }},
-        {{ section.settings.step_3_label | default: '' | json }}
-      ];
-
-      var section = document.getElementById('shopify-section-{{ section.id }}');
-      var form = section && section.querySelector('.trade-program__form');
-
-      if (!form || !labels.join('')) return;
-
-      var wanted = labels.filter(Boolean);
-      var expected = wanted.length;
-      var activePattern = /(^|[-_\s])(active|current|selected|done|complete)/i;
-      var customSelector = {{ section.settings.step_item_selector | default: '' | json }};
-      var attempts = 0;
-
-      function visible(node) {
-        return !!(node.offsetWidth || node.offsetHeight || node.getClientRects().length);
-      }
-
-      // 1. The number is real text inside the circle: <li>1</li> or <div><span>1</span></div>.
-      function findByNumber() {
-        var nodes = form.querySelectorAll('div, span, li, a, button, p, strong, em, i, b');
-        var found = [];
-
-        for (var index = 0; index < expected; index++) {
-          var number = String(index + 1);
-          var match = null;
-
-          for (var i = 0; i < nodes.length; i++) {
-            var node = nodes[i];
-
-            if (node.childElementCount === 0 && node.textContent.trim() === number && visible(node)) {
-              match = node;
-              break;
-            }
-          }
-
-          if (!match) return [];
-
-          found.push(match);
-        }
-
-        return found;
-      }
-
-      // 2. The number is drawn with a CSS counter or ::before, so the circles carry no text. Fall back to the
-      //    first row of sibling elements that looks like a step list.
-      function findByStructure() {
-        var selector =
-          customSelector ||
-          '[class*="step" i], [class*="progress" i], [class*="indicator" i], [class*="page-nav" i], ol, ul';
-        var containers = form.querySelectorAll(selector);
-
-        for (var i = 0; i < containers.length; i++) {
-          var container = containers[i];
-          var children = [];
-
-          for (var c = 0; c < container.children.length; c++) {
-            if (visible(container.children[c])) children.push(container.children[c]);
-          }
-
-          if (children.length !== expected) continue;
-          if (container.textContent.replace(/\s|\d/g, '') !== '') continue; // numbers only — not a field row
-          if (!visible(container)) continue;
-
-          return children;
-        }
-
-        return [];
-      }
-
-      function decorate() {
-        // Already attached — nothing to do until the app re-renders the progress bar.
-        if (form.querySelectorAll('[data-trade-step-label]').length >= expected) return;
-
-        var circles = findByNumber();
-
-        if (!circles.length) circles = findByStructure();
-
-        if (!circles.length) {
-          if (++attempts === 40) {
-            console.warn(
-              '[trade-program] Step labels: no progress bar found inside .trade-program__form. ' +
-                'Set "Step item selector" in the section settings to the app\'s step element.'
-            );
-          }
-
-          return;
-        }
-
-        circles.forEach(function (circle, index) {
-          circle.classList.add('trade-program__step-circle');
-
-          if (getComputedStyle(circle).position === 'static') {
-            circle.classList.add('trade-program__step-circle--anchor');
-          }
-
-          var label = document.createElement('span');
-          var classes = (circle.getAttribute('class') || '') + ' ' + ((circle.parentElement && circle.parentElement.getAttribute('class')) || '');
-
-          label.className = 'trade-program__step-label';
-          label.setAttribute('data-trade-step-label', '');
-          label.textContent = wanted[index];
-
-          if (activePattern.test(classes)) label.classList.add('is-active');
-
-          circle.appendChild(label);
-        });
-
-        if (circles.length < 2) return;
-
-        // Reserve room under the progress bar for the labels.
-        var stepper = circles[0].parentElement;
-        var last = circles[circles.length - 1];
-
-        while (stepper && !stepper.contains(last)) stepper = stepper.parentElement;
-
-        if (stepper) stepper.classList.add('trade-program__stepper');
-      }
-
-      var scheduled = false;
-
-      function schedule() {
-        if (scheduled) return;
-
-        scheduled = true;
-        requestAnimationFrame(function () {
-          scheduled = false;
-          decorate();
-        });
-      }
-
-      new MutationObserver(schedule).observe(form, { childList: true, subtree: true });
-
-      schedule();
-      window.addEventListener('load', schedule);
-
-      // The app can render after its own async setup without touching the container we observe.
-      var poll = setInterval(function () {
-        decorate();
-
-        if (attempts >= 40 || form.querySelectorAll('[data-trade-step-label]').length >= expected) {
-          clearInterval(poll);
-        }
-      }, 400);
-    })();
-  </script>
-{%- endif -%}
 
 {% schema %}
 {
@@ -883,16 +732,6 @@
     },
     {
       "type": "range",
-      "id": "content_column_width",
-      "label": "Left column width (desktop)",
-      "min": 35,
-      "max": 65,
-      "step": 1,
-      "unit": "%",
-      "default": 50
-    },
-    {
-      "type": "range",
       "id": "column_gap_desktop",
       "label": "Column gap (desktop)",
       "min": 16,
@@ -1010,41 +849,6 @@
       "step": 2,
       "unit": "px",
       "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Form step labels",
-      "info": "Titles shown under the numbered circles of the multi-step form. Leave a field empty to hide that label."
-    },
-    {
-      "type": "checkbox",
-      "id": "show_step_labels",
-      "label": "Show step labels",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "step_1_label",
-      "label": "Step 1 label",
-      "default": "Personal Details"
-    },
-    {
-      "type": "text",
-      "id": "step_2_label",
-      "label": "Step 2 label",
-      "default": "Company Details"
-    },
-    {
-      "type": "text",
-      "id": "step_3_label",
-      "label": "Step 3 label",
-      "default": "Design & Document"
-    },
-    {
-      "type": "text",
-      "id": "step_item_selector",
-      "label": "Step item selector (optional)",
-      "info": "Only needed if the labels do not show up. CSS selector of the element that wraps the numbered circles in the form app, e.g. \".globo-form-steps\"."
     }
   ],
   "blocks": [
