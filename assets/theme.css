@@ -3915,7 +3915,13 @@ tr[onclick]:hover {
     flex-direction: column;
   }
 }
-
+.pdp-review__image {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--input-border-radius);
+  object-fit: cover;
+  flex-shrink: 0;
+}
 @media screen and (max-width: 699px) {
  
   .accordion-tag {
@@ -3952,13 +3958,7 @@ tr[onclick]:hover {
   display: flex;
 }
 
-.pdp-review__image {
-  width: 80px;
-  height: 80px;
-  border-radius: var(--input-border-radius);
-  object-fit: cover;
-  flex-shrink: 0;
-}
+
 
 .pdp-review__body {
   row-gap: .5rem;
