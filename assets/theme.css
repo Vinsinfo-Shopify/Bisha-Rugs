@@ -3933,6 +3933,10 @@ tr[onclick]:hover {
   .pdp-review__rating {
     flex-wrap: wrap;
   }
+  .pdp-review__image {
+    width: 110px;
+    height: 110px;
+  }
 }
 
 .pdp-review {
@@ -13119,10 +13123,4 @@ a.marquee__item:hover .marquee__text {
     inset-inline-end: -13px;
     inset-inline-start: auto;
   }
-}
-.button,
-.shopify-challenge__button,
-.shopify-payment-button__button--unbranded {
-  --initial-background-position: right center;
-  --hover-background-position: left center;
 }
