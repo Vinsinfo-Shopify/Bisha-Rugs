@@ -84,12 +84,7 @@
         "padding_top_mobile": 0,
         "padding_bottom_mobile": 38,
         "padding_top_desktop": 0,
-        "padding_bottom_desktop": 0,
-        "show_step_labels": true,
-        "step_1_label": "Personal Details",
-        "step_2_label": "Company Details",
-        "step_3_label": "Design & Document",
-        "step_item_selector": ""
+        "padding_bottom_desktop": 0
       }
     },
     "1790166099e53ca823": {
