@@ -523,7 +523,7 @@
             if (UNITS.includes(stored)) currentUnit = stored;
           } catch (error) {}
 
-          const DIMENSION = String.raw`(\d+(?:\.\d+)?)\s*(?:'|’|ft\.?|feet)?\s*(?:(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?`;
+          const DIMENSION = String.raw`(\d+)(?:\.(\d{1,2}))?\s*(?:'|’|ft\.?|feet)?\s*(?:(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?`;  
           const SIZE_PATTERN = new RegExp(DIMENSION + String.raw`\s*[x×X]\s*` + DIMENSION + String.raw`(?:\s*(?:ft\.?|feet)\b)?`);
           const SINGLE_PATTERN = /(\d+(?:\.\d+)?)\s*(?:'|’|ft\.?|feet)(?:\s*(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?/;
 
