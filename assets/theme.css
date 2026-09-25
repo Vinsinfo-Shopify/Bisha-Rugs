@@ -4074,6 +4074,63 @@ tr[onclick]:hover {
   object-fit: cover;
   display: block;
 }
+.pdp-real-homes__media video-media::part(play-button) {
+  display: none;
+}
+
+.pdp-real-homes__media:has(video-media)::after,
+.pdp-real-homes__media:has(video-media)::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+
+.pdp-real-homes__media:has(video-media)::after {
+  width: 48.5px;
+  height: 48.5px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgb(34 34 34 / 0.36);
+  backdrop-filter: blur(2.28px);
+  -webkit-backdrop-filter: blur(2.28px);
+  z-index: 2;
+}
+
+.pdp-real-homes__media:has(video-media)::before {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  z-index: 3;
+}
+
+/* Not playing: rounded triangle */
+.pdp-real-homes__media:has(video-media:not([playing]))::before {
+  width: 21.5px;
+  height: 27px;
+  transform: translate(calc(-50% + 2px), -50%);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 41 39'%3E%3Cpath d='M2.5 3.2 L37.8 19.5 L2.5 35.8 Z' fill='%23FFFFFF' stroke='%23FFFFFF' stroke-width='3.26' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* Playing: two bars, shown only on hover */
+.pdp-real-homes__media:has(video-media[playing])::before {
+  width: 18px;
+  height: 22px;
+  transform: translate(-50%, -50%);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 32'%3E%3Crect x='2' y='2' width='8' height='28' rx='1.6' fill='%23FFFFFF'/%3E%3Crect x='16' y='2' width='8' height='28' rx='1.6' fill='%23FFFFFF'/%3E%3C/svg%3E");
+}
+
+.pdp-real-homes__media:has(video-media[playing])::after,
+.pdp-real-homes__media:has(video-media[playing])::before {
+  opacity: 0;
+}
+
+.pdp-real-homes__media:has(video-media[playing]):hover::after,
+.pdp-real-homes__media:has(video-media[playing]):hover::before {
+  opacity: 1;
+}
 .pdp-contact {
   background: rgb(var(--text-color) / 0.04);
   border-radius: var(--input-border-radius);
