@@ -6687,7 +6687,7 @@ shopify-account::part(signed-out-avatar) {
     margin: 0;
   }
 }
-@media screen and (min-width: 1400px) {
+@media screen and (min-width: 1440px) {
    .custom_rugs.pdp .image-with-text .prose  {
     width: 81%;
     margin: 0;
