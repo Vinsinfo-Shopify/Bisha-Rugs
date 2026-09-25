@@ -123,6 +123,9 @@
       padding-block-start: {{ section.settings.padding_top_desktop }}px;
       padding-block-end: {{ section.settings.padding_bottom_desktop }}px;
     }
+    .container{
+      --container-max-width: 1300px;
+    }
 
     #shopify-section-{{ section.id }} .trade-program {
       --section-vertical-spacing-override: {{ section.settings.section_vertical_spacing_desktop }}px;
@@ -726,16 +729,6 @@
     {
       "type": "header",
       "content": "t:global.sizes.size"
-    },
-    {
-      "type": "range",
-      "id": "content_column_width",
-      "label": "Left column width (desktop)",
-      "min": 35,
-      "max": 65,
-      "step": 1,
-      "unit": "%",
-      "default": 50
     },
     {
       "type": "range",

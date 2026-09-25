@@ -12554,8 +12554,6 @@ a.marquee__item:hover .marquee__text {
 .trade-program {
   --trade-program-row-gap: 32px;
   --trade-program-column-gap: 64px;
-  --trade-program-content-column: 1fr;
-  --trade-program-form-column: 1fr;
   --trade-program-grid-padding-inline: 0px;
   --trade-program-content-text-align: start;
 
@@ -12767,9 +12765,9 @@ a.marquee__item:hover .marquee__text {
 }
 @media screen and (min-width: 1000px) {
   .trade-program__grid {
-    grid-template-columns:
-      minmax(0, var(--trade-program-content-column))
-      minmax(0, var(--trade-program-form-column));
+      grid-template-columns:
+        minmax(0, 642px)
+        minmax(0, 562px);
     column-gap: var(--trade-program-column-gap);
   }
 
@@ -12891,6 +12889,9 @@ a.marquee__item:hover .marquee__text {
   }
   .trade_program_form .globo-form-app .panel{
     padding-top: 20px;
+  }
+  .trade_program_form .panels{
+    height: 200px;
   }
 }
 
