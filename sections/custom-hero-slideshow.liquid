@@ -480,8 +480,8 @@
       // Park the incoming slide on the side it arrives from, force the browser
       // to apply that position, then animate to centre. Without the reflow both
       // states land in one frame and it cuts instead of sliding.
-      incoming.classList.remove('is-leaving', 'is-leaving-left', 'is-leaving-right');
-      incoming.classList.toggle('is-from-left', direction === 'prev');
+            incoming.classList.remove('is-leaving', 'is-leaving-left', 'is-leaving-right');
+      incoming.classList.toggle('is-from-right', direction === 'next');
       void incoming.offsetWidth;
       incoming.classList.add('is-active');
 
