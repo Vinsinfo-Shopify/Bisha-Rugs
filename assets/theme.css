@@ -30,7 +30,10 @@ hr {
   justify-self: stretch;
   height: 0;
 }
-
+.product-info__block-item hr{
+  border-color: #EBEBEB;
+  background-color: #EBEBEB;
+}
 a {
   color: inherit;
   -webkit-text-decoration: inherit;
