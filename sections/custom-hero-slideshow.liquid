@@ -465,22 +465,43 @@
 
     if (total <= 1) return;
 
-    function goTo(index) {
-    slides[current].classList.remove('is-active');
-    if (dots[current]) dots[current].classList.remove('is-active');
-    current = (index + total) % total;
-    slides[current].classList.add('is-active');
-    if (dots[current]) dots[current].classList.add('is-active');
-    updateArrows();
-  }
+      function goTo(index, direction) {
+      var target = (index + total) % total;
+      if (target === current) return;
+
+      if (!direction) direction = target > current ? 'next' : 'prev';
+
+      var outgoing = slides[current];
+      var incoming = slides[target];
+
+      outgoing.classList.remove('is-active');
+      outgoing.classList.add('is-leaving', direction === 'next' ? 'is-leaving-left' : 'is-leaving-right');
+
+      // Park the incoming slide on the side it arrives from, force the browser
+      // to apply that position, then animate to centre. Without the reflow both
+      // states land in one frame and it cuts instead of sliding.
+      incoming.classList.remove('is-leaving', 'is-leaving-left', 'is-leaving-right');
+      incoming.classList.toggle('is-from-left', direction === 'prev');
+      void incoming.offsetWidth;
+      incoming.classList.add('is-active');
+
+      setTimeout(function () {
+        outgoing.classList.remove('is-leaving', 'is-leaving-left', 'is-leaving-right');
+      }, 600);
+
+      if (dots[current]) dots[current].classList.remove('is-active');
+      current = target;
+      if (dots[current]) dots[current].classList.add('is-active');
+      updateArrows();
+    }
+
+    function next() { goTo(current + 1, 'next'); }
+    function prev() { goTo(current - 1, 'prev'); }
 
   function updateArrows() {
     if (prevBtn) prevBtn.hidden = current === 0;
     if (nextBtn) nextBtn.hidden = current === total - 1;
   }
-
-    function next() { goTo(current + 1); }
-    function prev() { goTo(current - 1); }
 
     function startAuto() {
       if (!autoplay) return;
