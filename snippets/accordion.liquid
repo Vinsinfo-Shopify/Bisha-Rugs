@@ -52,8 +52,8 @@
           </span>
         {%- elsif plus_minus -%}
         <span class="accordion__toggle-icon" aria-hidden="true">
-          {%- render 'icon' with 'accordion-plus', class: 'accordion__toggle-icon--closed' -%}
-          {%- render 'icon' with 'accordion-minus', class: 'accordion__toggle-icon--open' -%}
+          {%- render 'icon' with 'accordion-plus', class: 'accordion__toggle-icon--closed' width: 15 -%}
+          {%- render 'icon' with 'accordion-minus', class: 'accordion__toggle-icon--open' width: 15  -%}
         </span>
         {%- elsif show_arrow -%}
           {%- render 'icon' with 'chevron-down', class: 'group-expanded:rotate' -%}
