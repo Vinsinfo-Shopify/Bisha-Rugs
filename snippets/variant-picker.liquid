@@ -173,7 +173,7 @@
           <size-units class="size-units">
             <div class="size-entry__heading h-stack justify-between gap-2">
               <p style="margin:0;">
-                {{ enter_size_heading }}: <span style="font-weight:400;">{{ option.selected_value }}</span>
+                {{ enter_size_heading }}: <span style="font-weight:400;" data-size-units-value data-size="{{ option.selected_value | escape }}>{{ option.selected_value }}</span>
               </p>
 
               {%- if show_size_chart and size_chart_inline -%}
@@ -203,7 +203,7 @@
             {%- capture popover_id -%}popover-variant-dropdown-{{ section.id }}-{{ product.id }}-{{ option.position }}{%- endcapture -%}
 
             <button type="button" class="select" aria-controls="{{ popover_id }}" aria-expanded="false">
-              <span id="{{ popover_id }}-selected-value">{{- option.selected_value -}}</span>
+              <span id="{{ popover_id }}-selected-value"  {% if is_size_option %}data-size-units-value data-size="{{ option.selected_value | escape }}"{% endif %}>{{- option.selected_value -}}</span>
               {%- render 'icon' with 'dropdown-chevron' -%}
             </button>
 
@@ -226,7 +226,7 @@
                   -%}
 
                   {%- capture option_markup -%}
-                    <span>{{- option_value -}}</span>
+                   <span {% if is_size_option %}data-size-units-value data-size="{{ option_value | escape }}"{% endif %}>{{- option_value -}}</span>
 
                     {%- if option_value.available == false -%}
                       <span>
