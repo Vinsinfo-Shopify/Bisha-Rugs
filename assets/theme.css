@@ -6776,9 +6776,7 @@ shopify-account::part(signed-out-avatar) {
     margin-inline: auto;
     text-align: start;
   }
-  .header-sidebar__collapsible-panel {
-    width: 100%;
-  }
+
 }
 
 @media screen and (min-width: 700px) {
@@ -6815,6 +6813,9 @@ shopify-account::part(signed-out-avatar) {
   }
   .why_oushak_section .image-with-text picture {
     order: 0;
+  }
+  .header-sidebar__collapsible-panel {
+    width: 100%;
   }
 }
 @media screen and (min-width: 1000px) {
