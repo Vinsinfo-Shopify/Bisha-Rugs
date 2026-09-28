@@ -3682,7 +3682,9 @@ tr[onclick]:hover {
   flex-shrink: 0;
  
 }
-
+.image-text-card.image-text-card--checklist {
+  padding: 10px;
+}
 .image-text-card--checklist {
   align-items: stretch;
 }
