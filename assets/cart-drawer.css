@@ -196,7 +196,9 @@
   gap: 12px;
   margin-block-start: 4px;
 }
-
+.cart-drawer-line__actions .quantity-selector__button svg{
+  color: #898989;
+}
 .cart-drawer .quantity-selector {
   --quantity-selector-height: 22px;
   --quantity-selector-input-width: 26px;
