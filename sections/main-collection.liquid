@@ -2321,6 +2321,122 @@
   ],
   "blocks": [
     {
+      "type": "promo_card",
+      "name": "Promo card",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Shown inside the product grid, shaped like a product card: media on top, text panel below."
+        },
+        {
+          "type": "range",
+          "id": "position",
+          "label": "Position in the grid",
+          "info": "The card is placed before the product at this position.",
+          "min": 1,
+          "max": 50,
+          "default": 6
+        },
+        {
+          "type": "header",
+          "content": "Media"
+        },
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media type",
+          "options": [
+            { "value": "image", "label": "Image" },
+            { "value": "video", "label": "Video" }
+          ],
+          "default": "video"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "313 x 380 or larger, same ratio as the product images.",
+          "visible_if": "{{ block.settings.media_type == 'image' }}"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Shows a play button; click to play and pause.",
+          "visible_if": "{{ block.settings.media_type == 'video' }}"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Want Something Unique? Customize your Rug."
+        },
+        {
+          "type": "range",
+          "id": "heading_size",
+          "label": "Heading size (desktop)",
+          "min": 14,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "default": 22
+        },
+        {
+          "type": "range",
+          "id": "heading_size_mobile",
+          "label": "Heading size (mobile)",
+          "min": 12,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "Customize the size, colors and more with expert guidance."
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text",
+          "default": "Get in touch"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Panel background",
+          "default": "#f1ece2"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text",
+          "default": "#202020"
+        },
+        {
+          "type": "color",
+          "id": "link_color",
+          "label": "Link",
+          "default": "#55583c"
+        }
+      ]
+    },
+    {
       "type": "push_promo",
       "name": "t:sections.main_collection.blocks.push_promo.name",
       "settings": [
