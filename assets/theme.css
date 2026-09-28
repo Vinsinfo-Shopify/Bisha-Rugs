@@ -3733,6 +3733,8 @@ tr[onclick]:hover {
   vertical-align: middle;
   text-transform: uppercase;
   width: fit-content;
+  margin-block-start: 10px;
+
 }
 
 .image-text-card--checklist .prose :is(ul, ol) {
