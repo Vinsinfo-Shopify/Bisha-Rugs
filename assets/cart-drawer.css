@@ -72,7 +72,8 @@
 .cart-drawer__items {
   display: grid;
   gap: 0;
-  padding-inline: var(--cart-drawer-gutter-start) var(--cart-drawer-gutter-end);
+  margin-inline: var(--cart-drawer-gutter-start) var(--cart-drawer-gutter-end);
+  border-block-end: 1px solid var(--cart-drawer-hairline);
 }
 
 .cart-drawer__items>*+* {
