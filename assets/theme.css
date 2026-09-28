@@ -6776,6 +6776,9 @@ shopify-account::part(signed-out-avatar) {
     margin-inline: auto;
     text-align: start;
   }
+  .header-sidebar__collapsible-panel {
+    width: 100%;
+  }
 }
 
 @media screen and (min-width: 700px) {
