@@ -3573,9 +3573,8 @@ tr[onclick]:hover {
 }
 
 .badge.badge--custom {
-  background: #B35642;
+  background: rgb(var(--on-sale-badge-background));
   color: rgb(var(--custom-badge-text));
-  border-radius: 84px;
   padding: 2px 7px;
   gap: 4px;
   font-size: 12px;
