@@ -12377,7 +12377,9 @@ ul {
     --ct-space-top: var(--ct-padding-block-start-mobile);
     --ct-space-bottom: var(--ct-padding-block-end-mobile);
   }
-
+  .comparison-table__cell--head{
+    padding-block-start: calc(var(--ct-pad-x)-10px);
+  }
   .comparison-table__intro--mobile {
     display: block;
     margin-block-end: 20px;
