@@ -7,7 +7,7 @@
   --cart-drawer-accent: rgb(var(--cart-drawer-accent-rgb));
   --cart-drawer-accent-text: rgb(var(--cart-drawer-accent-text-rgb));
   --cart-drawer-hairline: rgb(var(--text-color) / 0.14);
-  --cart-drawer-rule: rgb(var(--text-color) / 0.22);
+  --cart-drawer-rule: #56583D;
   --cart-drawer-muted: rgb(var(--text-color) / 0.62);
 
   --drawer-max-width: min(92vw, 459px);
