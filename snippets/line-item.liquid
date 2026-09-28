@@ -70,10 +70,11 @@
     {%- endunless -%}
 
     {%- render 'cart-disclosures', product: line_item.product -%}
-
+     {%- render 'price-list', line_item: line_item, context: 'line_item' -%}
     <div class="cart-drawer-line__prices">
       <span class="cart-drawer-line__price">
         <span class="sr-only">{{ 'product.price.sale_price' | t }}</span>
+        
         {%- render 'money-round', amount: line_item.final_line_price, with_currency: settings.currency_code_enabled -%}
       </span>
 
