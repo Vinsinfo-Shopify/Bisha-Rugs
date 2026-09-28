@@ -64,6 +64,11 @@
         "content-wrapper media-wrapper" / 581fr 659fr
       {% endif %};
   }
+      .container{
+      --container-gutter: 70px;
+      max-width: 1300px;
+      margin :auto;
+    }
 }
     #shopify-section-{{ section.id }} {
       --section-padding-top: {{ section.settings.padding_top }}px;
@@ -159,7 +164,7 @@
   {%- assign icon_text_blocks = section.blocks | where: "type", "icon_with_text" -%}
 
 <div class="section-spacing section-custom-padding color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_class }}">
-    <div class="container container--md">
+    <div class="container">
       <multiple-media-with-text
         {% if section.settings.reveal_on_scroll %}
           reveal-on-scroll="true"

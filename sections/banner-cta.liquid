@@ -61,7 +61,6 @@
   #BannerCta-{{ section.id }} .banner-cta__inner {
     display: grid;
     grid-template-areas: 'media';
-    margin-inline: var(--banner-cta-gutter);
   }
 
   #BannerCta-{{ section.id }} .banner-cta__media {
@@ -194,6 +193,7 @@
     #BannerCta-{{ section.id }}.banner-cta {
       {% if mobile_button_background %}--banner-cta-button-background: {{ mobile_button_background.rgb }};{% endif %}
       {% if mobile_button_text %}--banner-cta-button-text: {{ mobile_button_text.rgb }};{% endif %}
+        margin:0;
     }
     {%- endif -%}
   }
