@@ -12411,7 +12411,6 @@ ul {
 
   .comparison-table__scroller {
     padding-block-end: 16px;
-    scrollbar-color: var(--ct-scrollbar-color) rgb(0 0 0 / 0.08);
   }
 
   .comparison-table__scroller::-webkit-scrollbar {
@@ -12420,12 +12419,12 @@ ul {
 
   .comparison-table__scroller::-webkit-scrollbar-track {
     background: rgb(0 0 0 / 0.08);
-    border-radius: 3px;
+    border-radius: 5px;
   }
 
   .comparison-table__scroller::-webkit-scrollbar-thumb {
     background: var(--ct-scrollbar-color);
-    border-radius: 3px;
+    border-radius: 5px;
   }
 }
 
