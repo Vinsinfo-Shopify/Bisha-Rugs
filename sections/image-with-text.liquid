@@ -14,17 +14,18 @@
     --section-padding-left: {{ section.settings.padding_left }}px;
     --section-padding-right: {{ section.settings.padding_right }}px;
   }
- 
-  #shopify-section-{{ section.id }} .image-with-text-container {
-    margin-inline: auto;
-    {% case section.settings.section_width %}
-    {% when 'container' %}
-      --distance-to-bleed: max(var(--container-gutter), 50% - var(--image-with-text-section-width) / 2);
-      margin-inline-start: max(var(--container-gutter), 50% - var(--image-with-text-section-width) / 2);
-      margin-inline-end: max(var(--container-gutter), 50% - var(--image-with-text-section-width) / 2);
-    {% endcase %}
-    max-width: var(--image-with-text-section-width);
-   
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .image-with-text-container {
+      margin-inline: auto;
+      {% case section.settings.section_width %}
+      {% when 'container' %}
+        --distance-to-bleed: max(var(--container-gutter), 50% - var(--image-with-text-section-width) / 2);
+        margin-inline-start: max(var(--container-gutter), 50% - var(--image-with-text-section-width) / 2);
+        margin-inline-end: max(var(--container-gutter), 50% - var(--image-with-text-section-width) / 2);
+      {% endcase %}
+      max-width: var(--image-with-text-section-width);
+    
+    }
   }
 {%- if section.settings.section_width == 'full' -%}
   #shopify-section-{{ section.id }} > .container {
