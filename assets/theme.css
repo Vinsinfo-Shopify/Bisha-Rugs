@@ -13148,11 +13148,11 @@ a.marquee__item:hover .marquee__text {
   }
 
   .complementary-products__control--prev {
-    inset-inline-start: -13px;
+    inset-inline-start: -9px;
   }
 
   .complementary-products__control--next {
-    inset-inline-end: -13px;
+    inset-inline-end: -9px;
   }
 
   .complementary-products__control .circle-button {
