@@ -643,7 +643,8 @@
 .cart-drawer-discount {
   display: grid;
   gap: 7px;
-  padding: 16px var(--cart-drawer-gutter-end) 0 var(--cart-drawer-gutter-start);
+  padding: 16px 0 0 0;
+  margin: 0 var(--cart-drawer-gutter-end) 0 var(--cart-drawer-gutter-start);
   border-block-start: 1px solid var(--cart-drawer-hairline);
 }
 
