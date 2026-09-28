@@ -7687,7 +7687,7 @@ shopify-account::part(signed-out-avatar) {
   align-items: center;
   display: flex;
 }
-.complementary-products__header .page-dots{
+.complementary-products__header .page-dots, .complementary-products__carousel .page-dots{
   display: none;
 }
 .complementary-products__header p {
