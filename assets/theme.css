@@ -1077,7 +1077,7 @@ shopify-accelerated-checkout-cart {
 .drawer::part(footer) {
   background-color: rgb(var(--background));
   background-image: var(--background-gradient);
-  border-block-start: 1px solid rgb(var(--border-color));
+  border-block-start: 0px solid rgb(var(--border-color));
   padding-block-start: var(--drawer-footer-padding-block);
   padding-block-end: var(--drawer-footer-padding-block);
   padding-inline-start: var(--drawer-footer-padding-inline);
