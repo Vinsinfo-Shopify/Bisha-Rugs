@@ -184,6 +184,31 @@
     },
     "main": {
       "type": "main-collection",
+      "blocks": {
+        "push_promo_FyMcWV": {
+          "type": "push_promo",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "bordered": false,
+            "position": 10,
+            "size": "1",
+            "media_type": "image",
+            "image": "shopify://shop_images/df4757b35b342ceb512cface52f83f77935973da_bd47bb9b-60de-4c43-91be-b8b8e5ebb03e.png",
+            "overlay_color": "#0000004d",
+            "content_position": "align-self-start",
+            "alignment": "left",
+            "subheading": "Customize the size, colors and more  with expert guidance.",
+            "heading": "Want Something Unique? Customize your Rug.",
+            "heading_tag": "h5",
+            "style": "link",
+            "link_text": "GET IN TOUCH",
+            "url": "shopify://pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "push_promo_FyMcWV"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
         "hide_product_information": false,
