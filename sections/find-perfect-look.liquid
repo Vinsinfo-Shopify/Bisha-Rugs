@@ -414,17 +414,10 @@
 
     /* ---------- Mobile ---------- */
     @media screen and (max-width: 699px) {
-      /* Full available width on mobile.
-         .fpl__inner carries .container container--xl, and .container sets its
-         own margin-inline from max(--container-gutter, 50% - --container-max-width / 2).
-         Those two together were what inset the whole section and left the unused
-         band on the right. Both are neutralised here and replaced with one
-         explicit gutter.
-
-         --container-gutter is set on the same element on purpose: .bleed on the
-         track derives --distance-to-bleed from it, so the track's negative
-         margin now cancels this padding exactly and the carousel reaches both
-         screen edges while the header stays inset. Desktop is untouched. */
+      #shopify-section-{{ section.id }} .fpl__dot {
+        width: calc(var(--fpl-dot-inner) + 12px);
+        height: calc(var(--fpl-dot-inner) + 12px);
+      }
       #shopify-section-{{ section.id }} .fpl__inner {
         --container-max-width: 100%;
         --container-gutter: {{ section.settings.gutter_mobile }}px;

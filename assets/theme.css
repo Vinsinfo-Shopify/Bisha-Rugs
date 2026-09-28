@@ -1077,7 +1077,7 @@ shopify-accelerated-checkout-cart {
 .drawer::part(footer) {
   background-color: rgb(var(--background));
   background-image: var(--background-gradient);
-  border-block-start: 1px solid rgb(var(--border-color));
+  border-block-start: 0px solid rgb(var(--border-color));
   padding-block-start: var(--drawer-footer-padding-block);
   padding-block-end: var(--drawer-footer-padding-block);
   padding-inline-start: var(--drawer-footer-padding-inline);
@@ -3578,9 +3578,8 @@ tr[onclick]:hover {
 }
 
 .badge.badge--custom {
-  background: #B35642;
+  background: rgb(var(--custom-badge-background));
   color: rgb(var(--custom-badge-text));
-  border-radius: 84px;
   padding: 2px 7px;
   gap: 4px;
   font-size: 12px;
@@ -3688,7 +3687,9 @@ tr[onclick]:hover {
   flex-shrink: 0;
  
 }
-
+.image-text-card.image-text-card--checklist {
+  padding: 10px;
+}
 .image-text-card--checklist {
   align-items: stretch;
 }
@@ -3737,6 +3738,8 @@ tr[onclick]:hover {
   vertical-align: middle;
   text-transform: uppercase;
   width: fit-content;
+  margin-block-start: 10px;
+
 }
 
 .image-text-card--checklist .prose :is(ul, ol) {
@@ -6781,6 +6784,7 @@ shopify-account::part(signed-out-avatar) {
     margin-inline: auto;
     text-align: start;
   }
+
   .worth_the_wait .prose .button{
     margin-top: 14px !important;
   }
@@ -6824,6 +6828,9 @@ shopify-account::part(signed-out-avatar) {
   }
   .why_oushak_section .image-with-text picture {
     order: 0;
+  }
+  .header-sidebar__collapsible-panel {
+    width: 100%;
   }
 }
 @media screen and (min-width: 1000px) {
@@ -7700,7 +7707,7 @@ shopify-account::part(signed-out-avatar) {
   align-items: center;
   display: flex;
 }
-.complementary-products__header .page-dots{
+.complementary-products__header .page-dots, .complementary-products__carousel .page-dots{
   display: none;
 }
 .complementary-products__header p {
@@ -12388,14 +12395,16 @@ ul {
 
 @media screen and (max-width: 699px) {
   .comparison-table {
-    --ct-pad-x: calc(var(--ct-cell-padding-inline) * 0.625);
+    --ct-pad-x: calc(var(--ct-cell-padding-inline) * 0.625 - 5px);
     --ct-pad-y: calc(var(--ct-cell-padding-block) * 0.7);
     --ct-font-heading: var(--ct-heading-size-mobile);
     --ct-font-body: var(--ct-body-size-mobile);
     --ct-space-top: var(--ct-padding-block-start-mobile);
     --ct-space-bottom: var(--ct-padding-block-end-mobile);
   }
-
+  .comparison-table__cell--head{
+    padding-block-start: calc(var(--ct-pad-x));
+  }
   .comparison-table__intro--mobile {
     display: block;
     margin-block-end: 20px;
@@ -12428,23 +12437,21 @@ ul {
   }
 
   .comparison-table__scroller {
-    padding-block-end: 14px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--ct-scrollbar-color) rgb(0 0 0 / 0.08);
+    padding-block-end: 16px;
   }
 
   .comparison-table__scroller::-webkit-scrollbar {
-    height: 3px;
+    height: 4px;
   }
 
   .comparison-table__scroller::-webkit-scrollbar-track {
     background: rgb(0 0 0 / 0.08);
-    border-radius: 3px;
+    border-radius: 5px;
   }
 
   .comparison-table__scroller::-webkit-scrollbar-thumb {
     background: var(--ct-scrollbar-color);
-    border-radius: 3px;
+    border-radius: 5px;
   }
 }
 
@@ -13139,12 +13146,61 @@ a.marquee__item:hover .marquee__text {
   }
 
   :is(.recent_products, .expore-more_section) .floating-controls-container > carousel-prev-button.floating-controls-container__control {
-    inset-inline-start: -13px;
+    inset-inline-start: -9px;
     inset-inline-end: auto;
   }
 
   :is(.recent_products, .expore-more_section) .floating-controls-container > carousel-next-button.floating-controls-container__control {
-    inset-inline-end: -13px;
+    inset-inline-end: -9px;
     inset-inline-start: auto;
+  }
+}
+.complementary-products__carousel {
+  position: relative;
+  container-type: inline-size;
+}
+
+.complementary-products__control {
+  display: none;
+}
+
+@media screen and (max-width: 999px) {
+  .complementary-products__control {
+    z-index: 3;
+    display: grid;
+    position: absolute;
+    inset-block-start: calc(min(13.5rem, 52cqi) * 5 / 4 / 2 - 0.8125rem);
+  }
+
+  .complementary-products__control--prev {
+    inset-inline-start: -9px;
+  }
+
+  .complementary-products__control--next {
+    inset-inline-end: -9px;
+  }
+
+  .complementary-products__control .circle-button {
+    --circle-button-size: 1.625rem;
+    --circle-button-background: 43 39 36;
+    --circle-button-text-color: 255 255 255;
+    box-sizing: border-box;
+    background: #2b2724;
+    color: #ffffff;
+    border: 2.17px solid #ffffff;
+    box-shadow: none;
+  }
+
+  .complementary-products__control .circle-button > svg {
+    width: 0.6963rem;
+    color: #ffffff;
+    stroke-width: 1.23;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .complementary-products__control .prev-next-button[disabled] {
+    opacity: 0.35;
+    visibility: visible;
   }
 }

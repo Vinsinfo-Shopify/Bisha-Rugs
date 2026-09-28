@@ -45,7 +45,11 @@
           hidden by CSS), and product-card otherwise builds the same quick-buy
           modal/swatch id for the same product in both places.
         {%- endcomment -%}
-        <div class="sm-max:hidden">
+        {%- comment -%}
+          Prev/next arrows in the same style as Explore More and Recently Viewed,
+          shown below 1000px only (theme.css). Each pair drives its own carousel.
+        {%- endcomment -%}
+        <div class="sm-max:hidden complementary-products__carousel">
           <scroll-carousel id="{{ carousel_id }}" class="complementary-products__product-list complementary-products__product-list--carousel scroll-area snap-x">
             {%- for product in recommendations.products -%}
               {%- render 'product-card',
@@ -61,11 +65,28 @@
               -%}
             {%- endfor -%}
           </scroll-carousel>
+
+            {%- if recommendations.products_count > 1 -%}
+              <carousel-prev-button class="complementary-products__control complementary-products__control--prev" aria-controls="{{ carousel_id }}">
+                <button type="button" class="prev-next-button prev-next-button--prev circle-button" disabled>
+                  <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+                  {%- render 'icon' with 'arrow-left', direction_aware: true -%}
+                </button>
+              </carousel-prev-button>
+
+              <carousel-next-button class="complementary-products__control complementary-products__control--next" aria-controls="{{ carousel_id }}">
+                <button type="button" class="prev-next-button prev-next-button--next circle-button">
+                  <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+                  {%- render 'icon' with 'arrow-right', direction_aware: true -%}
+                </button>
+              </carousel-next-button>
+            {%- endif -%}
         </div>
 
         <div class="v-stack gap-5 sm:hidden">
           {%- assign carousel_mobile_id = 'complementary-products-mobile-carousel-' | append: block.id -%}
 
+          <div class="complementary-products__carousel">
           <scroll-carousel id="{{ carousel_mobile_id }}" class="complementary-products__product-list complementary-products__product-list--carousel bleed scroll-area snap-x">
             {%- for product in recommendations.products -%}
               {%- render 'product-card',
@@ -81,6 +102,23 @@
               -%}
             {%- endfor -%}
           </scroll-carousel>
+
+            {%- if recommendations.products_count > 1 -%}
+              <carousel-prev-button class="complementary-products__control complementary-products__control--prev" aria-controls="{{ carousel_mobile_id }}">
+                <button type="button" class="prev-next-button prev-next-button--prev circle-button" disabled>
+                  <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+                  {%- render 'icon' with 'arrow-left', direction_aware: true -%}
+                </button>
+              </carousel-prev-button>
+
+              <carousel-next-button class="complementary-products__control complementary-products__control--next" aria-controls="{{ carousel_mobile_id }}">
+                <button type="button" class="prev-next-button prev-next-button--next circle-button">
+                  <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+                  {%- render 'icon' with 'arrow-right', direction_aware: true -%}
+                </button>
+              </carousel-next-button>
+            {%- endif -%}
+          </div>
 
           {%- if recommendations.products_count > 1 -%}
             <carousel-navigation aria-controls="{{ carousel_mobile_id }}" class="page-dots">

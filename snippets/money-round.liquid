@@ -14,4 +14,4 @@
     assign formatted_amount = rounded_amount | money
   endif
 -%}
-{{- formatted_amount | replace: '.00', '' | replace: ',00', '' -}}
+{{- formatted_amount -}}
