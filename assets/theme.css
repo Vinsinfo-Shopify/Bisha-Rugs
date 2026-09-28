@@ -12370,8 +12370,8 @@ ul {
 
 @media screen and (max-width: 699px) {
   .comparison-table {
-    --ct-pad-x: calc(var(--ct-cell-padding-inline) * 0.625);
-    --ct-pad-y: calc(var(--ct-cell-padding-block) * 0.7);
+    --ct-pad-x: calc(var(--ct-cell-padding-inline) * 0.625 - 5px);
+    --ct-pad-y: calc(var(--ct-cell-padding-block) * 0.7- 5px);
     --ct-font-heading: var(--ct-heading-size-mobile);
     --ct-font-body: var(--ct-body-size-mobile);
     --ct-space-top: var(--ct-padding-block-start-mobile);
