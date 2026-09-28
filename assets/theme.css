@@ -1379,11 +1379,6 @@ shopify-accelerated-checkout-cart {
   color: rgb(var(--input-text-color, var(--text-color)) / .6);
 }
 
-.newsletter .input::placeholder {
-  color: #ffffff;
-  opacity: 1;
-}
-
 :is(.input:focus, .textarea:focus, .select:focus-visible) {
   border-color: currentColor;
   outline: none;
@@ -6785,9 +6780,6 @@ shopify-account::part(signed-out-avatar) {
     text-align: start;
   }
 
-  .worth_the_wait .prose .button{
-    margin-top: 14px !important;
-  }
 }
 
 @media screen and (min-width: 700px) {
@@ -6814,10 +6806,6 @@ shopify-account::part(signed-out-avatar) {
   .image-with-text--reverse>.prose {
     margin-inline-start: auto;
     padding-inline-end: var(--image-with-text-gap);
-  }
-  .image_with_text_content p,
-  .multiple-media-with-text_content p{
-    margin-top: 26px !important;  
   }
 }
 @media screen and (max-width: 1000px) {
@@ -7117,10 +7105,6 @@ shopify-account::part(signed-out-avatar) {
     width: 100%;
     max-width: 370px;
   }
-  .image_with_text_content p,
-  .multiple-media-with-text_content p{
-      margin-top: 12px !important;  
-    }
 }
 
 @media screen and (min-width: 1000px) {
@@ -9817,7 +9801,7 @@ ul {
 
 
 .why_choose_bisha.section-spacing {
-  padding-top: 47px;
+  padding-top: 60px;
   padding-bottom: 46px;
 }
 
@@ -9833,10 +9817,6 @@ ul {
 .our_impact .container {
   --container-gutter: 70px;
 }
-.our_impact.section-spacing{
-  padding-top: 38px;
-  padding-bottom: 38px;
-}
 
 .image_with_text_subheading,
 .multiple-media-with-text_subheading {
@@ -9844,14 +9824,13 @@ ul {
   line-height: 140%;
   font-weight: 500;
   text-transform: uppercase;
-  margin-bottom: 0px !important;
 }
 
 .prose .image_with_text_heading,
 .prose .multiple-media-with-text_heading {
   line-height: 120%;
   font-weight: 400;
-  margin-top: 4px !important;
+  margin-top: 4px;
   text-transform: capitalize;
   vertical-align: middle;
   font-family: 'Forum';
@@ -9862,7 +9841,7 @@ ul {
 .icon-with-text-list {
   font-size: 18px;
   line-height: 140%;
-  margin-top: 32px !important;
+  margin-top: 32px;
   font-weight: 400;
 }
 
@@ -9985,9 +9964,9 @@ ul {
   margin: 0 !important;
 }
 
-/* .shopify-section.shopify-section--multiple-media-with-text .container--md {
+.shopify-section.shopify-section--multiple-media-with-text .container--md {
   margin: 0;
-} */
+}
 
 .why_choose_bisha .prose .section_header_content {
   margin: 0;
@@ -10194,7 +10173,7 @@ ul {
   .prose .multiple-media-with-text_content,
   .icon-with-text-list {
     font-size: 14px;
-    margin-top: 14px !important;
+    margin-top: 14px;
   }
 
   .who_we_are .image-with-text>.prose,
@@ -10205,7 +10184,7 @@ ul {
   }
 
   .multi-column-card_heading {
-    font-size: 16px !important;
+    font-size: 16px;
     line-height: 140%;
   }
 
