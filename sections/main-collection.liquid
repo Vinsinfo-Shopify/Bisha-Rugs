@@ -2325,6 +2325,60 @@
       "name": "t:sections.main_collection.blocks.push_promo.name",
       "settings": [
         {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout",
+          "info": "Card: shaped like a product card, media on top and a text panel below. Overlay: content over the media.",
+          "options": [
+            { "value": "card", "label": "Card" },
+            { "value": "overlay", "label": "Overlay" }
+          ],
+          "default": "card"
+        },
+        {
+          "type": "color",
+          "id": "card_background",
+          "label": "Card panel background",
+          "default": "#f1ece2",
+          "visible_if": "{{ block.settings.layout != 'overlay' }}"
+        },
+        {
+          "type": "color",
+          "id": "card_text_color",
+          "label": "Card text",
+          "default": "#202020",
+          "visible_if": "{{ block.settings.layout != 'overlay' }}"
+        },
+        {
+          "type": "color",
+          "id": "card_link_color",
+          "label": "Card link",
+          "default": "#55583c",
+          "visible_if": "{{ block.settings.layout != 'overlay' }}"
+        },
+        {
+          "type": "range",
+          "id": "card_heading_size",
+          "label": "Card heading size (desktop)",
+          "min": 14,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "default": 22,
+          "visible_if": "{{ block.settings.layout != 'overlay' }}"
+        },
+        {
+          "type": "range",
+          "id": "card_heading_size_mobile",
+          "label": "Card heading size (mobile)",
+          "min": 12,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "default": 16,
+          "visible_if": "{{ block.settings.layout != 'overlay' }}"
+        },
+        {
           "type": "color_scheme",
           "id": "color_scheme",
           "label": "t:global.colors.scheme",
