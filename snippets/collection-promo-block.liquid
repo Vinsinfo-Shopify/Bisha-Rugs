@@ -3,6 +3,15 @@
 
   @param {object} block - the section block object containing settings and other attributes
   @param {boolean} reveal - whether to add the reveal-on-scroll attribute for scroll animations
+
+  Two layouts, picked by the block's "Layout" setting:
+    card    - shaped like a product card: media on top at the product image
+              ratio (313 x 380), then a panel with heading, subheading (shown
+              as the text line under the heading) and an underlined link. It
+              uses the same two subgrid rows as a product card, so the media
+              lines up with the product images. A video shows a centred play
+              button (same design as REAL HOMES); click to play and pause.
+    overlay - the original Prestige promo, content over the media.
 {%- enddoc -%}
 
 {%- liquid
@@ -15,6 +24,270 @@
   endif
 -%}
 
+{%- if block.settings.layout != 'overlay' -%}
+  {%- liquid
+    assign has_video = false
+    if block.settings.media_type == 'video' and block.settings.video != blank
+      assign has_video = true
+    endif
+  -%}
+
+  <div
+    class="product-list__promo promo-card"
+    {% if reveal %}
+      reveal-on-scroll="true"
+    {% endif %}
+    style="--product-list-promo-column-span: {{ block.settings.size }}; --promo-card-background: {{ block.settings.card_background }}; --promo-card-text: {{ block.settings.card_text_color }}; --promo-card-link: {{ block.settings.card_link_color }}; --promo-card-heading-size: {{ block.settings.card_heading_size }}px; --promo-card-heading-size-mobile: {{ block.settings.card_heading_size_mobile }}px;"
+    {{ block.shopify_attributes }}
+  >
+    <div class="promo-card__media {% if has_video %}promo-card__media--video{% endif %}">
+      {%- if has_video -%}
+        {%- render 'media',
+          media: block.settings.video,
+          autoplay: false,
+          loop: true,
+          controls: false,
+          playsinline: true,
+          show_play_button: true,
+          group: 'collection-promo-card',
+          sizes: '(max-width: 699px) 50vw, 25vw'
+        -%}
+      {%- elsif block.settings.media_type == 'image' and block.settings.image != blank -%}
+        <picture>
+          {%- if block.settings.mobile_image != blank -%}
+            <source
+              media="(max-width: 699px)"
+              srcset="{{ block.settings.mobile_image | image_url: width: 400 }} 400w, {{ block.settings.mobile_image | image_url: width: 600 }} 600w, {{ block.settings.mobile_image | image_url: width: 800 }} 800w"
+              width="{{ block.settings.mobile_image.width }}"
+              height="{{ block.settings.mobile_image.height }}"
+            >
+          {%- endif -%}
+
+          {{- block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: 'lazy', sizes: '(max-width: 699px) 50vw, 25vw', widths: '300,400,500,600,800,1000,1200' -}}
+        </picture>
+      {%- else -%}
+        {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder' -}}
+      {%- endif -%}
+    </div>
+
+    <div class="promo-card__content">
+      {%- if block.settings.heading != blank -%}
+        <p class="promo-card__heading">{{ block.settings.heading }}</p>
+      {%- endif -%}
+
+      {%- if block.settings.subheading != blank -%}
+        <p class="promo-card__text">{{ block.settings.subheading }}</p>
+      {%- endif -%}
+
+      {%- if block.settings.link_text != blank -%}
+        <a class="promo-card__link" {% if block.settings.url != blank %}href="{{ block.settings.url }}"{% endif %}>{{ block.settings.link_text }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <style>
+    .product-list__promo.promo-card {
+      grid-column: span var(--product-list-promo-column-span, 1);
+      align-content: stretch;
+      color: var(--promo-card-text);
+    }
+
+    .promo-card__media {
+      position: relative;
+      aspect-ratio: 313 / 380;
+      overflow: hidden;
+      background: rgb(var(--text-color) / 0.06);
+    }
+
+    .promo-card__media picture {
+      display: block;
+      height: 100%;
+    }
+
+    .promo-card__media :is(img, video, iframe, svg, video-media) {
+      position: static;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .promo-card__media video-media {
+      aspect-ratio: auto;
+    }
+
+    .promo-card__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 20px 20px;
+      background: var(--promo-card-background);
+      text-align: center;
+    }
+
+    .promo-card__heading {
+      margin: 0;
+      font-family: 'Forum', serif;
+      font-size: var(--promo-card-heading-size);
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--promo-card-text);
+    }
+
+    .promo-card__text {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.4;
+      color: var(--promo-card-text);
+    }
+
+    .promo-card__link {
+      margin-block-start: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      color: var(--promo-card-link);
+    }
+
+    /* ---------- Video play / pause, same design as REAL HOMES ---------- */
+    .promo-card__media--video {
+      cursor: pointer;
+    }
+
+    .promo-card__media--video video-media::part(play-button) {
+      display: none;
+    }
+
+    .promo-card__media--video::after,
+    .promo-card__media--video::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      pointer-events: none;
+      transition: opacity .2s ease;
+    }
+
+    .promo-card__media--video::after {
+      width: 48.5px;
+      height: 48.5px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: rgb(34 34 34 / 0.36);
+      backdrop-filter: blur(2.28px);
+      -webkit-backdrop-filter: blur(2.28px);
+      z-index: 2;
+    }
+
+    .promo-card__media--video::before {
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      z-index: 3;
+    }
+
+    .promo-card__media--video:has(video-media:not([playing]))::before {
+      width: 21.5px;
+      height: 27px;
+      transform: translate(calc(-50% + 2px), -50%);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 41 39'%3E%3Cpath d='M2.5 3.2 L37.8 19.5 L2.5 35.8 Z' fill='%23FFFFFF' stroke='%23FFFFFF' stroke-width='3.26' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+
+    .promo-card__media--video:has(video-media[playing])::before {
+      width: 18px;
+      height: 22px;
+      transform: translate(-50%, -50%);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 32'%3E%3Crect x='2' y='2' width='8' height='28' rx='1.6' fill='%23FFFFFF'/%3E%3Crect x='16' y='2' width='8' height='28' rx='1.6' fill='%23FFFFFF'/%3E%3C/svg%3E");
+    }
+
+    .promo-card__media--video:has(video-media[playing])::after,
+    .promo-card__media--video:has(video-media[playing])::before {
+      opacity: 0;
+    }
+
+    .promo-card__media--video:has(video-media[playing]):hover::after,
+    .promo-card__media--video:has(video-media[playing]):hover::before {
+      opacity: 1;
+    }
+
+    @media screen and (min-width: 700px) {
+      .promo-card__media--video::after {
+        width: 69.5px;
+        height: 69.5px;
+        backdrop-filter: blur(3.27px);
+        -webkit-backdrop-filter: blur(3.27px);
+      }
+
+      .promo-card__media--video:has(video-media:not([playing]))::before {
+        width: 30px;
+        height: 39px;
+        transform: translate(calc(-50% + 3px), -50%);
+      }
+
+      .promo-card__media--video:has(video-media[playing])::before {
+        width: 26px;
+        height: 32px;
+      }
+    }
+
+    @media screen and (max-width: 699px) {
+      /* The theme makes a promo full width on mobile; the card takes one column */
+      .product-list__promo.promo-card {
+        grid-column: span 1;
+      }
+
+      .promo-card__content {
+        gap: 8px;
+        padding: 12px 10px 16px;
+      }
+
+      .promo-card__heading {
+        font-size: var(--promo-card-heading-size-mobile);
+      }
+
+      .promo-card__text,
+      .promo-card__link {
+        font-size: 12px;
+      }
+    }
+  </style>
+
+  {%- if has_video -%}
+    <script>
+      {%- comment -%}
+        Capture phase with stopPropagation so the theme's one-time click listener
+        on video-media never fires (it would re-play a video just paused).
+      {%- endcomment -%}
+      if (!window.promoCardVideoBound) {
+        window.promoCardVideoBound = true;
+
+        document.addEventListener('click', (event) => {
+          const media = event.target.closest('.promo-card__media--video');
+          const host = media && media.querySelector('video-media');
+          if (!host) return;
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          if (host.playing) {
+            host.pause();
+            return;
+          }
+
+          const video = host.querySelector('video');
+          if (video && video.hasAttribute('poster')) video.removeAttribute('poster');
+          host.play();
+        }, true);
+      }
+    </script>
+  {%- endif -%}
+{%- else -%}
 <div
   class="product-list__promo"
   {% if reveal %}
@@ -80,3 +353,4 @@
     {%- endif -%}
   </div>
 </div>
+{%- endif -%}
