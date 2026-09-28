@@ -644,6 +644,7 @@
   display: grid;
   gap: 7px;
   padding: 16px var(--cart-drawer-gutter-end) 0 var(--cart-drawer-gutter-start);
+  border-block-start: 1px solid var(--cart-drawer-hairline);
 }
 
 .cart-drawer .cart-drawer-discount__field {
