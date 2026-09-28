@@ -13130,3 +13130,52 @@ a.marquee__item:hover .marquee__text {
     inset-inline-start: auto;
   }
 }
+.complementary-products__carousel {
+  position: relative;
+  container-type: inline-size;
+}
+
+.complementary-products__control {
+  display: none;
+}
+
+@media screen and (max-width: 999px) {
+  .complementary-products__control {
+    z-index: 3;
+    display: grid;
+    position: absolute;
+    inset-block-start: calc(min(13.5rem, 52cqi) * 5 / 4 / 2 - 0.8125rem);
+  }
+
+  .complementary-products__control--prev {
+    inset-inline-start: -13px;
+  }
+
+  .complementary-products__control--next {
+    inset-inline-end: -13px;
+  }
+
+  .complementary-products__control .circle-button {
+    --circle-button-size: 1.625rem;
+    --circle-button-background: 43 39 36;
+    --circle-button-text-color: 255 255 255;
+    box-sizing: border-box;
+    background: #2b2724;
+    color: #ffffff;
+    border: 2.17px solid #ffffff;
+    box-shadow: none;
+  }
+
+  .complementary-products__control .circle-button > svg {
+    width: 0.6963rem;
+    color: #ffffff;
+    stroke-width: 1.23;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .complementary-products__control .prev-next-button[disabled] {
+    opacity: 0.35;
+    visibility: visible;
+  }
+}
