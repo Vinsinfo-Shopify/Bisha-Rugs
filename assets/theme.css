@@ -12410,13 +12410,12 @@ ul {
   }
 
   .comparison-table__scroller {
-    padding-block-end: 14px;
-    scrollbar-width: thin;
+    padding-block-end: 16px;
     scrollbar-color: var(--ct-scrollbar-color) rgb(0 0 0 / 0.08);
   }
 
   .comparison-table__scroller::-webkit-scrollbar {
-    height: 3px;
+    height: 4px;
   }
 
   .comparison-table__scroller::-webkit-scrollbar-track {
