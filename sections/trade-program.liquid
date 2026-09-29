@@ -115,16 +115,10 @@
       --trade-program-image-ratio: {{ section.settings.image_ratio }};
     {%- endif -%}
   }
-    .container{
-      --container-gutter: 90px;
-    }
   @media screen and (min-width: 1000px) {
     #shopify-section-{{ section.id }} {
       padding-block-start: {{ section.settings.padding_top_desktop }}px;
       padding-block-end: {{ section.settings.padding_bottom_desktop }}px;
-    }
-    .container{
-      --container-max-width: 1300px;
     }
 
     #shopify-section-{{ section.id }} .trade-program {
@@ -155,15 +149,10 @@
       }
     {%- endif -%}
   }
-  @media screen and (max-width: 768px){
-    .container{
-      --container-gutter: 20px;
-    }
-  }
 </style>
 
 <div class="trade-program color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }}{% unless section.settings.remove_section_spacing %} section-spacing{% endunless %}{% if section.settings.separate_section_with_border %} bordered-section{% endif %}{% if section.settings.image_ratio != 'adapt' %} trade-program--image-cropped{% endif %}{% if has_media %} trade-program--has-media{% endif %}{% if section.settings.mobile_image_full_width %} trade-program--mobile-bleed{% endif %}{% unless show_form_column %} trade-program--no-form{% endunless %}{% if section.settings.custom_class != blank %} {{ section.settings.custom_class }}{% endif %}">
-  <div class="container ">
+  <div class="trade_program_container">
     <div class="trade-program__grid">
       {%- comment -%}
         --------------------------------------------------------------------------------------------------------------
@@ -240,15 +229,6 @@
           </ul>
         {%- endif -%}
       </div>
-
-      {%- comment -%}
-        --------------------------------------------------------------------------------------------------------------
-        RIGHT COLUMN — app block container (Powerful Form Builder)
-
-        Only "@app" blocks are rendered, so adding, removing or reordering the block in the theme editor is safe. When
-        no app block is present the column collapses on the storefront and the left content takes the full width.
-        --------------------------------------------------------------------------------------------------------------
-      {%- endcomment -%}
 
       {%- if show_form_column -%}
         <div class="trade-program__form" id="trade-program-form">
