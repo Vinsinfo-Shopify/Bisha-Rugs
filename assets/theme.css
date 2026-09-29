@@ -5841,7 +5841,7 @@ product-rerender {
 @media screen and (min-width: 1150px) {
   .footer__block-list {
     justify-content: var(--footer-content-justify-items);
-    column-gap: 3.75rem;
+    column-gap: 2.75rem;
   }
 }
 
