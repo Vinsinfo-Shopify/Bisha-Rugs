@@ -37,7 +37,8 @@
           "settings": {
             "image": "shopify://shop_images/Frame_1437258595.png",
             "image_width": 160,
-            "link": ""
+            "link": "shopify://collections/frontpage",
+            "open_in_new_tab": false
           }
         },
         "text_z77pQj": {
