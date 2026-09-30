@@ -9604,6 +9604,9 @@ ul {
   font-weight: 400;
   font-family: 'Figtree', sans-serif;
 }
+.footer__block-list .link-faded:hover{
+  text-decoration: underline;
+}
 
 .footer_menu_heading {
   font-size: 22px;
