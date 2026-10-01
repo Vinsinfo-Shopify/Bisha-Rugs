@@ -1636,7 +1636,7 @@
         "card_2_title": "Virtual Appointment",
         "card_2_text": "Schedule a call to explore designs, ask questions and shop online with our experts.",
         "card_2_cta_label": "Book Now",
-        "card_2_cta_url": "",
+        "card_2_cta_url": "https://calendly.com/love-bisharugs/30min",
         "card_3_image": "shopify://shop_images/mail.png",
         "card_3_icon_image": "shopify://shop_images/mail-icon.png",
         "card_3_title": "Send Us an Email",
