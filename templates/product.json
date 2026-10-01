@@ -158,7 +158,7 @@
         "button_jGMte4": {
           "type": "button",
           "settings": {
-            "link": "shopify://pages/contact",
+            "link": "https://calendly.com/love-bisharugs/30min",
             "text": "Talk to us",
             "stretch": true,
             "style": "solid",
