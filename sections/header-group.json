@@ -77,7 +77,7 @@
         "show_left_item": true,
         "left_icon_img": "shopify://shop_images/hugeicons_chat-user_1.png",
         "left_text": "Virtual Appointment",
-        "left_link": "",
+        "left_link": "https://calendly.com/love-bisharugs/30min",
         "show_phone": true,
         "right_icon_img": "shopify://shop_images/ph_phone-call_1.png",
         "phone_number": "+1 (415) 980-7774",
