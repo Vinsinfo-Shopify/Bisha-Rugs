@@ -421,7 +421,7 @@
             "tag_2_text": "Hand-Woven",
             "tag_3_icon": "shopify://shop_images/akar-icons_check-box_2.png",
             "tag_3_text": "Custom Sizes & Colors",
-            "note_text": "<p><strong>Please Note:</strong> Due to variations in mobile phone & computer screens, there may be slight color differences between the actual rug and the image displayed on your screen.</p>",
+            "note_text": "<p><strong>Please Note:</strong> Due to variations in mobile phone & computer screens, there may be slight color&nbsp;differences between the actual rug and the image displayed on your screen.</p>",
             "card_image": "shopify://shop_images/d32ac65c516f1c324c1b42db7699e39b9bfbbe3c_4.png",
             "card_heading": "Can't Find the Perfect Rug?  Let's Create It Together.",
             "card_text": "<p>Choose the ideal size, colors, materials, and design with guidance from our rug experts. Our artisans will transform your vision to reality.</p>",
@@ -1671,7 +1671,7 @@
             "heading_tag": "h3",
             "custom_heading_size": 24,
             "content": "<p>Schedule a call to explore designs, ask questions and shop online with our experts.</p>",
-            "link_url": "#",
+            "link_url": "https://calendly.com/love-bisharugs/30min",
             "link_text": "Book Now",
             "show_rating": false,
             "rating": 5,
