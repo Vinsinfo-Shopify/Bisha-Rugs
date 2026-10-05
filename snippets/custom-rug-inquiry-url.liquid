@@ -1,12 +1,23 @@
 {%- comment -%}
-  Outputs the Custom Rug Inquiry mailto: link from
-  Theme settings > Custom rug inquiry email.
+  Outputs a prefilled mailto: link built from Theme settings.
+  @param type - 'cad' uses Theme settings > CAD design request email.
+                Omitted or anything else uses Custom rug inquiry email.
   url_encode turns spaces into "+", which mail apps show literally, so "+" -> "%20".
   A "+" typed by the client is already %2B, so it is not affected.
   Line breaks are normalised to %0D%0A so Outlook and Gmail keep the layout.
 {%- endcomment -%}
 {%- liquid
-  assign inquiry_subject = settings.inquiry_email_subject | url_encode | replace: '+', '%20'
-  assign inquiry_body = settings.inquiry_email_body | url_encode | replace: '+', '%20' | replace: '%0D%0A', '%0A' | replace: '%0A', '%0D%0A'
-  echo 'mailto:' | append: settings.inquiry_email_to | append: '?subject=' | append: inquiry_subject | append: '&body=' | append: inquiry_body
+  if type == 'cad'
+    assign email_to = settings.cad_email_to
+    assign email_subject = settings.cad_email_subject
+    assign email_body = settings.cad_email_body
+  else
+    assign email_to = settings.inquiry_email_to
+    assign email_subject = settings.inquiry_email_subject
+    assign email_body = settings.inquiry_email_body
+  endif
+
+  assign email_subject = email_subject | url_encode | replace: '+', '%20'
+  assign email_body = email_body | url_encode | replace: '+', '%20' | replace: '%0D%0A', '%0A' | replace: '%0A', '%0D%0A'
+  echo 'mailto:' | append: email_to | append: '?subject=' | append: email_subject | append: '&body=' | append: email_body
 -%}
