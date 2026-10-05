@@ -1683,70 +1683,6 @@
     },
     "instagram_gallery_rKQiWt": {
       "type": "instagram-gallery",
-      "blocks": {
-        "gallery_item_PyDa7B": {
-          "type": "gallery_item",
-          "settings": {
-            "image": "shopify://shop_images/appointment.png",
-            "autoplay": false,
-            "link": "",
-            "alt": ""
-          }
-        },
-        "gallery_item_DikFE4": {
-          "type": "gallery_item",
-          "settings": {
-            "video": "shopify://files/videos/Celestial Midnight Garden – Karakul Handmade Rug ✨🌙Artistic • Textured • Ethereal Craftsmanship.mp4",
-            "autoplay": false,
-            "link": "",
-            "alt": ""
-          }
-        },
-        "gallery_item_Pp9tTL": {
-          "type": "gallery_item",
-          "settings": {
-            "video": "shopify://files/videos/Hey friends! I’m so excited to share this incredible upgrade in our library room. True quality a.mp4",
-            "autoplay": false,
-            "link": "",
-            "alt": ""
-          }
-        },
-        "gallery_item_LGKpyq": {
-          "type": "gallery_item",
-          "settings": {
-            "video": "shopify://files/videos/WhatsApp Video 2026-09-12 at 12.11.01 PM.mp4",
-            "autoplay": false,
-            "link": "",
-            "alt": ""
-          }
-        },
-        "gallery_item_XJtiEW": {
-          "type": "gallery_item",
-          "settings": {
-            "image": "shopify://shop_images/appointment.png",
-            "autoplay": false,
-            "link": "",
-            "alt": ""
-          }
-        },
-        "gallery_item_cHFHzj": {
-          "type": "gallery_item",
-          "settings": {
-            "video": "shopify://files/videos/WhatsApp Video 2026-09-12 at 12.10.13 PM.mp4",
-            "autoplay": false,
-            "link": "",
-            "alt": ""
-          }
-        }
-      },
-      "block_order": [
-        "gallery_item_PyDa7B",
-        "gallery_item_DikFE4",
-        "gallery_item_Pp9tTL",
-        "gallery_item_LGKpyq",
-        "gallery_item_XJtiEW",
-        "gallery_item_cHFHzj"
-      ],
       "name": "Instagram gallery",
       "settings": {
         "subheading": "SOCIALS",
@@ -1757,32 +1693,21 @@
         "heading_size_mobile": 24,
         "eyebrow_size": 14,
         "eyebrow_weight": "500",
-        "tagline_size_mobile": 14,
+        "eyebrow_gap": 4,
         "tagline_before": "Tag us",
         "handle": "@bisharugs",
+        "handle_url": "https://www.instagram.com/bisharugs",
         "tagline_after": "to get featured",
-        "items_desktop": 4.1,
-        "items_mobile": 1.1,
-        "end_gap": 0,
-        "item_gap": 8,
-        "item_gap_mobile": 8,
-        "media_ratio": "1 / 1",
-        "media_radius": 0,
-        "play_button_background": "#ffffff",
-        "color_scheme": "",
-        "background": "#fffbf3",
-        "space_top": 32,
-        "space_bottom": 32,
-        "eyebrow_gap": 4,
-        "tagline_gap": 6,
-        "tagline_size": 14,
+        "tagline_size_desktop": 16,
+        "tagline_size_mobile": 14,
+        "header_alignment": "center",
         "header_gap": 24,
-        "arrow_size": 26,
-        "arrow_offset": 50,
-        "arrow_inset_mobile": 0,
-        "arrow_background": "#2b2724",
-        "arrow_color": "#ffffff",
-        "arrow_border": "#ffffff"
+        "padding_top": 70,
+        "padding_bottom": 70,
+        "padding_top_mobile": 50,
+        "padding_bottom_mobile": 50,
+        "color_scheme": "",
+        "background": "#fffbf3"
       }
     },
     "media_grid_AXiUW7": {
