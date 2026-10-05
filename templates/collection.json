@@ -209,7 +209,7 @@
             "style": "link",
             "link_text": "GET IN TOUCH",
             "url": "shopify://pages/contact",
-            "use_inquiry_email": false
+            "use_inquiry_email": true
           }
         }
       },
