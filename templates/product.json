@@ -255,7 +255,7 @@
             "heading": "Having second thoughts?",
             "text": "<p>See your rug before you order. Get a CADD design in your size, colors and setting.</p>",
             "show_checklist_icons": false,
-            "button_label": "Get CADD DESIGN",
+            "button_label": "Get CAD DESIGN",
             "button_link": "shopify://pages/contact",
             "use_cad_email": true,
             "italic": "normal",
