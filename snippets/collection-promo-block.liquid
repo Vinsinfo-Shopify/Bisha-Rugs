@@ -15,6 +15,14 @@
 {%- enddoc -%}
 
 {%- liquid
+  assign promo_url = block.settings.url
+  if block.settings.use_inquiry_email
+    capture promo_url
+      render 'custom-rug-inquiry-url'
+    endcapture
+    assign promo_url = promo_url | strip
+  endif
+
   assign has_media = false
 
   if block.settings.media_type == 'image' and block.settings.image != blank
