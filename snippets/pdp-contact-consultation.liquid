@@ -63,7 +63,13 @@
         </div>
 
         {%- if settings.consultation_button_label != blank -%}
-          {%- render 'button', href: settings.consultation_button_link, content: settings.consultation_button_label, size: 'sm' -%}
+          {%- liquid
+  assign consult_external = false
+  if settings.consultation_button_link contains 'http'
+    assign consult_external = true
+  endif
+-%}
+{%- render 'button', href: settings.consultation_button_link, content: settings.consultation_button_label, size: 'sm', external: consult_external -%}
         {%- endif -%}
       </div>
     </div>
