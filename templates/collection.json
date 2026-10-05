@@ -846,6 +846,7 @@
         "image_with_text_gdjPUn": {
           "type": "image_with_text",
           "settings": {
+            "open_new_tab":true,
             "icon": "shopify://shop_images/tabler_video_1.png",
             "title": "Virtual Appointment",
             "subheading": "",
