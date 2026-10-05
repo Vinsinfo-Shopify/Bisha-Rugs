@@ -303,7 +303,7 @@
                 -%}
 
                 {%- if add_link -%}
-                  <a href="{{ block.settings.link_url }}" class="multi-column__media overflow-hidden">
+                  <a href="{{ block.settings.link_url }}"{% if block.settings.open_new_tab %} target="_blank" rel="noopener"{% endif %} class="multi-column__media overflow-hidden">
                     {{- media_content -}}
                   </a>
                 {%- else -%}
