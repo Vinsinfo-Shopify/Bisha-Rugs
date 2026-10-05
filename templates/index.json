@@ -601,7 +601,7 @@
             "style": "solid",
             "text": "GET IN TOUCH",
             "url": "shopify://pages/contact",
-            "use_inquiry_email": false,
+            "use_inquiry_email": true,
             "background": "",
             "text_color": ""
           }
