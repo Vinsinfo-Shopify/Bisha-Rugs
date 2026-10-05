@@ -439,7 +439,15 @@
                 fallback is resolved into a variable first.
               {%- endcomment -%}
               {%- if block.settings.button_label != blank -%}
-                {%- assign button_href = block.settings.button_link | default: '#' -%}
+                  {%- liquid
+                  assign button_href = block.settings.button_link | default: '#'
+                  if block.settings.use_inquiry_email
+                    capture button_href
+                      render 'custom-rug-inquiry-url'
+                    endcapture
+                    assign button_href = button_href | strip
+                  endif
+                -%}
                 {%- render 'button',
                   content: block.settings.button_label,
                   href: button_href,
