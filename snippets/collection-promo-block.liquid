@@ -88,7 +88,7 @@
       {%- endif -%}
 
       {%- if block.settings.link_text != blank -%}
-        <a class="promo-card__link" {% if block.settings.url != blank %}href="{{ block.settings.url }}"{% endif %}>{{ block.settings.link_text }}</a>
+        <a class="promo-card__link" {% if promo_url != blank %}href="{{ promo_url }}"{% endif %}>{{ block.settings.link_text }}</a>
       {%- endif -%}
     </div>
   </div>
