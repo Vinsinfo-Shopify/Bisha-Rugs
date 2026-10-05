@@ -1099,9 +1099,18 @@
 
             {%- when 'button' -%}
               {%- if block.settings.text != blank -%}
+                {%- liquid
+                  assign button_url = block.settings.url
+                  if block.settings.use_inquiry_email
+                    capture button_url
+                      render 'custom-rug-inquiry-url'
+                    endcapture
+                    assign button_url = button_url | strip
+                  endif
+                -%}
                 {% render 'button',
                   content: block.settings.text,
-                  href: block.settings.url,
+                  href: button_url,
                   style: block.settings.style,
                   background: block.settings.background,
                   text_color: block.settings.text_color,
