@@ -208,7 +208,8 @@
             "heading_tag": "h5",
             "style": "link",
             "link_text": "GET IN TOUCH",
-            "url": "shopify://pages/contact"
+            "url": "shopify://pages/contact",
+            "use_inquiry_email": false
           }
         }
       },
@@ -304,6 +305,7 @@
             "style": "solid",
             "text": "GET IN TOUCH",
             "url": "",
+            "use_inquiry_email": true,
             "background": "",
             "text_color": ""
           }
@@ -833,6 +835,7 @@
             "custom_heading_size": 24,
             "content": "<p>Our experts are just a call away to help you find your perfect rug.</p>",
             "link_url": "tel:+1 (415) 980-7774",
+            "open_new_tab": false,
             "link_text": "+1 (415) 980-7774",
             "show_rating": false,
             "rating": 5,
@@ -846,7 +849,6 @@
         "image_with_text_gdjPUn": {
           "type": "image_with_text",
           "settings": {
-            "open_new_tab":true,
             "icon": "shopify://shop_images/tabler_video_1.png",
             "title": "Virtual Appointment",
             "subheading": "",
@@ -854,6 +856,7 @@
             "custom_heading_size": 24,
             "content": "<p>Schedule a call to explore designs, ask questions and shop online with our experts.</p>",
             "link_url": "https://calendly.com/love-bisharugs/30min",
+            "open_new_tab": true,
             "link_text": "Book Now",
             "show_rating": false,
             "rating": 5,
@@ -874,6 +877,7 @@
             "custom_heading_size": 24,
             "content": "<p>Prefer email? Send your query and our team will respond with all the details you need.</p>",
             "link_url": "mailto:love@bisharugs.com",
+            "open_new_tab": false,
             "link_text": "love@bisharugs.com",
             "show_rating": false,
             "rating": 5,
