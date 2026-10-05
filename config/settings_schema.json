@@ -872,6 +872,33 @@
       }
     ]
   },
+    {
+    "name": "CAD design request email",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Used by every PDP image + text card button that has \"Use CAD design request email\" ticked. Type plain text here; the theme encodes it into the email link automatically."
+      },
+      {
+        "type": "text",
+        "id": "cad_email_to",
+        "label": "Send to",
+        "default": "love@bisharugs.com"
+      },
+      {
+        "type": "text",
+        "id": "cad_email_subject",
+        "label": "Subject",
+        "default": "Custom Rug CAD Design Request"
+      },
+      {
+        "type": "textarea",
+        "id": "cad_email_body",
+        "label": "Email body",
+        "default": "Hi Bisha Rugs Team,\n\nI'd like to request a CAD design for a custom rug.\n\nHere are my requirements:\n\nRug Size / Dimensions:\nPreferred Colors / Palette:\nDesign / Style Preference:\nShape:\nAdditional Requirements:\n\nI'll attach any reference images or inspiration along with this email.\n\nBest,\n[Name]"
+      }
+    ]
+  },
   {
     "name": "t:theme_settings.favicon.name",
     "settings": [
