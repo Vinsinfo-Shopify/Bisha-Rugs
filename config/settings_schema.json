@@ -845,6 +845,33 @@
       }
     ]
   },
+    {
+    "name": "Custom rug inquiry email",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Used by every button that has \"Use custom rug inquiry email\" ticked. Type plain text here; the theme encodes it into the email link automatically."
+      },
+      {
+        "type": "text",
+        "id": "inquiry_email_to",
+        "label": "Send to",
+        "default": "love@bisharugs.com"
+      },
+      {
+        "type": "text",
+        "id": "inquiry_email_subject",
+        "label": "Subject",
+        "default": "Custom Rug Inquiry"
+      },
+      {
+        "type": "textarea",
+        "id": "inquiry_email_body",
+        "label": "Email body",
+        "default": "Hi Bisha Rugs Team,\n\nI'm interested in a custom rug and would like to discuss my requirements.\n\nSize / Dimensions:\nPreferred Colors:\nStyle / Design:\nAdditional Requirements:\n\nBest,\n[Name]"
+      }
+    ]
+  },
   {
     "name": "t:theme_settings.favicon.name",
     "settings": [
