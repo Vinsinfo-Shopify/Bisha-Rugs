@@ -939,7 +939,7 @@
                   assign button_icon = blank
                 endif
               -%}
-              {%- render 'button', href: block.settings.link, content: block.settings.text, stretch: block.settings.stretch, style: block.settings.style, icon: button_icon, background: block.settings.background, text_color: block.settings.text_color, border_color: block.settings.border_color -%}
+              {%- render 'button', href: block.settings.link, external: block.settings.open_new_tab, content: block.settings.text, stretch: block.settings.stretch, style: block.settings.style, icon: button_icon, background: block.settings.background, text_color: block.settings.text_color, border_color: block.settings.border_color -%}
             {%- endif -%}
 
           {%- when 'share_buttons' -%}
