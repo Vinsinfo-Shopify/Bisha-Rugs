@@ -821,9 +821,18 @@
                     </div>
                   {%- endif -%}
 
-                  {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
+                                    {%- liquid
+                    assign card_button_url = block.settings.button_link
+                    if block.settings.use_cad_email
+                      capture card_button_url
+                        render 'custom-rug-inquiry-url', type: 'cad'
+                      endcapture
+                      assign card_button_url = card_button_url | strip
+                    endif
+                  -%}
+                  {%- if block.settings.button_label != blank and card_button_url != blank -%}
                     {%- render 'button',
-                      href: block.settings.button_link,
+                      href: card_button_url,
                       content: block.settings.button_label,
                       size: 'sm',
                       style: block.settings.button_style,
