@@ -587,7 +587,7 @@ text-align: left;
                 a single deliberate target.
               {%- endcomment -%}
               {%- if card_label != blank -%}
-                <a class="co__cta" href="{{ card_url | default: '#' }}">{{ card_label }}</a>
+                <a class="co__cta" href="{{ card_url | default: '#' }}"{% if card_url contains 'http' %} target="_blank" rel="noopener"{% endif %}>{{ card_label }}</a>
               {%- endif -%}
             </div>
           </div>
