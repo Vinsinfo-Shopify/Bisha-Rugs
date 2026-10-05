@@ -164,7 +164,7 @@
     <div class="announcement-bar color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
       {%- if section.settings.show_left_item and section.settings.left_text != blank -%}
         {%- if section.settings.left_link != blank -%}
-          <a href="{{ section.settings.left_link }}" class="ann-side ann-side--left{% if section.settings.hide_sides_mobile %} ann-side--desktop{% endif %}">
+          <a href="{{ section.settings.left_link }}"{% if section.settings.left_link contains 'http' %} target="_blank" rel="noopener"{% endif %} class="ann-side ann-side--left{% if section.settings.hide_sides_mobile %} ann-side--desktop{% endif %}">
             {%- if section.settings.left_icon_img -%}
               <img class="ann-icon" src="{{ section.settings.left_icon_img | image_url: width: 64 }}" alt="{{ section.settings.left_text | escape }}" width="{{ section.settings.icon_size }}" height="{{ section.settings.icon_size }}" loading="lazy">
             {%- endif -%}
