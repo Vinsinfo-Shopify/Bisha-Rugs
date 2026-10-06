@@ -226,41 +226,6 @@
           "type": "separator",
           "settings": {}
         },
-        "image_text_card_A3aczE": {
-          "type": "image_text_card",
-          "settings": {
-            "slider_group": "help",
-            "image": "shopify://shop_images/0f111b50afa1cbc748628327e86a3d50423143c9.png",
-            "image_width": 120,
-            "image_height": 120,
-            "heading": "Having second thoughts?",
-            "text": "<p>See your rug before you order. Get a CADD design in your size, colors and setting.</p>",
-            "show_checklist_icons": false,
-            "button_label": "Get CAD DESIGN",
-            "button_link": "shopify://pages/contact",
-            "use_cad_email": true,
-            "italic": "normal",
-            "button_style": "solid",
-            "button_background": "#55583c",
-            "button_text_color": "#ffffff",
-            "background": "#f3eee4",
-            "text_color": "#000000",
-            "border_color": ""
-          }
-        },
-        "swatch_card_order": {
-          "type": "swatch_card",
-          "settings": {
-            "heading": "Need a Closer Look? Order a Swatch",
-            "button_label": "Add",
-            "slider_group": "help",
-            "button_background": "#b4513a",
-            "button_text_color": "#ffffff",
-            "background": "#f3eee4",
-            "text_color": "#000000",
-            "border_color": ""
-          }
-        },
         "image_text_card_eDVhda": {
           "type": "image_text_card",
           "settings": {
@@ -301,6 +266,41 @@
             "button_background": "#55583c",
             "button_text_color": "#ffffff",
             "background": "#e9e6db",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "image_text_card_A3aczE": {
+          "type": "image_text_card",
+          "settings": {
+            "slider_group": "help",
+            "image": "shopify://shop_images/0f111b50afa1cbc748628327e86a3d50423143c9.png",
+            "image_width": 120,
+            "image_height": 120,
+            "heading": "Having second thoughts?",
+            "text": "<p>See your rug before you order. Get a CADD design in your size, colors and setting.</p>",
+            "show_checklist_icons": false,
+            "button_label": "Get CAD DESIGN",
+            "button_link": "shopify://pages/contact",
+            "use_cad_email": true,
+            "italic": "normal",
+            "button_style": "solid",
+            "button_background": "#55583c",
+            "button_text_color": "#ffffff",
+            "background": "#f3eee4",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
+        "swatch_card_order": {
+          "type": "swatch_card",
+          "settings": {
+            "heading": "Need a Closer Look? Order a Swatch",
+            "button_label": "Add",
+            "slider_group": "help",
+            "button_background": "#b4513a",
+            "button_text_color": "#ffffff",
+            "background": "#f3eee4",
             "text_color": "#000000",
             "border_color": ""
           }
@@ -567,6 +567,28 @@
             "shipping_answer_5": "<p>We are always happy to assist with questions about sizing, design, or custom orders.</p><p><strong>Email:</strong> <a href=\"mailto:Love@bisharugs.com\" title=\"mailto:Love@bisharugs.com\">Love@bisharugs.com</a></p><p><strong>Website:</strong> <a href=\"https://bisharugs.com\" title=\"https://bisharugs.com\">https://bisharugs.com</a></p>"
           }
         },
+        "image_text_card_YMLptL": {
+          "type": "image_text_card",
+          "settings": {
+            "slider_group": "",
+            "image": "shopify://shop_images/Trade_Program_-_Mobile.png",
+            "image_width": 132,
+            "image_height": 80,
+            "heading": "Special Offers for Interior Designers & Architects",
+            "text": "<ul><li>Trade Discounts</li><li>Fully customizable rugs</li><li>Dedicated project support</li></ul>",
+            "show_checklist_icons": true,
+            "button_label": "Learn More",
+            "button_link": "shopify://pages/bisha-rugs-trade-program",
+            "use_cad_email": false,
+            "italic": "normal",
+            "button_style": "solid",
+            "button_background": "#55583c",
+            "button_text_color": "#ffffff",
+            "background": "#e9e6db",
+            "text_color": "#000000",
+            "border_color": ""
+          }
+        },
         "separator_xzhrpL": {
           "type": "separator",
           "settings": {}
@@ -623,10 +645,10 @@
         "feature_with_icon_hzGdKd",
         "feature_with_icon_UTUmyk",
         "separator_QzT9Tb",
-        "image_text_card_A3aczE",
-        "swatch_card_order",
         "image_text_card_eDVhda",
         "image_text_card_tradeProgram",
+        "image_text_card_A3aczE",
+        "swatch_card_order",
         "separator_HzXX9c",
         "text_WrhAdN",
         "feature_with_icon_G9QcDK",
@@ -645,6 +667,7 @@
         "accordion_YhTQb9",
         "accordion_RLayEy",
         "product_faq_widget",
+        "image_text_card_YMLptL",
         "separator_xzhrpL",
         "contact_consultation_93CjwT",
         "separator_XnPFgP",
