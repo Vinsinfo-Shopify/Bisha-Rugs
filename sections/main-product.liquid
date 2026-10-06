@@ -717,10 +717,17 @@
           "placeholder": "shopify.color-pattern"
         },
         {
-          "type": "product_list",
-          "id": "products",
-          "label": "t:sections.main_product.blocks.color_pattern_picker.product_list",
-          "info": "t:sections.main_product.blocks.color_pattern_picker.product_list_info"
+          "type": "text",
+          "id": "property_name",
+          "label": "t:sections.main_product.blocks.color_pattern_picker.property_name",
+          "info": "t:sections.main_product.blocks.color_pattern_picker.property_name_info",
+          "default": "Color"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "t:sections.main_product.blocks.color_pattern_picker.required",
+          "default": true
         }
       ]
     },
@@ -1438,6 +1445,12 @@
       "name": "t:sections.main_product.blocks.image_text_card.name",
       "settings": [
         {
+          "type": "text",
+          "id": "slider_group",
+          "label": "Slider group",
+          "info": "Consecutive cards (Image with text card / Swatch card) with the same slider group name are shown together as a swipeable slider."
+        },
+        {
           "type": "image_picker",
           "id": "image",
           "label": "t:global.image.image"
@@ -1532,6 +1545,59 @@
             }
           ],
           "default": "solid"
+        },
+        {
+          "type": "color",
+          "id": "button_background",
+          "label": "Button background"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color"
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "t:global.colors.background"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "t:global.colors.text"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "t:global.colors.border"
+        }
+      ]
+    },
+    {
+      "type": "swatch_card",
+      "name": "Swatch card",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Shows this product's lowest priced variant (eg. the rug swatch) with an add to cart button."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:global.text.heading",
+          "default": "Need a Closer Look? Order a Swatch"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "t:sections.main_product.blocks.image_text_card.button_label",
+          "default": "Add"
+        },
+        {
+          "type": "text",
+          "id": "slider_group",
+          "label": "Slider group",
+          "info": "Consecutive cards (Image with text card / Swatch card) with the same slider group name are shown together as a swipeable slider."
         },
         {
           "type": "color",

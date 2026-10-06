@@ -126,6 +126,7 @@
       "shape": "Shape",
       "shape_rectangle": "Rectangle",
       "shape_runner": "Runner",
+      "shape_customize": "Customize",
       "enter_size": "Enter Size",
       "available_colors_count": {
         "one": "{{ count }} color available",
