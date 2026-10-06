@@ -133,7 +133,9 @@
   line-height: 140%;
   color: var(--cart-drawer-muted);
 }
-
+.cart-drawer-line__properties li {
+  color: var(--text-color);
+}
 .cart-drawer-line__option-name {
   color: #000000;
   font-weight: 600;
