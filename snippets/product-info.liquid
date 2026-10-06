@@ -540,6 +540,7 @@
                 {%- endif -%}
 
                 <div class="color-pattern-picker__grid" role="radiogroup" aria-label="{{ block.settings.heading | default: property_name | escape }}">
+                  {%- assign color_default_checked = false -%}
                   {%- for color_value in color_values -%}
                     {%- liquid
                       assign swatch_image = blank
@@ -579,6 +580,11 @@
                       endif
 
                       assign input_id = 'color-' | append: block.id | append: '-' | append: forloop.index
+                      assign is_default_color = false
+                      unless color_default_checked
+                        assign is_default_color = true
+                        assign color_default_checked = true
+                      endunless
                     -%}
 
                     <input
@@ -588,7 +594,7 @@
                       name="{{ property_input_name }}"
                       value="{{ color_label | escape }}"
                       form="{{ product_form_id }}"
-                      {% if color_values.size == 1 %}checked{% endif %}
+                      {% if is_default_color %}checked{% endif %}
                       {% if block.settings.required %}required{% endif %}
                     >
                     <label for="{{ input_id }}" class="color-pattern-picker__item" title="{{ color_label | escape }}" style="{{ swatch_style | escape }}">
