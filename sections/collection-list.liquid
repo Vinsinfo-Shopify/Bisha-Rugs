@@ -233,6 +233,13 @@
         {%- endif -%}
       }
     }
+    @media screen and (min-width: 1500px) {
+      #shopify-section-{{ section.id }} .collection-list--sbs .collection-list.scroll-area {
+        margin-inline: -70px;
+        padding-inline: 70px;
+        scroll-padding-inline: 70px;
+      }
+    }
   </style>
 
   <style>
