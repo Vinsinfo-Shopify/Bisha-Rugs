@@ -414,7 +414,11 @@
           white-space: nowrap;
           cursor: pointer;
         }
-
+        @media screen and (max-width: 699px) {
+          .shape-picker__tab {
+            padding: 8px 20px;
+          }
+        }
         .shape-picker__tab--link {
           display: inline-flex;
           align-items: center;
