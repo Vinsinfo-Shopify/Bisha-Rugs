@@ -32,5 +32,5 @@
 
 {%- if compare_price > current_price -%}
   {%- assign discount_percentage = compare_price | minus: current_price | times: 100.0 | divided_by: compare_price | round -%}
-  <span class="badge badge--custom pdp-savings">{{ 'general.product.save' | t: percentage: discount_percentage }}</span>
+  <span class="badge badge--custom pdp-savings badge--custom-saved">{{ 'general.product.save' | t: percentage: discount_percentage }}</span>
 {%- endif -%}
