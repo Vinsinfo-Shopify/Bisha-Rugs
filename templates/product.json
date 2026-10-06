@@ -104,7 +104,8 @@
           "settings": {
             "heading": "Select Color & Pattern",
             "option_value_metafield": "shopify.color-pattern",
-            "products": "{{ product.metafields[\"shopify--discovery--product_recommendation\"].complementary_products.value }}"
+            "property_name": "Color",
+            "required": true
           }
         },
         "variant_picker": {
@@ -243,7 +244,8 @@
             "button_text_color": "",
             "background": "#fbf6ed",
             "text_color": "#000000",
-            "border_color": ""
+            "border_color": "",
+            "slider_group": "trust"
           }
         },
         "image_text_card_A3aczE": {
@@ -264,7 +266,8 @@
             "button_text_color": "#ffffff",
             "background": "#f3eee4",
             "text_color": "#000000",
-            "border_color": ""
+            "border_color": "",
+            "slider_group": "help"
           }
         },
         "separator_HzXX9c": {
@@ -547,7 +550,8 @@
             "button_text_color": "#ffffff",
             "background": "#e9e6db",
             "text_color": "#000000",
-            "border_color": ""
+            "border_color": "",
+            "slider_group": "trust"
           }
         },
         "separator_xzhrpL": {
@@ -582,6 +586,19 @@
             "stack_products": false,
             "show_quick_buy": false
           }
+        },
+        "swatch_card_order": {
+          "type": "swatch_card",
+          "settings": {
+            "heading": "Need a Closer Look? Order a Swatch",
+            "button_label": "Add",
+            "slider_group": "help",
+            "button_background": "#b4513a",
+            "button_text_color": "#ffffff",
+            "background": "#f3eee4",
+            "text_color": "#000000",
+            "border_color": ""
+          }
         }
       },
       "block_order": [
@@ -606,8 +623,10 @@
         "feature_with_icon_hzGdKd",
         "feature_with_icon_UTUmyk",
         "separator_QzT9Tb",
-        "image_text_card_eDVhda",
         "image_text_card_A3aczE",
+        "swatch_card_order",
+        "image_text_card_eDVhda",
+        "image_text_card_tradeProgram",
         "separator_HzXX9c",
         "text_WrhAdN",
         "feature_with_icon_G9QcDK",
@@ -626,7 +645,6 @@
         "accordion_YhTQb9",
         "accordion_RLayEy",
         "product_faq_widget",
-        "image_text_card_tradeProgram",
         "separator_xzhrpL",
         "contact_consultation_93CjwT",
         "separator_XnPFgP",

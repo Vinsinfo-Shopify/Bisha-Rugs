@@ -1311,12 +1311,13 @@
         },
         "color_pattern_picker": {
           "name": "Color & pattern picker",
-          "instructions": "Links this product to other products (different colorways of the same design) as circular photo swatches. Add every colorway, including this product itself.",
+          "instructions": "Shows the colors saved in this product's color metafield as swatches. The color the customer picks is added to the cart as a line item property.",
           "heading": "Heading",
-          "option_value_metafield": "Label metafield",
-          "option_value_metafield_info": "Namespace and key of the metafield holding each product's displayed name, eg.: shopify.color-pattern or custom.color",
-          "product_list": "Products",
-          "product_list_info": "Select every colorway/pattern of this product, including the product itself."
+          "option_value_metafield": "Color metafield",
+          "option_value_metafield_info": "Namespace and key of the product's color metafield, eg.: shopify.color-pattern or custom.color",
+          "property_name": "Line item property name",
+          "property_name_info": "Name shown in the cart and order for the chosen color.",
+          "required": "Require a color before adding to cart"
         },
         "line_item_property": {
           "name": "Line item property",

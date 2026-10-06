@@ -27,6 +27,12 @@
     assign shape_heading_label = 'product.general.shape' | t
   endif
 
+  # "Customize" shape tab opens the same prefilled CAD design request email as the "Get CAD DESIGN" card.
+  capture customize_url
+    render 'custom-rug-inquiry-url', type: 'cad'
+  endcapture
+  assign customize_url = customize_url | strip
+
   assign enter_size_heading_label = enter_size_heading
   if enter_size_heading_label == blank
     assign enter_size_heading_label = 'product.general.enter_size' | t
@@ -165,6 +171,9 @@
                 <button type="button" class="shape-picker__tab" role="tab" aria-selected="false" data-shape="runner">
                   {{- 'product.general.shape_runner' | t -}}
                 </button>
+                <a href="{{ customize_url }}" class="shape-picker__tab shape-picker__tab--link">
+                  {{- 'product.general.shape_customize' | t -}}
+                </a>
               </div>
             </shape-picker>
           {%- endif -%}
@@ -310,6 +319,9 @@
                 <button type="button" class="shape-picker__tab" role="tab" aria-selected="false" data-shape="runner">
                   {{- 'product.general.shape_runner' | t -}}
                 </button>
+                <a href="{{ customize_url }}" class="shape-picker__tab shape-picker__tab--link">
+                  {{- 'product.general.shape_customize' | t -}}
+                </a>
               </div>
           {%- endif -%}
 
@@ -403,6 +415,17 @@
           color: rgb(var(--text-color) / 0.65);
           white-space: nowrap;
           cursor: pointer;
+        }
+
+        .shape-picker__tab--link {
+          display: inline-flex;
+          align-items: center;
+          text-decoration: none;
+        }
+
+        .shape-picker__tab--link:hover {
+          color: rgb(var(--text-color));
+          border-color: currentColor;
         }
 
         .shape-picker__tab.is-active {
