@@ -891,6 +891,7 @@
                         <input type="hidden" name="id" value="{{ swatch_variant.id }}">
                         <input type="hidden" name="quantity" value="{{ swatch_quantity }}">
                         <input type="hidden" name="on_success" value="force_open_drawer">
+                        <input type="hidden" value="" disabled data-swatch-color-property>
 
                         {%- capture swatch_button_style -%}
                           {%- if block.settings.button_background != blank and block.settings.button_background != 'rgba(0,0,0,0)' -%}--button-background: {{ block.settings.button_background.rgb }};{%- endif -%}
@@ -929,7 +930,7 @@
                       const form = document.getElementById(this.getAttribute('form'));
 
                       if (!form) return;
-
+                      this.addEventListener('submit', () => this.syncSelectedColor(), { capture: true, signal });
                       form.addEventListener('submit', () => this.setBusy(true), { signal });
                       form.addEventListener('variant:add', () => this.onAdded(), { signal });
                       form.addEventListener('cart:error', (event) => this.onError(event.detail?.error), { signal });
@@ -944,7 +945,22 @@
                     get button() {
                       return this.querySelector('.swatch-card__button');
                     }
+                    syncSelectedColor() {
+                      const hiddenInput = this.querySelector('[data-swatch-color-property]');
+                      const scope = this.closest('.product-info') || document;
+                      const selectedColor = scope.querySelector('color-pattern-picker input[type="radio"]:checked');
 
+                      if (!hiddenInput) return;
+
+                      if (selectedColor) {
+                        hiddenInput.name = selectedColor.name;
+                        hiddenInput.value = selectedColor.value;
+                        hiddenInput.disabled = false;
+                      } else {
+                        hiddenInput.removeAttribute('name');
+                        hiddenInput.disabled = true;
+                      }
+                    }
                     get errorElement() {
                       return this.closest('.swatch-card')?.querySelector('.swatch-card__error');
                     }
