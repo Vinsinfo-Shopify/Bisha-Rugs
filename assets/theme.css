@@ -11931,7 +11931,10 @@ ul {
   background: #b08d4c;
   color: #ffffff;
 }
-
+.badge--custom-saved {
+  border-radius: 84px;
+  background: #B35642;
+}
 /* ---------- Hand Knotted / type pill ---------- */
 .product-card__tag-wrapper {
   background: #f1ece2;
