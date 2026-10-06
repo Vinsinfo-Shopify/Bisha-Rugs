@@ -11931,7 +11931,7 @@ ul {
   background: #b08d4c;
   color: #ffffff;
 }
-.badge--custom-saved {
+.badge.badge--custom-saved {
   border-radius: 84px;
   background: #B35642;
 }
