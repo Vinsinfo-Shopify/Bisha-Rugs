@@ -102,7 +102,7 @@
         "color_pattern_picker_LVwz7N": {
           "type": "color_pattern_picker",
           "settings": {
-            "heading": "Select Color & Pattern",
+            "heading": "Select Color",
             "option_value_metafield": "custom.color",
             "property_name": "Color",
             "required": true
