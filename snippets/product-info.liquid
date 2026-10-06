@@ -1142,6 +1142,7 @@
         {%- if block_group_class == 'card-slider' -%}
           {%- liquid
             assign inside_card_slider = true
+            assign any_card_slider = true
             assign card_slider_id = 'card-slider-' | append: section.id | append: '-' | append: block.id
             assign card_slider_group = block.settings.slider_group
             assign card_slider_count = 0
@@ -1199,10 +1200,71 @@
               </button>
             {%- endfor -%}
           </carousel-navigation>
+                    {%- if card_slider_count > 1 -%}
+            <card-slider-autoplay aria-controls="{{ card_slider_id }}" data-interval="5000" hidden></card-slider-autoplay>
+          {%- endif -%}
         {%- endif -%}
         </div>
       {%- endif -%}
     {%- endfor -%}
+      {%- if any_card_slider -%}
+      <script>
+        if (!customElements.get('card-slider-autoplay')) {
+          customElements.define('card-slider-autoplay', class extends HTMLElement {
+            connectedCallback() {
+              this.carousel = document.getElementById(this.getAttribute('aria-controls'));
+
+              if (!this.carousel || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+              this.abortController = new AbortController();
+              const signal = this.abortController.signal;
+              const slider = this.carousel.closest('.card-slider') || this.carousel;
+
+              this.isHovered = false;
+              this.isInView = false;
+
+              slider.addEventListener('mouseenter', () => { this.isHovered = true; }, { signal });
+              slider.addEventListener('mouseleave', () => { this.isHovered = false; this.restart(); }, { signal });
+              slider.addEventListener('focusin', () => { this.isHovered = true; }, { signal });
+              slider.addEventListener('focusout', () => { this.isHovered = false; this.restart(); }, { signal });
+              slider.addEventListener('touchstart', () => this.restart(), { passive: true, signal });
+              slider.addEventListener('click', () => this.restart(), { signal });
+
+              this.observer = new IntersectionObserver(([entry]) => {
+                this.isInView = entry.isIntersecting;
+              }, { threshold: 0.5 });
+              this.observer.observe(this.carousel);
+
+              this.restart();
+            }
+
+            disconnectedCallback() {
+              this.abortController?.abort();
+              this.observer?.disconnect();
+              clearInterval(this.timer);
+            }
+
+            get interval() {
+              return Math.max(parseInt(this.dataset.interval, 10) || 5000, 2000);
+            }
+
+            restart() {
+              clearInterval(this.timer);
+              this.timer = setInterval(() => this.advance(), this.interval);
+            }
+
+            advance() {
+              const carousel = this.carousel;
+
+              if (this.isHovered || !this.isInView || document.hidden || !carousel?.cells?.length) return;
+
+              const nextIndex = carousel.selectedIndex + 1 >= carousel.cells.length ? 0 : carousel.selectedIndex + 1;
+              carousel.select(nextIndex);
+            }
+          });
+        }
+      </script>
+    {%- endif -%}
   </div>
 
   {%- comment -%}
