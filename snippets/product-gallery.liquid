@@ -10,6 +10,7 @@
   @param {boolean} [enable_video_looping] - if set to true videos automatically loop when finished
   @param {boolean} [enable_image_zoom] - if set to true the gallery allows zoom
   @param {number} [max_image_zoom_level] - the maximum zoom level allowed (if enabled)
+  @param {boolean} [show_media_badges] - if set to false the badges over the first media are hidden (shown when omitted)
   @param {object} [section]
 {%- enddoc -%}
 
@@ -212,7 +213,7 @@
                 variants the badge then follows the chosen size, which is the
                 correct behaviour on a product page.
               {%- endcomment -%}
-              {%- if forloop.first -%}
+              {%- if forloop.first and show_media_badges != false -%}
                 <div class="pdp-media-badges">
                   {%- comment -%}
                     The discount type is excluded on purpose. With
