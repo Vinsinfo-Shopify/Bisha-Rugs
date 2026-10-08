@@ -272,7 +272,6 @@
         },
         "image_text_card_A3aczE": {
           "type": "image_text_card",
-          "disabled": true,
           "settings": {
             "slider_group": "help",
             "image": "shopify://shop_images/0f111b50afa1cbc748628327e86a3d50423143c9.png",
