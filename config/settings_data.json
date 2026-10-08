@@ -31,7 +31,7 @@
     "product_price_strategy": "max_price",
     "show_quick_buy": false,
     "show_sold_out_badge": true,
-    "show_discount": true,
+    "show_discount": false,
     "favicon": "shopify://shop_images/bisha_rugs_logo_transparent_90237c26-0b0e-438c-8202-6bf4727d6570.png",
     "content_for_index": [],
     "color_schemes": {
