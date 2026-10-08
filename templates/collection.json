@@ -799,7 +799,7 @@
         "color_scheme": "",
         "separate_section_with_border": true,
         "show_categories": false,
-        "open_first_question": true,
+        "open_first_question": false,
         "custom_class": "collection_faq",
         "faq_custom_class": "",
         "show_breadcrumb": false,
