@@ -95,7 +95,8 @@
             enable_media_autoplay: section.settings.enable_media_autoplay,
             enable_video_looping: section.settings.enable_video_looping,
             enable_image_zoom: section.settings.enable_image_zoom,
-            max_image_zoom_level: section.settings.max_image_zoom_level
+            max_image_zoom_level: section.settings.max_image_zoom_level,
+            show_media_badges: section.settings.show_media_badges
           -%}
         {%- endif -%}
 
@@ -376,6 +377,13 @@
       "type": "checkbox",
       "id": "enable_video_looping",
       "label": "t:sections.main_product.enable_video_looping",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_media_badges",
+      "label": "Show badges on product image",
+      "info": "Displays sale, sold out and custom badges on the first product image.",
       "default": true
     },
     {
