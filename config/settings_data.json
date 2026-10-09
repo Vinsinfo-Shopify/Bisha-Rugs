@@ -28,7 +28,7 @@
     "product_image_aspect_ratio": "portrait_crop",
     "show_secondary_image": false,
     "show_vendor": false,
-    "product_price_strategy": "from_price",
+    "product_price_strategy": "max_price",
     "show_quick_buy": false,
     "show_sold_out_badge": true,
     "show_discount": false,
