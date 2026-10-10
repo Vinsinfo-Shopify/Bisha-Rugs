@@ -128,6 +128,7 @@
             "custom_heading_size": 24,
             "content": "<p>Share a few details about your studio, <br/>takes about a minute.</p>",
             "link_url": "",
+            "open_new_tab": false,
             "link_text": "",
             "show_rating": false,
             "rating": 5,
@@ -147,6 +148,7 @@
             "custom_heading_size": 24,
             "content": "<p>Our team reviews and confirms your trade account within 1-2 business days.</p>",
             "link_url": "",
+            "open_new_tab": false,
             "link_text": "",
             "show_rating": false,
             "rating": 5,
@@ -166,6 +168,7 @@
             "custom_heading_size": 24,
             "content": "<p>Unlock the full catalog, custom options, and your dedicated contact.</p>",
             "link_url": "",
+            "open_new_tab": false,
             "link_text": "",
             "show_rating": false,
             "rating": 5,
@@ -185,6 +188,7 @@
             "custom_heading_size": 24,
             "content": "<p>Order samples or full pieces, tracked from loom to install.</p>",
             "link_url": "",
+            "open_new_tab": false,
             "link_text": "",
             "show_rating": false,
             "rating": 5,
@@ -385,6 +389,7 @@
             "custom_heading_size": 24,
             "content": "<p>Custom 12×16 hand-knotted wool, delivered in 9 weeks.</p>",
             "link_url": "",
+            "open_new_tab": false,
             "link_text": "",
             "show_rating": false,
             "rating": 5,
@@ -405,6 +410,7 @@
             "custom_heading_size": 24,
             "content": "<p>34 bespoke pieces across lobby and suites.</p>",
             "link_url": "",
+            "open_new_tab": false,
             "link_text": "",
             "show_rating": false,
             "rating": 5,
@@ -425,6 +431,7 @@
             "custom_heading_size": 24,
             "content": "<p>A standing memo library of40 qualities.</p>",
             "link_url": "",
+            "open_new_tab": false,
             "link_text": "",
             "show_rating": false,
             "rating": 5,
@@ -445,6 +452,7 @@
             "custom_heading_size": 24,
             "content": "<p>Bishop Ray, bespoke runners acrossthree floors.</p>",
             "link_url": "",
+            "open_new_tab": false,
             "link_text": "",
             "show_rating": false,
             "rating": 5,
@@ -508,6 +516,7 @@
             "custom_heading_size": 24,
             "content": "<p>\"The samples arrived in two days and thecustom strike-off saved a client presentation. I've specified them on sixprojects since.\"</p>",
             "link_url": "",
+            "open_new_tab": false,
             "link_text": "",
             "show_rating": true,
             "rating": 5,
@@ -528,6 +537,7 @@
             "custom_heading_size": 24,
             "content": "<p>\"Having one person who knows every open project is the difference. Nothing gets re-explained, nothing slips past the install date.\"<br/></p>",
             "link_url": "",
+            "open_new_tab": false,
             "link_text": "",
             "show_rating": true,
             "rating": 5,
@@ -548,6 +558,7 @@
             "custom_heading_size": 24,
             "content": "<p>\"The trade discount paid for itself on the first order, and the 14-day hold means I can present without pressure.\"</p>",
             "link_url": "",
+            "open_new_tab": false,
             "link_text": "",
             "show_rating": true,
             "rating": 5,
@@ -604,7 +615,7 @@
           "type": "question",
           "settings": {
             "question": "Who can apply to the trade program?",
-            "answer": "<p>Interior designers, architects, contractors, and retail partners actively working on residential or commercial projects.</p>",
+            "answer": "<p>Our Trade Program is designed for interior designers, interior decorators, architects, home stagers, design studios, hospitality professionals, and other qualified design professionals purchasing for client or commercial projects.&nbsp;<br/><br/>Applicants may be asked to provide professional information such as a website, business details, portfolio, or other documentation confirming their professional status.&nbsp;<br/><br/>Once approved, trade members receive access to exclusive trade pricing and dedicated project support.</p>",
             "custom_class": ""
           }
         },
@@ -612,7 +623,7 @@
           "type": "question",
           "settings": {
             "question": "Is there a minimum order?",
-            "answer": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>",
+            "answer": "<p>There is<strong> </strong>no minimum order requirement to apply to or join the Bisha Rugs Trade Program.&nbsp;<br/><br/>Trade pricing is intended for professional purchases made for client projects, installations and commercial spaces.&nbsp;<br/><br/>For larger projects or multiple-rug orders, our team can provide personalized project pricing and support based on the scope of the project.</p>",
             "custom_class": ""
           }
         },
@@ -620,7 +631,7 @@
           "type": "question",
           "settings": {
             "question": "How long does approval take?",
-            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "answer": "<p>Most trade applications are reviewed within 1–2 business days.<br/><br/>Once your application has been approved, we will provide information about your trade benefits and how to access trade pricing.&nbsp;<br/><br/>If we need additional information to verify your professional status, our team will contact you directly</p>",
             "custom_class": ""
           }
         },
@@ -628,7 +639,7 @@
           "type": "question",
           "settings": {
             "question": "What's the typical lead time for custom rugs?",
-            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "answer": "<p>Our rugs are handmade to order, so lead times depend on the size, design, construction and quantity of the order.<br/><br/>For handmade Oushak rugs, the typical production and delivery timeline is approximately 45 days, although larger or more complex projects may require additional time.&nbsp;<br/><br/>For trade and hospitality projects with multiple rugs or specific installation deadlines, we recommend contacting us before placing the order so we can confirm the production schedule and delivery timeline.</p>",
             "custom_class": ""
           }
         },
@@ -636,7 +647,15 @@
           "type": "question",
           "settings": {
             "question": "Do you offer free samples?",
-            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "answer": "<p>We offer rug samples and material/color references for qualifying trade projects, depending on availability.&nbsp;<br/><br/>Because many of our rugs are handmade and produced specifically for each order, sample availability can vary by collection and design.&nbsp;<br/><br/>For larger design projects, please contact our Trade Team with your project details, including the rug designs, colors and quantities you're considering.&nbsp;<br/><br/>We'll recommend the best way to review the materials and colors before placing your order.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_eCbRWG": {
+          "type": "question",
+          "settings": {
+            "question": "What trade discount do you offer?",
+            "answer": "<p>Approved trade members receive exclusive trade pricing on eligible Bisha Rugs.&nbsp;<br/><br/>Your trade pricing will be provided after your application has been reviewed and approved. Additional project-based pricing may be available for larger orders or multi-rug installations.&nbsp;<br/><br/>Contact our Trade Team for project-specific pricing.</p>",
             "custom_class": ""
           }
         }
@@ -646,7 +665,8 @@
         "question_zHmUy7",
         "question_H7ge6T",
         "question_Mr886j",
-        "question_EbyrGh"
+        "question_EbyrGh",
+        "question_eCbRWG"
       ],
       "name": "t:sections.faq.presets.faq.name",
       "settings": {
