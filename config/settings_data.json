@@ -34,6 +34,8 @@
     "show_sold_out_badge": true,
     "show_discount": false,
     "social_facebook": "https://www.facebook.com/bisharugs",
+    "social_pinterest": "https://www.pinterest.com/bisharugs/",
+    "social_threads": "https://www.threads.com/@bisharugs",
     "social_instagram": "https://www.instagram.com/bisharugs/",
     "favicon": "shopify://shop_images/bisha_rugs_logo_transparent_90237c26-0b0e-438c-8202-6bf4727d6570.png",
     "content_for_index": [],
