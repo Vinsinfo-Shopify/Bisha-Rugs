@@ -13229,3 +13229,15 @@ a.marquee__item:hover .marquee__text {
   font-weight: 500;
   text-transform: capitalize;
 }
+ .product-info__block-item[data-block-type="text"]:has(.prose em) {
+  font-style: normal;
+ }
+@media screen and (max-width: 749px) {
+  .product-info__block-item[data-block-type="text"]:has(.prose em) {
+    background-color: #F3EEE4;
+    padding: 12px 16px;
+  }
+  .product-info__block-item[data-block-type="text"]:has(.prose em) p {
+    margin: 0;
+  }
+}
