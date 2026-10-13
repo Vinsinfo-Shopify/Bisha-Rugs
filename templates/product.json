@@ -95,6 +95,12 @@
           "type": "payment_terms",
           "settings": {}
         },
+        "text_NcQRgp": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Special trade pricing for interior designers & architects.<a href=\"/pages/bisha-rugs-trade-program\" title=\"Bisha Rugs Trade Program\"><strong> Learn More</strong></a></p>"
+          }
+        },
         "separator": {
           "type": "separator",
           "settings": {}
@@ -632,6 +638,7 @@
         "price",
         "liquid_WK9Eei",
         "payment_terms",
+        "text_NcQRgp",
         "separator",
         "color_pattern_picker_LVwz7N",
         "variant_picker",
