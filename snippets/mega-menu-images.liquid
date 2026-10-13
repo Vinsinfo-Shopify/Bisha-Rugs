@@ -10,6 +10,20 @@
   {%- assign text_setting = 'image_' | append: i | append: '_text' -%}
   {%- assign link_setting = 'image_' | append: i | append: '_link' -%}
 
+  {%- liquid
+    # "[count]" in the text is replaced by the number of products of the linked collection
+    assign promo_text = block.settings[text_setting]
+    if promo_text contains '[count]'
+      assign promo_link = block.settings[link_setting] | default: ''
+      assign promo_count = ''
+      if promo_link contains '/collections/'
+        assign promo_handle = promo_link | split: '/collections/' | last | split: '?' | first | split: '/' | first
+        assign promo_count = collections[promo_handle].products_count
+      endif
+      assign promo_text = promo_text | replace: '[count]', promo_count | strip
+    endif
+  -%}
+
   {%- if block.settings[image_setting] -%}
     {%- if context == 'menu' -%}
       {%- capture card_inner -%}
@@ -17,14 +31,14 @@
           {{- block.settings[image_setting] | image_url: width: block.settings[image_setting].width | image_tag: loading: 'lazy', sizes: '480px', widths: '480,720,960,1440', class: 'zoom-image group-hover:zoom' -}}
         </div>
 
-        {%- if block.settings[heading_setting] != blank or block.settings[text_setting] != blank or block.settings[link_setting] != blank -%}
+        {%- if block.settings[heading_setting] != blank or promo_text != blank or block.settings[link_setting] != blank -%}
           <div class="mega-menu__promo-overlay">
             <div class="mega-menu__promo-text">
               {%- if block.settings[heading_setting] != blank -%}
                 <span class="mega-menu__promo-title">{{ block.settings[heading_setting] }}</span>
               {%- endif -%}
-              {%- if block.settings[text_setting] != blank -%}
-                <span class="mega-menu__promo-count">{{ block.settings[text_setting] }}</span>
+              {%- if promo_text != blank -%}
+                <span class="mega-menu__promo-count">{{ promo_text }}</span>
               {%- endif -%}
             </div>
 
@@ -51,10 +65,10 @@
         <div class="overflow-hidden">
           {{- block.settings[image_setting] | image_url: width: block.settings[image_setting].width | image_tag: loading: 'lazy', sizes: '315px', widths: '315,630,945', class: 'zoom-image group-hover:zoom' -}}
         </div>
-        {%- if block.settings[heading_setting] != blank or block.settings[text_setting] != blank -%}
+        {%- if block.settings[heading_setting] != blank or promo_text != blank -%}
           <div class="v-stack text-center gap-0.5">
             {%- if block.settings[heading_setting] != blank -%}<p class="h6">{{ block.settings[heading_setting] }}</p>{%- endif -%}
-            {%- if block.settings[text_setting] != blank -%}<p class="smallcaps text-xs text-subdued">{{ block.settings[text_setting] }}</p>{%- endif -%}
+            {%- if promo_text != blank -%}<p class="smallcaps text-xs text-subdued">{{ promo_text }}</p>{%- endif -%}
           </div>
         {%- endif -%}
       {%- endcapture -%}
