@@ -913,7 +913,8 @@
           "images_position": "Images position",
           "image_1": "Image 1",
           "image_2": "Image 2",
-          "image_size_recommendation": "650 x 400px .jpg recommended"
+          "image_size_recommendation": "650 x 400px .jpg recommended",
+          "image_text_info": "Use [count] to show the number of products in the linked collection, eg.: [count] items"
         }
       }
     },
