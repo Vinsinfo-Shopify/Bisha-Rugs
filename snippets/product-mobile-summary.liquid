@@ -24,6 +24,7 @@
 
 {%- if product != blank -%}
   {%- assign price_block = section.blocks | where: 'type', 'price' | first -%}
+  {%- assign text_block = section.blocks | where: 'type', 'text' | first -%}
 
   <div class="product-info product-mobile-summary">
     {%- render 'pdp-product-pill' -%}
@@ -40,6 +41,11 @@
         </div>
 
         {%- render 'pdp-price-savings' -%}
+      </div>
+    {%- endif -%}
+    {%- if text_block.settings.text != blank -%}
+      <div class="prose">
+        {{- text_block.settings.text -}}
       </div>
     {%- endif -%}
   </div>
