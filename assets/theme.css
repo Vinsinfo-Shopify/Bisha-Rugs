@@ -13243,6 +13243,6 @@ a.marquee__item:hover .marquee__text {
 
   .product-info__block-item[data-block-type="text"] .prose em {
     font-style: italic;
-    font-size: 12px;
+    font-size: 11px;
   }
 }
