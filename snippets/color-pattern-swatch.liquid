@@ -24,7 +24,7 @@
   href="{{ swatch_product.url }}"
   class="color-pattern-picker__item"
   data-colors="{{ swatch_colors | strip }}"
-  data-title="{{ swatch_product.title | escape }}"
+  data-title="{{ swatch_product.title | truncatewords: 2, '' | downcase | escape }}"
   title="{{ swatch_product.title | escape }}"
   {% if is_current %}aria-current="page"{% endif %}
 >
