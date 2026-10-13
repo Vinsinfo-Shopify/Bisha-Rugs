@@ -7466,7 +7466,7 @@ shopify-account::part(signed-out-avatar) {
     font-size: 14px;
   }
 
-  .shopify-section--main-product .product-info.product-mobile-summary .pdp-price-section {
+  .shopify-section--main-product .product-info.product-mobile-summary .custom_test_on_mobile {
     margin-block-end: 15px;
   }
 
