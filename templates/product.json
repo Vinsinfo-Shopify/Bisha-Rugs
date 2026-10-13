@@ -109,9 +109,11 @@
           "type": "color_pattern_picker",
           "settings": {
             "heading": "Select Color",
-            "option_value_metafield": "custom.color",
-            "property_name": "Color",
-            "required": true
+            "products_metafield": "shopify--discovery--product_recommendation.complementary_products",
+            "color_tag_prefix": "Color_",
+            "color_order": "Neutrals, Pinks, Blues, Yellows, Greens",
+            "all_label": "All",
+            "hide_sold_out": false
           }
         },
         "variant_picker": {

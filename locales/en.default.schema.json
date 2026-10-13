@@ -1311,13 +1311,16 @@
         },
         "color_pattern_picker": {
           "name": "Color & pattern picker",
-          "instructions": "Shows the colors saved in this product's color metafield as swatches. The color the customer picks is added to the cart as a line item property.",
+          "instructions": "Shows this product and the products saved in its complementary products metafield as swatches linking to each product. Filter tabs are built from product tags such as Color_Pinks (a product can have several).",
           "heading": "Heading",
-          "option_value_metafield": "Color metafield",
-          "option_value_metafield_info": "Namespace and key of the product's color metafield, eg.: shopify.color-pattern or custom.color",
-          "property_name": "Line item property name",
-          "property_name_info": "Name shown in the cart and order for the chosen color.",
-          "required": "Require a color before adding to cart"
+          "products_metafield": "Products metafield",
+          "products_metafield_info": "Namespace and key of the product list metafield, eg.: shopify--discovery--product_recommendation.complementary_products",
+          "color_tag_prefix": "Color tag prefix",
+          "color_tag_prefix_info": "Tags starting with this prefix become color filters, eg.: Color_Pinks shows as Pinks.",
+          "color_order": "Color order",
+          "color_order_info": "Comma separated. Listed colors are shown first in this order, other colors found in tags follow.",
+          "all_label": "\"All\" tab label",
+          "hide_sold_out": "Hide sold out products"
         },
         "line_item_property": {
           "name": "Line item property",
