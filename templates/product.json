@@ -108,7 +108,7 @@
         "color_pattern_picker_LVwz7N": {
           "type": "color_pattern_picker",
           "settings": {
-            "heading": "Select Color & Pattern:",
+            "heading": "Select Color & Pattern",
             "products_metafield": "shopify--discovery--product_recommendation.complementary_products",
             "color_tag_prefix": "Color_",
             "color_order": "Neutrals, Pinks, Blues, Yellows, Greens",
