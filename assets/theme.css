@@ -13224,7 +13224,7 @@ a.marquee__item:hover .marquee__text {
     opacity: 0.35;
     visibility: visible;
   }
-  .product-info__block-item[data-block-type="text"]:first-child{
+  .product-info__block-item:nth-child(1 of [data-block-type="text"]) {
     display: none;
   }
 
