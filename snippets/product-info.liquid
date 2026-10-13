@@ -613,7 +613,7 @@
               <color-pattern-picker class="color-pattern-picker v-stack gap-3">
                 {%- if block.settings.heading != blank -%}
                   <p class="color-pattern-picker__heading">
-                    {{ block.settings.heading | escape }}: <span class="color-pattern-picker__selected" data-default="{{ product.title | escape }}">{{ product.title | escape }}</span>
+                    {{ block.settings.heading | escape }}: <span class="color-pattern-picker__selected" data-default="{{ product.title | truncatewords: 2, '' | downcase | escape }}">{{ product.title | truncatewords: 2, '' | downcase | escape }}</span>
                   </p>
                 {%- endif -%}
 
@@ -1333,4 +1333,4 @@
       <input type="hidden" disabled name="id" value="{{ product.selected_or_first_available_variant.id }}">
     {%- endform -%}
   {%- endunless -%}
-</safe-sticky>
+</safe-sticky>
