@@ -13225,3 +13225,7 @@ a.marquee__item:hover .marquee__text {
     visibility: visible;
   }
 }
+.color-pattern-picker__selected{
+  font-weight: 500;
+  text-transform: capitalize;
+}
