@@ -13238,7 +13238,7 @@ a.marquee__item:hover .marquee__text {
 @media screen and (max-width: 749px) {
   .product-info__block-item[data-block-type="text"]:has(.prose em) {
     background-color: #F3EEE4;
-    padding: 12px 5px;
+    padding: 5px;
   }
 
   .product-info__block-item[data-block-type="text"] .prose em {
