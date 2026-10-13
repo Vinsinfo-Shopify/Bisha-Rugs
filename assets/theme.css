@@ -13229,25 +13229,17 @@ a.marquee__item:hover .marquee__text {
   font-weight: 500;
   text-transform: capitalize;
 }
-/* Desktop: no italic */
-.product-info__block-item[data-block-type="text"] .prose em {
-  font-style: normal;
-}
 
-/* Mobile: italic + background */
 @media screen and (max-width: 749px) {
-  .product-info__block-item[data-block-type="text"]:has(.prose em) {
+  .custom_test_on_mobile {
     background-color: #F3EEE4;
     padding: 3px;
-  }
-
-  .product-info__block-item[data-block-type="text"] .prose em {
     font-style: italic;
     font-size: 12px;
   }
 }
 @media screen and (max-width: 480px) {
-  .product-info__block-item[data-block-type="text"] .prose em {
+  .custom_test_on_mobile {
     font-style: italic;
     font-size: 11px;
   }
