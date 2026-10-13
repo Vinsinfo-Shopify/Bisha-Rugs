@@ -13239,10 +13239,10 @@ a.marquee__item:hover .marquee__text {
   .product-info__block-item[data-block-type="text"]:has(.prose em) {
     background-color: #F3EEE4;
     padding: 12px 5px;
-    font-size: 12px;
   }
 
   .product-info__block-item[data-block-type="text"] .prose em {
     font-style: italic;
+    font-size: 12px;
   }
 }
