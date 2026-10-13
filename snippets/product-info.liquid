@@ -47,30 +47,77 @@
     min-width: 0;
   }
 
+  .shopify-section--main-product .color-pattern-picker__tabs,
   .shopify-section--main-product .color-pattern-picker__grid {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
     min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .shopify-section--main-product .color-pattern-picker__tabs::-webkit-scrollbar,
+  .shopify-section--main-product .color-pattern-picker__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .shopify-section--main-product .color-pattern-picker__tabs {
+    gap: 24px;
+  }
+
+  .shopify-section--main-product .color-pattern-picker__tab {
+    flex-shrink: 0;
+    padding: 4px 4px 6px;
+    font-size: 16px;
+    line-height: 140%;
+    color: #202020;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.15s ease-in-out;
+  }
+
+  .shopify-section--main-product .color-pattern-picker__tab[aria-pressed="true"] {
+    border-bottom-color: #202020;
+  }
+
+  .shopify-section--main-product .color-pattern-picker__grid {
+    gap: 10px;
+    padding: 2px 0;
   }
 
   .shopify-section--main-product .color-pattern-picker__item {
     display: block;
     box-sizing: border-box;
     flex-shrink: 0;
-    width: 44px;
-    height: 44px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     border: 1px solid rgb(0 0 0 / 0.12);
-    background-size: cover;
-    background-position: center;
+    overflow: hidden;
+    position: relative;
     cursor: pointer;
+  }
+
+  .shopify-section--main-product .color-pattern-picker__item[hidden] {
+    display: none;
+  }
+
+  .shopify-section--main-product .color-pattern-picker__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .shopify-section--main-product .color-pattern-picker__item::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
     transition: box-shadow 0.15s ease-in-out;
   }
 
-  .shopify-section--main-product .color-pattern-picker__item:hover,
-  .shopify-section--main-product input:focus-visible + .color-pattern-picker__item,
-  .shopify-section--main-product input:checked + .color-pattern-picker__item {
+  .shopify-section--main-product .color-pattern-picker__item:hover::after,
+  .shopify-section--main-product .color-pattern-picker__item:focus-visible::after,
+  .shopify-section--main-product .color-pattern-picker__item[aria-current="page"]::after {
     box-shadow:
       inset 0 0 0 2px rgb(var(--text-color)),
       inset 0 0 0 4px rgb(var(--background-without-opacity));
@@ -509,97 +556,85 @@
 
           {%- when 'color_pattern_picker' -%}
             {%- liquid
-              assign color_metafield_path = block.settings.option_value_metafield | default: 'shopify.color-pattern'
-              assign label_parts = color_metafield_path | split: '.'
-              assign label_namespace = label_parts | first
-              assign label_key = label_parts | last
-              assign color_metafield = product.metafields[label_namespace][label_key]
-              assign property_name = block.settings.property_name | default: 'Color' | strip
+              # The other colors / patterns of this rug are the products saved in the complementary
+              # products metafield. Each product's color family comes from its tags (eg. "Color_Pinks"),
+              # and a product can belong to several families.
+              assign products_metafield_path = block.settings.products_metafield | default: 'shopify--discovery--product_recommendation.complementary_products' | strip
+              assign metafield_namespace = products_metafield_path | split: '.' | first
+              assign metafield_key = products_metafield_path | split: '.' | last
+              assign related_products = product.metafields[metafield_namespace][metafield_key].value
 
-              # Only the colors stored on THIS product's metafield are offered. A list metaobject
-              # reference (shopify.color-pattern always is one) can hold several colors; a single
-              # reference or a plain text metafield yields exactly one.
-              if color_metafield.type == 'list.metaobject_reference'
-                assign color_values = color_metafield.value
-              elsif color_metafield.type == 'metaobject_reference'
-                # Single reference: iterate once and read the metaobject directly in the loop.
-                assign color_values = 'single' | split: ','
-              else
-                assign color_values = color_metafield.value | split: ','
-              endif
+              assign color_tag_prefix = block.settings.color_tag_prefix | default: 'Color_'
+              assign color_tag_prefix_downcase = color_tag_prefix | downcase
+              assign color_tag_prefix_size = color_tag_prefix | size
+
+              # Collect every color family used by the current product and its related products
+              assign all_tags = product.tags
+              for related_product in related_products
+                assign all_tags = all_tags | concat: related_product.tags
+              endfor
+
+              assign found_colors = ''
+              for tag in all_tags
+                assign tag_start = tag | slice: 0, color_tag_prefix_size | downcase
+                if tag_start == color_tag_prefix_downcase and tag.size > color_tag_prefix_size
+                  assign color_name = tag | slice: color_tag_prefix_size, 100 | replace: '_', ' ' | strip
+                  assign found_colors = found_colors | append: color_name | append: '|'
+                endif
+              endfor
+              assign found_colors = found_colors | split: '|' | uniq
+
+              # Colors listed in the "Color order" setting come first (in that order), the others follow
+              assign color_filters = ''
+              assign found_handles = '|'
+              for found_color in found_colors
+                assign found_handle = found_color | handleize
+                assign found_handles = found_handles | append: found_handle | append: '|'
+              endfor
+              assign ordered_colors = block.settings.color_order | split: ','
+              for ordered_color in ordered_colors
+                assign ordered_color = ordered_color | strip
+                assign ordered_handle = ordered_color | handleize | prepend: '|' | append: '|'
+                if ordered_color != blank and found_handles contains ordered_handle
+                  assign color_filters = color_filters | append: ordered_color | append: '|'
+                  assign found_handles = found_handles | replace: ordered_handle, '|'
+                endif
+              endfor
+              for found_color in found_colors
+                assign found_handle = found_color | handleize | prepend: '|' | append: '|'
+                if found_handles contains found_handle
+                  assign color_filters = color_filters | append: found_color | append: '|'
+                endif
+              endfor
+              assign color_filters = color_filters | split: '|'
             -%}
 
-            {%- if color_metafield != blank and color_values.size > 0 -%}
-              {%- capture property_input_name -%}properties[{{ property_name | escape }}]{%- endcapture -%}
-
+            {%- if related_products.size > 0 -%}
               <color-pattern-picker class="color-pattern-picker v-stack gap-3">
                 {%- if block.settings.heading != blank -%}
                   <p class="color-pattern-picker__heading">
-                    {{ block.settings.heading | escape }}: <span class="color-pattern-picker__selected" data-placeholder="Choose a color" style="font-weight:400;">Choose a color</span>
+                    {{ block.settings.heading | escape }}: <span class="color-pattern-picker__selected" data-default="{{ product.title | escape }}">{{ product.title | escape }}</span>
                   </p>
                 {%- endif -%}
 
-                <div class="color-pattern-picker__grid" role="radiogroup" aria-label="{{ block.settings.heading | default: property_name | escape }}">
-                  {%- assign color_default_checked = false -%}
-                  {%- for color_value in color_values -%}
-                    {%- liquid
-                      assign swatch_image = blank
-                      assign swatch_colors = blank
+                {%- if color_filters.size > 0 -%}
+                  <div class="color-pattern-picker__tabs" role="group" aria-label="{{ block.settings.heading | default: 'Color' | escape }}">
+                    <button type="button" class="color-pattern-picker__tab" data-color-filter="all" aria-pressed="true">{{ block.settings.all_label | default: 'All' | escape }}</button>
+                    {%- for color_filter in color_filters -%}
+                      <button type="button" class="color-pattern-picker__tab" data-color-filter="{{ color_filter | handleize }}" aria-pressed="false">{{ color_filter | escape }}</button>
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
 
-                      if color_metafield.type == 'metaobject_reference'
-                        assign color_value = color_metafield.value
-                      endif
+                <div class="color-pattern-picker__grid">
+                  {%- render 'color-pattern-swatch', swatch_product: product, is_current: true, color_tag_prefix: color_tag_prefix -%}
 
-                      if color_metafield.type contains 'metaobject_reference'
-                        assign color_label = color_value.label | strip
-                        assign swatch_image = color_value.image.value
-                        assign swatch_colors = color_value.color.value
-                      else
-                        assign color_label = color_value | strip
-                      endif
+                  {%- for related_product in related_products -%}
+                    {%- if related_product.id == product.id or related_product.available == false and block.settings.hide_sold_out -%}
+                      {%- continue -%}
+                    {%- endif -%}
 
-                      if color_label == blank
-                        continue
-                      endif
-
-                      if swatch_image != blank
-                        assign swatch_url = swatch_image | image_url: width: 112
-                        assign swatch_style = 'background-image: url(' | append: swatch_url | append: ')'
-                      elsif swatch_colors != blank
-                        if swatch_colors.first
-                          assign swatch_color_list = swatch_colors | join: ', '
-                          if swatch_colors.size == 1
-                            assign swatch_color_list = swatch_color_list | append: ', ' | append: swatch_colors.first
-                          endif
-                        else
-                          assign swatch_color_list = swatch_colors | append: ', ' | append: swatch_colors
-                        endif
-                        assign swatch_style = 'background-image: linear-gradient(to right, ' | append: swatch_color_list | append: ')'
-                      else
-                        assign swatch_style = 'background-color: ' | append: color_label | downcase | remove: ' '
-                      endif
-
-                      assign input_id = 'color-' | append: block.id | append: '-' | append: forloop.index
-                      assign is_default_color = false
-                      unless color_default_checked
-                        assign is_default_color = true
-                        assign color_default_checked = true
-                      endunless
-                    -%}
-
-                    <input
-                      class="sr-only"
-                      type="radio"
-                      id="{{ input_id }}"
-                      name="{{ property_input_name }}"
-                      value="{{ color_label | escape }}"
-                      form="{{ product_form_id }}"
-                      {% if is_default_color %}checked{% endif %}
-                      {% if block.settings.required %}required{% endif %}
-                    >
-                    <label for="{{ input_id }}" class="color-pattern-picker__item" title="{{ color_label | escape }}" style="{{ swatch_style | escape }}">
-                      <span class="sr-only">{{ color_label | escape }}</span>
-                    </label>
+                    {%- render 'color-pattern-swatch', swatch_product: related_product, is_current: false, color_tag_prefix: color_tag_prefix -%}
                   {%- endfor -%}
                 </div>
               </color-pattern-picker>
@@ -608,17 +643,35 @@
                 if (!customElements.get('color-pattern-picker')) {
                   customElements.define('color-pattern-picker', class extends HTMLElement {
                     connectedCallback() {
-                      this.addEventListener('change', () => this.update());
-                      this.update();
+                      this.addEventListener('click', (event) => {
+                        const tab = event.target.closest('[data-color-filter]');
+                        if (tab) this.filter(tab);
+                      });
+
+                      // Preview the hovered / focused product name next to the heading
+                      this.addEventListener('pointerover', (event) => this.preview(event.target.closest('.color-pattern-picker__item')));
+                      this.addEventListener('focusin', (event) => this.preview(event.target.closest('.color-pattern-picker__item')));
+                      this.addEventListener('pointerleave', () => this.preview(null));
+                      this.addEventListener('focusout', () => this.preview(null));
                     }
 
-                    update() {
-                      const selected = this.querySelector('input[type="radio"]:checked');
-                      const output = this.querySelector('.color-pattern-picker__selected');
+                    filter(activeTab) {
+                      const color = activeTab.dataset.colorFilter;
 
-                      if (output) {
-                        output.textContent = selected ? selected.value : output.dataset.placeholder;
-                      }
+                      this.querySelectorAll('[data-color-filter]').forEach((tab) => {
+                        tab.setAttribute('aria-pressed', String(tab === activeTab));
+                      });
+
+                      this.querySelectorAll('.color-pattern-picker__item').forEach((item) => {
+                        item.hidden = color !== 'all' && !item.dataset.colors.split(' ').includes(color);
+                      });
+
+                      this.querySelector('.color-pattern-picker__grid')?.scrollTo({ left: 0, behavior: 'smooth' });
+                    }
+
+                    preview(item) {
+                      const output = this.querySelector('.color-pattern-picker__selected');
+                      if (output) output.textContent = item ? item.dataset.title : output.dataset.default;
                     }
                   });
                 }
@@ -629,7 +682,7 @@
                 this, so a missing metafield doesn't fail silently.
               {%- endcomment -%}
               <p class="color-pattern-picker__editor-hint text-subdued">
-                "{{ product.title }}" has no colors in its "{{ color_metafield_path }}" metafield, so this block is hidden.
+                "{{ product.title }}" has no products in its "{{ products_metafield_path }}" metafield, so this block is hidden.
               </p>
             {%- endif -%}
 
@@ -1280,4 +1333,4 @@
       <input type="hidden" disabled name="id" value="{{ product.selected_or_first_available_variant.id }}">
     {%- endform -%}
   {%- endunless -%}
-</safe-sticky>
+</safe-sticky>
