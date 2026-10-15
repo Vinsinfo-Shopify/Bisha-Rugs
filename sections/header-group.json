@@ -30,7 +30,7 @@
         "message_EUBwnB": {
           "type": "message",
           "settings": {
-            "text": "Flat 5% OFF if you order over $800"
+            "text": "Flat 5% OFF if you order over $1000"
           }
         },
         "message_QEkER8": {
@@ -95,7 +95,7 @@
             "images_position": "right",
             "image_1": "shopify://shop_images/Oushak_Rugs_Updated.png",
             "image_1_heading": "Oushak Rugs",
-            "image_1_text":"[count] items",
+            "image_1_text": "[count] items",
             "image_1_link": "shopify://collections/oushak-rugs",
             "image_2_heading": "",
             "image_2_text": "",
