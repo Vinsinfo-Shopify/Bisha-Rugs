@@ -13478,8 +13478,6 @@ a.marquee__item:hover .marquee__text {
   font-size:.85em!important;
   color:var(--rv-text)!important;
 }
-
-/* Date */
 #judgeme_product_reviews .jdgm-review-card__content .jm-stack--space-50>.jm-box{
   grid-column:2;
   grid-row:2;
@@ -13489,8 +13487,6 @@ a.marquee__item:hover .marquee__text {
   font-size:11px!important;
   color:var(--rv-muted)!important;
 }
-
-/* Title + body */
 #judgeme_product_reviews .jdgm-review-card__content>.jm-stack>.jm-stack--space-200{
   grid-column:1;
   grid-row:2;
@@ -13506,8 +13502,6 @@ a.marquee__item:hover .marquee__text {
   color:#444!important;
   margin:0;
 }
-
-/* Photos */
 #judgeme_product_reviews .jdgm-review-card__media-cover{
   display:flex;
   gap:6px;
@@ -13525,8 +13519,6 @@ a.marquee__item:hover .marquee__text {
   height:100%;
   object-fit:cover;
 }
-
-/* Transparency + product link */
 #judgeme_product_reviews .jm-transparency-badge-list div{
   font-size:10px!important;
   color:var(--rv-muted)!important;
@@ -13536,10 +13528,6 @@ a.marquee__item:hover .marquee__text {
   padding:0!important;
 }
 #judgeme_product_reviews .jm-product-variant-card p{font-size:11px!important}
-
-/* =========================================================
-   READ MORE
-   ========================================================= */
 #judgeme_product_reviews .jdgm-masonry-grid__fade{
   background:linear-gradient(to bottom,transparent,#fff)!important;
 }
@@ -13554,10 +13542,6 @@ a.marquee__item:hover .marquee__text {
   padding:10px 24px!important;
 }
 #judgeme_product_reviews .jdgm-masonry-grid__btn svg{display:none}
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
 @media (max-width:749px){
   #judgeme_product_reviews{padding:32px 16px}
   #judgeme_product_reviews .jm-review-widget-header{
