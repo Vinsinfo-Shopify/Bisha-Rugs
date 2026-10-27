@@ -10049,6 +10049,13 @@ ul {
   color: #656565;
 }
 
+.product-card__info .price-list sale-price.text-subdued {
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 700;
+  color: rgb(var(--text-color));
+}
+
 .product-card__tag {
   color: rgb(var(--text-color));
   font-size: 14px;
@@ -10326,6 +10333,10 @@ ul {
 
   .price-list .text-subdued {
     font-size: 12px;
+  }
+
+  .product-card__info .price-list sale-price.text-subdued {
+    font-size: 14px;
   }
 
   .badge.badge--custom {
