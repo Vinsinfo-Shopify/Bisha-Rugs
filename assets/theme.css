@@ -13420,7 +13420,7 @@ a.marquee__item:hover .marquee__text {
 #judgeme_product_reviews .jm-review-widget__header{margin-bottom:0!important}
 #judgeme_product_reviews .jm-button--secondary,
 #judgeme_product_reviews .jm-sort-filter,
-#judgeme_product_reviews .jm-sort-filter__select{
+#judgeme_product_reviews .jm-sort-filter__select, .jm-custom-answer-filter__text{
   background:transparent!important;
   border:0!important;
   font-size:12px!important;
