@@ -13717,10 +13717,6 @@ a.marquee__item:hover .marquee__text {
 
 #judgeme_product_reviews .jm-review-widget__header-and-body{gap:16px!important}
 #judgeme_product_reviews .jm-review-widget__header{margin-bottom:0!important}
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
 @media (max-width:749px){
   #judgeme_product_reviews{padding:32px 16px}
   #judgeme_product_reviews .jm-review-widget-header{
