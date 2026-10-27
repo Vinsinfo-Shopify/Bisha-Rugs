@@ -1,0 +1,944 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection_breadcrumb": {
+      "type": "collection-breadcrumb",
+      "settings": {}
+    },
+    "image_with_text_AF8648": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_PVB7Qh": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Oushak Rugs</p>",
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_TEbCEy": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Oushak rugs are hand-knotted and admired for their oversized motifs, soft pastel and timeless craftsman...<span style=\"text-decoration:underline\">Read more</span></p>",
+            "character_limit": 0
+          }
+        },
+        "icon_with_text_Cg9p8d": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group_1.png",
+            "text": "Free Insured Shipping",
+            "icon_size": 20,
+            "text_size": 16
+          }
+        },
+        "icon_with_text_8g93pM": {
+          "type": "icon_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Group_2.png",
+            "text": "30 Day Easy Returns",
+            "icon_size": 20,
+            "text_size": 16
+          }
+        }
+      },
+      "block_order": [
+        "heading_PVB7Qh",
+        "richtext_TEbCEy",
+        "icon_with_text_Cg9p8d",
+        "icon_with_text_8g93pM"
+      ],
+      "disabled": true,
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "custom_class": "",
+        "separate_section_with_border": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "image": "shopify://shop_images/Frame_1400009646_f3d0f848-1890-46d9-8bf4-d69c422a835b.jpg",
+        "enable_video": false,
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "end",
+        "content_width": "lg",
+        "section_width": "page",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
+        "layout_variant": "",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
+    "image_with_text_9TrLX9": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_J8Xmnf": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>{{ collection.title }}</p>",
+            "padding_top": 4,
+            "padding_bottom": 2,
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_YzFKam": {
+          "type": "richtext",
+          "settings": {
+            "content": "{{ collection.metafields.custom.collection_banner_content | metafield_tag }}",
+            "character_limit": 110
+          }
+        },
+        "icon_with_text_9ad9K6": {
+          "type": "icon_with_text",
+          "repeater": "{{ collection.metafields.custom.icon_text_item.value }}",
+          "settings": {
+            "icon": "{{ block.repeater.icon.value }}",
+            "text": "{{ block.repeater.text.value }}",
+            "icon_size": 20,
+            "text_size": 16
+          }
+        }
+      },
+      "block_order": [
+        "heading_J8Xmnf",
+        "richtext_YzFKam",
+        "icon_with_text_9ad9K6"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-4",
+        "custom_class": "collection_banner",
+        "separate_section_with_border": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 70,
+        "padding_right": 70,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "image": "{{ collection.metafields.custom.collection_banner.value }}",
+        "mobile_image": "{{ collection.metafields.custom.collection_banner_mobile.value }}",
+        "enable_video": false,
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": false,
+        "image_position": "end",
+        "content_width": "lg",
+        "section_width": "page",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
+        "layout_variant": "",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
+    "collection-banner": {
+      "type": "collection-banner",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "image": "shopify://shop_images/00df73a76c09ff5a794bf6f169ec525810b8146f.png",
+        "image_size": "xs",
+        "allow_transparent_header": true,
+        "show_image": true,
+        "reveal": true,
+        "enable_parallax": true,
+        "show_collection_title": true,
+        "show_collection_description": true,
+        "show_breadcrumb": true,
+        "content_width": "xs",
+        "text_alignment": "center",
+        "overlay_color": "#000000",
+        "overlay_opacity": 30
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "blocks": {
+        "push_promo_FyMcWV": {
+          "type": "push_promo",
+          "settings": {
+            "layout": "card",
+            "card_background": "#f1ece2",
+            "card_text_color": "#202020",
+            "card_link_color": "#55583c",
+            "card_heading_size": 22,
+            "card_heading_size_mobile": 16,
+            "color_scheme": "scheme-1",
+            "bordered": false,
+            "position": 10,
+            "size": "1",
+            "media_type": "image",
+            "image": "shopify://shop_images/df4757b35b342ceb512cface52f83f77935973da_bd47bb9b-60de-4c43-91be-b8b8e5ebb03e.png",
+            "overlay_color": "#0000004d",
+            "content_position": "align-self-start",
+            "alignment": "left",
+            "subheading": "Customize the size, colors and more  with expert guidance.",
+            "heading": "Want Something Unique? Customize your Rug.",
+            "heading_tag": "h5",
+            "style": "link",
+            "link_text": "GET IN TOUCH",
+            "url": "shopify://pages/contact",
+            "use_inquiry_email": true
+          }
+        }
+      },
+      "block_order": [
+        "push_promo_FyMcWV"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "hide_product_information": false,
+        "products_per_page": 48,
+        "products_per_row_mobile": "2",
+        "products_size_desktop": "large",
+        "show_grid_mode_selector": true,
+        "horizontal_spacing_factor": 1,
+        "vertical_spacing_factor": 1,
+        "filter_layout": "sidebar",
+        "quick_links_menu": "",
+        "show_sort_by": true,
+        "enable_new_filters": true,
+        "production_filters": "Availability, Price, Style",
+        "pf_filters_heading": "Filters",
+        "pf_filters_heading_gap": 18,
+        "pf_sidebar_width": 300,
+        "pf_sidebar_gap": 32,
+        "pf_sidebar_inset": 8,
+        "pf_products_per_row": 3,
+        "pf_value_columns": 3,
+        "pf_value_media_size": 67,
+        "pf_value_col_gap": 30,
+        "pf_value_row_gap": 27,
+        "pf_accordion_icon_width": 13,
+        "pf_accordion_icon_color": "#000000",
+        "pf_hide_color_in_sidebar": true,
+        "pf_hide_availability": false,
+        "pf_accent_color": "#55583c",
+        "pf_all_option_filters": "Style, Shape",
+        "pf_all_option_image": "shopify://shop_images/00df73a76c09ff5a794bf6f169ec525810b8146f_6.png",
+        "pf_checkbox_size": 18,
+        "pf_checkbox_radius": 2,
+        "pf_checkbox_gap": 12,
+        "pf_checkbox_row_gap": 10,
+        "pf_checkbox_nudge": -7,
+        "pf_checkbox_checked": "#55583c",
+        "pf_checkbox_border": "#d9d7d0",
+        "pf_hide_view_switcher": true,
+        "pf_hide_toolbar_rules": true,
+        "color_filter_heading": "Shop by Color:",
+        "color_filter_label": "Color",
+        "color_swatch_size": 64,
+        "color_strip_gap_top": 24,
+        "color_strip_gap_top_mobile": 20,
+        "color_strip_gap": 16,
+        "pf_toolbar_gap": 10,
+        "color_ring_bleed": 4,
+        "color_hide_heading_mobile": true,
+        "color_swatch_gap": 28,
+        "color_all_label": "All",
+        "show_filters": true,
+        "show_results_count": true,
+        "show_filter_group_name": false,
+        "show_filter_values_count": true,
+        "open_filters_by_default": true
+      }
+    },
+    "image_with_text_zkLCMr": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_FrwqEe": {
+          "type": "subheading",
+          "settings": {
+            "text": "CUSTOM RUGS"
+          }
+        },
+        "heading_A87yf9": {
+          "type": "heading",
+          "settings": {
+            "text": "<p>Can't Find the Perfect Rug? <br/>Let's Create It Together.</p>",
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_cVc9n7": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Choose the ideal size, colors, materials, and design with guidance from our rug experts. Our artisans will transform your vision to reality.</p>",
+            "character_limit": 0
+          }
+        },
+        "button_CMc8UT": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "GET IN TOUCH",
+            "url": "",
+            "use_inquiry_email": true,
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "subheading_FrwqEe",
+        "heading_A87yf9",
+        "richtext_cVc9n7",
+        "button_CMc8UT"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
+        "custom_class": "custom_rugs",
+        "separate_section_with_border": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "padding_left": 0,
+        "padding_right": 0,
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "image": "shopify://shop_images/df4757b35b342ceb512cface52f83f77935973da.png",
+        "enable_video": true,
+        "media_position_mobile": "before_text",
+        "reveal_on_scroll": true,
+        "image_position": "start",
+        "content_width": "sm",
+        "section_width": "page",
+        "trade_media_gap": 0,
+        "trade_feature_gap_mobile": 12,
+        "trade_para_top": 16,
+        "trade_para_bottom": 24,
+        "trade_para_top_mobile": 12,
+        "trade_para_bottom_mobile": 14,
+        "trade_outer_spacing": 50,
+        "trade_button_background": "#4f5b3f",
+        "trade_button_text": "#ffffff",
+        "layout_variant": "",
+        "remove_vertical_spacing": true,
+        "show_features": false
+      }
+    },
+    "find_perfect_look_UiX8Wp": {
+      "type": "find-perfect-look",
+      "blocks": {
+        "image_8LhQP8": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_1.png",
+            "ratio": "4 / 5",
+            "product_1": "oushak-rug-9x12-turkish-knot-rug-hand-knotted-vintage-antique-oushak-wool-area-rug-for-living-room-and-dining-room-quick-ship",
+            "product_1_horizontal_position": 30,
+            "product_1_vertical_position": 85,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_q9DmhG": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_3_c0c747f8-418d-4c40-86b0-b255956c95d4.png",
+            "ratio": "1 / 1",
+            "product_1": "handmade-oushak-wool-rug-muted-pink-brown-vintage-turkish-design",
+            "product_1_horizontal_position": 72,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_MqT9QB": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_5.png",
+            "ratio": "4 / 5",
+            "product_1": "l-010-agatha-hand-knotted-rug",
+            "product_1_horizontal_position": 14,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_qWmzXa": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_2.png",
+            "ratio": "1 / 1",
+            "product_1": "white-color-modern-design-rug-bisha-rugs",
+            "product_1_horizontal_position": 85,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_6LH4GY": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_4.png",
+            "ratio": "4 / 5",
+            "product_1": "handmade-oushak-wool-rug-peach-ivory-brown-floral-medallion",
+            "product_1_horizontal_position": 68,
+            "product_1_vertical_position": 77,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_cBqCWK": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_6.png",
+            "ratio": "1 / 1",
+            "product_1": "l-023-beth-mini-hand-knotted-rug",
+            "product_1_horizontal_position": 48,
+            "product_1_vertical_position": 85,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_4htHih": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_1.png",
+            "ratio": "4 / 5",
+            "product_1": "oushak-rug-9x12-turkish-knot-rug-hand-knotted-vintage-antique-oushak-wool-area-rug-for-living-room-and-dining-room-quick-ship",
+            "product_1_horizontal_position": 30,
+            "product_1_vertical_position": 85,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_aUhejD": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_3_c0c747f8-418d-4c40-86b0-b255956c95d4.png",
+            "ratio": "1 / 1",
+            "product_1": "handmade-oushak-wool-rug-muted-pink-brown-vintage-turkish-design",
+            "product_1_horizontal_position": 72,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_QJbUTn": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_5.png",
+            "ratio": "4 / 5",
+            "product_1": "l-010-agatha-hand-knotted-rug",
+            "product_1_horizontal_position": 14,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_n3xeFb": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_2.png",
+            "ratio": "1 / 1",
+            "product_1": "white-color-modern-design-rug-bisha-rugs",
+            "product_1_horizontal_position": 85,
+            "product_1_vertical_position": 92,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_zkzqqV": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_4.png",
+            "ratio": "4 / 5",
+            "product_1": "handmade-oushak-wool-rug-peach-ivory-brown-floral-medallion",
+            "product_1_horizontal_position": 68,
+            "product_1_vertical_position": 77,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        },
+        "image_YaPbmt": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Find_the_perfect_look_-_6.png",
+            "ratio": "1 / 1",
+            "product_1": "l-023-beth-mini-hand-knotted-rug",
+            "product_1_horizontal_position": 48,
+            "product_1_vertical_position": 85,
+            "product_2": "",
+            "product_2_horizontal_position": 65,
+            "product_2_vertical_position": 45,
+            "product_3": "",
+            "product_3_horizontal_position": 45,
+            "product_3_vertical_position": 25
+          }
+        }
+      },
+      "block_order": [
+        "image_8LhQP8",
+        "image_q9DmhG",
+        "image_MqT9QB",
+        "image_qWmzXa",
+        "image_6LH4GY",
+        "image_cBqCWK",
+        "image_4htHih",
+        "image_aUhejD",
+        "image_QJbUTn",
+        "image_n3xeFb",
+        "image_zkzqqV",
+        "image_YaPbmt"
+      ],
+      "name": "Find the perfect look",
+      "settings": {
+        "color_scheme": "",
+        "custom_class": "perfect_look",
+        "background": "#fffbf3",
+        "padding_top": 70,
+        "padding_bottom": 70,
+        "subheading": "GET INSPIRED",
+        "title": "Find the Perfect Look",
+        "heading_style": "h2",
+        "eyebrow_gap": 4,
+        "heading_weight": "400",
+        "header_gap": 24,
+        "columns": 3,
+        "columns_mobile": "2",
+        "grid_gap": 12,
+        "grid_gap_mobile": 8,
+        "image_radius": 2,
+        "hotspot_size": 14,
+        "hotspot_color": "#ffffff",
+        "card_width_max": 344,
+        "card_width_share": 80,
+        "card_min_width": 260,
+        "card_width_mobile_px": 344,
+        "card_opacity_pct": 82,
+        "thumb_width": 66,
+        "card_margin_mobile_px": 20,
+        "gutter_mobile": 12,
+        "card_radius": 2,
+        "card_border_color": "#e6e6e6",
+        "cta_text": "SEE ALL INSPIRATION",
+        "cta_link": "shopify://collections/all",
+        "cta_background": "#4f5b3f",
+        "cta_text_color": "#ffffff",
+        "cta_gap": 32
+      }
+    },
+    "collection_list_xqVd7g": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_6m4Nhf": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "scheme-4",
+            "collection": "oushak-rugs",
+            "image": "shopify://shop_images/Oushak_Rugs_bdb6cd46-c650-45b2-9254-35779a65dfcc.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Oushak Rugs",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0
+          }
+        },
+        "collection_Kbhdbz": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "scheme-4",
+            "collection": "new-arrivals",
+            "image": "shopify://shop_images/Best_Sellers.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Best Sellers",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0
+          }
+        },
+        "collection_KdHw9q": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "",
+            "collection": "new-arrivals",
+            "image": "shopify://shop_images/New_Arrivals.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "New Arrivals",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0
+          }
+        },
+        "collection_VHBk3i": {
+          "type": "collection",
+          "settings": {
+            "sbs_item": "",
+            "color_scheme": "",
+            "collection": "all",
+            "image": "shopify://shop_images/Shop_All.png",
+            "expand_collection": false,
+            "content_position": "place-self-end-start text-start",
+            "subheading": "",
+            "title": "Shop All",
+            "button_text": "",
+            "button_link": "",
+            "button_style": "solid",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "collection_6m4Nhf",
+        "collection_Kbhdbz",
+        "collection_KdHw9q",
+        "collection_VHBk3i"
+      ],
+      "name": "t:sections.collection_list.presets.collection_list.name",
+      "settings": {
+        "layout_variant": "",
+        "custom_class": "explore_our_range",
+        "sbs_menu": "",
+        "sbs_background": "#f3eee4",
+        "sbs_parent_item": "",
+        "sbs_subheading_mobile": "",
+        "sbs_title_mobile": "",
+        "sbs_heading_gap": 24,
+        "sbs_mobile_fill": "paired",
+        "sbs_mobile_gap": 5,
+        "sbs_show_image": true,
+        "sbs_show_title": true,
+        "sbs_show_arrow": true,
+        "sbs_show_nav": true,
+        "sbs_show_progress": true,
+        "color_scheme": "scheme-1",
+        "separate_section_with_border": true,
+        "image_size": "auto",
+        "show_text_outside": false,
+        "space_items": true,
+        "stack_collections": true,
+        "collections_per_row_desktop": 4,
+        "stack_collections_mobile": true,
+        "collections_per_row_mobile": "2",
+        "subheading": "Categories",
+        "title": "Explore Our Range",
+        "heading_style": "h1",
+        "content": ""
+      }
+    },
+    "recently_viewed_products_9enjJe": {
+      "type": "recently-viewed-products",
+      "name": "t:sections.recently_viewed_products.presets.recently_viewed_products.name",
+      "settings": {
+        "separate_section_with_border": true,
+        "remove_vertical_spacing": true,
+        "custom_class": "recent_products",
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "hide_product_information": false,
+        "stack_products": false,
+        "products_count": 9,
+        "products_per_row_mobile": "2",
+        "products_per_row_desktop": 4,
+        "horizontal_spacing_factor": 1,
+        "vertical_spacing_factor": 1,
+        "subheading": "CONTINUE BROWSING",
+        "title": "Recently Viewed",
+        "heading_style": "h2",
+        "content": ""
+      }
+    },
+    "faq_cCHDjP": {
+      "type": "faq",
+      "blocks": {
+        "question_LGzJkm": {
+          "type": "question",
+          "repeater": "{{ collection.metafields.custom.collection_faqs.value }}",
+          "settings": {
+            "question": "{{ block.repeater.question.value }}",
+            "answer": "{{ block.repeater.answer | metafield_tag }}",
+            "custom_class": ""
+          }
+        },
+        "question_3WWPqk": {
+          "type": "question",
+          "settings": {
+            "question": "Why invest in a handmade Oushak rug?",
+            "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_UqmTXh": {
+          "type": "question",
+          "settings": {
+            "question": "How should I care for my Oushak rug?",
+            "answer": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_3BX9Rm": {
+          "type": "question",
+          "settings": {
+            "question": "Can I return my rug?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_HPtNMN": {
+          "type": "question",
+          "settings": {
+            "question": "What if my rug arrives damaged?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "custom_class": ""
+          }
+        },
+        "question_hUMepf": {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>",
+            "custom_class": ""
+          }
+        }
+      },
+      "block_order": [
+        "question_LGzJkm",
+        "question_3WWPqk",
+        "question_UqmTXh",
+        "question_3BX9Rm",
+        "question_HPtNMN",
+        "question_hUMepf"
+      ],
+      "name": "t:sections.faq.presets.faq.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "show_categories": false,
+        "open_first_question": false,
+        "custom_class": "collection_faq",
+        "faq_custom_class": "",
+        "show_breadcrumb": false,
+        "breadcrumb_home_label": "Home",
+        "breadcrumb_current_label": "FAQs",
+        "subheading": "FAQs",
+        "title": "Your Questions Answered",
+        "heading_style": "h2",
+        "content": "",
+        "show_sidebar": false,
+        "sidebar_heading": "Contact Us",
+        "sidebar_text": "<p>If you have an issue or question that requires immediate assistance, you can mail us on love@example.com</p><p>We will reply as soon as possible with solution.</p>",
+        "sidebar_button_1_label": "Contact Us",
+        "sidebar_button_1_link": "",
+        "sidebar_button_2_label": "About Us",
+        "sidebar_button_2_link": "",
+        "sidebar_custom_class": "",
+        "show_image": true,
+        "image": "shopify://shop_images/c0a4d61bbc28d2127363ecf547d1f6829f8d6d42_1.png",
+        "image_max_height": 641
+      }
+    },
+    "multi_column_YffJWe": {
+      "type": "multi-column",
+      "blocks": {
+        "image_with_text_HLGxLF": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_7.png",
+            "title": "Give Us a Call",
+            "subheading": "",
+            "heading_tag": "h3",
+            "custom_heading_size": 24,
+            "content": "<p>Our experts are just a call away to help you find your perfect rug.</p>",
+            "link_url": "tel:+1 (415) 980-7774",
+            "open_new_tab": false,
+            "link_text": "+1 (415) 980-7774",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        },
+        "image_with_text_gdjPUn": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/tabler_video_1.png",
+            "title": "Virtual Appointment",
+            "subheading": "",
+            "heading_tag": "h3",
+            "custom_heading_size": 24,
+            "content": "<p>Schedule a call to explore designs, ask questions and shop online with our experts.</p>",
+            "link_url": "https://calendly.com/love-bisharugs/30min",
+            "open_new_tab": true,
+            "link_text": "Book Now",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        },
+        "image_with_text_9WNFQm": {
+          "type": "image_with_text",
+          "settings": {
+            "icon": "shopify://shop_images/Vector_8.png",
+            "title": "Send Us an Email",
+            "subheading": "",
+            "heading_tag": "h3",
+            "custom_heading_size": 24,
+            "content": "<p>Prefer email? Send your query and our team will respond with all the details you need.</p>",
+            "link_url": "mailto:love@bisharugs.com",
+            "open_new_tab": false,
+            "link_text": "love@bisharugs.com",
+            "show_rating": false,
+            "rating": 5,
+            "rating_color": "#e8b923",
+            "number": "",
+            "number_color": "#b76e45",
+            "mobile_detail_text": "",
+            "review_layout": false
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_HLGxLF",
+        "image_with_text_gdjPUn",
+        "image_with_text_9WNFQm"
+      ],
+      "name": "t:sections.multi_column.presets.multi_column.name",
+      "settings": {
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
+        "custom_class": "Collection_contact_us",
+        "separate_section_with_border": true,
+        "remove_section_spacing": true,
+        "full_width": false,
+        "columns_per_row": 3,
+        "stack_on_mobile": true,
+        "enable_carousel": false,
+        "overlap_image": false,
+        "content_alignment": "center",
+        "text_alignment": "start",
+        "column_gap_mobile": 18,
+        "row_gap_mobile": 24,
+        "column_gap_desktop": 28,
+        "row_gap_desktop": 28,
+        "media_height": "379px",
+        "media_fit": "cover",
+        "subheading": "CONTACT US",
+        "title": "Still Have Questions?",
+        "heading_style": "h2",
+        "content": "<p>We’re here to help you pick the right rug for your space, talk to our experts today.</p>",
+        "padding_top_mobile": 0,
+        "padding_bottom_mobile": 0,
+        "padding_left_mobile": 0,
+        "padding_right_mobile": 0,
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0
+      }
+    }
+  },
+  "order": [
+    "collection_breadcrumb",
+    "image_with_text_AF8648",
+    "image_with_text_9TrLX9",
+    "collection-banner",
+    "main",
+    "image_with_text_zkLCMr",
+    "find_perfect_look_UiX8Wp",
+    "collection_list_xqVd7g",
+    "recently_viewed_products_9enjJe",
+    "faq_cCHDjP",
+    "multi_column_YffJWe"
+  ]
+}

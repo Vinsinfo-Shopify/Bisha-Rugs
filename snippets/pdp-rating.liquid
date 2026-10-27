@@ -1,0 +1,54 @@
+{%- doc -%}
+  PDP rating.
+
+  Stars, rating value, then the review count as a link that scrolls to the
+  reviews section on the same page:
+
+    ★★★★★ 4.9 (12 reviews)
+
+  The stars and the value come from the theme's own product-rating snippet, so
+  the drawing, the half-star rounding and the accessibility labels stay
+  Prestige's. Only the count is added, as an anchor - the snippet is rendered
+  once, not twice, because a second render would draw another star inside the
+  brackets.
+
+  Data source is product.metafields.reviews.rating and .rating_count, the same
+  metafields the product cards read and Judge.me keeps in sync. No second
+  rating system, nothing hardcoded: the count wording comes from the theme's
+  own product.rating_count translation, so pluralisation and other languages
+  follow the theme.
+
+  Renders nothing when the product has no ratings, so a new product shows no
+  empty stars and no "0 reviews" link.
+
+  Usage - a "Liquid" block where the rating should appear:
+
+    {% render 'pdp-rating' %}
+
+  The target defaults to #customer-reviews. Pass another id if the reviews
+  section ends up with a different one:
+
+    {% render 'pdp-rating', target: '#judgeme_product_reviews' %}
+{%- enddoc -%}
+
+{%- liquid
+  assign review_target = target | default: '#customer-reviews'
+  assign rating_count = product.metafields.reviews.rating_count.value
+-%}
+
+{%- if product.metafields.reviews.rating.value != blank -%}
+  <div class="pdp-rating">
+    {%- render 'product-rating', product: product -%}
+
+    {%- if rating_count > 0 -%}
+      {%- comment -%}
+        A plain in-page anchor rather than a script: the browser does the
+        scrolling, it works before any JavaScript has run, and the theme's own
+        scroll-behavior applies.
+      {%- endcomment -%}
+      <a class="pdp-rating__link" href="{{ review_target }}">
+        ({{ 'product.rating_count' | t: count: rating_count }})
+      </a>
+    {%- endif -%}
+  </div>
+{%- endif -%}

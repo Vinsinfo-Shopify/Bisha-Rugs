@@ -1,0 +1,264 @@
+{%- doc -%}
+  Display the facets for a given resource.
+
+  @param {object} results - either collection or search drop to extract the filters from
+  @param {boolean} [show_filters] - a boolean indicating if the filters should show or not (useful if merchants want only to show quick links without filters)
+  @param {boolean} [open_filters_by_default] - if set to true, all the collapsible filters are automatically open
+  @param {boolean} [update_on_change] - if set to true the results will reload as soon as an option is changed
+  @param {object} [quick_links_menu] - an optional menu that will show fixed links
+  @param {string} [context] - an optional context to generate unique ID if facets are outputted several times
+  @param {string} [allowed_filters] - an optional comma separated allow-list of filters to render, matched on either the filter label or its param_name, case insensitive. When omitted (the default) every filter from the resource is rendered, so existing callers are unaffected.
+  @param {boolean} [hide_facet_checkbox] - whether list filter values hide their checkbox and show a dot instead. Defaults to true, which is the theme's existing appearance, so callers that do not pass it are unaffected. Pass false to render a real checkbox.
+  @param {string} [all_option_filters] - an optional comma separated list of filters (matched on label or param_name, case insensitive) that get a leading "All" tile clearing every value of that group. Only applies to image/swatch grids.
+  @param {string} [all_option_label] - the label of that tile. Defaults to "All".
+  @param {object} [all_option_image] - an optional image for that tile. A gradient is drawn when it is empty.
+  @param {object} [section]
+{%- enddoc -%}
+
+{%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
+{%- capture id_prefix -%}facets-{{ context }}{%- endcapture -%}
+
+{%- liquid
+  assign all_option_count = results.all_products_count | default: results.results_count
+  assign all_option_list = ''
+
+  if all_option_filters != blank
+    assign all_option_list = all_option_filters | downcase | replace: ', ', ',' | strip | split: ','
+  endif
+-%}
+
+<facets-form
+  {% if update_on_change %}
+    update-on-change
+  {% endif %}
+  section-id="{{ section.id }}"
+>
+  <form method="GET" action="{{ request.path }}" class="facets">
+    {%- comment -%}We always reset to the first page so that when criteria change, the page is restored to the first one{%- endcomment -%}
+    <input type="hidden" name="page" value="">
+
+    {%- if results.current_type != blank or results.current_vendor != blank -%}
+      <input type="hidden" name="q" value="{{ results.current_vendor | default: results.current_type | escape }}">
+    {%- endif -%}
+
+    {%- if results.sort_by != blank -%}
+      <input type="hidden" name="sort_by" value="{{ results.sort_by }}">
+    {%- endif -%}
+
+    {%- if request.page_type == 'search' -%}
+      <input type="hidden" name="q" value="{{ results.terms | escape }}">
+    {%- endif -%}
+
+    <div class="accordion-list">
+      {%- if quick_links_menu.links.size > 0 -%}
+        {%- capture filter_content -%}
+          <div class="v-stack gap-2.5">
+            {%- for link in quick_links_menu.links -%}
+              <a href="{{ link.url }}" {% unless link.active %}class="link-faded"{% endunless %}>{{ link.title }}</a>
+            {%- endfor -%}
+          </div>
+        {%- endcapture -%}
+
+        {%- render 'accordion', title: quick_links_menu.title, content: filter_content, open: open_filters_by_default, show_arrow: true -%}
+      {%- endif -%}
+
+      {%- if show_filters -%}
+        {%- comment -%}
+          Optional allow-list.
+
+          Opt-in by design: with allowed_filters omitted the list is blank, the
+          guard below is skipped entirely, and every caller that does not pass
+          it behaves exactly as before. Search and any other context are
+          therefore untouched.
+
+          Matching accepts either the filter's label or its param_name, so a
+          merchant can write "Availability, Price" while a developer can write
+          "filter.v.availability, filter.v.price", and a renamed label does not
+          silently drop a filter if the param is listed.
+
+          It is an allow-list rather than a block-list on purpose: a filter
+          added in Search & Discovery later is hidden here automatically,
+          without anyone having to remember to add it to a list of exclusions.
+        {%- endcomment -%}
+        {%- liquid
+          assign allow_list = ''
+
+          if allowed_filters != blank
+            assign allow_list = allowed_filters | downcase | replace: ', ', ',' | strip | split: ','
+          endif
+        -%}
+
+        {%- for filter in results.filters -%}
+          {%- liquid
+            assign render_filter = true
+
+            if allow_list != ''
+              assign render_filter = false
+              assign this_label = filter.label | downcase | strip
+              assign this_param = filter.param_name | downcase | strip
+
+              for allowed in allow_list
+                assign allowed_key = allowed | strip
+
+                if this_label == allowed_key or this_param == allowed_key
+                  assign render_filter = true
+                  break
+                endif
+              endfor
+            endif
+          -%}
+
+          {%- if render_filter -%}
+          {%- capture filter_content -%}
+            {%- if filter.type == 'boolean' or filter.param_name == 'filter.v.availability' -%}
+              {%- if filter.param_name == 'filter.v.availability' -%}
+                <div class="checkbox-control">
+                  <input id="{{ id_prefix }}-{{ filter.param_name }}" type="checkbox" class="switch" name="{{ filter.param_name }}" value="1" {% if filter.active_values.size > 0 %}checked{% endif %}>
+                  <label for="{{ id_prefix }}-{{ filter.param_name }}" class="text-subdued">{{- 'collection.faceting.in_stock_only' | t -}}</label>
+                </div>
+              {%- else -%}
+                <div class="v-stack gap-2.5">
+                  {%- for filter_value in filter.values -%}
+                    {%- liquid
+                      if section.settings.show_filter_values_count
+                        assign label = filter_value.label | append: ' (' | append: filter_value.count | append: ')'
+                      else
+                        assign label = filter_value.label
+                      endif
+                    -%}
+
+                    <div class="checkbox-control">
+                      {%- capture boolean_index -%}{% increment filter_boolean %}{%- endcapture -%}
+
+                      <input id="{{ id_prefix }}-{{ filter_value.param_name }}-{{ boolean_index }}" type="checkbox" class="switch" name="{{ filter_value.param_name }}" value="{{ filter_value.value }}" {% if filter_value.active %}checked{% endif %}>
+                      <label for="{{ id_prefix }}-{{ filter_value.param_name }}-{{ boolean_index }}" class="text-subdued">{{ label }}</label>
+                    </div>
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            {%- else -%}
+              {%- assign downcase_label = filter.label | downcase -%}
+
+              {%- case filter.type -%}
+                {%- when 'list' -%}
+                  {%- liquid
+                    # A "swatch" filter whose values carry an image (Search &
+                    # Discovery's "Swatch pattern" set to an image field, e.g.
+                    # a metaobject thumbnail) is presented the same way as a
+                    # true "image" filter: a grid of photo tiles with a
+                    # visible label and count, rather than the small colour
+                    # dot used for plain colour swatches.
+                    assign is_image_grid = false
+
+                    if filter.presentation == 'image'
+                      assign is_image_grid = true
+                    elsif filter.presentation == 'swatch' and filter.values.first.swatch.image != blank
+                      assign is_image_grid = true
+                    endif
+
+                    if is_image_grid
+                      assign wrapper_class_list = 'option-value-list'
+                    elsif filter.presentation == 'swatch' or color_label_list contains downcase_label
+                      assign wrapper_class_list = 'h-stack wrap gap-2'
+                    else
+                      assign wrapper_class_list = 'v-stack gap-2.5'
+                    endif
+
+                    assign show_all_option = false
+
+                    if is_image_grid and all_option_list != ''
+                      assign this_filter_label = filter.label | downcase | strip
+                      assign this_filter_param = filter.param_name | downcase | strip
+
+                      for wanted_all in all_option_list
+                        assign wanted_all_key = wanted_all | strip
+
+                        if this_filter_label == wanted_all_key or this_filter_param == wanted_all_key
+                          assign show_all_option = true
+                          break
+                        endif
+                      endfor
+                    endif
+                  -%}
+
+                  <div class="{{ wrapper_class_list }}">
+                    {%- if show_all_option -%}
+                      {%- capture all_option_id -%}{{ id_prefix }}-all-{{ filter.param_name | handle }}{%- endcapture -%}
+
+                      <input
+                        class="sr-only"
+                        type="checkbox"
+                        id="{{ all_option_id }}"
+                        data-facet-all
+                        {% if filter.active_values.size == 0 %}checked{% endif %}
+                      >
+                      <label class="option-value" for="{{ all_option_id }}">
+                        {%- if all_option_image != blank -%}
+                          {{-
+                            all_option_image
+                            | image_url: width: 180
+                            | image_tag: loading: 'lazy', sizes: '(max-width: 749px) 20vw, 90px', widths: '67,134,180', class: 'option-value__swatch'
+                          -}}
+                        {%- else -%}
+                          <span class="option-value__swatch option-value__swatch--all"></span>
+                        {%- endif -%}
+
+                        <span>
+                          {{- all_option_label | default: 'All' -}}
+                          {%- if all_option_count != blank %}&nbsp;({{ all_option_count }}){% endif -%}
+                        </span>
+                      </label>
+                    {%- endif -%}
+
+                    {% liquid
+                      for filter_value in filter.values
+                        assign value_id_prefix = id_prefix | append: '-' | append: forloop.index
+
+                        if is_image_grid
+                          render 'option-value', type: 'image_filter', filter_value: filter_value, id_prefix: value_id_prefix, show_count: section.settings.show_filter_values_count
+                        elsif filter.presentation == 'swatch' or color_label_list contains downcase_label
+                          render 'option-value', type: 'swatch', filter_value: filter_value, show_tooltip: true, id_prefix: value_id_prefix
+                        else
+                          if section.settings.show_filter_values_count
+                            assign label = filter_value.label | append: ' (' | append: filter_value.count | append: ')'
+                          else
+                            assign label = filter_value.label
+                          endif
+
+                          # hide_checkbox was hardcoded to true here, which is why
+                          # list values rendered as plain text with a dot rather
+                          # than a checkbox. It now follows a parameter that
+                          # defaults to true, so every existing caller keeps the
+                          # same appearance and only a caller that opts in gets
+                          # the checkbox.
+                          assign hide_value_checkbox = true
+                          if hide_facet_checkbox == false
+                            assign hide_value_checkbox = false
+                          endif
+
+                          render 'checkbox', hide_checkbox: hide_value_checkbox, label: label, name: filter_value.param_name, value: filter_value.value, checked: filter_value.active, id_prefix: value_id_prefix
+                        endif
+                      endfor
+                    %}
+                  </div>
+
+                {%- when 'price_range' -%}
+                  {%- render 'price-range', filter: filter -%}
+              {%- endcase -%}
+            {%- endif -%}
+          {%- endcapture -%}
+
+          {%- if filter_content != blank -%}
+            {%- render 'accordion', title: filter.label, content: filter_content, open: open_filters_by_default, show_arrow: true -%}
+          {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    <noscript style="display: block; margin-top: 20px;">
+      {%- assign button_content = 'collection.faceting.apply_filters' | t -%}
+      {%- render 'button', content: button_content, stretch: true -%}
+    </noscript>
+  </form>
+</facets-form>

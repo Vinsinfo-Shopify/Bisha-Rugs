@@ -1,0 +1,71 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "",
+        "show_title": true,
+        "page_width": "xs"
+      }
+    },
+    "contact-form": {
+      "type": "contact",
+      "blocks": {
+        "text_block_GaTqgw": {
+          "type": "text_block",
+          "settings": {
+            "heading_text_block": "Customer Support",
+            "description_text_block": "<p>Have a question? Please contact us using the customer support channels below. (We'll connect with you within 24 hours)</p>",
+            "content": "<p><strong>Customer Care:<br/></strong>Email: <a href=\"mailto:Love@bisharugs.com\" title=\"mailto:Love@bisharugs.com\">love@bisharugs.com</a><br/>Working hours: Everyday 10:00am - 5:00pm</p><p><strong>Trade Program:<br/></strong>Email: <a href=\"mailto:bisharugs@gmail.com\" title=\"mailto:bisharugs@gmail.com\">bisharugs@gmail.com</a><br/><br/></p>"
+          }
+        },
+        "contact_AXn63T": {
+          "type": "contact",
+          "settings": {
+            "heading": "Contact Us",
+            "description": "<p>Please submit all general enquiries in the contact form below and we look forward to hearing from you soon.</p>",
+            "show_privacy": true,
+            "name": "Name",
+            "email": "E-mail",
+            "your_comment": "Message",
+            "message_max_length": 500,
+            "button_label": "Send"
+          }
+        }
+      },
+      "block_order": [
+        "text_block_GaTqgw",
+        "contact_AXn63T"
+      ],
+      "settings": {
+        "section_width": "wide",
+        "color_scheme": "scheme-4c11c2e1-14d6-4fc0-af50-467273763670",
+        "separate_section_with_border": true,
+        "subheading": "",
+        "title": "Connect with Us",
+        "heading_style": "h2",
+        "content": "<p>Please use the below form or connect us on mail.</p>",
+        "iframe": "",
+        "column_gap": 100,
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "reset_spacing": false,
+        "custom_class": "contact_us"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "contact-form"
+  ]
+}

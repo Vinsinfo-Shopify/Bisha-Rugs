@@ -1,0 +1,36 @@
+{%- doc -%}
+  Renders one product swatch of the "Color & pattern picker" block (see product-info.liquid).
+
+  @param {object} swatch_product - the product to link to
+  @param {boolean} [is_current] - if true, the swatch is the product currently displayed
+  @param {string} [color_tag_prefix] - prefix of the color tags (eg. "Color_" for "Color_Pinks")
+{%- enddoc -%}
+{%- liquid
+  assign color_tag_prefix = color_tag_prefix | default: 'Color_'
+  assign color_tag_prefix_downcase = color_tag_prefix | downcase
+  assign color_tag_prefix_size = color_tag_prefix | size
+
+  assign swatch_colors = ''
+  for tag in swatch_product.tags
+    assign tag_start = tag | slice: 0, color_tag_prefix_size | downcase
+    if tag_start == color_tag_prefix_downcase and tag.size > color_tag_prefix_size
+      assign color_handle = tag | slice: color_tag_prefix_size, 100 | replace: '_', ' ' | strip | handleize
+      assign swatch_colors = swatch_colors | append: color_handle | append: ' '
+    endif
+  endfor
+-%}
+
+<a
+  href="{{ swatch_product.url }}"
+  class="color-pattern-picker__item"
+  data-colors="{{ swatch_colors | strip }}"
+  data-title="{{ swatch_product.title | truncatewords: 2, '' | downcase | escape }}"
+  title="{{ swatch_product.title | escape }}"
+  {% if is_current %}aria-current="page"{% endif %}
+>
+  {%- if swatch_product.featured_media != blank -%}
+    {{- swatch_product.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', sizes: '56px', widths: '56,112,160', alt: swatch_product.title -}}
+  {%- else -%}
+    <span class="sr-only">{{ swatch_product.title | escape }}</span>
+  {%- endif -%}
+</a>

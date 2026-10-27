@@ -1,0 +1,1046 @@
+{%- doc -%}
+  Row 09 - "Styled by Bisha".
+
+  A centre-focused carousel of vertical videos, each with its product attached
+  underneath. One block is one complete card, so video, product and every
+  card-level setting travel together when the block is reordered.
+
+  Reused rather than rebuilt:
+    snippets/media.liquid, price-list.liquid, icon.liquid    reused as-is
+    snippets/media.liquid    video or image, centred play button, one-at-a-time group
+    snippets/price-list.liquid   price and compare-at, card context
+    snippets/icon.liquid     the circular arrow
+
+  The only thing Prestige does not provide is the larger centre card.
+  ScrollCarousel exposes selectedIndex and fires carousel:settle but does not
+  mark the active cell, so a small element below toggles a class on settle.
+  Nothing global is touched.
+
+  Measured from the 1440 Figma frame:
+    side card    281 x 519.5      centre card 329 x 605.5   (1.166x, shared midpoint)
+    gap 24px     media ratio 281/449      info strip about 70px
+{%- enddoc -%}
+
+{%- liquid
+  assign card_count = 0
+
+  for block in section.blocks
+    unless block.settings.enabled == false
+      assign card_count = card_count | plus: 1
+    endunless
+  endfor
+-%}
+
+{%- if card_count > 0 -%}
+  {%- capture carousel_id -%}real-homes-{{ section.id }}{%- endcapture -%}
+
+  <style>
+    /* Everything is prefixed with this section's id, so no other section,
+       carousel or product card can be affected. */
+    #shopify-section-{{ section.id }} .real-homes {
+      background: {{ section.settings.background }};
+    }
+
+    /* The track is wider than the viewport by design and scrolls internally, but
+       any sub-pixel or scrollbar rounding would still be reported as document
+       width. overflow-x: clip contains it at the section boundary.
+       clip rather than hidden: clip does not create a scroll container, so it
+       cannot capture the page scroll or break position: sticky anywhere else. */
+    #shopify-section-{{ section.id }} .real-homes,
+    #shopify-section-{{ section.id }} .real-homes__inner {
+      overflow-x: clip;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__inner {
+      padding-block-start: {{ section.settings.padding_top }}px;
+      padding-block-end: {{ section.settings.padding_bottom }}px;
+    }
+
+    /* Header, matched to the other homepage sections */
+    #shopify-section-{{ section.id }} .real-homes__header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-align: center;
+      margin-block-end: {{ section.settings.header_gap }}px;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__eyebrow {
+      font-family: var(--text-font-family);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__heading {
+      font-family: 'Forum', serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.3;
+      margin: 0;
+    }
+
+    /* ---------- Carousel ----------
+       Card widths are percentages of the track, never fixed pixels, so the row
+       can never be wider than its container and cannot push the document out.
+       The counts are always odd so there is exactly one true centre card:
+       five on large desktop, three below that and on mobile. */
+    #shopify-section-{{ section.id }} .real-homes__carousel {
+      --rh-gap: {{ section.settings.card_gap }}px;
+      display: block;
+      max-width: 1440px;
+      margin-inline: auto;
+    }
+
+        #shopify-section-{{ section.id }} .real-homes__track {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: var(--rh-gap);
+      overflow: auto hidden;
+      scroll-behavior: smooth;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__card:not(.is-active) {
+      cursor: pointer;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__track :is(img, video) {
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__card {
+  flex: 0 0 280px;
+  scroll-snap-align: start;
+  display: block;
+      transition: flex-basis 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+#shopify-section-{{ section.id }} .real-homes__card.is-active {
+  flex-basis: 329px;
+}
+
+
+
+    #shopify-section-{{ section.id }} .real-homes__media {
+      position: relative;
+      aspect-ratio: 281 / 442;
+      overflow: hidden;
+      border-radius: {{ section.settings.card_radius }}px;
+      background: rgb(var(--text-color) / 0.06);
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__media :is(img, video, iframe) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+        /* The theme's button is replaced by the overlay below: its SVG lives in a
+       shadow root and cannot be resized or recoloured to match the design. */
+    #shopify-section-{{ section.id }} .real-homes__media video-media::part(play-button) {
+      display: none;
+    }
+
+    /* Shown whenever a video card is not playing — before the first play and
+       after any pause — so the control never moves or changes size. */
+    #shopify-section-{{ section.id }} .real-homes__card:has(video):not(.is-playing) .real-homes__media::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 69.5px;
+      height: 69.5px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: rgb(34 34 34 / 0.36);
+      backdrop-filter: blur(3.27px);
+      -webkit-backdrop-filter: blur(3.27px);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* An SVG, not a CSS border triangle: border-radius rounds an element's
+       corners and cannot round the tip of a border mitre. stroke-linejoin with
+       a stroke in the fill colour rounds all three. Stroke = 2x the 1.63px
+       Figma radius, and it scales with the box, so mobile only changes size. */
+    #shopify-section-{{ section.id }} .real-homes__card:has(video):not(.is-playing) .real-homes__media::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 30px;
+      height: 39px;
+      transform: translate(calc(-50% + 3px), -50%);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 41 39'%3E%3Cpath d='M2.5 3.2 L37.8 19.5 L2.5 35.8 Z' fill='%23FFFFFF' stroke='%23FFFFFF' stroke-width='3.26' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* ---------- Product information ---------- */
+    /* A separate bordered card beneath the media, not part of it. The border
+       colour is sampled from the reference at #e6e6e6. */
+    #shopify-section-{{ section.id }} .real-homes__info {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 8px;
+      background: #ffffff;
+      border: 1px solid {{ section.settings.info_border_color }};
+      border-radius: {{ section.settings.card_radius }}px;
+      margin-block-start: {{ section.settings.info_gap }}px;
+      color: inherit;
+      text-decoration: none;
+    }
+        /* Playing: the same circle, two bars instead of the triangle. */
+    #shopify-section-{{ section.id }} .real-homes__card:has(video).is-playing .real-homes__media::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 69.5px;
+      height: 69.5px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: rgb(34 34 34 / 0.36);
+      backdrop-filter: blur(3.27px);
+      -webkit-backdrop-filter: blur(3.27px);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__card:has(video).is-playing:hover .real-homes__media::after {
+      opacity: 1;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__card:has(video).is-playing .real-homes__media::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 26px;
+      height: 32px;
+      transform: translate(-50%, -50%);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 32'%3E%3Crect x='2' y='2' width='8' height='28' rx='1.6' fill='%23FFFFFF'/%3E%3Crect x='16' y='2' width='8' height='28' rx='1.6' fill='%23FFFFFF'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__card:has(video).is-playing:hover .real-homes__media::before {
+      opacity: 1;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__thumb {
+      width: 50px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 2px;
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__title {
+      font-family: var(--text-font-family);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
+
+    /* price-list.liquid still renders the prices, including sale, compare-at,
+       formatting and localisation. Only the weight is restyled here. */
+    #shopify-section-{{ section.id }} .real-homes__price,
+    #shopify-section-{{ section.id }} .real-homes__price .price-list > * {
+      font-size: 16px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+    #shopify-section-{{ section.id }} .real-homes__price .line-through {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    #shopify-section-{{ section.id }} .real-homes__price {
+      margin-block-start: 2px;
+    }
+
+        #shopify-section-{{ section.id }} .real-homes__arrow {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--rounded-full);
+  background: transparent;
+  border: 1px solid {{ section.settings.info_border_color }};
+  color: #2b2724;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+#shopify-section-{{ section.id }} .real-homes__card.is-active .real-homes__arrow,
+#shopify-section-{{ section.id }} .real-homes__info:hover .real-homes__arrow,
+#shopify-section-{{ section.id }} .real-homes__info:focus-visible .real-homes__arrow {
+  background: #55583c;
+  border-color: #55583c;
+  color: #ffffff;
+}
+    #shopify-section-{{ section.id }} .real-homes__inner .real-homes__track{
+      height: 440px;
+      transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    scroll-snap-type: x mandatory;
+    }
+    /* ---------- Desktop: side cards vs centre card ----------
+       Scoped to min-width so the mobile block below is untouched. */
+    @media screen and (min-width: 700px) {
+      /* Side cards — smaller title */
+      #shopify-section-{{ section.id }} .real-homes__card:not(.is-active) .real-homes__title {
+        font-size: 14px;
+        line-height: 20px;
+      }
+      #shopify-section-{{ section.id }} .real-homes__inner .real-homes__track{
+        height: 605px;
+      }
+      /* Side cards — smaller price */
+      #shopify-section-{{ section.id }} .real-homes__card:not(.is-active) .real-homes__price,
+      #shopify-section-{{ section.id }} .real-homes__card:not(.is-active) .real-homes__price .price-list > * {
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+      /* Side cards — compare-at price stays the smaller of the pair */
+      #shopify-section-{{ section.id }} .real-homes__card:not(.is-active) .real-homes__price .line-through {
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      /* Centre card — compare-at price raised from 12px */
+      #shopify-section-{{ section.id }} .real-homes__card.is-active .real-homes__price .line-through {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+
+    /* ---------- Mobile ----------
+       Same markup and the same block order. Only the card size changes, so the
+       active card stays centred with its neighbours peeking either side. */
+    @media screen and (max-width: 699px) {
+      #shopify-section-{{ section.id }} .real-homes__price .price-list > * {
+      font-size: 12px;
+    }
+    #shopify-section-{{ section.id }} .real-homes__price .price-list > * {
+      font-size: 11px;
+    }
+        #shopify-section-{{ section.id }} .real-homes__arrow {
+width: 28px;
+      height: 28px; }
+      #shopify-section-{{ section.id }} .real-homes__inner {
+        padding-block-start: 45px;
+        padding-block-end: 45px;
+      }
+
+      #shopify-section-{{ section.id }} .real-homes__header {
+        margin-block-end: {{ section.settings.header_gap | minus: 4 }}px;
+      }
+
+      #shopify-section-{{ section.id }} .real-homes__heading {
+        font-size: 24px;
+      }
+
+      /* Mobile sizing is solved backwards from the ACTIVE card, not from the
+         neighbours. The active card is the one that has to fit the viewport
+         with a gap and a peek on each side, so it is defined first as
+         100% - 2*(peek + gap), and the smaller neighbour width is derived from
+         it by dividing by the same centre-card ratio the desktop uses.
+
+         Because --rh-card ends up as active/ratio, the existing
+         .is-active { flex-basis: calc(var(--rh-card) * ratio) } rule resolves
+         back to exactly the active width. No second active rule is needed, no
+         transform, no fixed pixels, and the row can never exceed the track.
+
+         Do not invert this and set the neighbour width first. That was the old
+         approach and the active card then overflowed the viewport by the
+         difference, which is where the horizontal page scroll came from. */
+      #shopify-section-{{ section.id }} .real-homes__carousel {
+  --rh-gap: {{ section.settings.card_gap_mobile }}px;
+}
+
+#shopify-section-{{ section.id }} .real-homes__card {
+  flex: 0 0 204px;
+}
+
+#shopify-section-{{ section.id }} .real-homes__card.is-active {
+  flex-basis: 230px;
+}
+
+      /* One flick moves exactly one card. Without this, momentum scrolling can
+         fly past several snap points and land three cards away. */
+      #shopify-section-{{ section.id }} .real-homes__card {
+        scroll-snap-stop: always;
+      }
+
+      /* Two title lines are reserved on every card so the info panel is a
+         constant height. Otherwise a one-line title shortens that card and
+         align-items: center drops it below its neighbours, which reads as a
+         size difference on top of the intended one. */
+      #shopify-section-{{ section.id }} .real-homes__title {
+        font-size: 12px;
+        min-height: calc(2 * 1.35em);
+      }
+
+      /* Guard against the price ever splitting across lines */
+      #shopify-section-{{ section.id }} .real-homes__price,
+      #shopify-section-{{ section.id }} .real-homes__price .price-list {
+        white-space: nowrap;
+      }
+            #shopify-section-{{ section.id }} .real-homes__card:has(video):not(.is-playing) .real-homes__media::after {
+        width: 48.5px;
+        height: 48.5px;
+        backdrop-filter: blur(2.28px);
+        -webkit-backdrop-filter: blur(2.28px);
+      }
+
+      #shopify-section-{{ section.id }} .real-homes__card:has(video):not(.is-playing) .real-homes__media::before {
+        width: 21.5px;
+        height: 27px;
+        transform: translate(calc(-50% + 2px), -50%);
+      }
+            #shopify-section-{{ section.id }} .real-homes__track {
+        overflow: auto hidden;
+        scroll-snap-type: x mandatory;
+        overscroll-behavior-x: contain;
+      }
+            #shopify-section-{{ section.id }} .real-homes__card:has(video).is-playing .real-homes__media::after {
+        width: 48.5px;
+        height: 48.5px;
+      }
+
+      #shopify-section-{{ section.id }} .real-homes__card:has(video).is-playing .real-homes__media::before {
+        width: 18px;
+        height: 22px;
+      }
+    }
+    }
+  </style>
+
+  <div class="real-homes color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="real-homes__inner">
+      {%- if section.settings.subheading != blank or section.settings.title != blank -%}
+        <div class="real-homes__header">
+          {%- if section.settings.subheading != blank -%}
+            <p class="real-homes__eyebrow">{{- section.settings.subheading -}}</p>
+          {%- endif -%}
+
+          {%- if section.settings.title != blank -%}
+            <h2 class="real-homes__heading">{{- section.settings.title -}}</h2>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <real-homes-carousel
+        class="real-homes__carousel"
+        data-loop="{% if section.settings.loop and card_count > 2 %}true{% else %}false{% endif %}"
+      >
+        <div class="real-homes__track" data-rh-track>
+        {%- for block in section.blocks -%}
+          {%- unless block.settings.enabled == false -%}
+            {%- liquid
+              assign card_product = block.settings.product
+              assign card_media = block.settings.video | default: block.settings.image
+              assign card_url = block.settings.link | default: card_product.url
+            -%}
+
+            {%- comment -%}
+              The card is a plain div. Wrapping the media in an anchor made every
+              drag on the video end in a navigation, so only the product panel
+              below is a link.
+            {%- endcomment -%}
+            <div class="real-homes__card" {{ block.shopify_attributes }}>
+              <div class="real-homes__media">
+                {%- if card_media != blank -%}
+                  {%- comment -%}
+                    media.liquid renders either a video or an image and adds the
+                    centred play button itself. The group means only one video in
+                    this carousel can play at a time.
+                  {%- endcomment -%}
+                  {%- render 'media',
+                    media: card_media,
+                    autoplay: false,
+                    loop: true,
+                    controls: false,
+                    show_play_button: true,
+                    play_button_background: section.settings.play_button_color,
+                    group: carousel_id,
+                    sizes: '(max-width: 699px) 60vw, 330px'
+                  -%}
+                {%- endif -%}
+              </div>
+
+              {%- if card_product != blank -%}
+                <a
+                  {% if card_url != blank %}href="{{ card_url }}"{% endif %}
+                  class="real-homes__info"
+                >
+                  {%- if card_product.featured_image != blank -%}
+                    {{-
+                      card_product.featured_image
+                      | image_url: width: 120
+                      | image_tag: class: 'real-homes__thumb', loading: 'lazy', widths: '88,120,160', draggable: 'false'
+                    -}}
+                  {%- endif -%}
+
+                  <div>
+                    <p class="real-homes__title">{{- card_product.title -}}</p>
+
+                    <div class="real-homes__price">
+                      {%- render 'price-list', product: card_product, context: 'card', hide_unit_price: true -%}
+                    </div>
+                  </div>
+
+                  <span class="real-homes__arrow" aria-hidden="true">
+  <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="12" height="12">
+    <path d="M3 8h7M7 5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</span>
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endunless -%}
+        {%- endfor -%}
+        </div>
+      </real-homes-carousel>
+
+
+    </div>
+  </div>
+
+  {%- comment -%}
+    Carousel behaviour, scoped to this section.
+
+    Prestige's ScrollCarousel clamps at both ends (next() does
+    Math.min(index + 1, cells.length - 1)) and has no loop, wrap or infinite
+    option, so continuous looping has to live here. Nothing global is touched.
+
+    Approach: the real cards are cloned once before and once after, so scrolling
+    past either end lands on an identical run of cards. When scrolling stops, if
+    the centred card is a clone, scrollLeft jumps by the measured distance to its
+    real counterpart. The jump is invisible because the two look identical and it
+    happens with scroll-behavior forced to auto.
+
+    Offsets are measured live rather than assumed, because the centre card grows
+    and shifts the positions of everything after it.
+  {%- endcomment -%}
+  <script>
+    if (!customElements.get('real-homes-carousel')) {
+      customElements.define(
+        'real-homes-carousel',
+        class extends HTMLElement {
+          connectedCallback() {
+            console.log('real-homes connectedCallback');
+            this.track = this.querySelector('[data-rh-track]');
+            if (!this.track) return;
+
+            this.loop = this.dataset.loop === 'true';
+            this.originals = Array.from(this.track.children);
+            this.count = this.originals.length;
+            if (!this.count) return;
+
+            this.originals.forEach((card, i) => (card.dataset.rhIndex = String(i)));
+
+            if (this.loop && this.count > 2) {
+              this.originals
+                .map((card) => this.makeClone(card))
+                .reverse()
+                .forEach((clone) => this.track.prepend(clone));
+              this.originals.forEach((card) => this.track.append(this.makeClone(card)));
+            }
+
+            this.cards = Array.from(this.track.children);
+            this.settleTimer = null;
+
+            this.onScroll = () => {
+              clearTimeout(this.settleTimer);
+              this.settleTimer = setTimeout(() => this.settle(), 60);
+            };
+
+            this.track.addEventListener('scroll', this.onScroll, { passive: true });
+            window.addEventListener('resize', this.onScroll, { passive: true });
+            this.enableDrag();
+
+            requestAnimationFrame(() => {
+              this.centre(this.originals[Math.floor((this.count - 1) / 2)], true);
+              this.mark();
+              // mark() widens the card it just marked, which moves that card's
+              // midpoint right by half the growth, so the first paint would sit
+              // off-centre by that amount. Centre once more now the width is
+              // final. Instant, so nothing is visible.
+              requestAnimationFrame(() => this.centre(this.track.querySelector('.is-active'), false));
+            });
+                        // Bubble phase, bound to the track. enableDrag's capture handler
+            // stops propagation when a drag moved more than 5px, so a drag
+            // never reaches this and never toggles playback.
+                        this.track.addEventListener('click', (event) => {
+              const card = event.target.closest('.real-homes__card');
+              if (!card || !this.track.contains(card)) return;
+
+              // A side card centres itself. Only the centre card's clicks fall
+              // through to the video toggle below.
+              if (!card.classList.contains('is-active')) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                                this.busy = true;
+
+                // The class goes on first so the card widens WHILE the scroll
+                // runs, not after it. The frame's delay lets the new width
+                // apply before centre() measures the offset.
+                this.cards.forEach((c) => c.classList.toggle('is-active', c === card));
+                requestAnimationFrame(() => this.centre(card, false));
+
+                setTimeout(() => {
+                  this.busy = false;
+                  clearTimeout(this.settleTimer);
+                  let landed = card;
+                  if (this.loop && card.dataset.rhClone) {
+                    const real = this.originals[Number(card.dataset.rhIndex)];
+                    if (real) {
+                      const previous = this.track.style.scrollBehavior;
+                      this.track.style.scrollBehavior = 'auto';
+                      this.track.scrollLeft += real.offsetLeft - card.offsetLeft;
+                      this.track.style.scrollBehavior = previous;
+                                            landed = real;
+                      // Only re-centre when a clone jump actually moved things.
+                      // Doing it unconditionally caused a visible nudge after
+                      // the scroll had already settled.
+                      this.cards.forEach((c) => c.classList.toggle('is-active', c === landed));
+                      this.centre(landed, true);
+                    }
+                  }
+
+                  this.play(landed);
+                }, 600);
+                return;
+              }
+
+              const video = card.querySelector('video');
+
+              event.preventDefault();
+              event.stopPropagation();
+
+              // No <video> yet: video-media defers it. Firing the theme's own
+              // button is what loads the source, starts playback and registers
+              // the video with its group. A programmatic click works even
+              // though the button is display: none.
+              if (!video) {
+                console.log('first click: no video yet');
+                const host = card.querySelector('video-media');
+                const btn = host && host.shadowRoot
+                  && host.shadowRoot.querySelector('[part~="play-button"]');
+                if (!btn) return;
+
+                btn.click();
+
+                let tries = 0;
+                const start = () => {
+                  const v = card.querySelector('video');
+                  if (v) {
+                    console.log('video appeared after', tries, 'frames, paused:', v.paused);
+                    if (v.hasAttribute('poster')) v.removeAttribute('poster');
+                    if (v.paused) v.play();
+                    return;
+                  }
+                  if (++tries < 30) requestAnimationFrame(start);
+                };
+                requestAnimationFrame(start);
+                return;
+              }
+
+                            if (video.paused) {
+                this.play(card);
+              } else {
+                video.pause();
+              }
+            });
+
+            // play and pause do not bubble, so these are capture-phase.
+            const markPlaying = (event) => {
+              const video = event.target;
+              if (!video || video.tagName !== 'VIDEO') return;
+              const card = video.closest('.real-homes__card');
+              if (card) card.classList.toggle('is-playing', !video.paused);
+            };
+
+            this.track.addEventListener('play', markPlaying, true);
+            this.track.addEventListener('pause', markPlaying, true);
+            this.track.addEventListener('ended', markPlaying, true);
+          }
+
+                    disconnectedCallback() {
+                                    if (this.onCardClick) this.track.removeEventListener('click', this.onCardClick, true);
+            window.removeEventListener('resize', this.onScroll);
+            if (this.track) this.track.removeEventListener('scroll', this.onScroll);
+          }
+
+          makeClone(card) {
+            const clone = card.cloneNode(true);
+            clone.dataset.rhClone = 'true';
+            clone.setAttribute('aria-hidden', 'true');
+            // Clones must not look like real blocks to the theme editor, and must
+            // not be reachable by keyboard.
+            clone.removeAttribute('data-shopify-editor-block');
+            clone.querySelectorAll('[data-shopify-editor-block]').forEach((el) =>
+              el.removeAttribute('data-shopify-editor-block')
+            );
+            clone.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
+            clone.querySelectorAll('a, button').forEach((el) => el.setAttribute('tabindex', '-1'));
+            return clone;
+          }
+
+          centreOffset(card) {
+            return card.offsetLeft + card.offsetWidth / 2 - this.track.clientWidth / 2;
+          }
+
+                    centre(card, instant) {
+            if (!card) return;
+            this.track.scrollTo({ left: this.centreOffset(card), behavior: instant ? 'auto' : 'smooth' });
+          }
+                    play(card) {
+                      this.cards.forEach((other) => {
+              if (other === card) return;
+              const v = other.querySelector('video');
+              if (v && !v.paused) v.pause();
+            });
+            const video = card.querySelector('video');
+
+            if (video) {
+              if (video.hasAttribute('poster')) video.removeAttribute('poster');
+              if (video.paused) video.play();
+              return;
+            }
+
+            // Deferred: the theme's button is what loads the source and
+            // registers the video with its group.
+            const host = card.querySelector('video-media');
+            const btn = host && host.shadowRoot
+              && host.shadowRoot.querySelector('[part~="play-button"]');
+            if (!btn) return;
+
+            btn.click();
+
+            let tries = 0;
+            const start = () => {
+              const v = card.querySelector('video');
+              if (v) {
+                if (v.hasAttribute('poster')) v.removeAttribute('poster');
+                if (v.paused) v.play();
+                return;
+              }
+              if (++tries < 30) requestAnimationFrame(start);
+            };
+            requestAnimationFrame(start);
+          }
+
+          nearest() {
+            const middle = this.track.scrollLeft + this.track.clientWidth / 2;
+            let best = null;
+            let bestDistance = Infinity;
+            this.cards.forEach((card) => {
+              const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - middle);
+              if (distance < bestDistance) {
+                bestDistance = distance;
+                best = card;
+              }
+            });
+            return best;
+          }
+
+          mark() {
+            const active = this.nearest();
+            this.cards.forEach((card) => card.classList.toggle('is-active', card === active));
+            return active;
+          }
+
+          settle() {
+            if (this.busy) return;
+
+            let active = this.nearest();
+            if (!active) return;
+
+            if (this.loop && active.dataset.rhClone) {
+              const real = this.originals[Number(active.dataset.rhIndex)];
+              if (real) {
+                const previous = this.track.style.scrollBehavior;
+                this.track.style.scrollBehavior = 'auto';
+                this.track.scrollLeft += real.offsetLeft - active.offsetLeft;
+                this.track.style.scrollBehavior = previous;
+                active = real;
+              }
+            }
+
+            this.mark();
+
+            // Marking changes the centre card's width, which shifts every card
+            // after it, so re-centre once and ignore the scroll that causes.
+            this.busy = true;
+            requestAnimationFrame(() => {
+              this.centre(this.track.querySelector('.is-active'), false);
+              setTimeout(() => {
+                this.busy = false;
+              }, 50);
+            });
+          }
+
+          enableDrag() {
+         
+          }
+
+
+        }
+      );
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Real homes",
+  "class": "shopify-section--real-homes",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Section background",
+      "info": "Applied only to this section. Global colour schemes are not affected.",
+      "default": "#fffbf3"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 84
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 84
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:global.text.subheading",
+      "default": "REAL HOMES"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:global.text.heading",
+      "default": "Styled by Bisha"
+    },
+    {
+      "type": "range",
+      "id": "header_gap",
+      "label": "Heading to carousel gap",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 23
+    },
+    {
+      "type": "header",
+      "content": "Cards"
+    },
+    {
+      "type": "paragraph",
+      "content": "Each block is one complete card. The centre card is enlarged automatically; these are the sizes for the smaller cards either side of it."
+    },
+
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop continuously",
+      "info": "Swiping past the last card continues from the first, and back past the first continues from the last.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "active_scale",
+      "label": "Centre card size",
+      "info": "How much larger the centre card is than its neighbours, on desktop and mobile. 117 matches the design.",
+      "min": 100,
+      "max": 140,
+      "step": 1,
+      "unit": "%",
+      "default": 117
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Card gap (desktop)",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+
+    {
+      "type": "range",
+      "id": "card_peek_mobile",
+      "label": "Neighbour peek (mobile)",
+      "info": "How much of the previous and next card shows at each edge.",
+      "min": 12,
+      "max": 72,
+      "step": 1,
+      "unit": "px",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "card_gap_mobile",
+      "label": "Card gap (mobile)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "info_border_color",
+      "label": "Product card border",
+      "info": "The subtle outline around the product information card.",
+      "default": "#e6e6e6"
+    },
+    {
+      "type": "range",
+      "id": "info_gap",
+      "label": "Media to product information gap",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+
+    {
+      "type": "color",
+      "id": "play_button_color",
+      "label": "Play button colour",
+      "default": "#2b2724"
+    },
+    {
+      "type": "range",
+      "id": "play_button_opacity",
+      "label": "Play button opacity",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "One complete card: the media and the product below it stay together when this block is reordered."
+        },
+        {
+          "type": "checkbox",
+          "id": "enabled",
+          "label": "Show this card",
+          "default": true
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Fallback image",
+          "info": "Used when no video is selected, so the layout still renders."
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product",
+          "info": "Supplies the thumbnail, title, price and link shown beneath the media."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link override",
+          "info": "Optional. Defaults to the selected product's URL."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Real homes",
+      "blocks": [{ "type": "card" }, { "type": "card" }, { "type": "card" }, { "type": "card" }, { "type": "card" }]
+    }
+  ]
+}
+{% endschema %}

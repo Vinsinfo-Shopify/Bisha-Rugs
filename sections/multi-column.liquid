@@ -1,0 +1,963 @@
+{%- if section.blocks.size > 0 -%}
+<style>
+  {% if collection.handle == 'oushak-rugs' %}
+    .explore_our_range {
+      display: block;
+    }
+
+    .perfect_look {
+      display: none;
+    }
+{% elsif collection.handle == 'all' %}
+    .explore_our_range {
+      display: none;
+    }
+
+    .perfect_look {
+      display: block;
+    }
+{% endif %}
+  #shopify-section-{{ section.id }} {
+    --multi-column-gap: {{ section.settings.column_gap_mobile }}px;
+    --multi-column-row-gap: {{ section.settings.row_gap_mobile }}px;
+    --multi-column-columns-per-row: 2;
+    --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
+    --multi-column-grid: auto / repeat(var(--multi-column-columns-per-row), var(--multi-column-column-width));
+    --multi-column-content-alignment: safe {{ section.settings.content_alignment }};
+
+    /* Mobile section padding (theme setting driven) */
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    padding-left: {{ section.settings.padding_left_mobile }}px;
+    padding-right: {{ section.settings.padding_right_mobile }}px;
+  }
+
+  @media screen and (max-width: 698px) {
+    #shopify-section-{{ section.id }} .multi-column.multi-column--stack-mobile {
+      --multi-column-columns-per-row: 1;
+      --multi-column-column-width: 100%;
+      --multi-column-grid: auto / repeat(auto-fit, var(--multi-column-column-width));
+    }
+  }
+
+  /* Desktop: use the merchant-configured columns-per-row and padding */
+  @media screen and (min-width: 999px) {
+    #shopify-section-{{ section.id }} {
+      --multi-column-gap: {{ section.settings.column_gap_desktop }}px;
+      --multi-column-row-gap: {{ section.settings.row_gap_desktop }}px;
+      --multi-column-columns-per-row: {{ section.settings.columns_per_row }};
+      --multi-column-column-width: calc(100% / var(--multi-column-columns-per-row) - var(--multi-column-gap) * ((var(--multi-column-columns-per-row) - 1) / var(--multi-column-columns-per-row)));
+
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+      padding-left: {{ section.settings.padding_left_desktop }}px;
+      padding-right: {{ section.settings.padding_right_desktop }}px;
+    }
+  }
+
+  {%- comment -%}
+    Standard width: the 1300px column the other sections lock to. Skipped when
+    Full width is on, so the .multi-column-section--full-width rule in theme.css
+    (which only lifts the max-width cap) is not outranked by this ID selector.
+  {%- endcomment -%}
+  {%- unless section.settings.full_width -%}
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .container {
+        --container-max-width: 1300px;
+        --container-gutter: 70px;
+      }
+    }
+  {%- endunless -%}
+
+
+  #shopify-section-{{ section.id }} .multi-column {
+    display: grid;
+    grid-template: var(--multi-column-grid);
+    gap: var(--multi-column-gap);
+    row-gap: var(--multi-column-row-gap);
+    align-items: start;
+    justify-content: var(--multi-column-content-alignment);
+  }
+
+  #shopify-section-{{ section.id }} .multi-column__item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #shopify-section-{{ section.id }} .multi-column__dots {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .multi-column-card_mobile-detail {
+    display: none;
+  }
+
+  @media screen and (max-width: 698px) {
+    #shopify-section-{{ section.id }} .multi-column-card_mobile-detail {
+      display: block;
+      margin-top: 4px;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column-card_mobile-detail p {
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column--carousel {
+      grid-template: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 100%;
+      justify-content: start;
+      overflow: auto hidden;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      margin-inline: calc(-1 * var(--distance-to-bleed));
+      padding-inline: var(--distance-to-bleed);
+      scroll-padding-inline: var(--distance-to-bleed);
+    }
+
+    #shopify-section-{{ section.id }} .multi-column--carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column--carousel .multi-column__item {
+      min-width: 0;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column__dots {
+      display: flex;
+      gap:6px;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column__dots > *[aria-current='true'] {
+      width: 1.125rem;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .multi-column__media {
+    width: 100%;
+    height: {{ section.settings.media_height | default: '400px' }};
+    overflow: hidden;
+    border-radius: var(--multi-column-media-radius, 0);
+  }
+
+  {%- if section.settings.media_fit != 'contain' -%}
+    @media screen and (min-width: 1600px) {
+      #shopify-section-{{ section.id }} .multi-column__media {
+        height: 500px;
+      }
+    }
+
+    @media screen and (max-width: 500px) {
+      #shopify-section-{{ section.id }} .multi-column__media {
+        max-height: 279px;
+      }
+    }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} .multi-column__media img,
+  #shopify-section-{{ section.id }} .multi-column__media video {
+    width: 100%;
+    height: 100%;
+    object-fit: {{ section.settings.media_fit | default: 'cover' }};
+    object-position: center;
+    display: block;
+  }
+
+  {%- if section.settings.media_fit == 'contain' -%}
+    #shopify-section-{{ section.id }} .multi-column__media,
+    #shopify-section-{{ section.id }} .multi-column__media img,
+    #shopify-section-{{ section.id }} .multi-column__media video {
+      height: auto;
+      max-height: {{ section.settings.media_height | default: '400px' }};
+    }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} .multi-column__item--review {
+    border: 1px solid rgba(var(--color-foreground), 0.08);
+    border-radius: 12px;
+  }
+  
+
+  #shopify-section-{{ section.id }} .multi-column-card_rating {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+
+  #shopify-section-{{ section.id }} .multi-column-card_star {
+    flex-shrink: 0;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .multi-column-card_heading-wrapper--review {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  #shopify-section-{{ section.id }} .multi-column__item--review:nth-child(2) .multi-column-card_heading-wrapper--review,
+  #shopify-section-{{ section.id }} .multi-column__item--review:nth-child(3) .multi-column-card_heading-wrapper--review {
+    margin-top: 40px;
+  }
+
+  #shopify-section-{{ section.id }} .multi-column-card_icon--avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+    #shopify-section-{{ section.id }} .multi-column-card_icon--avatar {
+      width: 34px;
+      height: 34px;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column-card_heading-wrapper--review {
+      gap: 12px;
+      margin-top: 14.5px;
+    }
+
+    #shopify-section-{{ section.id }} .multi-column-card_rating {
+      margin-bottom: 6px;
+    }
+  }
+</style>
+
+  {%- liquid
+    assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5
+
+    comment
+      When the carousel is on, the track becomes the theme's own scroll-carousel so
+      that carousel-navigation can drive the dots. Both already ship in theme.js, and
+      scroll-carousel keeps the theme-editor block-select behaviour multi-column has.
+    endcomment
+    assign track_tag = 'multi-column'
+    assign carousel_id = 'multi-column-carousel-' | append: section.id
+    if section.settings.enable_carousel
+      assign track_tag = 'scroll-carousel'
+    endif
+  -%}
+
+<div class="{% unless section.settings.remove_section_spacing %}section-spacing{% endunless %} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {% if section.settings.full_width %}multi-column-section--full-width{% endif %} {{ section.settings.custom_class }}">
+    <div class="container">
+      <div class="section-stack">
+        {%- render 'section-header',
+          subheading: section.settings.subheading,
+          heading: section.settings.title,
+          heading_style: section.settings.heading_style,
+          content: section.settings.content,
+          text_alignment: section.settings.content_alignment
+        -%}
+
+        <{{ track_tag }}
+          {% if section.settings.enable_carousel %}id="{{ carousel_id }}"{% endif %}
+          class="multi-column {% if section.settings.stack_on_mobile %}multi-column--stack-mobile{% endif %} {% if section.settings.enable_carousel %}multi-column--carousel{% endif %}"
+        >
+          {%- for block in section.blocks -%}
+            <div
+              class="multi-column__item {% if section.settings.overlap_image and block.settings.title != blank %}multi-column__item--overlap{% endif %} {% if block.settings.review_layout %}multi-column__item--review{% endif %} group"
+              {{ block.shopify_attributes }}
+            >
+              {%- capture sizes_attribute -%}
+                (max-width: 998px) 50vw, calc((100vw - 3rem * 2) / {{ section.settings.columns_per_row }})
+              {%- endcapture -%}
+
+              {%- liquid
+                capture media_content
+                  if block.type == 'image_with_text' and block.settings.image != blank
+                    assign loading_strategy = null
+
+                    if forloop.index > 2 or section.location == 'footer'
+                      assign loading_strategy = 'lazy'
+                    endif
+
+                    echo block.settings.image | image_url: width: block.settings.image.width | image_tag: loading: loading_strategy, sizes: sizes_attribute, widths: '300,400,500,600,800,1000,1200,1400,1600,1800', class: 'zoom-image group-hover:zoom'
+                  elsif block.type == 'video_with_text' and block.settings.video != blank
+                    if block.settings.autoplay and block.settings.loop
+                      assign show_controls = false
+                    else
+                      assign show_controls = true
+                    endif
+
+                    render 'media', media: block.settings.video, autoplay: block.settings.autoplay, loop: block.settings.loop, controls: show_controls, sizes: sizes_attribute, play_button_background: block.settings.play_button_background
+                  endif
+                endcapture
+              -%}
+
+              {%- if media_content != blank -%}
+                {% liquid
+                  assign add_link = false
+
+                  if block.type == 'video_with_text' and block.settings.autoplay and block.settings.link_url != blank
+                    assign add_link = true
+                  elsif block.type == 'image_with_text' and block.settings.link_url != blank
+                    assign add_link = true
+                  endif
+                -%}
+
+                {%- if add_link -%}
+                  <a href="{{ block.settings.link_url }}"{% if block.settings.open_new_tab %} target="_blank" rel="noopener"{% endif %} class="multi-column__media overflow-hidden">
+                    {{- media_content -}}
+                  </a>
+                {%- else -%}
+                  <div class="multi-column__media overflow-hidden">
+                    {{- media_content -}}
+                  </div>
+                {%- endif -%}
+              {%- endif -%}
+
+              {%- if block.settings.title != blank or block.settings.content != blank or block.settings.link_text != blank or block.settings.show_rating -%}
+                <div class="prose text-{{ section.settings.text_alignment }}">
+                  {%- liquid
+                    if block.settings.heading_tag == 'custom'
+                      assign heading_class = 'multi-column-card_heading'
+                      assign heading_font_size = block.settings.custom_heading_size | default: 24
+                    else
+                      assign heading_class = block.settings.heading_tag | append: ' multi-column-card_heading'
+                      assign heading_font_size = nil
+                    endif
+                  -%}
+
+                  {%- if block.settings.show_rating -%}
+                    <div class="multi-column-card_rating" style="color: {{ block.settings.rating_color }};" role="img" aria-label="Rated {{ block.settings.rating }} out of 5 stars">
+                      {%- for i in (1..5) -%}
+                        {%- if i <= block.settings.rating -%}
+                          <svg class="multi-column-card_star" viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+                        {%- else -%}
+                          <svg class="multi-column-card_star multi-column-card_star--empty" viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M10 1.5l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6z"/></svg>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+
+                  {%- unless block.settings.review_layout -%}
+                    {%- if block.settings.title != blank -%}
+                      <div class="multi-column-card_heading-group">
+                        {%- if block.settings.number != blank -%}
+                          <p class="multi-column-card_number" style="color: {{ block.settings.number_color }};">{{ block.settings.number }}</p>
+                        {%- endif -%}
+                        <div class="multi-column-card_heading-wrapper">
+                          {%- if block.settings.icon != blank -%}
+                            {{ block.settings.icon | image_url: width: 48 | image_tag: class: 'multi-column-card_icon', widths: '24,32,48', loading: 'lazy' }}
+                          {%- endif -%}
+                          <p
+                            class="{{ heading_class }}"
+                            {% if heading_font_size %}
+                              style="font-size: {{ heading_font_size }}px;"
+                            {% endif %}
+                          >{{ block.settings.title }}</p>
+                        </div>
+                        {%- if block.settings.subheading != blank -%}
+                          <p class="multi-column-card_subheading">{{ block.settings.subheading }}</p>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                  {%- endunless -%}
+
+                  <div class="multi-column-card_content">
+                  {{- block.settings.content -}}
+                  </div>
+
+                  {%- if block.settings.mobile_detail_text != blank -%}
+                    <div class="multi-column-card_mobile-detail">{{ block.settings.mobile_detail_text }}</div>
+                  {%- endif -%}
+
+                  {%- if block.settings.review_layout and block.settings.title != blank -%}
+                    <div class="multi-column-card_heading-wrapper multi-column-card_heading-wrapper--review">
+                      {%- if block.settings.icon != blank -%}
+                        {{ block.settings.icon | image_url: width: 96 | image_tag: class: 'multi-column-card_icon multi-column-card_icon--avatar', widths: '48,64,96', loading: 'lazy' }}
+                      {%- endif -%}
+                      <div class="heading_class_wrapper">
+                        <p
+                          class="{{ heading_class }}"
+                          {% if heading_font_size %}
+                            style="font-size: {{ heading_font_size }}px;"
+                          {% endif %}
+                        >{{ block.settings.title }}</p>
+                        {%- if block.settings.subheading != blank -%}
+                          <p class="multi-column-card_subheading">{{ block.settings.subheading }}</p>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
+
+                  {%- if block.settings.link_text != blank -%}
+                    <a href="{{ block.settings.link_url }}"{% if block.settings.open_new_tab %} target="_blank" rel="noopener"{% endif %} class="link">{{ block.settings.link_text | escape }}</a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </{{ track_tag }}>
+
+        {%- if section.settings.enable_carousel and section.blocks.size > 1 -%}
+          <carousel-navigation aria-controls="{{ carousel_id }}" class="page-dots multi-column__dots">
+            {%- for i in (1..section.blocks.size) -%}
+              <button type="button" class="tap-area" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+                <span class="sr-only">{{ 'general.accessibility.go_to_item' | t: index: forloop.index }}</span>
+              </button>
+            {%- endfor -%}
+          </carousel-navigation>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.multi_column.name",
+  "class": "shopify-section--multi-column",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class"
+    },
+    {
+      "type": "checkbox",
+      "id": "separate_section_with_border",
+      "label": "t:global.section.separate_section_with_border",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_section_spacing",
+      "label": "Remove default section spacing",
+      "info": "Turn this on to remove Shopify's built-in top/bottom section spacing and rely only on the padding settings below.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "t:global.sizes.full_width",
+      "info": "Stretches the columns across the viewport, keeping the theme's standard side gutter. Off keeps the section on the theme's standard container width.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "columns_per_row",
+      "min": 2,
+      "max": 6,
+      "label": "t:sections.multi_column.columns_per_row",
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "stack_on_mobile",
+      "label": "t:sections.multi_column.stack_on_mobile",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_carousel",
+      "label": "Enable mobile carousel",
+      "info": "On mobile only, scrolls the columns horizontally one card at a time with a peek of the next, and shows position dots. Desktop keeps the grid.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "overlap_image",
+      "label": "t:sections.multi_column.overlap_image",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "t:global.position.content_position",
+      "options": [
+        { "value": "start", "label": "t:global.position.left" },
+        { "value": "center", "label": "t:global.position.center" },
+        { "value": "end", "label": "t:global.position.right" }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "t:global.text.alignment",
+      "options": [
+        { "value": "start", "label": "t:global.position.left" },
+        { "value": "center", "label": "t:global.position.center" },
+        { "value": "end", "label": "t:global.position.right" }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "header",
+      "content": "Column & row spacing"
+    },
+    {
+      "type": "range",
+      "id": "column_gap_mobile",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Column gap (mobile)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "row_gap_mobile",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Row gap (mobile)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "column_gap_desktop",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Column gap (desktop)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "row_gap_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Row gap (desktop)",
+      "default": 48
+    },
+   {
+          "type": "text",
+          "id": "media_height",
+          "label": "Media height",
+          "info": "Enter a CSS value, e.g. 379px or 50vh",
+          "default": "379px"
+    },
+    {
+      "type": "select",
+      "id": "media_fit",
+      "label": "Media fit",
+      "info": "Crop fills the column and may trim the edges of the image. Fit shows the whole image inside the media height — use this for logos and badges (e.g. a 'Featured in' row).",
+      "options": [
+        { "value": "cover", "label": "Crop to fill" },
+        { "value": "contain", "label": "Fit whole image" }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "header",
+      "content": "t:global.section.header_category"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "t:global.text.subheading",
+      "default": "About"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "t:global.text.heading",
+      "default": "Multi-column"
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "t:global.text.style",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "t:global.text.content"
+    },
+    {
+      "type": "header",
+      "content": "t:global.padding.section_padding_heading"
+    },
+    {
+      "type": "header",
+      "content": "t:global.padding.mobile_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_left",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_right",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:global.padding.desktop_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_left",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "t:global.padding.padding_right",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image_with_text",
+      "name": "t:sections.multi_column.blocks.image_with_text.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:global.image.image",
+          "info": "t:sections.multi_column.blocks.image_with_text.image_size_recommendation"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon",
+          "info": "Small icon shown next to the column title. Also used as the avatar photo when Review card layout is enabled below."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "t:global.text.heading",
+          "default": "Column title"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "info": "Optional line shown under the title, e.g. a role or job title."
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "label": "t:global.text.heading_style",
+          "options": [
+            { "value": "h1", "label": "H1" },
+            { "value": "h2", "label": "H2" },
+            { "value": "h3", "label": "H3" },
+            { "value": "h4", "label": "H4" },
+            { "value": "h5", "label": "H5" },
+            { "value": "h6", "label": "H6" },
+            { "value": "custom", "label": "Custom size" }
+          ],
+          "default": "h3"
+        },
+        {
+          "type": "range",
+          "id": "custom_heading_size",
+          "label": "Custom heading size",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 24,
+          "visible_if": "{{ block.settings.heading_tag == 'custom' }}"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "t:global.text.content",
+          "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+        },
+        { "type": "url", "id": "link_url", "label": "t:global.text.link_url" },
+        { "type": "checkbox", "id": "open_new_tab", "label": "Open link in new tab", "default": false },
+        { "type": "text", "id": "link_text", "label": "t:global.text.link_text" },
+        {
+          "type": "header",
+          "content": "Review rating"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Show star rating",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star rating",
+          "default": 5,
+          "visible_if": "{{ block.settings.show_rating }}"
+        },
+        {
+          "type": "color",
+          "id": "rating_color",
+          "label": "Star color",
+          "default": "#E8B923",
+          "visible_if": "{{ block.settings.show_rating }}"
+        },
+                {
+          "type": "header",
+          "content": "Step number"
+        },
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "info": "Optional. E.g. 01 — shown above the heading on desktop, and beside it on mobile."
+        },
+        {
+          "type": "color",
+          "id": "number_color",
+          "label": "Number color",
+          "default": "#B76E45"
+        },
+        {
+          "type": "header",
+          "content": "Mobile-only detail"
+        },
+        {
+          "type": "richtext",
+          "id": "mobile_detail_text",
+          "label": "Detail line (mobile only)",
+          "info": "Optional. Shown only on mobile, below the content — e.g. 'Interior designer: Maya Bennett'. Leave blank to hide; desktop is unaffected."
+        },
+        {
+          "type": "header",
+          "content": "Review card layout"
+        },
+        {
+          "type": "checkbox",
+          "id": "review_layout",
+          "label": "Use review card layout",
+          "info": "Wraps the block in a bordered card and moves the icon/title/subheading below the content, styled as an avatar + name, matching a testimonial layout.",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "video_with_text",
+      "name": "t:sections.multi_column.blocks.video_with_text.name",
+      "settings": [
+        { "type": "video", "id": "video", "label": "t:global.video.video" },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "t:global.video.autoplay",
+          "info": "t:global.video.autoplay_info",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "loop",
+          "label": "t:global.video.loop",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "play_button_background",
+          "label": "t:sections.multi_column.blocks.video_with_text.play_button_background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon",
+          "info": "Small icon shown next to the column title. Also used as the avatar photo when Review card layout is enabled below."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "t:global.text.heading",
+          "default": "Column title"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "info": "Optional line shown under the title, e.g. a role or job title."
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "label": "t:global.text.heading_style",
+          "options": [
+            { "value": "h1", "label": "H1" },
+            { "value": "h2", "label": "H2" },
+            { "value": "h3", "label": "H3" },
+            { "value": "h4", "label": "H4" },
+            { "value": "h5", "label": "H5" },
+            { "value": "h6", "label": "H6" },
+            { "value": "custom", "label": "Custom size" }
+          ],
+          "default": "h3"
+        },
+        {
+          "type": "range",
+          "id": "custom_heading_size",
+          "label": "Custom heading size",
+          "min": 10,
+          "max": 80,
+          "step": 1,
+          "unit": "px",
+          "default": 24,
+          "visible_if": "{{ block.settings.heading_tag == 'custom' }}"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "t:global.text.content",
+          "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+        },
+        { "type": "url", "id": "link_url", "label": "t:global.text.link_url" },
+        { "type": "checkbox", "id": "open_new_tab", "label": "Open link in new tab", "default": false },
+        { "type": "text", "id": "link_text", "label": "t:global.text.link_text" },
+        {
+          "type": "header",
+          "content": "Review rating"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Show star rating",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star rating",
+          "default": 5,
+          "visible_if": "{{ block.settings.show_rating }}"
+        },
+        {
+          "type": "color",
+          "id": "rating_color",
+          "label": "Star color",
+          "default": "#E8B923",
+          "visible_if": "{{ block.settings.show_rating }}"
+        },
+        {
+          "type": "header",
+          "content": "Mobile-only detail"
+        },
+        {
+          "type": "richtext",
+          "id": "mobile_detail_text",
+          "label": "Detail line (mobile only)",
+          "info": "Optional. Shown only on mobile, below the content — e.g. 'Interior designer: Maya Bennett'. Leave blank to hide; desktop is unaffected."
+        },
+        {
+          "type": "header",
+          "content": "Review card layout"
+        },
+        {
+          "type": "checkbox",
+          "id": "review_layout",
+          "label": "Use review card layout",
+          "info": "Wraps the block in a bordered card and moves the icon/title/subheading below the content, styled as an avatar + name, matching a testimonial layout.",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.multi_column.presets.multi_column.name",
+      "category": "t:global.categories.storytelling",
+      "blocks": [
+        { "type": "image_with_text", "settings": {} },
+        { "type": "image_with_text", "settings": {} },
+        { "type": "image_with_text", "settings": {} }
+      ]
+    }
+  ]
+}
+{% endschema %}

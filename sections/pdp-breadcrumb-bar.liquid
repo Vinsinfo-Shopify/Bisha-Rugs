@@ -1,0 +1,161 @@
+{%- comment -%}
+  PDP breadcrumb placement.
+
+  A section rather than a block: blocks can only render inside the product
+  information column, and the design calls for the trail to sit above the whole
+  two-column area. This file adds no breadcrumb logic of its own - it renders
+  snippets/breadcrumbs.liquid, which already produces the product trail, so
+  there is exactly one implementation to maintain.
+
+  The snippet decides what to show from the template, so this section is inert
+  anywhere a breadcrumb is not wanted; it is only added to the product template.
+  Collection, blog, article, page and cart keep rendering the snippet however
+  they already do, untouched.
+{%- endcomment -%}
+
+<div class="pdp-breadcrumb-bar">
+  <div class="container">
+    {%- render 'breadcrumbs' -%}
+  </div>
+</div>
+
+{%- comment -%}
+  Spacing only. The trail's own typography and colours live in the snippet, so
+  they stay in one place and are not duplicated here.
+
+  No width is set: .container is the theme's own wrapper, so the trail lines up
+  with the media and product columns below it at every breakpoint, and any
+  change to the PDP column width later applies here automatically. Nothing here
+  can introduce horizontal overflow - no fixed width, no negative margin, no
+  100vw.
+{%- endcomment -%}
+<style>
+  #shopify-section-{{ section.id }} .pdp-breadcrumb-bar {
+    padding-block-start: {{ section.settings.space_top }}px;
+    padding-block-end: {{ section.settings.space_bottom }}px;
+  }
+
+  /* theme.css:9172 sets, on .breadcrumbs itself:
+         justify-content: center;
+         margin-bottom: 24px;
+     The centring is that first line. The second is why setting the spacing
+     below to 0 changed nothing - the section's padding went to 0 while the
+     element's own 24px margin remained, so the gap never closed.
+
+     Both are overridden here, under this section's id, so the rule in
+     theme.css is untouched and the collection, blog, article, page and cart
+     trails keep the centring and spacing they have today. No negative margin,
+     no transform, no absolute positioning - the margin is simply set to 0 at
+     the element that owns it, and the section's own padding becomes the only
+     control. */
+  #shopify-section-{{ section.id }} .breadcrumbs {
+    justify-content: flex-start;
+    margin-bottom: 0;
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .pdp-breadcrumb-bar {
+      padding-block-start: {{ section.settings.space_top_mobile }}px;
+      padding-block-end: {{ section.settings.space_bottom_mobile }}px;
+    }
+
+    /* One line on mobile. nowrap on the flex container stops it breaking onto
+       a second row; overflow: hidden keeps anything that does not fit inside
+       the container rather than widening the page. */
+    #shopify-section-{{ section.id }} .breadcrumbs {
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      overflow: hidden;
+      min-width: 0;
+      gap: 0 5px;
+    }
+
+    /* The two links and the separators hold their natural width; only the
+       current title is allowed to shrink, so the trail loses characters from
+       the product name and never from the navigation. */
+    #shopify-section-{{ section.id }} .breadcrumbs > * {
+      flex: 0 0 auto;
+    }
+
+    #shopify-section-{{ section.id }} .breadcrumbs .breadcrumb-current {
+      flex: 0 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* The ">" from the snippet's markup, shown as-is. flex-shrink: 0 is what
+       keeps both separators at full width while the title truncates - without
+       it the last separator is the first thing the browser squeezes when the
+       row runs out of space, and it disappears before the ellipsis appears. */
+    #shopify-section-{{ section.id }} .breadcrumbs .breadcrumb-separator--pdp {
+      flex: 0 0 auto;
+      padding-inline: 2px;
+      font-size: 12px;
+      line-height: 17px;
+      color: #898989;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Breadcrumb",
+  "tag": "section",
+  "class": "shopify-section--pdp-breadcrumb",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Renders the theme's breadcrumb trail above the product layout. The trail content and styling come from the shared breadcrumbs snippet."
+    },
+    {
+      "type": "range",
+      "id": "space_top",
+      "label": "Space above (desktop)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "space_bottom",
+      "label": "Space below (desktop)",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "space_top_mobile",
+      "label": "Space above (mobile)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "space_bottom_mobile",
+      "label": "Space below (mobile)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "Breadcrumb"
+    }
+  ]
+}
+{% endschema %}

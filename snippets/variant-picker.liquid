@@ -1,0 +1,631 @@
+{%- doc -%}
+  Render the variant picker option selectors.
+
+  @param {object} product - the product for which to render the selector
+  @param {string} form_id - the ID of the form to which the variant picker belongs
+  @param {string} context - the context of the variant picker. Can be "main_product", "featured_product" or "quick_buy"
+  @param {boolean} [hide_sold_out_variants] - if set to true, the sold out or unavailable variants are hidden
+  @param {string} [selector_style] - the selector style to use for the main selectors
+  @param {string} [swatch_selector_style] - the selector style to use for the dedicated swatch selectors
+  @param {array} [variant_image_options] - a list of option names for which to use the variant image selector mode
+  @param {boolean} [variant_image_underline] - when true, the active image will be underlined instead of being bordered
+  @param {object} [size_chart_page] - the page to use for the size chart
+  @param {string} [shape_heading] - the heading to show above the shape (All/Rectangle/Runner) filter, if any
+  @param {string} [enter_size_heading] - the heading to show above the size selector, if any
+  @param {object} [section]
+{%- enddoc -%}
+
+{%- liquid
+  assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ','
+  assign size_label_list = 'general.label.size' | t | replace: ', ', ',' | downcase | split: ','
+  assign variant_image_options = variant_image_options | replace: ', ', ',' | downcase | split: ','
+  assign any_shape_tabs = false
+  assign any_size_entry = false
+
+  assign shape_heading_label = shape_heading
+  if shape_heading_label == blank
+    assign shape_heading_label = 'product.general.shape' | t
+  endif
+
+  # "Customize" shape tab opens the same prefilled CAD design request email as the "Get CAD DESIGN" card.
+  capture customize_url
+    render 'custom-rug-inquiry-url', type: 'cad'
+  endcapture
+  assign customize_url = customize_url | strip
+
+  assign enter_size_heading_label = enter_size_heading
+  if enter_size_heading_label == blank
+    assign enter_size_heading_label = 'product.general.enter_size' | t
+  endif
+
+  if context == 'main_product'
+    assign is_main_product = true
+  endif
+-%}
+
+{%- unless product.has_only_default_variant -%}
+  <variant-picker
+    class="variant-picker v-stack gap-4"
+    section-id="{{ section.id }}"
+    form-id="{{ form_id }}"
+    context="{{ context }}"
+    handle="{{ product.handle }}"
+    {% if context == 'main_product' %}
+      update-url
+    {% endif %}
+  >
+    {%- comment -%}
+      The variant data is outputted as a JSON, which allows the theme to emit an event with the data when the variant changes. This must not be removed.
+    {%- endcomment -%}
+    <script data-variant type="application/json">
+      {{- product.selected_or_first_available_variant | json -}}
+    </script>
+
+    {%- for option in product.options_with_values -%}
+      {% liquid
+        assign option_downcase = option.name | downcase
+        assign resolved_option_selector_style = selector_style
+
+        assign swatch_count = option.values | map: 'swatch' | compact | size
+
+        if swatch_count > 0 and swatch_selector_style != 'none'
+          # Use the swatch selector type only if we have at least one swatch and a supported swatch selector type
+          assign resolved_option_selector_style = swatch_selector_style
+        endif
+
+        # Implementation note: if the option value has no native swatch, BUT that the option name matches a hardcoded list of color names,
+        # we fallback to the legacy config-based system. This allows to keep compatibility with stores that were using the config-based, and
+        # allow those merchants to upgrade to the new system at their own pace.
+        if swatch_count == 0 and color_label_list contains option_downcase and swatch_selector_style != 'none'
+          assign resolved_option_selector_style = swatch_selector_style
+        endif
+
+        if variant_image_options contains option_downcase
+          assign resolved_option_selector_style = 'variant_image'
+        endif
+
+        # A Size option that mixes "…Runner" values (e.g. "2.6x5 Runner") with plain
+        # rectangle sizes (e.g. "6x12ft") gets an All/Rectangle/Runner filter above its
+        # values, so shoppers can narrow the long size list to the shape they want.
+        assign is_size_option = false
+        assign show_shape_tabs = false
+
+        if size_label_list contains option_downcase
+          assign is_size_option = true
+          assign runner_value_count = 0
+          assign rectangle_value_count = 0
+
+          for option_value in option.values
+            if option_value.name contains 'Runner'
+              assign runner_value_count = runner_value_count | plus: 1
+            else
+              assign rectangle_value_count = rectangle_value_count | plus: 1
+            endif
+          endfor
+
+          if runner_value_count > 0 and rectangle_value_count > 0
+            assign show_shape_tabs = true
+            assign any_shape_tabs = true
+          endif
+
+          if resolved_option_selector_style == 'dropdown'
+            assign any_size_entry = true
+          endif
+        endif
+        assign show_size_chart = false
+        assign size_chart_inline = false
+        if is_size_option and resolved_option_selector_style == 'dropdown' and enter_size_heading != blank
+          assign size_chart_inline = true
+        endif
+        if size_chart_page != blank and size_label_list contains option_downcase
+          assign show_size_chart = true
+        endif
+      %}
+      {%- if show_size_chart -%}
+        {%- capture size_chart_id -%}size-chart-{{ option.position }}-{{ form_id }}{%- endcapture -%}
+      {%- endif -%}
+      <fieldset class="variant-picker__option v-stack gap-2">
+        <div class="variant-picker__option-info h-stack justify-between gap-2">
+          <div class="h-stack gap-1">
+            {%- unless is_size_option and resolved_option_selector_style == 'dropdown' -%}
+              <legend>{{ option.name }}:</legend>
+            {%- endunless -%}
+
+            {%- if resolved_option_selector_style == 'swatch' or resolved_option_selector_style == 'swatch_underline' or resolved_option_selector_style == 'variant_image' -%}
+              <span>{{ option.selected_value }}</span>
+            {%- endif -%}
+          </div>
+           {%- if show_size_chart and size_chart_inline == false -%}
+            <button type="button" class="link" aria-controls="{{ size_chart_id | escape }}" aria-expanded="false">
+                {{- 'product.general.size_chart' | t -}}
+            </button>
+
+            <x-modal id="{{ size_chart_id | escape }}" class="modal modal--lg color-scheme color-scheme--dialog">
+              <span class="h5" slot="header">{{ size_chart_page.title }}</span>
+
+              <div class="prose">
+                {{- size_chart_page.content -}}
+              </div>
+            </x-modal>
+          {%- endif -%}
+        </div>
+
+        {%- assign name = 'option' | append: option.position -%}
+
+        {%- if resolved_option_selector_style == 'dropdown' -%}
+          {%- if show_shape_tabs -%}
+            <shape-picker class="shape-picker v-stack gap-4">
+              {%- if shape_heading != blank -%}
+                <p class="shape-picker__heading">
+                  {{ shape_heading }}: <span data-shape-picker-label style="font-weight:400;">{{ 'general.label.all' | t }}</span>
+                </p>
+              {%- endif -%}
+
+              <div class="shape-picker__tabs" role="tablist" aria-label="{{ shape_heading_label }}">
+                <button type="button" class="shape-picker__tab is-active" role="tab" aria-selected="true" data-shape="all">
+                  {{- 'general.label.all' | t -}}
+                </button>
+                <button type="button" class="shape-picker__tab" role="tab" aria-selected="false" data-shape="rectangle">
+                  {{- 'product.general.shape_rectangle' | t -}}
+                </button>
+                <button type="button" class="shape-picker__tab" role="tab" aria-selected="false" data-shape="runner">
+                  {{- 'product.general.shape_runner' | t -}}
+                </button>
+                <a href="{{ customize_url }}" class="shape-picker__tab shape-picker__tab--link">
+                  {{- 'product.general.shape_customize' | t -}}
+                </a>
+              </div>
+            </shape-picker>
+          {%- endif -%}
+
+          {%- if is_size_option and enter_size_heading != blank -%}
+          <size-units class="size-units">
+            <div class="size-entry__heading h-stack justify-between gap-2">
+              <p style="margin:0;">
+                {{ enter_size_heading }}: <span style="font-weight:400;" data-size-units-value data-size="{{ option.selected_value | escape }}">{{ option.selected_value }}</span>
+              </p>
+
+              {%- if show_size_chart and size_chart_inline -%}
+                <button type="button" class="link" style="font-weight:400;" aria-controls="{{ size_chart_id | escape }}" aria-expanded="false">
+                  {{- 'product.general.size_chart' | t -}}
+                </button>
+
+                <x-modal id="{{ size_chart_id | escape }}" class="modal modal--lg color-scheme color-scheme--dialog">
+                  <span class="h5" slot="header">{{ size_chart_page.title }}</span>
+
+                  <div class="prose">
+                    {{- size_chart_page.content -}}
+                  </div>
+                </x-modal>
+              {%- endif -%}
+            </div>
+             <div class="size-units__toggle" role="group" aria-label="{{ 'product.general.size_units_label' | t | escape }}">
+              <button type="button" class="size-units__unit is-active" data-unit="ft" aria-pressed="true">{{- 'product.general.size_unit_feet' | t -}}</button>
+              <span class="size-units__divider" aria-hidden="true">|</span>
+              <button type="button" class="size-units__unit" data-unit="in" aria-pressed="false">{{- 'product.general.size_unit_inch' | t -}}</button>
+              <span class="size-units__divider" aria-hidden="true">|</span>
+              <button type="button" class="size-units__unit" data-unit="cm" aria-pressed="false">{{- 'product.general.size_unit_cm' | t -}}</button>
+            </div>
+          </size-units>
+          {%- endif -%}
+          <div class="relative">
+            {%- capture popover_id -%}popover-variant-dropdown-{{ section.id }}-{{ product.id }}-{{ option.position }}{%- endcapture -%}
+
+            <button type="button" class="select" aria-controls="{{ popover_id }}" aria-expanded="false">
+              <span id="{{ popover_id }}-selected-value">{{- option.selected_value -}}</span>
+              {%- render 'icon' with 'dropdown-chevron' -%}
+            </button>
+
+            <x-popover id="{{ popover_id }}" class="popover popover--bottom-start color-scheme color-scheme--dialog" close-on-listbox-change>
+              <p class="h5" slot="header">{{ option.name }}</p>
+
+              <div class="popover__value-list">
+                {%- assign param_name = form_id | append: '-option' | append: option.position -%}
+
+                {%- for option_value in option.values -%}
+                  {%- liquid
+                    assign option_value_shape = ''
+
+                    if is_size_option
+                      assign option_value_shape = 'rectangle'
+                      if option_value.name contains 'Runner'
+                        assign option_value_shape = 'runner'
+                      endif
+                    endif
+                  -%}
+
+                  {%- capture option_markup -%}
+                    <span>{{- option_value -}}</span>
+
+                    {%- if option_value.available == false -%}
+                      <span>
+                        {%- if option_value.variant == nil -%}
+                          {{- 'product.general.unavailable_button' | t -}}
+                        {%- else -%}
+                          {{- 'product.general.sold_out_badge' | t -}}
+                        {%- endif -%}
+                      </span>
+                    {%- endif -%}
+                  {%- endcapture -%}
+
+                  {%- if hide_sold_out_variants == false or option_value.available or option_value.selected -%}
+                    {%- if is_main_product and option_value.product_url != blank -%}
+                      <div class="popover__value-option" {% if option_value_shape != blank %}data-shape="{{ option_value_shape }}"{% endif %}>
+                        {%- if option_value.selected -%}
+                          <input
+                            class="sr-only"
+                            type="radio"
+                            id="{{ param_name }}-{{ option_value.id }}"
+                            form="{{ form_id }}"
+                            name="{{ param_name }}"
+                            data-option-position="{{ option.position }}"
+                            value="{{ option_value.id }}"
+                            checked
+                          >
+                        {%- endif -%}
+
+                        <a href="{{ option_value.variant.url | default: option_value.product_url }}" class="h-stack justify-between gap-2">
+                          {{- option_markup -}}
+                        </a>
+                      </div>
+                    {%- else -%}
+                      <label class="popover__value-option h-stack justify-between gap-2" for="{{ param_name }}-{{ option_value.id }}" {% if option_value_shape != blank %}data-shape="{{ option_value_shape }}"{% endif %}>
+                        <input
+                          class="sr-only"
+                          form="{{ form_id }}"
+                          type="radio"
+                          id="{{ param_name }}-{{ option_value.id }}"
+                          name="{{ param_name }}"
+                          {% if option_value.product_url != blank %}
+                            data-product-url="{{ option_value.product_url | escape }}"
+                          {% endif %}
+                          data-option-position="{{ option.position }}"
+                          value="{{ option_value.id }}"
+                          {% if option_value.selected %}
+                            checked
+                          {% endif %}
+                        >
+                        {{- option_markup -}}
+                      </label>
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </x-popover>
+          </div>
+        {%- else -%}
+          {%- liquid
+            case resolved_option_selector_style
+              when 'swatch', 'swatch_underline', 'variant_image', 'block', 'block_swatch'
+                assign list_classes = 'h-stack gap-2.5 wrap'
+
+              when 'underline'
+                assign list_classes = 'h-stack gap-4 wrap'
+
+              else
+                assign list_classes = ''
+            endcase
+          -%}
+
+          {%- if show_shape_tabs -%}
+            <shape-picker class="shape-picker v-stack gap-2">
+              <div class="shape-picker__tabs" role="tablist" aria-label="{{ shape_heading_label }}">
+                <button type="button" class="shape-picker__tab is-active" role="tab" aria-selected="true" data-shape="all">
+                  {{- 'general.label.all' | t -}}
+                </button>
+                <button type="button" class="shape-picker__tab" role="tab" aria-selected="false" data-shape="rectangle">
+                  {{- 'product.general.shape_rectangle' | t -}}
+                </button>
+                <button type="button" class="shape-picker__tab" role="tab" aria-selected="false" data-shape="runner">
+                  {{- 'product.general.shape_runner' | t -}}
+                </button>
+                <a href="{{ customize_url }}" class="shape-picker__tab shape-picker__tab--link">
+                  {{- 'product.general.shape_customize' | t -}}
+                </a>
+              </div>
+          {%- endif -%}
+
+          <div class="variant-picker__option-values {{ list_classes }}">
+            {%- for option_value in option.values -%}
+              {%- liquid
+                assign name = form_id | append: '-option' | append: option.position
+                assign option_value_shape = ''
+
+                if is_size_option
+                  assign option_value_shape = 'rectangle'
+                  if option_value.name contains 'Runner'
+                    assign option_value_shape = 'runner'
+                  endif
+                endif
+
+                case resolved_option_selector_style
+                  when 'variant_image'
+                    if variant_image_underline
+                      capture option_value_markup
+                        render 'option-value', type: 'thumbnail', underline: true, form: form_id, option_value: option_value, param_name: name, option_position: option.position, hide_if_disabled: hide_sold_out_variants, reload_page_for_combined_products: is_main_product, id_prefix: forloop.index
+                      endcapture
+                    else
+                      capture option_value_markup
+                        render 'option-value', type: 'thumbnail', form: form_id, option_value: option_value, param_name: name, option_position: option.position, hide_if_disabled: hide_sold_out_variants, reload_page_for_combined_products: is_main_product, id_prefix: forloop.index
+                      endcapture
+                    endif
+                  when 'swatch'
+                    capture option_value_markup
+                      render 'option-value', type: 'swatch', form: form_id, option_value: option_value, param_name: name, option_position: option.position, hide_if_disabled: hide_sold_out_variants, reload_page_for_combined_products: is_main_product, id_prefix: forloop.index
+                    endcapture
+                  when 'swatch_underline'
+                    capture option_value_markup
+                      render 'option-value', type: 'swatch_underline', form: form_id, option_value: option_value, param_name: name, option_position: option.position, hide_if_disabled: hide_sold_out_variants, reload_page_for_combined_products: is_main_product, id_prefix: forloop.index
+                    endcapture
+                  when 'block'
+                    capture option_value_markup
+                      render 'option-value', type: 'block', form: form_id, option_value: option_value, param_name: name, option_position: option.position, hide_if_disabled: hide_sold_out_variants, reload_page_for_combined_products: is_main_product, id_prefix: forloop.index
+                    endcapture
+                  when 'block_swatch'
+                    capture option_value_markup
+                      render 'option-value', type: 'block', form: form_id, option_value: option_value, param_name: name, option_position: option.position, show_swatch: true, hide_if_disabled: hide_sold_out_variants, reload_page_for_combined_products: is_main_product, id_prefix: forloop.index
+                    endcapture
+                  when 'underline'
+                    capture option_value_markup
+                      render 'option-value', type: 'underline', form: form_id, option_value: option_value, param_name: name, option_position: option.position, hide_if_disabled: hide_sold_out_variants, reload_page_for_combined_products: is_main_product, id_prefix: forloop.index
+                    endcapture
+                endcase
+              -%}
+
+              {%- if option_value_shape != blank -%}
+                <span class="shape-picker__option-value" data-shape="{{ option_value_shape }}">{{- option_value_markup -}}</span>
+              {%- else -%}
+                {{- option_value_markup -}}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if show_shape_tabs -%}
+            </shape-picker>
+          {%- endif -%}
+        {%- endif -%}
+      </fieldset>
+    {%- endfor -%}
+
+    {%- if any_shape_tabs or any_size_entry -%}
+      <style>
+        .shape-picker__tabs {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          scrollbar-width: none;
+        }
+
+        .shape-picker__tabs::-webkit-scrollbar {
+          display: none;
+        }
+
+        .shape-picker__tab {
+          flex-shrink: 0;
+          padding: 12px 28px;
+          border: 1px solid rgb(var(--border-color));
+          border-radius: var(--input-border-radius);
+          background: none;
+          font-family: var(--text-font-family);
+          font-size: 16px;
+          line-height: 140%;
+          font-weight: 500;
+          color: rgb(var(--text-color) / 0.65);
+          white-space: nowrap;
+          cursor: pointer;
+        }
+        @media screen and (max-width: 699px) {
+          .shape-picker__tab {
+            padding: 9px 15px;
+            font-size: 14px;
+          }
+        }
+        .shape-picker__tab--link {
+          display: inline-flex;
+          align-items: center;
+          text-decoration: none;
+        }
+
+        .shape-picker__tab--link:hover {
+          color: rgb(var(--text-color));
+          border-color: currentColor;
+        }
+
+        .shape-picker__tab.is-active {
+          color: rgb(var(--text-color));
+          border-color: currentColor;
+          font-weight: 600;
+          background-color: #F9F6EE;
+        }
+
+        .shape-picker__heading {
+          font-family: var(--text-font-family);
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 140%;
+          margin: 0;
+          color: #202020;
+        }
+
+        .shape-picker__option-value {
+          display: contents;
+        }
+
+        [data-shape][hidden] {
+          display: none;
+        }
+
+        .size-entry__heading {
+          font-family: var(--text-font-family);
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 140%;
+          margin: 0;
+          padding-block: 16px;
+          color: #202020;
+        }
+        .size-entry__heading button {
+          font-weight: 500 !important;
+          font-size: 14px;
+          line-height: 140%;
+          letter-spacing: 0%;
+          vertical-align: middle;
+          color: rgb(var(--text-color));
+        }
+          .size-units {
+          display: block;
+        }
+
+        .size-units .size-entry__heading {
+          padding-block-end: 12px;
+        }
+
+        .size-units__toggle {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-family: var(--text-font-family);
+          font-size: 16px;
+          line-height: 140%;
+          color: #202020;
+          vertical-align: middle;
+        }
+
+        .size-units__unit {
+          padding: 0;
+          background: none;
+          border: 0;
+          font: inherit;
+          color: inherit;
+          cursor: pointer;
+        }
+
+        .size-units__unit.is-active {
+          font-weight: 600;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+        }
+
+        .size-units__divider {
+          color: rgb(var(--text-color));
+        }
+      </style>
+
+      <script>
+        if (!customElements.get('shape-picker')) {
+          customElements.define('shape-picker', class extends HTMLElement {
+            connectedCallback() {
+              this.addEventListener('click', (event) => {
+                const tab = event.target.closest('[role="tab"]');
+
+                if (!tab) return;
+
+                this.querySelectorAll('[role="tab"]').forEach((otherTab) => {
+                  const isSelected = otherTab === tab;
+                  otherTab.classList.toggle('is-active', isSelected);
+                  otherTab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+                });
+
+                const label = this.querySelector('[data-shape-picker-label]');
+                if (label) label.textContent = tab.textContent.trim();
+
+                const shape = tab.dataset.shape;
+                const scope = this.closest('fieldset') || this;
+
+                scope.querySelectorAll('[data-shape]:not([role="tab"])').forEach((item) => {
+                  item.hidden = shape !== 'all' && item.dataset.shape !== shape;
+                });
+              });
+            }
+          });
+        }
+        if (!customElements.get('size-units')) {
+          const STORAGE_KEY = 'bisha:size-unit';
+          const UNITS = ['ft', 'in', 'cm'];
+          let currentUnit = 'ft';
+
+          try {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (UNITS.includes(stored)) currentUnit = stored;
+          } catch (error) {}
+
+          const DIMENSION = String.raw`(\d+)(?:\.(\d{1,2}))?\s*(?:'|’|ft\.?|feet)?\s*(?:(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?`;
+          const SIZE_PATTERN = new RegExp(DIMENSION + String.raw`\s*[x×X]\s*` + DIMENSION + String.raw`(?:\s*(?:ft\.?|feet)\b)?`);
+          const SINGLE_PATTERN = /(\d+)(?:\.(\d{1,2}))?\s*(?:'|’|ft\.?|feet)(?:\s*(\d+(?:\.\d+)?)\s*(?:"|”|''|inch(?:es)?|in\.?))?/;
+
+          const toInches = (feet, decimalInches, inches) =>
+            parseInt(feet, 10) * 12 + (decimalInches ? parseInt(decimalInches, 10) : 0) + (inches ? parseFloat(inches) : 0);
+
+          const convert = (value, unit) => {
+            if (!value || unit === 'ft') return value;
+
+            const format = (inches) => Math.round(unit === 'cm' ? inches * 2.54 : inches);
+            let match = value.match(SIZE_PATTERN);
+            let converted;
+
+            if (match) {
+              const spaced = /\s[x×X]\s/.test(match[0]);
+              const separator = spaced ? ' x ' : 'x';
+              const unitGap = spaced ? ' ' : '';
+              converted = `${format(toInches(match[1], match[2], match[3]))}${separator}${format(toInches(match[4], match[5], match[6]))}${unitGap}${unit}`;
+            } else {
+              match = value.match(SINGLE_PATTERN);
+              if (!match) return value;
+              const unitGap = /\d\s/.test(match[0]) ? ' ' : '';
+              converted = `${format(toInches(match[1], match[2], match[3]))}${unitGap}${unit}`;
+            }
+            let rest = value.slice(match.index + match[0].length);
+            if (rest && !/^\s/.test(rest)) rest = ` ${rest}`;
+
+            return value.slice(0, match.index) + converted + rest;
+          };
+
+          const renderAll = () => {
+            document.querySelectorAll('size-units [data-unit]').forEach((button) => {
+              const isActive = button.dataset.unit === currentUnit;
+              button.classList.toggle('is-active', isActive);
+              button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            });
+
+            document.querySelectorAll('[data-size-units-value]').forEach((label) => {
+              label.textContent = convert(label.dataset.size, currentUnit);
+            });
+          };
+
+          customElements.define('size-units', class extends HTMLElement {
+            connectedCallback() {
+              this.addEventListener('click', (event) => {
+                const button = event.target.closest('[data-unit]');
+                if (!button) return;
+
+                currentUnit = button.dataset.unit;
+                try {
+                  localStorage.setItem(STORAGE_KEY, currentUnit);
+                } catch (error) {}
+
+                renderAll();
+              });
+
+              renderAll();
+            }
+          });
+          document.addEventListener('variant:change', () => requestAnimationFrame(renderAll));
+        }
+      </script>
+    {%- endif -%}
+
+    {%- unless request.design_mode -%}
+      <noscript>
+        {%- assign input_label = 'product.general.variant' | t -%}
+
+        {%- capture select_options -%}
+          {%- for variant in product.variants -%}
+            <option {% if variant == product.selected_or_first_available_variant %}selected="selected"{% endif %} {% unless variant.available %}disabled="disabled"{% endunless %} value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+          {%- endfor -%}
+        {%- endcapture -%}
+
+        {%- render 'select', label: input_label, form: form_id, name: 'id', options: select_options -%}
+      </noscript>
+    {%- endunless -%}
+  </variant-picker>
+{%- endunless -%}

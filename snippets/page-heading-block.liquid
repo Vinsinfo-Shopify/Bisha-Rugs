@@ -1,0 +1,48 @@
+{%- doc -%}
+  Renders one block of the page-heading section (heading / description / breadcrumb).
+  @param {object} block
+  @param {string} template
+{%- enddoc -%}
+
+{%- liquid
+  assign block_st = block.settings
+  assign heading_class = 'h2'
+  if block_st.header_size == 'small'
+    assign heading_class = 'h3'
+  elsif block_st.header_size == 'large'
+    assign heading_class = 'h1'
+  endif
+-%}
+
+{%- case block.type -%}
+  {%- when 'breadcrumb' -%}
+    <div {{ block.shopify_attributes }} class="page-title-breadcrumb">
+      {%- render 'breadcrumbs' -%}
+    </div>
+
+  {%- when 'heading' -%}
+    <h1 {{ block.shopify_attributes }} class="{{ heading_class }} page-heading__title">
+      {%- if block_st.page_title != blank -%}
+        {{ block_st.page_title }}
+      {%- else -%}
+        {%- if template contains 'blog' -%}
+          {{ blog.title }}
+        {%- elsif template contains 'cart' -%}
+          {{- 'cart.general.title' | t -}}
+        {%- else -%}
+          {{ page.title }}
+        {%- endif -%}
+      {%- endif -%}
+    </h1>
+
+  {%- when 'description' -%}
+    {%- if block_st.description != blank or page.content != blank -%}
+      <div {{ block.shopify_attributes }} class="rich-text page-heading__description">
+        {%- if block_st.description != blank -%}
+          {{- block_st.description -}}
+        {%- else -%}
+          {{- page.content -}}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+{%- endcase -%}

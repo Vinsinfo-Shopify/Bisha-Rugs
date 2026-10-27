@@ -1,0 +1,141 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "newsletter_rifYEN": {
+      "type": "newsletter",
+      "name": "t:sections.newsletter.presets.newsletter.name",
+      "settings": {
+        "home_top_spacing": 50,
+        "color_scheme": "scheme-8eec0b30-7dd6-40f7-bdf8-3f2aa3b45117",
+        "separate_section_with_border": false,
+        "image_1": "shopify://shop_images/newsletter_img1.png",
+        "image_2": "shopify://shop_images/newsletter_img2.png",
+        "image_position_mobile": "after_text",
+        "subheading": "",
+        "title": "Join the Bisha Rugs Journal Today",
+        "heading_style": "h2",
+        "content": "<p>Get early access to new drops, care tips, design inspirations and exclusive offers, straight to your inbox.</p>",
+        "button_text": "Subscribe",
+        "disclaimer": "<p>You can unsubscribe anytime. For more details read our <a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a></p>"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "image_Tmmyee": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Frame_1437258595.png",
+            "image_width": 160,
+            "link": "https://bisharugs.com",
+            "open_in_new_tab": false
+          }
+        },
+        "text_z77pQj": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "title": "BISHA RUGS",
+            "content": "",
+            "enable_follow_on_shop": true
+          }
+        },
+        "links_jCCMqU": {
+          "type": "links",
+          "settings": {
+            "menu": "shop-all",
+            "custom_icon_closed": "shopify://shop_images/Vector_5.png",
+            "custom_icon_open": "shopify://shop_images/Vector_6.png",
+            "collapse_on_mobile": true,
+            "show_menu_title": true,
+            "menu_title": ""
+          }
+        },
+        "links_aRa6NT": {
+          "type": "links",
+          "settings": {
+            "menu": "rug-resources",
+            "custom_icon_closed": "shopify://shop_images/Vector_5.png",
+            "custom_icon_open": "shopify://shop_images/Vector_6.png",
+            "collapse_on_mobile": true,
+            "show_menu_title": true,
+            "menu_title": "Rug Resources"
+          }
+        },
+        "links": {
+          "type": "links",
+          "settings": {
+            "menu": "know-us-better",
+            "custom_icon_closed": "shopify://shop_images/Vector_5.png",
+            "custom_icon_open": "shopify://shop_images/Vector_6.png",
+            "collapse_on_mobile": true,
+            "show_menu_title": true,
+            "menu_title": ""
+          }
+        },
+        "links_Peqb4H": {
+          "type": "links",
+          "settings": {
+            "menu": "help",
+            "custom_icon_closed": "shopify://shop_images/Vector_5.png",
+            "custom_icon_open": "shopify://shop_images/Vector_6.png",
+            "collapse_on_mobile": true,
+            "show_menu_title": true,
+            "menu_title": ""
+          }
+        },
+        "contact_us_d8kb98": {
+          "type": "contact_us",
+          "settings": {
+            "heading": "Contact Us",
+            "collapsible": true,
+            "custom_icon_closed": "shopify://shop_images/Vector_5.png",
+            "custom_icon_open": "shopify://shop_images/Vector_6.png",
+            "highlight_border": true,
+            "desktop_width": 20,
+            "address_icon": "shopify://shop_images/boxicons_location_1.png",
+            "address": "30 North Gould Street, Sheridan, Wyoming",
+            "phone_icon": "shopify://shop_images/proicons_call.png",
+            "phone": "+1 (415) 980-7774",
+            "email_icon": "shopify://shop_images/material-symbols_mail-outline.png",
+            "email": "love@bisharugs.com"
+          }
+        }
+      },
+      "block_order": [
+        "image_Tmmyee",
+        "text_z77pQj",
+        "links_jCCMqU",
+        "links_aRa6NT",
+        "links",
+        "links_Peqb4H",
+        "contact_us_d8kb98"
+      ],
+      "settings": {
+        "color_scheme": "scheme-257fc222-3048-499d-91ad-4c0f672389c7",
+        "separate_section_with_border": false,
+        "show_social_media": true,
+        "show_payment_icons": false,
+        "show_powered_by_shopify": false,
+        "show_country_selector": false,
+        "show_country_name": false,
+        "show_country_flag": false,
+        "show_locale_selector": false
+      }
+    }
+  },
+  "order": [
+    "newsletter_rifYEN",
+    "footer"
+  ]
+}

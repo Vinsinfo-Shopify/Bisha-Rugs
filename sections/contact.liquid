@@ -1,0 +1,447 @@
+{%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
+{%- liquid
+  assign column_gap = section.settings.column_gap
+  assign iframe = section.settings.iframe
+  assign section_width = section.settings.section_width
+
+  case section_width
+    when 'narrow'
+      assign width_class = 'container container--xs'
+    when 'wide'
+      assign width_class = 'container container--lg'
+    when 'full'
+      assign width_class = 'section-full-width'
+    else
+      assign width_class = 'container'
+  endcase
+
+  if section.settings.reset_spacing
+    assign section_class = 'section-custom-padding'
+  else
+    assign section_class = 'section-spacing'
+  endif
+
+  assign custom_class = section.settings.custom_class | strip
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} {
+    --section-padding-top: {{ section.settings.padding_top }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  #shopify-section-{{ section.id }} .section-full-width {
+    padding-inline-start: var(--container-gutter);
+    padding-inline-end: var(--container-gutter);
+    width: 100%;
+  }
+  #shopify-section-{{ section.id }} .contact-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(3rem, 4vw, {{ column_gap }}px);
+  }
+  #shopify-section-{{ section.id }} .contact_map {
+    margin-bottom: 3rem;
+  }
+  #shopify-section-{{ section.id }} .contact_map iframe {
+    width: 100%;
+    border: 0;
+    border-radius: var(--input-border-radius);
+  }
+  #shopify-section-{{ section.id }} .contact_form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 1 1 20rem;
+  }
+  #shopify-section-{{ section.id }} .support_customer {
+    flex: 1 1 20rem;
+  }
+  #shopify-section-{{ section.id }} .contact_header :is(h3, h4) {
+    margin-block-start: 0;
+  }
+  #shopify-section-{{ section.id }} .form_action.has-privacy:not(:has(#privacy:checked)) .privacy_btn {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  #shopify-section-{{ section.id }} .checkbox-control {
+    margin-block-end: 1.25rem;
+  }
+  @media screen and (min-width: 700px) {
+    #shopify-section-{{ section.id }} .support_customer {
+      max-width: 30rem;
+    }
+  }
+{%- endstyle -%}
+
+<div class="{{ section_class }} color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}{% if custom_class != blank %} {{ custom_class }}{% endif %}">
+  <div class="{{ width_class }}">
+
+    {%- if section.settings.title != blank or section.settings.subheading != blank or section.settings.content != blank -%}
+      <div class="section-stack text-center" style="margin-bottom: 4rem;">
+        {%- render 'section-header',
+          subheading: section.settings.subheading,
+          heading: section.settings.title,
+          heading_style: section.settings.heading_style,
+          content: section.settings.content,
+          text_alignment: 'center'
+        -%}
+      </div>
+    {%- endif -%}
+
+    {%- if iframe != blank -%}
+      <div class="contact_map">
+        {{ iframe }}
+      </div>
+    {%- endif -%}
+
+    <div class="contact-container">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign block_st = block.settings
+        -%}
+
+        {%- case block.type -%}
+
+          {%- when 'contact' -%}
+            {%- liquid
+              assign name_label = block_st.name | default: 'contact.form.name'
+              assign email_label = block_st.email | default: 'contact.form.email'
+              assign message_label = block_st.your_comment | default: 'contact.form.message'
+              assign button_label = block_st.button_label | default: 'contact.form.submit'
+              assign name_value = form.name | default: customer.name
+              assign message_max_length = block_st.message_max_length | default: 500
+              assign name_pattern = "[A-Za-zÀ-ÖØ-öø-ÿĀ-ɏ][A-Za-zÀ-ÖØ-öø-ÿĀ-ɏ'’.\- ]*"
+              assign email_pattern = "[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+            -%}
+            <div
+              class="contact_form"
+              data-contact-form
+              data-required-name="Please enter your name."
+              data-invalid-name="Please enter a valid name using letters, spaces, hyphens or apostrophes only."
+              data-required-email="Please enter your email address."
+              data-invalid-email="Please enter a valid email address, for example name@example.com."
+              data-required-message="Please enter your message."
+              data-invalid-message="Please shorten your message to {{ message_max_length }} characters or less."
+              data-required-privacy="Please accept the Privacy Policy before sending your message."
+              {{ block.shopify_attributes }}
+            >
+              <div class="contact_header">
+                {%- if block_st.heading != blank -%}
+                  <h3 class="h4 heading-style">{{ block_st.heading }}</h3>
+                {%- endif -%}
+                {%- if block_st.description != blank -%}
+                  <div class="prose prose--tight">
+                    {{ block_st.description }}
+                  </div>
+                {%- endif -%}
+              </div>
+
+              {%- form 'contact', class: 'form' -%}
+                {%- if form.posted_successfully? -%}
+                  {%- assign success_content = 'contact.form.success_message' | t -%}
+                  {%- render 'banner', status: 'success', content: success_content -%}
+                {%- endif -%}
+
+                {%- if form.errors -%}
+                  {%- capture error_content -%}{{ form.errors.translated_fields[form.errors.first] | capitalize }} {{ form.errors.messages[form.errors.first] }}{%- endcapture -%}
+                  {%- render 'banner', status: 'error', content: error_content -%}
+                {%- endif -%}
+
+                <div class="fieldset">
+                  <div class="fieldset-row">
+                    {%- render 'input',
+                      type: 'text',
+                      name: 'contact[name]',
+                      label: name_label,
+                      value: name_value,
+                      required: true,
+                      minlength: 2,
+                      pattern: name_pattern,
+                      autocomplete: 'name'
+                    -%}
+                    {%- render 'input',
+                      type: 'email',
+                      name: 'contact[email]',
+                      label: email_label,
+                      value: customer.email,
+                      required: true,
+                      pattern: email_pattern,
+                      autocomplete: 'email'
+                    -%}
+                  </div>
+
+                  {%- render 'input',
+                    name: 'contact[body]',
+                    label: message_label,
+                    multiline: 4,
+                    required: true,
+                    maxlength: message_max_length,
+                    show_max_characters_count: true
+                  -%}
+                </div>
+
+                <div class="form_action{% if block_st.show_privacy %} has-privacy{% endif %}">
+                  {%- if block_st.show_privacy -%}
+                    <div class="checkbox-control">
+                      <input
+                        class="checkbox"
+                        type="checkbox"
+                        name="conditions"
+                        id="privacy"
+                        required
+                      >
+                      <label for="privacy">
+                        I agree to the
+                        <a href="{{ shop.privacy_policy.url }}" class="link">Privacy Policy</a>
+                        of the website.
+                      </label>
+                      <p class="contact-form__error" id="privacy-error" hidden></p>
+                    </div>
+                  {%- endif -%}
+
+                  {%- render 'button',
+                    content: button_label,
+                    type: 'submit',
+                    class: 'privacy_btn'
+                  -%}
+                </div>
+              {%- endform -%}
+            </div>
+
+            <script src="{{ 'contact-form.js' | asset_url }}" defer></script>
+
+          {%- when 'text_block' -%}
+            <div class="support_customer" {{ block.shopify_attributes }}>
+              <div class="contact_header">
+                {%- if block_st.heading_text_block != blank -%}
+                  <h3 class="h4 heading-style">{{ block_st.heading_text_block }}</h3>
+                {%- endif -%}
+                {%- if block_st.description_text_block != blank -%}
+                  <p>
+                    {{ block_st.description_text_block }}
+                  </p>
+                {%- endif -%}
+              </div>
+              {%- if block_st.content != blank -%}
+                <div class="prose prose--tight">
+                  {{ block_st.content }}
+                </div>
+              {%- endif -%}
+            </div>
+
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.contact.name",
+  "class": "shopify-section--contact",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "narrow", "label": "Narrow" },
+        { "value": "wide", "label": "Wide" },
+        { "value": "full", "label": "Full width" }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "separate_section_with_border",
+      "label": "t:global.section.separate_section_with_border",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "t:global.text.subheading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "t:global.text.heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "t:global.text.style",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "t:global.text.content"
+    },
+    {
+      "type": "textarea",
+      "id": "iframe",
+      "label": "Map embed (iframe)"
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 0,
+      "max": 120,
+      "step": 5,
+      "default": 100,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "Remove default space between sections",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Custom class"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS class",
+      "info": "Add one or more space-separated classes to hook into with your own Custom CSS (e.g. \"my-contact-section alt-layout\"). Applied to the section's outer wrapper."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "contact",
+      "name": "t:sections.contact.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Contact Us"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Please submit all general enquiries in the contact form below and we look forward to hearing from you soon.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_privacy",
+          "label": "Show privacy checkbox",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name field label"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Email field label"
+        },
+        {
+          "type": "text",
+          "id": "your_comment",
+          "label": "Message field label"
+        },
+        {
+          "type": "range",
+          "id": "message_max_length",
+          "label": "Message character limit",
+          "info": "Maximum number of characters allowed in the message field.",
+          "min": 100,
+          "max": 2000,
+          "step": 50,
+          "default": 500
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        }
+      ]
+    },
+    {
+      "type": "text_block",
+      "name": "Text block",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading_text_block",
+          "label": "Heading",
+          "default": "Customer Support"
+        },
+        {
+          "type": "richtext",
+          "id": "description_text_block",
+          "label": "Description"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.contact.presets.contact_form.name",
+      "category": "t:global.categories.call_to_action",
+      "blocks": [
+        { "type": "text_block" },
+        { "type": "contact" }
+      ]
+    }
+  ]
+}
+{% endschema %}

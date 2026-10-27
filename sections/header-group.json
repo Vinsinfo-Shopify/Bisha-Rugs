@@ -1,0 +1,143 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "countdown-timer": {
+      "type": "countdown-condensed",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "schema-3",
+        "content": "super Sale Up to 40% off",
+        "link_text": "shop now",
+        "link_url": "shopify://collections/all",
+        "expiration_date": "2025-11-25",
+        "expiration_behavior": "leave",
+        "desktop_justification": "space-between"
+      }
+    },
+    "announcement_bar_bfKe8V": {
+      "type": "announcement-bar",
+      "blocks": {
+        "message_EUBwnB": {
+          "type": "message",
+          "settings": {
+            "text": "Flat 5% OFF if you order over $1000"
+          }
+        },
+        "message_QEkER8": {
+          "type": "message",
+          "settings": {
+            "text": "30-days hassle-free returns"
+          }
+        },
+        "message_zWqyJP": {
+          "type": "message",
+          "settings": {
+            "text": "Worldwide insured shipping on all orders"
+          }
+        },
+        "message_3BgJ94": {
+          "type": "message",
+          "settings": {
+            "text": "Benefits for interior designers & architects.  <a href=\"/pages/bisha-rugs-trade-program\" title=\"Bisha Rugs Trade Program\">Apply Now →</a>"
+          }
+        },
+        "message_LPpXbH": {
+          "type": "message",
+          "settings": {
+            "text": "Free shipping to United States"
+          }
+        }
+      },
+      "block_order": [
+        "message_EUBwnB",
+        "message_QEkER8",
+        "message_zWqyJP",
+        "message_3BgJ94",
+        "message_LPpXbH"
+      ],
+      "custom_css": [],
+      "name": "t:sections.announcement_bar.name",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "enable_sticky": false,
+        "autoplay": true,
+        "cycle_speed": 5,
+        "desktop_font_size": 11,
+        "mobile_font_size": 10,
+        "show_left_item": true,
+        "left_icon_img": "shopify://shop_images/hugeicons_chat-user_1.png",
+        "left_text": "Virtual Appointment",
+        "left_link": "https://calendly.com/love-bisharugs/30min",
+        "show_phone": true,
+        "right_icon_img": "shopify://shop_images/ph_phone-call_1.png",
+        "phone_number": "+1 (415) 980-7774",
+        "phone_clickable": true,
+        "hide_sides_mobile": true
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "mega_menu_tA3dFe": {
+          "type": "mega_menu",
+          "settings": {
+            "menu_item": "Shop All",
+            "images_position": "right",
+            "image_1": "shopify://shop_images/Oushak_Rugs_Updated.png",
+            "image_1_heading": "Oushak Rugs",
+            "image_1_text": "[count] items",
+            "image_1_link": "shopify://collections/oushak-rugs",
+            "image_2_heading": "",
+            "image_2_text": "",
+            "image_2_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_tA3dFe"
+      ],
+      "settings": {
+        "color_scheme": "scheme-6",
+        "enable_sticky": true,
+        "hide_on_scroll": false,
+        "show_separation_border": false,
+        "reduce_padding": false,
+        "logo": "shopify://shop_images/image_3702.png",
+        "logo_max_width": 130,
+        "logo_mobile_max_width": 80,
+        "menu": "prestige-main-menu",
+        "sidebar_menu": "",
+        "customer_account_menu": "customer-account-main-menu",
+        "menu_open_trigger": "hover",
+        "menu_text_font": "heading",
+        "enable_search": true,
+        "sidebar_color_scheme": "scheme-6",
+        "sidebar_text_font": "heading",
+        "sidebar_show_dividers": false,
+        "sidebar_open_second_level_menus": false,
+        "layout": "logo_left_navigation_center",
+        "show_icons": true,
+        "show_country_selector": true,
+        "show_country_name": false,
+        "show_country_flag": true,
+        "show_locale_selector": false,
+        "transparent_header_text_color": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "countdown-timer",
+    "announcement_bar_bfKe8V",
+    "header"
+  ]
+}

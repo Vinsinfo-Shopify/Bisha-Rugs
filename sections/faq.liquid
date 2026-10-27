@@ -1,0 +1,1011 @@
+{%- if section.blocks.size > 0 or collection.metafields.custom.collection_faqs.value != blank -%}
+  {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
+
+  {%- assign dynamic_faqs = blank -%}
+    {%- if collection != blank -%}
+      {%- assign dynamic_faqs = collection.metafields.custom.collection_faqs.value -%}
+    {%- endif -%}
+
+  <div class="section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %} {{ section.settings.custom_class }}">
+<style>
+  #shopify-section-{{ section.id }} .faq-breadcrumb {
+    justify-content: center;
+    column-gap: 8px;
+    margin-block-end: 20px;
+  }
+  #shopify-section-{{ section.id }} .faq-breadcrumb .breadcrumb__list-item {
+    align-items: center;
+    column-gap: 8px;
+    display: flex;
+  }
+  #shopify-section-{{ section.id }} .faq-breadcrumb a {
+    color: rgb(var(--text-color));
+    text-decoration: none;
+  }
+    #shopify-section-{{ section.id }} .faq-breadcrumb a:hover{
+      color: #b35642;
+    }
+  #shopify-section-{{ section.id }} .faq-breadcrumb .breadcrumb__list-item:last-child span {
+    color: rgb(var(--text-color) / .55);
+  }
+
+  #shopify-section-{{ section.id }} .faq-layout--with-sidebar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 40px;
+  }
+  #shopify-section-{{ section.id }} .faq-layout--with-sidebar .section-header {
+    text-align: start;
+    justify-items: start;
+  }
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .container {
+      --container-max-width: 1300px;
+      --container-gutter: 70px;
+    }
+  }
+  #shopify-section-{{ section.id }} .faq-layout--with-sidebar .section-header > * {
+    margin-inline: 0;
+  }
+    /* Image layout (right-side image, desktop only) */
+  #shopify-section-{{ section.id }} .faq-layout--with-image {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 40px;
+  }
+  #shopify-section-{{ section.id }} .faq-content-column {
+    min-width: 0;
+  }
+  #shopify-section-{{ section.id }} .faq-layout--with-image .faq {
+    justify-content: flex-start;
+  }
+  #shopify-section-{{ section.id }} .faq-image-wrapper {
+    overflow: hidden;
+    align-self: start;
+    max-height: {{ section.settings.image_max_height }}px;
+  }
+  #shopify-section-{{ section.id }} .faq-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    max-height: {{ section.settings.image_max_height }}px;
+    object-fit: cover;
+    display: block;
+  }
+  
+  #shopify-section-{{ section.id }} .faq-sidebar {
+     background: #F5F5F5;
+    border-radius: 9px;
+    padding: 40px 30px;
+    align-self: start;
+    color:rgb(var(--text-color)) ;
+  }
+  /* Pill-shaped buttons, matching reference */
+  #shopify-section-{{ section.id }} .faq-sidebar-btn1,
+  #shopify-section-{{ section.id }} .faq-sidebar-btn2 {
+    transition: background-color .2s ease-in-out, color .2s ease-in-out, border-color .2s ease-in-out;
+    font-weight: 700;
+    line-height: 140%;
+    vertical-align: middle;
+    font-size: 16px;
+  }
+
+  /* Outline "Contact Us" button — black border/text normally,
+     hover uses the section's scheme button color as background */
+  #shopify-section-{{ section.id }} .faq-sidebar-btn1 {
+    background-color: transparent;
+    color: #000000;
+    border-color: #000000;
+  }
+  #shopify-section-{{ section.id }} .faq-sidebar-btn1:hover {
+    background-color: rgb(var(--button-background));
+    color: rgb(var(--button-text-color));
+    border-color: #000000;
+  }
+
+  /* Solid "About Us" button — black bg / white text normally,
+     hover flips to white bg / black text */
+  #shopify-section-{{ section.id }} .faq-sidebar-btn2 {
+    background-color: #000000;
+    color: #FFFFFF;
+    border-color: #000000;
+  }
+  #shopify-section-{{ section.id }} .faq-sidebar-btn2:hover {
+    color: #ffffff;
+  }
+
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .faq-layout--with-sidebar {
+      grid-template-columns: 26.625rem minmax(0, 1fr);
+      column-gap: 60px;
+      row-gap: 0;
+      align-items: start;
+    }
+    #shopify-section-{{ section.id }} .faq-layout--with-image {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 3fr);
+      column-gap: 121px;
+      row-gap: 0;
+      align-items: start;
+      padding-left: 10px;
+    }
+  }
+</style>
+
+    <div class="container container--md">
+      <div class="section-stack">
+        {%- if section.settings.show_breadcrumb -%}
+          <nav class="faq-breadcrumb breadcrumb__list text-sm" aria-label="breadcrumb">
+            <span class="breadcrumb__list-item">
+              <a href="{{ routes.root_url }}">{{ section.settings.breadcrumb_home_label }}</a>
+              <span aria-hidden="true">/</span>
+            </span>
+            <span class="breadcrumb__list-item">
+              <span>{{ section.settings.breadcrumb_current_label }}</span>
+            </span>
+          </nav>
+        {%- endif -%}
+        {%- assign faq_show_image = false -%}
+        {%- if section.settings.show_image and section.settings.image != blank -%}
+          {%- assign faq_show_image = true -%}
+        {%- endif -%}
+
+        {%- unless faq_show_image -%}
+          <div class="faq_section_header">
+            {%- render 'section-header',
+              subheading: section.settings.subheading,
+              heading: section.settings.title,
+              heading_style: section.settings.heading_style,
+              content: section.settings.content
+            -%}
+          </div>
+        {%- endunless -%}
+
+        <div class="faq-layout {% if section.settings.show_sidebar %}faq-layout--with-sidebar{% endif %} {% if faq_show_image %}faq-layout--with-image{% endif %}">
+          {%- if section.settings.show_sidebar -%}
+            <div class="faq-sidebar v-stack gap-6 {{ section.settings.sidebar_custom_class }}">
+              {%- if section.settings.sidebar_heading != blank -%}
+                <h2 class="h2 faq-sidebar_header">{{ section.settings.sidebar_heading }}</h2>
+              {%- endif -%}
+
+              {%- if section.settings.sidebar_text != blank -%}
+                <div class="prose">
+                  {{ section.settings.sidebar_text }}
+                </div>
+              {%- endif -%}
+
+              {%- if section.settings.sidebar_button_1_label != blank or section.settings.sidebar_button_2_label != blank -%}
+                <div class="v-stack gap-3">
+                  {%- if section.settings.sidebar_button_1_label != blank -%}
+                    <a
+                      {% if section.settings.sidebar_button_1_link != blank %}
+                        href="{{ section.settings.sidebar_button_1_link }}"
+                      {% endif %}
+                      class="button button--outline w-full faq-sidebar-btn1"
+                    >
+                      {{ section.settings.sidebar_button_1_label }}
+                    </a>
+                  {%- endif -%}
+
+                  {%- if section.settings.sidebar_button_2_label != blank -%}
+                    <a
+                      {% if section.settings.sidebar_button_2_link != blank %}
+                        href="{{ section.settings.sidebar_button_2_link }}"
+                      {% endif %}
+                      class="button w-full faq-sidebar-btn2"
+                    >
+                      {{ section.settings.sidebar_button_2_label }}
+                    </a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          <div class="faq-content-column">
+            {%- if faq_show_image -%}
+              <div class="faq_section_header header_flex">
+                {%- render 'section-header',
+                  subheading: section.settings.subheading,
+                  heading: section.settings.title,
+                  heading_style: section.settings.heading_style,
+                  content: section.settings.content,
+                  text_alignment: 'start'
+                -%}
+              </div>
+            {%- endif -%}
+
+            <div class="faq-main section-stack {{ section.settings.faq_custom_class }}">
+              <div class="faq">
+                {%- assign categories_blocks = section.blocks | where: 'type', 'category' -%}
+
+                {%- if section.settings.show_categories and categories_blocks.size > 0 and dynamic_faqs == blank -%}
+                  <faq-toc class="faq__toc hidden md:grid">
+                    {%- for block in categories_blocks -%}
+                      <a class="faq__toc-item {% if forloop.first %}is-active{% endif %}" href="#block-{{ block.id }}">{{ block.settings.title }}</a>
+                    {%- endfor -%}
+                  </faq-toc>
+                {%- endif -%}
+
+                  <faq-accordion-group class="faq__content">
+                    {%- if dynamic_faqs != blank -%}
+
+                      {%- assign first_question_rendered = false -%}
+                      {%- for faq in dynamic_faqs -%}
+                        {%- if faq.question.value != blank and faq.answer.value != blank -%}
+                        {%- capture answer -%}
+                          <div class="prose faq__answer">
+                            {{ faq.answer | metafield_tag }}
+                          </div>
+                        {%- endcapture -%}
+
+                          {%- assign should_open_faq = false -%}
+                          {%- if section.settings.open_first_question and first_question_rendered == false -%}
+                            {%- assign should_open_faq = true -%}
+                            {%- assign first_question_rendered = true -%}
+                          {%- endif -%}
+
+                          {%- render 'accordion',
+                            title: faq.question.value,
+                            content: answer,
+                            show_title_as_text: true,
+                            open: should_open_faq
+                          -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+
+                    {%- else -%}
+
+                      {%- assign first_question_rendered = false -%}
+                      {%- for block in section.blocks -%}
+                        {%- case block.type -%}
+                          {%- when 'category' -%}
+                            {%- if block.settings.title != blank -%}
+                              <p id="block-{{ block.id }}" class="faq__category h2 {{ block.settings.custom_class }}" {{ block.shopify_attributes }}>
+                                {%- if block.settings.custom_icon != blank -%}
+                                  {%- capture sizes -%}{{ block.settings.icon_width }}px{%- endcapture -%}
+                                  {%- capture widths -%}{{ block.settings.icon_width }}, {{ block.settings.icon_width | times: 2 | at_most: block.settings.custom_icon.width }}{%- endcapture -%}
+                                  {%- capture style -%}--image-max-width: {{ block.settings.icon_width }}px{%- endcapture -%}
+
+                                  {{-
+                                    block.settings.custom_icon
+                                    | image_url: width: block.settings.custom_icon.width
+                                    | image_tag: sizes: sizes, widths: widths, class: 'constrained-image', style: style
+                                  -}}
+                                {%- elsif block.settings.icon != 'none' -%}
+                                  {%- render 'icon' with block.settings.icon, width: block.settings.icon_width -%}
+                                {%- endif -%}
+
+                                {{- block.settings.title -}}
+                              </p>
+                            {%- endif -%}
+
+                          {%- when 'question' -%}
+                            {%- if block.settings.question != blank and block.settings.answer != blank -%}
+                              {%- capture answer -%}
+                                <div class="prose faq__answer">
+                                  {{- block.settings.answer -}}
+                                </div>
+                              {%- endcapture -%}
+
+                              {%- assign should_open_faq = false -%}
+                              {%- if section.settings.open_first_question and first_question_rendered == false -%}
+                                {%- assign should_open_faq = true -%}
+                                {%- assign first_question_rendered = true -%}
+                              {%- endif -%}
+
+                              {%- render 'accordion',
+                                title: block.settings.question,
+                                content: answer,
+                                show_title_as_text: true,
+                                block: block,
+                                class: block.settings.custom_class,
+                                open: should_open_faq
+                              -%}
+                            {%- endif -%}
+                        {%- endcase -%}
+                      {%- endfor -%}
+
+                    {%- endif -%}
+                  </faq-accordion-group>
+              </div>
+            </div>
+          </div>
+
+          {%- if faq_show_image -%}
+            <div class="faq-image-wrapper hidden md:block">
+              {{
+                section.settings.image
+                | image_url: width: 1000
+                | image_tag: loading: 'lazy', widths: '500, 750, 1000, 1500'
+              }}
+            </div>
+          {%- endif -%}
+        </div>
+
+        <script>
+          if (!customElements.get('faq-accordion-group')) {
+            customElements.define(
+              'faq-accordion-group',
+              class extends HTMLElement {
+                constructor() {
+                  super();
+                  this.onToggle = this.onToggle.bind(this);
+                }
+
+                connectedCallback() {
+                  // 'toggle' fires AFTER the browser has changed details.open,
+                  // so the state read here is the new one. A click listener
+                  // reads the state before the toggle and gets it backwards.
+                  // toggle does not bubble, hence the capture phase.
+                  this.addEventListener('toggle', this.onToggle, true);
+                }
+
+                disconnectedCallback() {
+                  this.removeEventListener('toggle', this.onToggle, true);
+                }
+
+                onToggle(event) {
+                  var details = event.target;
+                  if (details.tagName !== 'DETAILS' || !details.open) return;
+
+                  var current = details.closest('accordion-disclosure');
+                  if (!current || !this.contains(current)) return;
+
+                  Array.prototype.forEach.call(
+                    this.querySelectorAll('accordion-disclosure'),
+                    function (other) {
+                      if (other === current) return;
+
+                      var otherDetails = other.querySelector('details');
+                      if (!otherDetails || !otherDetails.open) return;
+
+                      // The theme's own close() runs the collapse animation.
+                      // Setting .open directly would snap it shut.
+                      if (typeof other.close === 'function') {
+                        other.close();
+                      } else {
+                        otherDetails.open = false;
+                        otherDetails.setAttribute('aria-expanded', 'false');
+                      }
+                    }
+                  );
+                }
+              }
+            );
+          }
+        </script>
+
+        {%- comment -%}We also output the content with JSON microdata for SEO{%- endcomment -%}
+
+<script type="application/ld+json">
+  {%- if dynamic_faqs != blank -%}
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for faq in dynamic_faqs -%}
+          {%- if faq.question.value != blank and faq.answer.value != blank -%}
+            {
+              "@type": "Question",
+              "name": {{ faq.question.value | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ faq.answer | metafield_tag | strip_html | json }}
+              }
+            }{% unless forloop.last %},{% endunless %}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+  {%- else -%}
+    {%- assign question_blocks = section.blocks | where: 'type', 'question' -%}
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for block in question_blocks -%}
+          {
+            "@type": "Question",
+            "name": {{ block.settings.question | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ block.settings.answer | json }}
+            }
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  {%- endif -%}
+</script>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.faq.name",
+  "class": "shopify-section--faq",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:global.colors.scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "separate_section_with_border",
+      "label": "t:global.section.separate_section_with_border",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_categories",
+      "label": "t:sections.faq.show_categories"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first_question",
+      "label": "Open first question by default",
+      "info": "Expands the first FAQ item when the page loads.",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Custom CSS"
+    },
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Section custom class(es)",
+      "info": "Space-separated class names added to the section's outer wrapper, for targeting with custom CSS."
+    },
+    {
+      "type": "text",
+      "id": "faq_custom_class",
+      "label": "FAQ list custom class(es)",
+      "info": "Space-separated class names added to the FAQ list/accordion wrapper only."
+    },
+    {
+      "type": "header",
+      "content": "Breadcrumb"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "label": "Show breadcrumb",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_home_label",
+      "label": "Home label",
+      "default": "Home"
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_current_label",
+      "label": "Current page label",
+      "default": "FAQs"
+    },
+    {
+      "type": "header",
+      "content": "t:global.section.header_category"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "t:global.text.subheading",
+      "default": "Need help?"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "t:global.text.heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "t:global.text.style",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        },
+        {
+          "value": "h4",
+          "label": "H4"
+        },
+        {
+          "value": "h5",
+          "label": "H5"
+        },
+        {
+          "value": "h6",
+          "label": "H6"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "t:global.text.content"
+    },
+    {
+      "type": "header",
+      "content": "Sidebar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sidebar",
+      "label": "Show contact sidebar",
+      "info": "Displays a contact card next to the FAQ list, and left-aligns the heading, similar to a help center layout.",
+      "default": false
+    },
+    {
+      "type": "inline_richtext",
+      "id": "sidebar_heading",
+      "label": "Sidebar heading",
+      "default": "Contact Us"
+    },
+    {
+      "type": "richtext",
+      "id": "sidebar_text",
+      "label": "Sidebar text",
+      "default": "<p>If you have an issue or question that requires immediate assistance, you can mail us on love@example.com</p><p>We will reply as soon as possible with solution.</p>"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_button_1_label",
+      "label": "First button label",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "sidebar_button_1_link",
+      "label": "First button link"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_button_2_label",
+      "label": "Second button label",
+      "default": "About Us"
+    },
+    {
+      "type": "url",
+      "id": "sidebar_button_2_link",
+      "label": "Second button link"
+    },
+    {
+      "type": "text",
+      "id": "sidebar_custom_class",
+      "label": "Sidebar custom class(es)",
+      "info": "Space-separated class names added to the sidebar card only."
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show image",
+      "info": "Displays an image next to the FAQ list. Shown on desktop only; hidden on mobile.",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "number",
+      "id": "image_max_height",
+      "label": "Image max height (px)",
+      "placeholder": "500",
+      "default": 500
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "t:sections.faq.blocks.category.name",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "t:global.text.title",
+          "default": "Category"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "t:global.icons.icon",
+          "options": [
+            {
+              "value": "none",
+              "label": "t:global.icons.none"
+            },
+            {
+              "value": "picto-award-gift",
+              "label": "t:global.icons.award_gift",
+              "group": "t:global.icons.shop_category"
+            },
+            {
+              "value": "picto-bag-handle",
+              "label": "t:global.icons.bag_handle",
+              "group": "t:global.icons.shop_category"
+            },
+            {
+              "value": "picto-building",
+              "label": "t:global.icons.building",
+              "group": "t:global.icons.shop_category"
+            },
+            {
+              "value": "picto-coupon",
+              "label": "t:global.icons.coupon",
+              "group": "t:global.icons.shop_category"
+            },
+            {
+              "value": "picto-gift",
+              "label": "t:global.icons.gift",
+              "group": "t:global.icons.shop_category"
+            },
+            {
+              "value": "picto-info",
+              "label": "t:global.icons.info",
+              "group": "t:global.icons.shop_category"
+            },
+            {
+              "value": "picto-love",
+              "label": "t:global.icons.love",
+              "group": "t:global.icons.shop_category"
+            },
+            {
+              "value": "picto-percent",
+              "label": "t:global.icons.percent",
+              "group": "t:global.icons.shop_category"
+            },
+            {
+              "value": "picto-star",
+              "label": "t:global.icons.star",
+              "group": "t:global.icons.shop_category"
+            },
+            {
+              "value": "picto-box",
+              "label": "t:global.icons.box",
+              "group": "t:global.icons.shipping_category"
+            },
+            {
+              "value": "picto-delivery-truck",
+              "label": "t:global.icons.delivery_truck",
+              "group": "t:global.icons.shipping_category"
+            },
+            {
+              "value": "picto-pin",
+              "label": "t:global.icons.pin",
+              "group": "t:global.icons.shipping_category"
+            },
+            {
+              "value": "picto-plane",
+              "label": "t:global.icons.plane",
+              "group": "t:global.icons.shipping_category"
+            },
+            {
+              "value": "picto-return",
+              "label": "t:global.icons.return",
+              "group": "t:global.icons.shipping_category"
+            },
+            {
+              "value": "picto-credit-card",
+              "label": "t:global.icons.credit_card",
+              "group": "t:global.icons.payment_and_security_category"
+            },
+            {
+              "value": "picto-lock",
+              "label": "t:global.icons.lock",
+              "group": "t:global.icons.payment_and_security_category"
+            },
+            {
+              "value": "picto-money",
+              "label": "t:global.icons.money",
+              "group": "t:global.icons.payment_and_security_category"
+            },
+            {
+              "value": "picto-secure-profile",
+              "label": "t:global.icons.secure_profile",
+              "group": "t:global.icons.payment_and_security_category"
+            },
+            {
+              "value": "picto-shield",
+              "label": "t:global.icons.shield",
+              "group": "t:global.icons.payment_and_security_category"
+            },
+            {
+              "value": "picto-earth",
+              "label": "t:global.icons.earth",
+              "group": "t:global.icons.ecology_category"
+            },
+            {
+              "value": "picto-leaf",
+              "label": "t:global.icons.leaf",
+              "group": "t:global.icons.ecology_category"
+            },
+            {
+              "value": "picto-recycle",
+              "label": "t:global.icons.recycle",
+              "group": "t:global.icons.ecology_category"
+            },
+            {
+              "value": "picto-tree",
+              "label": "t:global.icons.tree",
+              "group": "t:global.icons.ecology_category"
+            },
+            {
+              "value": "picto-at-sign",
+              "label": "t:global.icons.at_sign",
+              "group": "t:global.icons.tech_category"
+            },
+            {
+              "value": "picto-bluetooth",
+              "label": "t:global.icons.bluetooth",
+              "group": "t:global.icons.tech_category"
+            },
+            {
+              "value": "picto-camera",
+              "label": "t:global.icons.camera",
+              "group": "t:global.icons.tech_category"
+            },
+            {
+              "value": "picto-printer",
+              "label": "t:global.icons.printer",
+              "group": "t:global.icons.tech_category"
+            },
+            {
+              "value": "picto-smart-watch",
+              "label": "t:global.icons.smart_watch",
+              "group": "t:global.icons.tech_category"
+            },
+            {
+              "value": "picto-wifi",
+              "label": "t:global.icons.wifi",
+              "group": "t:global.icons.tech_category"
+            },
+            {
+              "value": "picto-avatar",
+              "label": "t:global.icons.avatar",
+              "group": "t:global.icons.communication_category"
+            },
+            {
+              "value": "picto-chat",
+              "label": "t:global.icons.chat",
+              "group": "t:global.icons.communication_category"
+            },
+            {
+              "value": "picto-calendar",
+              "label": "t:global.icons.calendar",
+              "group": "t:global.icons.communication_category"
+            },
+            {
+              "value": "picto-comment",
+              "label": "t:global.icons.comment",
+              "group": "t:global.icons.communication_category"
+            },
+            {
+              "value": "picto-customer-support",
+              "label": "t:global.icons.customer_support",
+              "group": "t:global.icons.communication_category"
+            },
+            {
+              "value": "picto-happy-face",
+              "label": "t:global.icons.happy_face",
+              "group": "t:global.icons.communication_category"
+            },
+            {
+              "value": "picto-mailbox",
+              "label": "t:global.icons.mailbox",
+              "group": "t:global.icons.communication_category"
+            },
+            {
+              "value": "picto-mobile-phone",
+              "label": "t:global.icons.mobile_phone",
+              "group": "t:global.icons.communication_category"
+            },
+            {
+              "value": "picto-operator",
+              "label": "t:global.icons.operator",
+              "group": "t:global.icons.communication_category"
+            },
+            {
+              "value": "picto-phone",
+              "label": "t:global.icons.phone",
+              "group": "t:global.icons.communication_category"
+            },
+            {
+              "value": "picto-send",
+              "label": "t:global.icons.send",
+              "group": "t:global.icons.communication_category"
+            },
+            {
+              "value": "picto-user",
+              "label": "t:global.icons.user",
+              "group": "t:global.icons.communication_category"
+            },
+            {
+              "value": "picto-burger",
+              "label": "t:global.icons.burger",
+              "group": "t:global.icons.food_category"
+            },
+            {
+              "value": "picto-beer",
+              "label": "t:global.icons.beer",
+              "group": "t:global.icons.food_category"
+            },
+            {
+              "value": "picto-coffee",
+              "label": "t:global.icons.coffee",
+              "group": "t:global.icons.food_category"
+            },
+            {
+              "value": "picto-pizza",
+              "label": "t:global.icons.pizza",
+              "group": "t:global.icons.food_category"
+            },
+            {
+              "value": "picto-bottle",
+              "label": "t:global.icons.bottle",
+              "group": "t:global.icons.food_category"
+            },
+            {
+              "value": "picto-document",
+              "label": "t:global.icons.document",
+              "group": "t:global.icons.other_category"
+            },
+            {
+              "value": "picto-error",
+              "label": "t:global.icons.error",
+              "group": "t:global.icons.other_category"
+            },
+            {
+              "value": "picto-file",
+              "label": "t:global.icons.file",
+              "group": "t:global.icons.other_category"
+            },
+            {
+              "value": "picto-jewelry",
+              "label": "t:global.icons.jewelry",
+              "group": "t:global.icons.other_category"
+            },
+            {
+              "value": "picto-mask",
+              "label": "t:global.icons.mask",
+              "group": "t:global.icons.other_category"
+            },
+            {
+              "value": "picto-music",
+              "label": "t:global.icons.music",
+              "group": "t:global.icons.other_category"
+            },
+            {
+              "value": "picto-not-allowed",
+              "label": "t:global.icons.not_allowed",
+              "group": "t:global.icons.other_category"
+            },
+            {
+              "value": "picto-target",
+              "label": "t:global.icons.target",
+              "group": "t:global.icons.other_category"
+            },
+            {
+              "value": "picto-timer",
+              "label": "t:global.icons.timer",
+              "group": "t:global.icons.other_category"
+            },
+            {
+              "value": "picto-success",
+              "label": "t:global.icons.success",
+              "group": "t:global.icons.other_category"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "t:global.icons.custom_icon",
+          "info": "t:global.icons.custom_icon_info"
+        },
+        {
+          "type": "range",
+          "id": "icon_width",
+          "min": 12,
+          "max": 32,
+          "step": 4,
+          "unit": "px",
+          "label": "t:global.icons.icon_width",
+          "default": 16
+        },
+        {
+          "type": "text",
+          "id": "custom_class",
+          "label": "Custom class(es)",
+          "info": "Space-separated class names added to this category row only."
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "t:sections.faq.blocks.question.name",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "question",
+          "label": "t:sections.faq.blocks.question.question",
+          "default": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "t:sections.faq.blocks.question.answer",
+          "default": "<p>Write a clear and concise answer to guide your customers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "custom_class",
+          "label": "Custom class(es)",
+          "info": "Space-separated class names added to this question's accordion item only (requires the accordion snippet to accept a 'class' parameter)."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.faq.presets.faq.name",
+      "category": "t:global.categories.trust_social",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Order"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Do you ship overseas?",
+            "answer": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How long will it take to get my orders?",
+            "answer": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Any question?",
+            "answer": "<p>You can contact us through our contact page! We will be happy to assist you.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

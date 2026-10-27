@@ -1,0 +1,12 @@
+{%- doc -%}
+  Renders a cart drawer price rounded to the nearest whole currency unit,
+  using the shop's own money format.
+
+  @param {number} amount - a price in cents
+{%- enddoc -%}
+
+{%- liquid
+  assign rounded_amount = amount | divided_by: 100.0 | round | times: 100
+-%}
+{{- rounded_amount | money_without_trailing_zeros -}}
+{%- if settings.currency_code_enabled %} {{ cart.currency.iso_code }}{% endif -%}

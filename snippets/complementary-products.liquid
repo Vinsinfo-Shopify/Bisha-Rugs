@@ -1,0 +1,136 @@
+{%- doc -%}
+  This snippet renders the complementary products block used on product page. Because those complementary products can be added both below the gallery or on the right, this is extracted into its own snippet to reduce code duplication.
+
+  @param {object} product - the product to which we render the complementary products
+  @param {object} block - the block containing the information to render itself
+  @param {object} [recommendations]
+{%- enddoc -%}
+
+<product-recommendations class="block" hidden product="{{ product.id }}" limit="{{ block.settings.products_count }}" intent="complementary">
+  {%- if recommendations.performed and recommendations.intent == 'complementary' and recommendations.products_count > 0 -%}
+    <div class="complementary-products">
+      {%- assign carousel_id = 'complementary-products-carousel-' | append: block.id -%}
+
+      {%- if block.settings.title != blank or block.settings.stack_products == false and recommendations.products_count > 1 -%}
+        <div class="complementary-products__header {% if block.settings.show_below_gallery and block.settings.stack_products %}justify-center{% endif %}">
+          <p class="h5">{{ block.settings.title }}</p>
+
+          {%- if block.settings.stack_products == false and recommendations.products_count > 1 -%}
+            <carousel-navigation aria-controls="{{ carousel_id }}" class="page-dots page-dots--narrow sm-max:hidden">
+              {%- for i in (1..recommendations.products_count) -%}
+                <button class="relative" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+                  <span class="sr-only">{{ 'general.accessibility.go_to_item' | t: index: forloop.index }}</span>
+                </button>
+              {%- endfor -%}
+            </carousel-navigation>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if block.settings.stack_products -%}
+        <div class="complementary-products__product-list">
+          {%- for product in recommendations.products -%}
+            {%- render 'product-card-horizontal', product: product, show_quick_buy: block.settings.show_quick_buy -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        {%- comment -%}
+          Rendered as full product-card grid items (not the horizontal list
+          card) so every card in the row - regardless of how many images the
+          underlying product has - matches the same image, rating and price
+          layout. image_carousel is turned off so a product with more than
+          one image doesn't grow prev/next arrows other cards don't have.
+          quick_buy_context is set per breakpoint copy because both the
+          desktop and mobile carousels render in the DOM at once (only one is
+          hidden by CSS), and product-card otherwise builds the same quick-buy
+          modal/swatch id for the same product in both places.
+        {%- endcomment -%}
+        {%- comment -%}
+          Prev/next arrows in the same style as Explore More and Recently Viewed,
+          shown below 1000px only (theme.css). Each pair drives its own carousel.
+        {%- endcomment -%}
+        <div class="sm-max:hidden complementary-products__carousel">
+          <scroll-carousel id="{{ carousel_id }}" class="complementary-products__product-list complementary-products__product-list--carousel scroll-area snap-x">
+            {%- for product in recommendations.products -%}
+              {%- render 'product-card',
+                product: product,
+                show_quick_buy: block.settings.show_quick_buy,
+                show_badges: false,
+                show_vendor: false,
+                show_rating: true,
+                show_secondary_image: false,
+                show_swatches: false,
+                image_carousel: true,
+                quick_buy_context: 'complementary-desktop'
+              -%}
+            {%- endfor -%}
+          </scroll-carousel>
+
+            {%- if recommendations.products_count > 1 -%}
+              <carousel-prev-button class="complementary-products__control complementary-products__control--prev" aria-controls="{{ carousel_id }}">
+                <button type="button" class="prev-next-button prev-next-button--prev circle-button" disabled>
+                  <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+                  {%- render 'icon' with 'arrow-left', direction_aware: true -%}
+                </button>
+              </carousel-prev-button>
+
+              <carousel-next-button class="complementary-products__control complementary-products__control--next" aria-controls="{{ carousel_id }}">
+                <button type="button" class="prev-next-button prev-next-button--next circle-button">
+                  <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+                  {%- render 'icon' with 'arrow-right', direction_aware: true -%}
+                </button>
+              </carousel-next-button>
+            {%- endif -%}
+        </div>
+
+        <div class="v-stack gap-5 sm:hidden">
+          {%- assign carousel_mobile_id = 'complementary-products-mobile-carousel-' | append: block.id -%}
+
+          <div class="complementary-products__carousel">
+          <scroll-carousel id="{{ carousel_mobile_id }}" class="complementary-products__product-list complementary-products__product-list--carousel bleed scroll-area snap-x">
+            {%- for product in recommendations.products -%}
+              {%- render 'product-card',
+                product: product,
+                show_quick_buy: block.settings.show_quick_buy,
+                show_badges: false,
+                show_vendor: false,
+                show_rating: true,
+                show_secondary_image: false,
+                show_swatches: false,
+                image_carousel: true,
+                quick_buy_context: 'complementary-mobile'
+              -%}
+            {%- endfor -%}
+          </scroll-carousel>
+
+            {%- if recommendations.products_count > 1 -%}
+              <carousel-prev-button class="complementary-products__control complementary-products__control--prev" aria-controls="{{ carousel_mobile_id }}">
+                <button type="button" class="prev-next-button prev-next-button--prev circle-button" disabled>
+                  <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+                  {%- render 'icon' with 'arrow-left', direction_aware: true -%}
+                </button>
+              </carousel-prev-button>
+
+              <carousel-next-button class="complementary-products__control complementary-products__control--next" aria-controls="{{ carousel_mobile_id }}">
+                <button type="button" class="prev-next-button prev-next-button--next circle-button">
+                  <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+                  {%- render 'icon' with 'arrow-right', direction_aware: true -%}
+                </button>
+              </carousel-next-button>
+            {%- endif -%}
+          </div>
+
+          {%- if recommendations.products_count > 1 -%}
+            <carousel-navigation aria-controls="{{ carousel_mobile_id }}" class="page-dots">
+              {%- for i in (1..recommendations.products_count) -%}
+                <button class="relative" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+                  <span class="sr-only">{{ 'general.accessibility.go_to_item' | t: index: forloop.index }}</span>
+                </button>
+              {%- endfor -%}
+            </carousel-navigation>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</product-recommendations>
