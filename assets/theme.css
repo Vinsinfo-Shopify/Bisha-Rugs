@@ -12726,6 +12726,7 @@ a.marquee__item:hover .marquee__text {
 }
 
 .trade-program {
+  isolation: isolate;
   --trade-program-row-gap: 32px;
   --trade-program-column-gap: 64px;
   --trade-program-grid-padding-inline: 0px;
