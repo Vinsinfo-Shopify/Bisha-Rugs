@@ -1618,11 +1618,12 @@
         "judge_me_reviews_reviews_grid_widget_DxhtKL",
         "judge_me_reviews_review_widget_TURrBx"
       ],
+      "custom_css": [],
       "settings": {
         "color_scheme": "",
         "separate_section_with_border": true,
-        "remove_vertical_spacing": false,
-        "remove_horizontal_spacing": false
+        "remove_vertical_spacing": true,
+        "remove_horizontal_spacing": true
       }
     },
     "179015785989c39d96": {
