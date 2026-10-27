@@ -1568,6 +1568,64 @@
         "padding_right_desktop": 0
       }
     },
+    "1793092768a42abd38": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_reviews_grid_widget_DxhtKL": {
+          "type": "shopify://apps/judge-me-reviews/blocks/reviews_grid_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "disabled": true,
+          "settings": {
+            "show_sample_reviews": true,
+            "review_selection": "all",
+            "products": [],
+            "filter_pinned": false,
+            "filter_featured": true,
+            "filter_custom_tags": "",
+            "show_media_only": false,
+            "display_order": "most_recent",
+            "card_grouping": "per_media",
+            "columns_desktop": 2,
+            "rows_desktop": 3,
+            "columns_mobile": "2",
+            "rows_mobile": 6,
+            "show_stars": true,
+            "show_reviewer_name": true,
+            "show_review_title_on_hover_desktop": true,
+            "max_width": 1100,
+            "corner_styling": "soft",
+            "card_spacing": "medium",
+            "header_text_color": "#000000",
+            "star_and_reviewer_name_color": "#f9f9f9",
+            "drop_shadow_color": "#000000",
+            "overlay_and_background_color": "#000000",
+            "content_color": "#f9f9f9",
+            "header_text": "From our customers",
+            "show_average_rating": true,
+            "rating_display": "default"
+          }
+        },
+        "judge_me_reviews_review_widget_TURrBx": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_reviews_grid_widget_DxhtKL",
+        "judge_me_reviews_review_widget_TURrBx"
+      ],
+      "custom_css": [],
+      "settings": {
+        "color_scheme": "scheme-bfa4f2f4-e3a7-4c75-8bff-14cb05cd47f9",
+        "separate_section_with_border": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": true
+      }
+    },
     "179015785989c39d96": {
       "type": "apps",
       "settings": {
@@ -1826,6 +1884,7 @@
     "multi_column_TxrEcw",
     "faq_PAcnCq",
     "multi_column_X7gh3E",
+    "1793092768a42abd38",
     "179015785989c39d96",
     "image_with_text_YaGxKL",
     "related-products",

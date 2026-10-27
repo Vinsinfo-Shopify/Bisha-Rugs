@@ -143,6 +143,9 @@
     aspect-ratio: {{ section.settings.image_ratio }};
     background: rgb(var(--text-color) / 0.06);
     flex: none;
+    width:100%;
+    overflow:hidden;
+    flex:none;
   }
 
   #shopify-section-{{ section.id }} .rev__media img {
@@ -397,7 +400,8 @@
       {%- render 'section-header',
         subheading: section.settings.subheading,
         heading: section.settings.title,
-        heading_style: section.settings.heading_style
+        heading_style: section.settings.heading_style,
+        text_alignment: 'left'
       -%}
     </div>
 
@@ -567,7 +571,7 @@
               verified: !!card.querySelector('.jdgm-reviewer-verified-icon'),
               review_text: text ? text.textContent.trim() : '',
               rating: rating,
-              review_image: media ? media.getAttribute('src') : '',
+              review_image: media ? media.getAttribute('src') : 'https://cdn.shopify.com/s/files/1/0705/3462/7414/files/bisha-review-no-photo-339a0ad1.png?v=1793105405',
               // A store review has no product at all; so does a sample card.
               product_title: isSample || !link ? '' : link.textContent.trim(),
               product_url: isSample ? '' : href,
