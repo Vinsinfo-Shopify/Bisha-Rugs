@@ -10049,6 +10049,13 @@ ul {
   color: #656565;
 }
 
+.product-card__info .price-list sale-price.text-subdued {
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 700;
+  color: rgb(var(--text-color));
+}
+
 .product-card__tag {
   color: rgb(var(--text-color));
   font-size: 14px;
@@ -10326,6 +10333,10 @@ ul {
 
   .price-list .text-subdued {
     font-size: 12px;
+  }
+
+  .product-card__info .price-list sale-price.text-subdued {
+    font-size: 14px;
   }
 
   .badge.badge--custom {
@@ -12715,6 +12726,7 @@ a.marquee__item:hover .marquee__text {
 }
 
 .trade-program {
+  isolation: isolate;
   --trade-program-row-gap: 32px;
   --trade-program-column-gap: 64px;
   --trade-program-grid-padding-inline: 0px;
@@ -12761,9 +12773,9 @@ a.marquee__item:hover .marquee__text {
   padding-inline: var(--trade-program-grid-padding-inline);
 }
 .trade_program_container{
-  max-width: 1300px !important;
+  max-width: 1440px;
   margin: auto;
-  padding: 0px 20px;
+  padding: 0px 90px;
 }
 
 .trade-program__content,
@@ -12949,6 +12961,9 @@ a.marquee__item:hover .marquee__text {
 @media screen and (max-width: 999px) {
   .trade-program__grid {
     row-gap: 0;
+  }
+  .trade_program_container{
+    padding: 0px 60px;
   }
 
   .trade-program__content {
