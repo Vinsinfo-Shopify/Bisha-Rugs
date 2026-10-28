@@ -13300,6 +13300,12 @@ a.marquee__item:hover .marquee__text {
 #judgeme_product_reviews .jm-review-widget-header__title-and-rating,
 #judgeme_product_reviews .jm-review-widget-header__main-content{display:contents!important}
 
+#judgeme_product_reviews .jm-review-widget-header:not(:has(.jm-histogram)){
+  display:flex!important;
+  flex-direction:column;
+  align-items:center!important;
+  text-align:center;
+}
 /* Row 1: title */
 #judgeme_product_reviews .jm-review-widget-header__title{
   grid-column:1/-1;
