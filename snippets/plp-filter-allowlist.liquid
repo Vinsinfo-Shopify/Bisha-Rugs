@@ -1,0 +1,58 @@
+{%- doc -%}
+  Outputs the comma separated list of filters the sidebar, the drawer and the
+  filter count are limited to. Snippets cannot return a value, so the caller
+  captures the output:
+
+    capture production_filters
+      render 'plp-filter-allowlist', results: collection
+    endcapture
+
+  @param {object} results - either collection or search drop to extract the filters from
+  @param {object} [section]
+{%- enddoc -%}
+
+{%- liquid
+  assign production_filters = ''
+
+  unless section.settings.enable_new_filters
+    assign production_filters = section.settings.production_filters
+  endunless
+
+  # Colour already has its own strip above the toolbar, so listing it again in
+  # the sidebar would be a second control for the same filter.
+  #
+  # Written as an allow-list of every OTHER filter rather than as a new
+  # exclusion parameter, because facets.liquid already accepts allowed_filters.
+  # The shared snippet is unchanged, and a filter added in Search & Discovery
+  # later is included here automatically.
+  if section.settings.enable_new_filters
+    assign colour_key = section.settings.color_filter_label | downcase | strip
+    assign sidebar_allow = ''
+
+    for f in results.filters
+      assign f_label = f.label | downcase | strip
+      assign f_param = f.param_name | downcase
+      assign skip_filter = false
+
+      if section.settings.pf_hide_color_in_sidebar
+        if f_label == colour_key or f_param contains 'color' or f_param contains 'colour'
+          assign skip_filter = true
+        endif
+      endif
+
+      if section.settings.pf_hide_availability
+        if f_param == 'filter.v.availability' or f_label == 'availability'
+          assign skip_filter = true
+        endif
+      endif
+
+      unless skip_filter
+        assign sidebar_allow = sidebar_allow | append: f.label | append: ','
+      endunless
+    endfor
+
+    assign production_filters = sidebar_allow | default: 'pf-no-filters'
+  endif
+
+  echo production_filters
+-%}

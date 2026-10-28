@@ -1,0 +1,106 @@
+{%- doc -%}
+  Filter drawer (mobile, or every size in drawer layout) and sticky filter
+  sidebar (desktop), with the "Filters" heading of the new filter design.
+
+  @param {object} results - either collection or search drop to extract the filters from
+  @param {boolean} show_filters - whether the calling section shows filters at all
+  @param {string} [production_filters] - allow-list output by plp-filter-allowlist
+  @param {object} [section]
+{%- enddoc -%}
+
+{%- liquid
+  # Driven by the existing gate rather than a new setting: the checkbox is
+  # part of the new filter design, so it appears exactly when that design does.
+  assign hide_facet_checkbox = true
+
+  if section.settings.enable_new_filters
+    assign hide_facet_checkbox = false
+  endif
+
+  assign pf_all_option_filters = ''
+
+  if section.settings.enable_new_filters
+    assign pf_all_option_filters = section.settings.pf_all_option_filters
+  endif
+
+  # The design shows the groups open on load. Derived from the gate rather than
+  # asking for the merchant setting to be flipped, and it only changes the
+  # INITIAL state: the accordion still expands and collapses on click.
+  assign open_filters = section.settings.open_filters_by_default
+
+  if section.settings.enable_new_filters
+    assign open_filters = true
+  endif
+-%}
+
+{%- if show_filters -%}
+  <facets-drawer
+    id="facets-drawer"
+    class="facets-drawer drawer drawer--sm color-scheme color-scheme--dialog {% if section.settings.filter_layout == 'sidebar' %}md:hidden{% endif %}"
+  >
+    <p class="h4" slot="header">{{ 'collection.faceting.filters' | t }}</p>
+
+    {%- render 'facets',
+      results: results,
+      show_filters: section.settings.show_filters,
+      open_filters_by_default: open_filters,
+      update_on_change: false,
+      quick_links_menu: section.settings.quick_links_menu,
+      allowed_filters: production_filters,
+      hide_facet_checkbox: hide_facet_checkbox,
+      all_option_filters: pf_all_option_filters,
+      all_option_image: section.settings.pf_all_option_image,
+      context: 'drawer'
+    -%}
+
+    <div slot="footer">
+      {%- assign button_content = 'collection.faceting.apply_filters' | t -%}
+
+      <dialog-close-button class="contents">
+        {%- render 'button', type: 'button', content: button_content, stretch: true -%}
+      </dialog-close-button>
+    </div>
+  </facets-drawer>
+
+  {%- if section.settings.filter_layout == 'sidebar' -%}
+    <safe-sticky class="facets-sidebar md-max:hidden">
+      {%- comment -%}
+        The design puts a "Filters" heading above the groups.
+        Prestige has none, so it is added here rather than inside
+        facets.liquid, which is shared with search and with the
+        production allow-list.
+      {%- endcomment -%}
+      {%- if section.settings.enable_new_filters and section.settings.pf_filters_heading != blank -%}
+      <div class="pf-sidebar-fillter-heading">
+        <p class="pf-sidebar-heading">{{ section.settings.pf_filters_heading }}</p>
+        <button
+          type="button"
+          class="pf-sidebar-collapse"
+          data-pf-sidebar-toggle
+          aria-expanded="true"
+          aria-label="{{ 'collection.faceting.filters' | t }}"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
+            <path d="M6.97852 0.753418L1.01885 7.58991L6.97852 14.4264" stroke="black" stroke-width="1.53542"/>
+            <path d="M12.9395 0.504395L6.97978 7.34089L12.9395 14.1774" stroke="black" stroke-width="1.53542"/>
+          </svg>
+        </button>
+      </div>
+      {%- endif -%}
+
+      {%- render 'facets',
+        results: results,
+        show_filters: section.settings.show_filters,
+        open_filters_by_default: open_filters,
+        update_on_change: true,
+        quick_links_menu: section.settings.quick_links_menu,
+        allowed_filters: production_filters,
+        hide_facet_checkbox: hide_facet_checkbox,
+        all_option_filters: pf_all_option_filters,
+        all_option_image: section.settings.pf_all_option_image,
+        context: 'sidebar'
+      -%}
+
+    </safe-sticky>
+  {%- endif -%}
+{%- endif -%}

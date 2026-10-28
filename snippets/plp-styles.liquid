@@ -1,0 +1,1021 @@
+{%- doc -%}
+  Styles of the product listing layout, including the filter design behind the
+  enable_new_filters setting. Every rule is scoped to the calling section's id
+  and reads that section's settings, so it renders exactly as it did when it
+  lived inline in main-collection.liquid.
+
+  @param {boolean} show_filters - whether the calling section shows filters, which decides the sidebar grid
+  @param {object} [section]
+{%- enddoc -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --product-list-horizontal-spacing-factor: {{ section.settings.horizontal_spacing_factor }};
+    --product-list-vertical-spacing-factor: {{ section.settings.vertical_spacing_factor }};
+
+    {% comment %}On mobile, it's simple! No sidebar or whatever{% endcomment %}
+    --collection-items-per-row-medium: 2;
+    --collection-items-per-row-large: 1;
+  }
+
+  #shopify-section-{{ section.id }} .product-list {
+    --product-list-max-items-per-row-allowed: 99 !important; {% comment %}On collection page, we explicitly set a number of items so we don't want this{% endcomment %}
+  }
+
+  @media screen and (min-width: 700px) {
+    #shopify-section-{{ section.id }} {
+      {% comment %}On tablet, we do not have any sidebar, so we can fix it{% endcomment %}
+      --collection-items-per-row-compact: 4;
+      --collection-items-per-row-medium: 3;
+      --collection-items-per-row-large: 2;
+    }
+  }
+
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} {
+      {%- comment -%}Starting from 1000px it starts to get funky, as we can have or not the sidebar{%- endcomment -%}
+
+      {%- if section.settings.filter_layout == 'sidebar' and show_filters -%}
+        --collection-items-per-row-compact: 4;
+        --collection-items-per-row-medium: 3;
+        --collection-items-per-row-large: 2;
+      {%- else -%}
+        --collection-items-per-row-compact: 6;
+        --collection-items-per-row-medium: 4;
+        --collection-items-per-row-large: 3;
+      {%- endif -%}
+    }
+
+    #shopify-section-{{ section.id }} .collection {
+      {%- if section.settings.filter_layout == 'sidebar' and show_filters -%}
+        --collection-grid-template: var(--collection-sidebar-width, 0) minmax(0,1fr);
+      {%- endif -%}
+    }
+  }
+
+  @media screen and (min-width: 1400px) {
+    #shopify-section-{{ section.id }} {
+      {%- comment -%}Starting from 1400px we can afford having more content even in sidebar mode{%- endcomment -%}
+
+      {%- if section.settings.filter_layout == 'sidebar' and show_filters -%}
+        --collection-items-per-row-compact: 6;
+        --collection-items-per-row-medium: 4;
+        --collection-items-per-row-large: 3;
+      {%- endif -%}
+    }
+  }
+
+  {%- if section.settings.enable_new_filters -%}
+
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .container {
+        --container-max-width: 1300px;
+        --container-gutter: 70px;
+      }
+      #shopify-section-{{ section.id }} .collection-toolbar {
+        display: grid;
+        grid-template-columns: {{ 0 }}px minmax(0, 1fr);
+        align-items: center;
+      }
+
+      #shopify-section-{{ section.id }} .collection-toolbar__products-count {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: start;
+        margin: 0;
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 400;
+        color: #000000;
+        width: 100%;
+      }
+
+      #shopify-section-{{ section.id }} .collection-toolbar__button-list {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+        z-index:1;
+      }
+
+      #shopify-section-{{ section.id }} .collection-toolbar__button-container:has([aria-controls="sort-by-popover"]) {
+        border: 0;
+        box-shadow: none;
+      }
+      #shopify-section-{{ section.id }} .collection__main {
+        row-gap: 5px;
+      }
+
+      /* Chips: rounded outline, black border, per the design. Prestige draws
+         these with box-shadow rather than border in places, so both are
+         stated. */
+      #shopify-section-{{ section.id }} .active-facets .removable-facet {
+        border: 1px solid #000000;
+        border-radius: 999px;
+        box-shadow: none;
+        padding: 6px 14px;
+        flex-direction: row-reverse;
+      }
+       #shopify-section-{{ section.id }} .active-facets {
+        margin-block-start: 3px;
+      }
+    }
+    #shopify-section-{{ section.id }} .active-facets {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      padding-block: 2px;
+      scroll-snap-type: x mandatory;
+    }
+
+    #shopify-section-{{ section.id }} .active-facets::-webkit-scrollbar {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .active-facets .removable-facet {
+      flex: none;
+      scroll-snap-align: start;
+    }
+    #shopify-section-{{ section.id }} .active-facets > facet-link,
+    #shopify-section-{{ section.id }} .active-facets__end {
+      position: sticky;
+      inset-inline-end: 0;
+      flex: none;
+      display: flex;
+      align-items: center;
+    }
+
+    #shopify-section-{{ section.id }} .active-facets > facet-link,
+    #shopify-section-{{ section.id }} .active-facets__end > facet-link {
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      background: rgb(var(--background-without-opacity));
+    }
+
+    /* Mobile only, per the design. */
+    #shopify-section-{{ section.id }} .active-facets__next {
+      display: none;
+    }
+    #shopify-section-{{ section.id }} .active-facets .facets-clear-all {
+      white-space: nowrap;
+    }
+
+    @media screen and (max-width: 749px) {
+      #shopify-section-{{ section.id }} .active-facets > facet-link,
+      #shopify-section-{{ section.id }} .active-facets__end > facet-link {
+         padding: 0px;
+      }
+
+      /* Arrow indicator: a filled disc that overhangs the pinned group so it
+         reads as floating over the last chip, with a ring of page background
+         separating it from that chip. */
+      #shopify-section-{{ section.id }} .active-facets__end {
+        gap: 10px;
+        background: rgb(var(--background-without-opacity));
+      }
+
+      #shopify-section-{{ section.id }} .active-facets__next {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 22px;
+        height: 22px;
+        margin-inline-start: -10px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: #2B2724;
+        color: #FFFBF3;
+        box-shadow: 0 0 0 2px rgb(var(--background-without-opacity));
+      }
+
+      /* The theme fades every button on hover; this one stays solid. */
+      #shopify-section-{{ section.id }} .active-facets__next:hover {
+        opacity: 1;
+      }
+
+      #shopify-section-{{ section.id }} .active-facets__next[hidden] {
+        display: none;
+      }
+      #shopify-section-{{ section.id }} .container {
+        --container-gutter: 12px;
+      }
+      #shopify-section-{{ section.id }} .collection-toolbar.full-bleed {
+        width: 100%;
+        max-width: none;
+        margin-inline: 0;
+      }
+       #shopify-section-{{ section.id }} .collection,
+      #shopify-section-{{ section.id }} .collection__main,
+      #shopify-section-{{ section.id }} .product-list {
+        margin-inline: 0;
+        width: auto;
+        max-width: none;
+      }
+      #shopify-section-{{ section.id }} .collection-toolbar__button-list,
+      #shopify-section-{{ section.id }} collection-layout-switch {
+        display: none;
+      }
+
+
+
+      #shopify-section-{{ section.id }} .pf-mobilebar-shell {
+        display: block;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar {
+        display: grid;
+        grid-template-columns: 1fr 1px 1fr;
+        align-items: center;
+        min-height: 66px;
+        background: #EFE8E2;
+        border-block-start: 0.5px solid #D4D4D4;
+        /* Full screen width while the grid and chips stay in the gutter. */
+        margin-inline: calc(var(--container-gutter) * -1);
+        width: calc(100% + (var(--container-gutter) * 2));
+      }
+      #shopify-section-{{ section.id }} .pf-mobilebar-shell.is-pinned .pf-mobilebar {
+        position: fixed;
+        inset-inline: 0;
+        inset-block-start: 0;
+        width: auto;
+        margin-inline: 0;
+        z-index: 3;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar::before {
+        content: '';
+        grid-column: 2;
+        grid-row: 1;
+        align-self: center;
+        width: 1px;
+        height: 45px;
+        background: #B9B0A7;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__half {
+        grid-row: 1;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 0;
+        border: 0;
+        background: none;
+        text-align: start;
+        cursor: pointer;
+      }
+
+      /* Measured: the Filter icon sits at x=20, the Sort icon at x=220 against
+         a divider at 188. The two halves are not symmetrically inset. */
+      #shopify-section-{{ section.id }} .pf-mobilebar__half:first-of-type {
+        grid-column: 1;
+        padding-inline-start: 20px;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__half:last-of-type {
+        grid-column: 3;
+        padding-inline-start: 32px;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__icon {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 24px;
+        height: 24px;
+        color: #202020;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__icon svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__text {
+        display: grid;
+        gap: 4px;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__label {
+        font-size: 16px;
+        line-height: 1.4;
+        font-weight: 500;
+        color: #202020;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar__value {
+        font-size: 14px;
+        line-height: 1.4;
+        font-weight: 400;
+        color: #666666;
+      }
+      #shopify-section-{{ section.id }} .collection-toolbar__products-count {
+        display: block;
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.4;
+        font-weight: 400;
+        color: #000000;
+      }
+       #shopify-section-{{ section.id }} .active-facets {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      #shopify-section-{{ section.id }} .active-facets .removable-facet {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        gap: 8px;
+        min-height: 29px;
+        padding: 6px 16px;
+        border: 1px solid #55583C;
+        border-radius: 1000px;
+        background: rgb(85 88 60 / 0.1);
+        box-shadow: none;
+        font-size: 12px;
+        line-height: 1.4;
+        font-weight: 400;
+        color: #000000;
+      }
+
+      #shopify-section-{{ section.id }} .active-facets .removable-facet svg {
+        width: 9.72px;
+        height: 9.72px;
+        color: #000000;
+      }
+      #shopify-section-{{ section.id }} .facets-clear-all {
+        font-size: 12px;
+        line-height: 1.4;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #55583C;
+        padding: 10px;
+      }
+      #shopify-section-{{ section.id }} .collection-toolbar {
+        display: block;
+        box-shadow: none;
+        border: 0;
+      }
+      #shopify-section-{{ section.id }} .collection {
+        scroll-margin-block-start: calc(var(--collection-toolbar-height, 0px) + 66px + 20px);
+      }
+      #shopify-section-{{ section.id }} .active-facets .removable-facet .tap-area {
+        display: grid;
+        place-items: center;
+        width: 15px;
+        height: 15px;
+        min-width: 0;
+        min-height: 0;
+        padding: 0;
+      }
+      #shopify-section-{{ section.id }} .collection-toolbar__products-count {
+        position: relative;
+        z-index: 0;
+        padding-block-start: 5px;
+        padding-block-end: 5px;
+      }
+    }
+    /* ---------- Shop by Color (Phase 1) ----------
+       Only emitted while the development gate is on. */
+    /* Measured from the 1440 frame: label inline to the left of the row, not
+       stacked above it, and vertically centred against the circles. */
+    /* Measured from the 1440 frame: label inline to the left of the row, not
+       stacked above it, and vertically centred against the circles. The heading
+       sits 38px clear of the first swatch. */
+    /* Space above the strip.
+       Nothing was setting it: the strip is the first child of the section, the
+       section has no top padding, and the wrapping v-stack's gap only applies
+       BETWEEN children. So the swatches sat hard against the collection banner,
+       about 1px, against 24px in the Figma (banner edge at 28, circle top at
+       51).
+
+       Applied to the strip itself rather than to the section, so it cannot
+       disturb the banner above or the 49px below. */
+    #shopify-section-{{ section.id }} .pf-colors {
+      display: flex;
+      align-items: center;
+      gap: 38px;
+      min-width: 0;
+      margin-block-start: {{ section.settings.color_strip_gap_top }}px;
+      margin-block-end: {{ section.settings.color_strip_gap }}px;
+    }
+
+    /* The space below the strip came from the wrapping v-stack's own
+       sm:gap-12, which is 3rem = 48px, with my 49px margin stacking on top of
+       it for roughly 97px. The margin is gone and the wrapper's gap is set
+       directly instead, so there is one value controlling one boundary. */
+    #shopify-section-{{ section.id }} .v-stack.gap-6 {
+      gap: 0;
+    }
+
+    #shopify-section-{{ section.id }} .pf-colors__heading {
+      flex: none;
+      margin: 0;
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: 600;
+      color: #000000;
+    }
+
+    /* Horizontal overflow is on the track, so the row can scroll without the
+       page ever gaining a scrollbar. */
+    /* 56px swatch on an 85px pitch leaves a 28px gap. The last swatch is cut
+       off at the container edge in the design, so the row scrolls rather than
+       wrapping. Overflow is on the track, so the page never gains a scrollbar. */
+    #shopify-section-{{ section.id }} .pf-colors__track {
+      display: flex;
+      align-items: flex-start;
+      gap: {{ section.settings.color_swatch_gap }}px;
+      min-width: 0;
+      overflow: auto hidden;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      /* overflow-x: auto clips at the padding edge, which cut the outer 2px of
+         the active ring on the first swatch and made it look broken on the
+         left. The padding gives the ring room; the negative margin puts the row
+         back where it was, so nothing shifts. */
+      padding-block: 4px;
+      padding-inline: {{ section.settings.color_ring_bleed }}px;
+      margin-inline: -{{ section.settings.color_ring_bleed }}px;
+    }
+
+    #shopify-section-{{ section.id }} .pf-colors__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media screen and (min-width: 750px) {
+      #shopify-section-{{ section.id }} > .color-scheme {
+        overflow-x: clip;
+      }
+
+      #shopify-section-{{ section.id }} .pf-colors__track {
+        margin-inline-end: calc(50% - 50vw + var(--scrollbar-width, 0px) / 2);
+        padding-inline-end: calc(
+          50vw - 50% - var(--scrollbar-width, 0px) / 2 + {{ section.settings.color_ring_bleed }}px
+        );
+      }
+    }
+
+    #shopify-section-{{ section.id }} .pf-color {
+      flex: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-size: 13px;
+      line-height: 28px;
+      font-weight: 400;
+      color: #696969;
+    }
+
+    #shopify-section-{{ section.id }} .pf-color.is-active {
+      font-size: 13px;
+      font-weight: 600;
+      color: #000000;
+    }
+
+    #shopify-section-{{ section.id }} .pf-color__media {
+      display: block;
+      width: {{ section.settings.color_swatch_size }}px;
+      height: {{ section.settings.color_swatch_size }}px;
+      border-radius: var(--rounded-full);
+      object-fit: cover;
+      background-size: cover;
+      background-position: center;
+      /* Matches the homepage Shop by Shade swatch: a real 1px border at
+         0.12, not an inset shadow, so the inset active ring below has the
+         shadow layer to itself. */
+      border: 1px solid rgb(0 0 0 / 0.12);
+      transition: box-shadow 0.15s ease-in-out;
+    }
+
+    /* Active ring copied from the homepage Shop by Shade section: two INSET
+       bands rather than the outset rings used previously. 2.5px in the text
+       colour at the edge, then 3px of page background inside it. Inset means
+       the swatch keeps its exact diameter, so the row cannot shift and the
+       ring can never be clipped by the scroll track. */
+    #shopify-section-{{ section.id }} .pf-color:hover .pf-color__media,
+    #shopify-section-{{ section.id }} .pf-color:focus-visible .pf-color__media,
+    #shopify-section-{{ section.id }} .pf-color.is-active .pf-color__media {
+      box-shadow:
+        inset 0 0 0 1.5px rgb(var(--text-color)),
+        inset 0 0 0 4px rgb(var(--background-without-opacity));
+    }
+    /* The cleared state when no image is set for it. A conic sweep reads as
+       "any colour" without naming one. */
+    #shopify-section-{{ section.id }} .pf-color__media--all {
+      background: conic-gradient(
+        from 180deg,
+        #c9d6df, #e8d5c4, #d9c3a9, #b8c4a0, #d4a5a5, #a8b8c8, #c9d6df
+      );
+    }
+
+    /* ---------------- PHASE 2: desktop filter sidebar ----------------
+       Measured off the 1440 frame:
+         sidebar content x 79-373      -> 294px column
+         "Filters" heading y 160-175   -> 20/28/700
+         group headings                -> 16/22/600
+         rules at y 338 and 733        -> between groups, not under headings
+         image values 67px on a 104px pitch, three per row
+       All scoped to this section and inside the enable_new_filters gate, so
+       the production layout is untouched. facets.liquid is not modified. */
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .pf-sidebar-heading {
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 700;
+        color: #000000;
+        margin: 0;
+      }
+
+      /* Row wrapper carries the gap the heading used to own on its own, so
+         the collapse button can sit inline with it without a second margin
+         stacking underneath. */
+      #shopify-section-{{ section.id }} .pf-sidebar-fillter-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 4px 0 {{ section.settings.pf_filters_heading_gap }}px;
+        margin: 4px 0 18px;
+        padding-block-end: 10px;
+        border-block-end: 1px solid rgb(0 0 0 / 0.1);
+      }
+
+      #shopify-section-{{ section.id }} .pf-sidebar-collapse {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        border: 0;
+        background: none;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      /* Collapsing hides the whole rendered form (every accordion group plus
+         the noscript submit button) rather than a specific inner class, so
+         it stays correct if facets.liquid's own markup changes. */
+      #shopify-section-{{ section.id }} .facets-sidebar.is-collapsed .pf-sidebar-collapse {
+        transform: rotate(180deg);
+      }
+
+      #shopify-section-{{ section.id }} .facets-sidebar.is-collapsed facets-form {
+        display: none;
+      }
+
+      #shopify-section-{{ section.id }} .pf-mobilebar-shell {
+        display: none;
+      }
+      #shopify-section-{{ section.id }} .collection {
+        --collection-sidebar-width: {{ section.settings.pf_sidebar_width }}px;
+        --collection-gap: {{ section.settings.pf_sidebar_gap }}px;
+      }
+
+      #shopify-section-{{ section.id }} .facets-sidebar,
+      #shopify-section-{{ section.id }} .facets {
+        width: 100%;
+        max-width: {{ section.settings.pf_sidebar_width }}px;
+        min-width: 0;
+        overflow-x: clip;
+      }
+      #shopify-section-{{ section.id }} {
+        --collection-items-per-row-large: {{ section.settings.pf_products_per_row }};
+      }
+
+      /* Group headings. The accordion supplies the row and chevron; only the
+         type is restated here. */
+      #shopify-section-{{ section.id }} .facets .accordion__toggle {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 600;
+        color: #000000;
+      }
+
+      /* Accordion chevron. facets.liquid already passes show_arrow: true, so
+         the existing accordion component supplies it; only its size and colour
+         are corrected here. Measured off the Figma at roughly 13 x 7 css px in
+         a mid grey, against Prestige's larger default. No Style-specific icon:
+         this applies to every group in the sidebar. */
+      #shopify-section-{{ section.id }} .facets .accordion__toggle svg {
+        width: {{ section.settings.pf_accordion_icon_width }}px;
+        height: auto;
+        color: {{ section.settings.pf_accordion_icon_color }};
+        flex: none;
+      }
+
+      /* Keeps the chevron on the heading's optical centre rather than its
+         text baseline. */
+      #shopify-section-{{ section.id }} .facets .accordion__toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        /* Keeps the row, and therefore the chevron, inside the sidebar column. */
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding-inline-end: {{ section.settings.pf_sidebar_inset }}px;
+      }
+      #shopify-section-{{ section.id }} .facets .v-stack:has(> .checkbox-control) {
+        gap: 0;
+      }
+      #shopify-section-{{ section.id }} .facets .checkbox-control {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        align-items: center;
+        column-gap: {{ section.settings.pf_checkbox_gap }}px;
+        gap: {{ section.settings.pf_checkbox_gap }}px;
+        min-height: {{ section.settings.pf_checkbox_size }}px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox {
+        margin-block: 0;
+        align-self: center;
+        transform: translateY({{ section.settings.pf_checkbox_nudge }}px);
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-control label {
+        display: block;
+        align-self: center;
+        margin: 0;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-control + .checkbox-control {
+        margin-block-start: {{ section.settings.pf_checkbox_row_gap }}px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox {
+        appearance: none;
+        -webkit-appearance: none;
+        flex: none;
+        width: {{ section.settings.pf_checkbox_size }}px;
+        height: {{ section.settings.pf_checkbox_size }}px;
+        margin: 0;
+        border: 1px solid {{ section.settings.pf_checkbox_border }};
+        border-radius: {{ section.settings.pf_checkbox_radius }}px;
+        background: #ffffff;
+        cursor: pointer;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox:checked {
+        background-color: {{ section.settings.pf_checkbox_checked }};
+        border-color: {{ section.settings.pf_checkbox_checked }};
+        /* The tick is a background image, so no extra element is needed in
+           markup this section does not own. */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 5l3.5 3.5L11 1.5'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 62%;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-control input.checkbox:focus-visible {
+        outline: 2px solid {{ section.settings.pf_checkbox_checked }};
+        outline-offset: 2px;
+      }
+
+      /* Label typography: checked values turn bold and black, matching the
+         active swatch/image values below. :has() on the wrapper keeps it
+         tied to the real input state rather than a class the theme would
+         have to maintain. */
+      #shopify-section-{{ section.id }} .facets .checkbox-control label {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: 500;
+        color: #696969;
+        cursor: pointer;
+      }
+
+      #shopify-section-{{ section.id }} .facets .checkbox-control:has(input:checked) label {
+        font-weight: 600;
+        color: #000000;
+      }
+
+      /* Price filter. theme.css's own .range/.range-group/.input-group are
+         left untouched globally; these overrides are scoped to this
+         section's facets only, matching the bolder handle and the
+         bordered "$" inputs in the Figma frame (theme.css defaults to a
+         10px thumb and unbordered spacing). */
+      #shopify-section-{{ section.id }} .facets .price-range {
+        padding-block-start: 8px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .price-range > .range-group {
+        margin-block-end: 20px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .range::-webkit-slider-thumb {
+        width: 16px;
+        height: 16px;
+        margin-block-start: -7px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .range::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .input-group {
+        column-gap: 12px;
+        margin-block-start: 4px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .input-prefix {
+        border: 1px solid rgb(0 0 0 / 0.2);
+        border-radius: 4px;
+        padding: 10px 14px;
+      }
+
+      #shopify-section-{{ section.id }} .facets .input-prefix .prefix {
+        font-size: 16px;
+        color: #696969;
+      }
+
+      #shopify-section-{{ section.id }} .facets .input-prefix > .field {
+        font-size: 16px;
+        font-weight: 400;
+        color: #000000;
+      }
+
+      #shopify-section-{{ section.id }} .facets .input-group > .text-subdued {
+        font-size: 16px;
+        color: #696969;
+      }
+
+      #shopify-section-{{ section.id }} .facets .option-value-list {
+        --pf-value-gutter: 8px;
+        display: grid;
+        grid-template-columns: repeat({{ section.settings.pf_value_columns }}, minmax(0, 1fr));
+        row-gap: {{ section.settings.pf_value_row_gap }}px;
+        {%- if section.settings.pf_value_columns > 1 -%}
+          column-gap: max(
+            0px,
+            calc(
+              {{ section.settings.pf_value_col_gap }}px - var(--pf-value-gutter) * 2 /
+                {{ section.settings.pf_value_columns | minus: 1 }}
+            )
+          );
+        {%- endif -%}
+        padding-inline: var(--pf-value-gutter);
+      }
+
+      /* Photo on top, label centred below, same shape as the .pf-colors
+         strip's own tiles above the toolbar. */
+      #shopify-section-{{ section.id }} .facets .option-value {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 8px;
+        font-size: 13px;
+        line-height: 18px;
+        font-weight: 400;
+        color: #696969;
+        cursor: pointer;
+      }
+
+      #shopify-section-{{ section.id }} .facets .option-value :is(img, svg),
+      #shopify-section-{{ section.id }} .facets .option-value__swatch {
+        width: min({{ section.settings.pf_value_media_size }}px, 100%);
+        height: auto;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border-radius: var(--rounded-full);
+        border: 1px solid rgb(0 0 0 / 0.12);
+        transition: box-shadow 0.15s ease-in-out;
+      }
+
+      /* Active ring, inset like .pf-color__media so the tile never changes
+         size or shifts the grid.
+
+         :has(input:checked) never matched here: option-value.liquid emits
+         the sr-only <input> as a PRECEDING sibling of the <label
+         class="option-value">, not a descendant, and :has()'s default
+         combinator only looks at descendants. There is no CSS combinator
+         for "preceding sibling", so the checked state is read off the
+         input itself with the ordinary adjacent-sibling combinator
+         instead - input:checked + .option-value - which is what actually
+         matches this markup. */
+      #shopify-section-{{ section.id }} .facets .option-value:hover :is(img, svg),
+      #shopify-section-{{ section.id }} .facets .option-value:focus-visible :is(img, svg),
+      #shopify-section-{{ section.id }} .facets input:checked + .option-value :is(img, svg) {
+        box-shadow:
+          inset 0 0 0 1.5px rgb(var(--text-color)),
+          inset 0 0 0 4px rgb(var(--background-without-opacity));
+      }
+
+      #shopify-section-{{ section.id }} .facets input:checked + .option-value {
+        font-weight: 600;
+        color: #000000;
+      }
+
+      /* The design has no grid-density or list-view controls. Hidden rather
+         than removed, so the theme's own JS keeps its references. */
+      {%- if section.settings.pf_hide_view_switcher -%}
+        /* The element is <collection-layout-switch> carrying
+           .collection-toolbar__layout-switch-list. My first attempt targeted
+           .collection-toolbar__layout-switch and product-list-grid-switcher,
+           neither of which exists in this theme, so the icons stayed visible. */
+        #shopify-section-{{ section.id }} collection-layout-switch,
+        #shopify-section-{{ section.id }} .collection-toolbar__layout-switch-list {
+          display: none;
+        }
+      {%- endif -%}
+
+      /* The toolbar in the design carries no rules. */
+      {%- if section.settings.pf_hide_toolbar_rules -%}
+        /* theme.css:4503 draws these rules with box-shadow, not border, so
+           border-block: 0 had no effect. */
+        #shopify-section-{{ section.id }} .collection-toolbar {
+          box-shadow: none;
+        }
+      {%- endif -%}
+      #shopify-section-{{ section.id }} .facets-sidebar {
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100vh - var(--sticky-area-height, 0px) - var(--collection-toolbar-height, 0px) - 40px);
+      }
+
+      #shopify-section-{{ section.id }} .facets-sidebar > facets-form,
+      #shopify-section-{{ section.id }} .facets-sidebar .facets {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+
+      #shopify-section-{{ section.id }} .facets-sidebar .accordion-list {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding-inline-end: 12px;
+        scrollbar-width: thin;
+        scrollbar-color: {{ section.settings.pf_accent_color }} rgb(0 0 0 / 0.08);
+      }
+
+      #shopify-section-{{ section.id }} .facets-sidebar .accordion-list::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      #shopify-section-{{ section.id }} .facets-sidebar .accordion-list::-webkit-scrollbar-track {
+        background: rgb(0 0 0 / 0.08);
+        border-radius: 999px;
+      }
+
+      #shopify-section-{{ section.id }} .facets-sidebar .accordion-list::-webkit-scrollbar-thumb {
+        background: {{ section.settings.pf_accent_color }};
+        border-radius: 999px;
+      }
+    }
+
+    #shopify-section-{{ section.id }} .facets .range-group,
+    facets-drawer .range-group {
+      background: linear-gradient(
+        to var(--transform-origin-end),
+        rgb(0 0 0 / 0.12) var(--range-min),
+        {{ section.settings.pf_accent_color }} var(--range-min),
+        {{ section.settings.pf_accent_color }} var(--range-max),
+        rgb(0 0 0 / 0.12) var(--range-max)
+      );
+    }
+
+    #shopify-section-{{ section.id }} .facets .range::-webkit-slider-thumb {
+      background: {{ section.settings.pf_accent_color }};
+    }
+
+    facets-drawer .range::-webkit-slider-thumb {
+      background: {{ section.settings.pf_accent_color }};
+    }
+
+    #shopify-section-{{ section.id }} .facets .range::-moz-range-thumb {
+      background: {{ section.settings.pf_accent_color }};
+    }
+
+    facets-drawer .range::-moz-range-thumb {
+      background: {{ section.settings.pf_accent_color }};
+    }
+
+    #shopify-section-{{ section.id }} .facets .option-value__swatch--all,
+    facets-drawer .option-value__swatch--all {
+      display: block;
+      background: conic-gradient(
+        from 180deg,
+        #c9d6df, #e8d5c4, #d9c3a9, #b8c4a0, #d4a5a5, #a8b8c8, #c9d6df
+      );
+    }
+    #shopify-section-{{ section.id }} .facets .option-value:hover .option-value__swatch--all,
+    #shopify-section-{{ section.id }} .facets input:checked + .option-value .option-value__swatch--all,
+    facets-drawer .option-value:hover .option-value__swatch--all,
+    facets-drawer input:checked + .option-value .option-value__swatch--all {
+      box-shadow:
+        inset 0 0 0 1.5px rgb(var(--text-color)),
+        inset 0 0 0 4px rgb(var(--background-without-opacity));
+    }
+
+    @media screen and (min-width: 749px) {
+      #shopify-section-{{ section.id }} .pf-mobilebar-shell {
+        display: none;
+      }
+    }
+
+     facets-drawer .option-value-list {
+      display: grid;
+      grid-template-columns: repeat({{ section.settings.pf_value_columns }}, minmax(0, 1fr));
+      gap: {{ section.settings.pf_value_row_gap }}px {{ section.settings.pf_value_col_gap }}px;
+    }
+
+    facets-drawer .option-value {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 140%;
+    }
+
+     facets-drawer .option-value :is(img, svg),
+     facets-drawer .option-value__swatch {
+      width: {{ section.settings.pf_value_media_size }}px;
+      height: {{ section.settings.pf_value_media_size }}px;
+      object-fit: cover;
+      border-radius: var(--rounded-full);
+      border: 1px solid rgb(0 0 0 / 0.12);
+      transition: box-shadow 0.15s ease-in-out;
+    }
+
+    facets-drawer .option-value:hover :is(img, svg),
+    facets-drawer .option-value:focus-visible :is(img, svg),
+    facets-drawer input:checked + .option-value :is(img, svg) {
+      box-shadow:
+        inset 0 0 0 1.5px rgb(var(--text-color)),
+        inset 0 0 0 4px rgb(var(--background-without-opacity));
+    }
+
+   facets-drawer input:checked + .option-value {
+      font-weight: 600;
+    }
+    facets-drawer .checkbox-control label, facets-drawer .checkbox-control input{
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 140%;
+      letter-spacing: 0%;
+    }
+    @media screen and (max-width: 749px) {
+      #shopify-section-{{ section.id }} .pf-colors {
+        display: block;
+        margin-block-start: {{ section.settings.color_strip_gap_top_mobile }}px;
+      }
+
+      /* No heading on mobile. */
+      {%- if section.settings.color_hide_heading_mobile -%}
+        #shopify-section-{{ section.id }} .pf-colors__heading {
+          display: none;
+        }
+      {%- else -%}
+        #shopify-section-{{ section.id }} .pf-colors__heading {
+          margin-block-end: 10px;
+        }
+      {%- endif -%}
+
+      /* Edge to edge scrolling.
+         The track breaks out of the container with a negative margin, then puts
+         the gutter back as padding. The result: at rest the first swatch sits
+         on the normal left margin while the row runs off the right edge, and
+         scrolled to the end the last swatch has the same margin on the right
+         while the row runs off the left. The scroll surface itself is the full
+         screen width the whole time.
+
+         scroll-padding keeps the first item aligned to that margin rather than
+         to the bleed when the row snaps or is scrolled back. */
+      #shopify-section-{{ section.id }} .pf-colors__track {
+        margin-inline: calc(var(--container-gutter) * -1);
+        padding-inline: var(--container-gutter);
+        scroll-padding-inline-start: var(--container-gutter);
+      }
+
+      #shopify-section-{{ section.id }} .pf-color {
+        font-size: 12px;
+        line-height: 17px;
+        font-weight: 500;
+        color: #7D7D7D;
+      }
+
+      #shopify-section-{{ section.id }} .pf-color.is-active {
+        font-size: 12px;
+        line-height: 17px;
+        font-weight: 600;
+        color: #000000;
+      }
+    }
+  {%- endif -%}
+</style>
