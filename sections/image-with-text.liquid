@@ -738,6 +738,23 @@
       object-fit: cover;
       display: block;
     }
+    @media screen and (min-width: 750px) {
+      #shopify-section-{{ section.id }} .collection_banner .image-with-text {
+        align-items: stretch;
+      }
+
+      #shopify-section-{{ section.id }} .collection_banner .image-with-text > picture,
+      #shopify-section-{{ section.id }} .collection_banner .image-with-text > video {
+        align-self: stretch;
+        height: auto;
+      }
+
+      #shopify-section-{{ section.id }} .collection_banner .image-with-text > .prose {
+        align-self: center;
+        margin-block: 0;
+        padding-block: 24px;
+      }
+    }
 
     /* ---------- Read more ----------
        The description is clamped to --cb-lines. The control is a sibling of the
