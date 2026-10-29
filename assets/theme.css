@@ -10547,9 +10547,6 @@ ul {
   margin-bottom: 20px;
 }
 
-.blog-sidebar__widget {
-  padding-bottom: 20px;
-}
 
 /* Larger vertical blog post card (matches target screenshot) */
 .blog-post-card--horizontal {
@@ -11905,6 +11902,25 @@ ul {
 .contact_us .form-control :is(.input, .textarea)[aria-invalid="true"],
 .contact_us .checkbox-control .checkbox[aria-invalid="true"] {
   border-color: rgb(var(--error-text, 178 34 34));
+}
+
+.newsletter-form .contact-form__error {
+  margin: 0;
+  color: rgb(var(--text-color));
+  font-size: 13px;
+  line-height: 140%;
+}
+
+.newsletter-form .contact-form__error[hidden] {
+  display: none;
+}
+
+.newsletter-form .form-control .contact-form__error {
+  margin-block-start: -4px;
+}
+
+.newsletter-form .form-control .input[aria-invalid="true"] {
+  border-color: rgb(var(--text-color));
 }
 
 /* ---------- Product card: image ---------- */

@@ -11,6 +11,22 @@
   "type": "footer",
   "name": "Footer group",
   "sections": {
+    "newsletter_xkCxeM": {
+      "type": "newsletter",
+      "name": "t:sections.newsletter.presets.newsletter.name",
+      "settings": {
+        "home_top_spacing": 50,
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "image_position_mobile": "after_text",
+        "subheading": "Keep me updated",
+        "title": "Newsletter",
+        "heading_style": "h2",
+        "content": "<p>A short sentence describing what someone will receive by subscribing.</p>",
+        "button_text": "Subscribe",
+        "disclaimer": "<p>You can unsubscribe anytime. For more details, read our Privacy Policy.</p>"
+      }
+    },
     "newsletter_rifYEN": {
       "type": "newsletter",
       "name": "t:sections.newsletter.presets.newsletter.name",
@@ -135,6 +151,7 @@
     }
   },
   "order": [
+    "newsletter_xkCxeM",
     "newsletter_rifYEN",
     "footer"
   ]

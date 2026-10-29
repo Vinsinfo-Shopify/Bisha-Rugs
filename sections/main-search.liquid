@@ -17,38 +17,26 @@
     else
       assign show_filters = false
     endif
+
+    # The product results share the collection page's listing layout, so the
+    # allow-list, styles, facets and toolbar all come from the plp-* snippets.
+    capture production_filters
+      render 'plp-filter-allowlist', results: search
+    endcapture
+
+    if section.settings.products_per_row_mobile == '1'
+      assign products_mobile_grid_mode = 'large'
+    else
+      assign products_mobile_grid_mode = 'medium'
+    endif
+
+    assign products_desktop_grid_mode = section.settings.products_size_desktop
   -%}
 
   {%- if search.results_count > 0 or active_values_count > 0 -%}
-    <style>
-      #shopify-section-{{ section.id }} {
-        --product-list-horizontal-spacing-factor: {{ section.settings.horizontal_spacing_factor }};
-        --product-list-vertical-spacing-factor: {{ section.settings.vertical_spacing_factor }};
-        --product-list-items-per-row: 2;
-      }
+    {%- render 'plp-styles', show_filters: show_filters -%}
 
-      @media screen and (min-width: 700px) {
-        #shopify-section-{{ section.id }} {
-          --product-list-items-per-row: 3;
-        }
-      }
-
-      @media screen and (min-width: 1000px) {
-        #shopify-section-{{ section.id }} .collection {
-          {%- if show_filters -%}
-            --collection-grid-template: var(--collection-sidebar-width, 0) minmax(0,1fr);
-          {%- endif -%}
-        }
-      }
-
-      @media screen and (min-width: 1400px) {
-        #shopify-section-{{ section.id }} {
-          --product-list-items-per-row: 4;
-        }
-      }
-    </style>
-
-    {%- paginate search.results by 48 -%}
+    {%- paginate search.results by section.settings.products_per_page -%}
       <div class="section-spacing section-spacing--tight color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
         <div class="container">
           <div class="section-stack">
@@ -88,93 +76,16 @@
 
                   <div class="main-search__resource-item" role="tabpanel" slot="content" {% cycle 'result_tab': '', 'hidden', 'hidden', 'hidden' %}>
                     <div class="v-stack gap-6 sm:gap-12">
-                      {%- if show_filters or section.settings.show_sort_by -%}
-                        <height-observer variable="collection-toolbar" class="collection-toolbar full-bleed">
-                          <div class="collection-toolbar__button-list">
-                            {%- if show_filters -%}
-                              <div class="collection-toolbar__button-container md:hidden">
-                                <button type="button" aria-controls="facets-drawer" class="collection-toolbar__button heading text-xxs w-full">
-                                  {{- 'collection.faceting.filter_button' | t }}
-                                  {% if active_values_count > 0 %}({{ active_values_count }}){% endif -%}
-                                </button>
-                              </div>
-                            {%- endif -%}
-
-                            {%- if section.settings.show_sort_by -%}
-                              {%- assign selected_sort_by_value = search.sort_by | default: search.default_sort_by -%}
-
-                              <div class="collection-toolbar__button-container">
-                                <button type="button" aria-controls="sort-by-popover" class="collection-toolbar__button heading text-xxs w-full">
-                                  <span class="text-with-icon justify-center">
-                                    {{- 'collection.faceting.sort_by' | t -}}
-                                    {%- render 'icon' with 'chevron-down' -%}
-                                  </span>
-                                </button>
-
-                                <facets-sort-popover
-                                  id="sort-by-popover"
-                                  section-id="{{ section.id }}"
-                                  class="popover popover--bottom-end color-scheme color-scheme--dialog"
-                                  close-on-listbox-select
-                                >
-                                  <p class="h4" slot="header">{{ 'collection.faceting.sort_by' | t }}</p>
-
-                                  <x-listbox class="popover__value-list">
-                                    {%- for sort_option in search.sort_options -%}
-                                      {%- if sort_option.name != blank -%}
-                                        <button
-                                          type="button"
-                                          class="popover__value-option group"
-                                          role="option"
-                                          value="{{ sort_option.value }}"
-                                          {% if sort_option.value == selected_sort_by_value %}
-                                            aria-selected="true"
-                                          {% endif %}
-                                        >
-                                          <span class="reversed-link">{{ sort_option.name }}</span>
-                                        </button>
-                                      {%- endif -%}
-                                    {%- endfor -%}
-                                  </x-listbox>
-                                </facets-sort-popover>
-                              </div>
-                            {%- endif -%}
-                          </div>
-                        </height-observer>
+                      {%- if section.settings.enable_new_filters -%}
+                        {%- render 'plp-color-strip', results: search -%}
                       {%- endif -%}
 
                       <div class="collection">
-                        {%- if show_filters -%}
-                          <facets-drawer id="facets-drawer" class="facets-drawer drawer drawer--sm color-scheme color-scheme--dialog md:hidden">
-                            <p class="h4" slot="header">{{ 'collection.faceting.filters' | t }}</p>
-
-                            {%- render 'facets',
-                              results: search,
-                              show_filters: section.settings.show_filters,
-                              open_filters_by_default: section.settings.open_filters_by_default,
-                              update_on_change: false,
-                              context: 'drawer'
-                            -%}
-
-                            <div slot="footer">
-                              {%- assign button_content = 'collection.faceting.apply_filters' | t -%}
-
-                              <dialog-close-button class="contents">
-                                {%- render 'button', type: 'button', content: button_content, stretch: true -%}
-                              </dialog-close-button>
-                            </div>
-                          </facets-drawer>
-
-                          <safe-sticky class="facets-sidebar md-max:hidden">
-                            {%- render 'facets',
-                              results: search,
-                              show_filters: section.settings.show_filters,
-                              open_filters_by_default: section.settings.open_filters_by_default,
-                              update_on_change: true,
-                              context: 'sidebar'
-                            -%}
-                          </safe-sticky>
-                        {%- endif -%}
+                        {%- render 'plp-facets',
+                          results: search,
+                          show_filters: show_filters,
+                          production_filters: production_filters
+                        -%}
 
                         {%- if search.results_count == 0 -%}
                           <div class="empty-state">
@@ -191,9 +102,31 @@
                           </div>
                         {%- else -%}
                           <div class="collection__main">
-                            {%- render 'active-facets', results: search -%}
+                            {%- comment -%}
+                              results_count covers every result type, so the toolbar count is only
+                              accurate when the search is limited to products. The heading above
+                              already shows it, which is why show_results_count is off by default.
+                            {%- endcomment -%}
+                            {%- render 'plp-toolbar',
+                              results: search,
+                              show_filters: show_filters,
+                              production_filters: production_filters,
+                              products_count: search.results_count,
+                              products_mobile_grid_mode: products_mobile_grid_mode,
+                              products_desktop_grid_mode: products_desktop_grid_mode
+                            -%}
 
-                            <product-list id="product-list-{{ section.id }}" class="product-list">
+                            {%- render 'active-facets',
+                              results: search,
+                              scroll_indicator: section.settings.enable_new_filters
+                            -%}
+
+                            <product-list
+                              id="product-list-{{ section.id }}"
+                              class="product-list"
+                              collection-mobile-layout="{{ products_mobile_grid_mode }}"
+                              collection-desktop-layout="{{ products_desktop_grid_mode }}"
+                            >
                               {%- for product in product_results -%}
                                 {%- render 'product-card', product: product, stacked: true, reveal: settings.stagger_products_apparition, position: forloop.index -%}
                               {%- endfor -%}
@@ -252,6 +185,10 @@
         </div>
       </div>
     {%- endpaginate -%}
+
+    {%- if section.settings.enable_new_filters -%}
+      <script src="{{ 'plp-filters.js' | asset_url }}" defer></script>
+    {%- endif -%}
   {%- else -%}
     <div class="color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
       <div class="container container--xs">
@@ -330,6 +267,43 @@
       "default": 24
     },
     {
+      "type": "select",
+      "id": "products_per_row_mobile",
+      "label": "t:global.product_list.products_per_row_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "products_size_desktop",
+      "label": "t:global.product_list.products_size_desktop",
+      "info": "t:global.product_list.products_size_desktop_info",
+      "options": [
+        {
+          "value": "compact",
+          "label": "t:global.product_list.products_size_desktop_options.compact"
+        },
+        {
+          "value": "medium",
+          "label": "t:global.product_list.products_size_desktop_options.medium"
+        },
+        {
+          "value": "large",
+          "label": "t:global.product_list.products_size_desktop_options.large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
       "type": "header",
       "content": "t:global.product_list.spacing_category",
       "info": "t:global.product_list.spacing_category_info"
@@ -357,10 +331,32 @@
       "content": "t:sections.main_search.product_filters_category"
     },
     {
+      "type": "select",
+      "id": "filter_layout",
+      "label": "t:global.faceting.desktop_layout",
+      "options": [
+        {
+          "value": "sidebar",
+          "label": "t:global.faceting.desktop_layout_options.sidebar"
+        },
+        {
+          "value": "drawer",
+          "label": "t:global.faceting.desktop_layout_options.drawer"
+        }
+      ],
+      "default": "sidebar"
+    },
+    {
       "type": "checkbox",
       "id": "show_filters",
       "label": "t:global.faceting.show_filters",
       "info": "t:global.faceting.show_filters_info",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_results_count",
+      "label": "t:global.faceting.show_results_count",
       "default": true
     },
     {
@@ -381,6 +377,348 @@
       "id": "open_filters_by_default",
       "label": "t:global.faceting.open_filters_by_default",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "New filters (development)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_new_filters",
+      "label": "Enable the new filter experience",
+      "info": "Off renders the existing production filter. Turn this on only in a development or draft theme: the new implementation is still being built, and while this is off none of its markup is rendered at all.",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "production_filters",
+      "label": "Production filters (allow-list)",
+      "info": "Only these filters render while the new implementation is off. Comma separated, matched on the filter label or its param_name. Any filter added in Search & Discovery that is not listed here stays hidden from the production sidebar automatically.",
+      "default": "Availability, Price"
+    },
+    {
+      "type": "header",
+      "content": "Sidebar (new filters)"
+    },
+    {
+      "type": "text",
+      "id": "pf_filters_heading",
+      "label": "Sidebar heading",
+      "info": "Leave empty to hide it.",
+      "default": "Filters"
+    },
+    {
+      "type": "range",
+      "id": "pf_filters_heading_gap",
+      "label": "Sidebar heading gap",
+      "min": 0,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "pf_sidebar_width",
+      "label": "Sidebar width",
+      "info": "1300 content = 300 sidebar + 32 gap + 968 grid.",
+      "min": 200,
+      "max": 400,
+      "step": 2,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "pf_sidebar_gap",
+      "label": "Filter to product gap",
+      "info": "1300 content = 300 sidebar + 32 gap + 968 grid.",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "pf_sidebar_inset",
+      "label": "Sidebar right inset",
+      "info": "Keeps the accordion chevron clear of the product grid.",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "pf_products_per_row",
+      "label": "Product columns beside the sidebar",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "pf_value_columns",
+      "label": "Image filter columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "pf_value_media_size",
+      "label": "Image filter swatch size",
+      "min": 40,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 67
+    },
+    {
+      "type": "range",
+      "id": "pf_value_col_gap",
+      "label": "Image filter column gap",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 37
+    },
+    {
+      "type": "range",
+      "id": "pf_value_row_gap",
+      "label": "Image filter row gap",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 27
+    },
+    {
+      "type": "range",
+      "id": "pf_accordion_icon_width",
+      "label": "Accordion chevron width",
+      "info": "Measured at about 13px on the 1440 frame.",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "pf_accordion_icon_color",
+      "label": "Accordion chevron colour",
+      "default": "#807E7A"
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_hide_color_in_sidebar",
+      "label": "Hide Color from the sidebar",
+      "info": "Colour has its own strip above the toolbar, so the sidebar entry would be a duplicate control.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_hide_availability",
+      "label": "Hide Availability from the filters",
+      "info": "The design has no availability group. This only decides what this section renders; availability itself is unchanged everywhere else.",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "pf_accent_color",
+      "label": "Filter accent colour",
+      "info": "Used by the price range bar and handles, the panel scrollbar and the Apply button.",
+      "default": "#55583C"
+    },
+    {
+      "type": "text",
+      "id": "pf_all_option_filters",
+      "label": "Filters with an \"All\" option",
+      "info": "Comma separated, matched on the filter label or its param_name. These image filters get a leading \"All\" tile that clears the group; its count is the collection's total product count. Leave empty for none.",
+      "default": "Style, Shape"
+    },
+    {
+      "type": "image_picker",
+      "id": "pf_all_option_image",
+      "label": "\"All\" option image",
+      "info": "Optional. A gradient tile is drawn when this is empty."
+    },
+    {
+      "type": "range",
+      "id": "pf_checkbox_size",
+      "label": "Checkbox size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "pf_checkbox_radius",
+      "label": "Checkbox corner radius",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "pf_checkbox_gap",
+      "label": "Checkbox to label gap",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "pf_checkbox_row_gap",
+      "label": "Checkbox row gap",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "pf_checkbox_nudge",
+      "label": "Checkbox vertical nudge",
+      "info": "Positive moves the box down. Corrects for the label's line box being taller than its cap height.",
+      "min": -10,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "pf_checkbox_checked",
+      "label": "Checkbox checked colour",
+      "default": "#55583C"
+    },
+    {
+      "type": "color",
+      "id": "pf_checkbox_border",
+      "label": "Checkbox outline",
+      "default": "#D9D7D0"
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_hide_view_switcher",
+      "label": "Hide grid and list view controls",
+      "info": "The design has none.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "pf_hide_toolbar_rules",
+      "label": "Hide the toolbar rules",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "color_filter_heading",
+      "label": "Shop by Color heading",
+      "default": "Shop by Color:"
+    },
+    {
+      "type": "text",
+      "id": "color_filter_label",
+      "label": "Colour filter name",
+      "info": "The exact label of the colour filter in Search & Discovery. Values, counts and links always come from Shopify; this only identifies which filter group is the colour one.",
+      "default": "Color"
+    },
+    {
+      "type": "range",
+      "id": "color_swatch_size",
+      "label": "Colour swatch size",
+      "min": 24,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "color_strip_gap_top",
+      "label": "Space above Shop by Color",
+      "info": "Measured at 24px between the collection banner and the swatches.",
+      "min": 0,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "color_strip_gap_top_mobile",
+      "label": "Space above Shop by Color (mobile)",
+      "min": 0,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "color_strip_gap",
+      "label": "Space below Shop by Color",
+      "info": "Sets the wrapping v-stack gap, which is the space between the colour labels and the toolbar row beneath.",
+      "min": 0,
+      "max": 96,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "color_ring_bleed",
+      "label": "Active ring bleed",
+      "info": "Room inside the scroll container so the active ring is not clipped on the first swatch.",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "color_hide_heading_mobile",
+      "label": "Hide the heading on mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "color_swatch_gap",
+      "label": "Colour swatch gap",
+      "min": 8,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "text",
+      "id": "color_all_label",
+      "label": "Clear-colour label",
+      "info": "The first pill, which clears every selected colour. It is not a Search & Discovery value.",
+      "default": "All"
+    },
+    {
+      "type": "image_picker",
+      "id": "color_all_image",
+      "label": "Clear-colour image",
+      "info": "Optional. A gradient swatch is drawn when this is empty."
     },
     {
       "type": "header",
