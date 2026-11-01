@@ -13,6 +13,7 @@
   "sections": {
     "newsletter_xkCxeM": {
       "type": "newsletter",
+      "disabled": true,
       "name": "t:sections.newsletter.presets.newsletter.name",
       "settings": {
         "home_top_spacing": 50,
